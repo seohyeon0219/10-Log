@@ -1,5 +1,5 @@
-import TestPage from './pages/test/TestPage'
+import LandingPage from './pages/LandingPage'
 
 export default function App() {
-  return <TestPage />
+  return <LandingPage />
 }
