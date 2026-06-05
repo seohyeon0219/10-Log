@@ -1,73 +1,120 @@
-# React + TypeScript + Vite
+# 일공로그 10-Log
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+일공로그는 하루 1분 동안 소비를 돌아보고, 수입과 지출 흐름을 간단하게 기록하는 개인 가계부/회고 앱입니다.
 
-Currently, two official plugins are available:
+## Product Direction
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- 전체 분위기: 심플하고 직관적인 기록 도구
+- 주요 색상: 블랙, 화이트, 빨강, 파랑
+- 수입 금액: 파란색
+- 지출 금액: 빨간색
+- 일공로그 기록 표시: 검정 점
 
-## React Compiler
+## Desktop Wireframe
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 상단 요약 영역
 
-## Expanding the ESLint configuration
+- 현재 월 표시
+  - 예: `2026년 6월`
+- 수입, 지출, 합계 금액 표시
+- 수입 금액은 파란색으로 표시
+- 지출 금액은 빨간색으로 표시
+- `자세히 보기` 버튼은 회색으로 표시
+- 자세히 보기 상태
+  - 수입 금액 아래: 고정 수입, 수입, 총수입
+  - 지출 금액 아래: 고정 지출, 지출, 총지출
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 왼쪽 하단: 달력
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- 달력에 일별 수입, 지출 금액을 색상에 맞게 표시
+- 일공로그를 남긴 날은 검정 점으로 표시
+- 날짜를 누르면 달력 아래 빈 공간에 선택 날짜와 `수입`, `지출` 버튼 표시
+- `수입` 버튼을 누르면 수입 추가 폼 표시
+  - 수입 금액
+  - 수입 카테고리
+  - 날짜
+  - 메모
+  - 고정수입 여부
+- `지출` 버튼을 누르면 지출 추가 폼 표시
+  - 지출 금액
+  - 지출 카테고리
+  - 날짜
+  - 메모
+  - 고정지출 여부
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 오른쪽 하단: 사이드 탭
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- 오른쪽에 약 `380px` 너비의 탭 패널 배치
+- 탭 버튼을 누르면 남은 영역에 관련 내용 표시
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+#### 통계
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- 보조 문구: `나의 소비 흐름`
+- 이번 달 한줄 평
+  - 예: `예산 안에서 잘 지키고 있어요!`
+- 지난 달과의 비교
+  - 총 지출 %
+  - 총 수입 %
+  - 카테고리별 지출 %
+- 도넛 차트로 카테고리별 지출, 수입 확인
+- 가로 막대 차트로 카테고리별 지출, 수입 확인
+- 카테고리를 클릭하면 아래에 관련 소비내역 표시
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+#### 일공로그
+
+- 보조 문구: `하루 1분, 소비를 돌아보는 시간`
+- 상단 안내 문구
+  - 소비에 대한 일공로그를 남겨보세요.
+  - 하루 1분, 소비를 되돌아보는 시간.
+  - 더 나은 성장을 위해 기록해드릴게요.
+- 오늘의 소비만족도 별점 입력
+- 오늘 기록한 내역을 간단히 리스트업
+- 사용자가 항목 중 하나를 터치해서 선택
+  - 오늘 가장 만족스러운 소비는?
+  - 오늘 후회되는 소비가 있나요?
+- 오늘 소비에 대한 한줄평 입력
+
+#### 카테고리 관리
+
+- 수입, 지출 카테고리 관리
+- 카테고리 추가 기능
+- 카테고리 수정 기능
+- 카테고리 삭제 기능
+
+#### 더보기
+
+- 설정과 관리 영역
+- 현재는 구현하지 않음
+
+## Mobile Wireframe
+
+- 하단 탭 구성
+  - 달력
+  - 통계
+  - 회고
+  - 더보기
+
+## Implementation Notes
+
+- 앱 첫 화면은 실제 사용할 수 있는 기록/달력 화면을 중심으로 구성한다.
+- 데스크탑에서는 상단 요약, 왼쪽 달력, 오른쪽 탭 패널 구조를 우선한다.
+- 모바일에서는 하단 탭으로 핵심 화면을 전환한다.
+- 시각 스타일은 과한 장식보다 여백, 선, 명확한 색상 대비를 우선한다.
+
+## Commit Convention
+
+| 커밋 타입 | 설명 |
+| --- | --- |
+| `feat` | 새로운 기능 추가 |
+| `fix` | 버그 수정 |
+| `docs` | 문서 수정 |
+| `style` | 코드 스타일 변경(코드 포맷팅, 세미콜론 누락 등) |
+| `design` | 사용자 UI 디자인 변경(CSS 등) |
+| `test` | 테스트 코드, 리팩토링(Test Code) |
+| `refactor` | 리팩토링(Production Code) |
+| `build` | 빌드 파일 수정 |
+| `ci` | CI 설정 파일 수정 |
+| `chore` | 자잘한 수정이나 빌드 업데이트 |
+| `rename` | 파일 혹은 폴더명 수정하거나 옮기는 경우 |
+| `remove` | 파일을 삭제하는 경우 |
+| `comment` | 필요한 주석 추가 및 변경 |
