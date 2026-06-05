@@ -1,8 +1,16 @@
 @import "tailwindcss";
 @import "./styles/tokens.css";
+@import "./styles/common.css";
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  background: var(--color-warm-gray);
+  color: var(--color-black);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
