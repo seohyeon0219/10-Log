@@ -1,0 +1,17 @@
+export const categoryColorOptions = [
+  '#111111',
+  '#8a8a8a',
+  '#f05650',
+  '#ff8a65',
+  '#ffb74d',
+  '#fdd835',
+  '#9ccc65',
+  '#26a69a',
+  '#4dd0e1',
+  '#007fff',
+  '#5c6bc0',
+  '#7e57c2',
+  '#ab47bc',
+  '#ec407a',
+  '#c8c3d4',
+]
