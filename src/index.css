@@ -9,7 +9,6 @@
 
 body {
   min-width: 320px;
-  background: var(--color-warm-gray);
   color: var(--color-black);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
