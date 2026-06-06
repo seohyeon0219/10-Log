@@ -11,6 +11,7 @@ import ConfirmModal from '../../components/common/ConfirmModal'
 import Tabs from '../../components/common/Tabs'
 import Textarea from '../../components/common/Textarea'
 import UnderInput from '../../components/common/UnderInput'
+import DesktopSidePanel from '../../components/sidePanel/DesktopSidePanel'
 import AmountInput from '../../components/transactions/AmountInput'
 import TransactionFormBottomSheet from '../../components/transactions/bottomSheet/TransactionFormBottomSheet'
 import TransactionListBottomSheet from '../../components/transactions/bottomSheet/TransactionListBottomSheet'
@@ -54,7 +55,7 @@ export default function TestPage() {
   }
 
   return (
-    <main className="mx-auto min-h-dvh w-full max-w-8xl p-6 max-sm:p-4">
+    <main className="mx-auto min-h-dvh w-full max-w-8xl px-4 py-6 md:px-6">
       <section className="mb-6">
         <p className="text-(--color-gray)">일공로그 공통 컴포넌트</p>
         <h1 className="mt-2 text-3xl font-extrabold">Component Test Page</h1>
@@ -83,6 +84,11 @@ export default function TestPage() {
             { date: getDateKey(currentDate, 25), income: 30000, expense: 6800 },
           ]}
         />
+      </section>
+
+      <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
+        <h2 className="mb-4 text-base font-bold">DesktopSidePanel</h2>
+        <DesktopSidePanel />
       </section>
 
       <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
