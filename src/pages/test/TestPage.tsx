@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import CategoryModal from '../../components/categories/CategoryModal'
-import CategorySelect from '../../components/categories/CategorySelect'
 import CalendarDateActions from '../../components/calendar/CalendarDateActions'
 import CalendarGrid from '../../components/calendar/CalendarGrid'
 import CalendarMonthHeader from '../../components/calendar/CalendarMonthHeader'
@@ -13,7 +12,6 @@ import Textarea from '../../components/common/Textarea'
 import UnderInput from '../../components/common/UnderInput'
 import DesktopSidePanel from '../../components/sidePanel/DesktopSidePanel'
 import AmountInput from '../../components/transactions/AmountInput'
-import TransactionFormBottomSheet from '../../components/transactions/bottomSheet/TransactionFormBottomSheet'
 import TransactionListBottomSheet from '../../components/transactions/bottomSheet/TransactionListBottomSheet'
 import { mockTransactions } from '../../mocks/data'
 
@@ -21,13 +19,6 @@ const tabs = [
   { id: 'stats', label: '통계' },
   { id: 'review', label: '회고' },
   { id: 'categories', label: '카테고리' },
-]
-
-const categories = [
-  { id: 'food', name: '식비', color: '#f05650' },
-  { id: 'coffee', name: '카페', color: '#ffb74d' },
-  { id: 'transport', name: '교통', color: '#007fff' },
-  { id: 'shopping', name: '쇼핑', color: '#ab47bc' },
 ]
 
 const getDateKey = (date: Date, day: number) => {
@@ -44,9 +35,7 @@ export default function TestPage() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false)
-  const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
   const [isTransactionListOpen, setIsTransactionListOpen] = useState(false)
-  const [selectedCategoryId, setSelectedCategoryId] = useState(categories[0].id)
 
   const handlePrevMonth = () => {
     setCurrentDate((date) => new Date(date.getFullYear(), date.getMonth() - 1, 1))
@@ -127,9 +116,6 @@ export default function TestPage() {
           <Button onClick={() => setIsCategoryModalOpen(true)} variant="secondary">
             카테고리 모달 열기
           </Button>
-          <Button onClick={() => setIsTransactionFormOpen(true)} variant="secondary">
-            거래 입력 바텀시트 열기
-          </Button>
           <Button
             onClick={() => {
               setSelectedDate((date) => date ?? new Date(currentDate.getFullYear(), currentDate.getMonth(), 1))
@@ -158,29 +144,8 @@ export default function TestPage() {
         onSubmit={() => setIsCategoryModalOpen(false)}
       />
 
-      <TransactionFormBottomSheet
-        isOpen={isTransactionFormOpen}
-        onClose={() => setIsTransactionFormOpen(false)}
-        title="지출 추가"
-      >
-        <div className="grid gap-4">
-          <UnderInput inputMode="numeric" label="금액" placeholder="12000" />
-          <CategorySelect
-            categories={categories}
-            onChange={setSelectedCategoryId}
-            selectedCategoryId={selectedCategoryId}
-          />
-          <Textarea label="메모" placeholder="선택한 소비에 대한 생각을 남겨보세요." />
-        </div>
-        <div className="mt-4">
-          <Button onClick={() => setIsTransactionFormOpen(false)}>저장하기</Button>
-        </div>
-      </TransactionFormBottomSheet>
-
       <TransactionListBottomSheet
         isOpen={isTransactionListOpen}
-        onAddExpense={() => setIsTransactionFormOpen(true)}
-        onAddIncome={() => setIsTransactionFormOpen(true)}
         onClose={() => setIsTransactionListOpen(false)}
         selectedDate={selectedDate}
         transactions={mockTransactions}
