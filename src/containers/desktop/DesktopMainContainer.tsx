@@ -3,29 +3,7 @@ import CalendarGrid from '../../components/calendar/CalendarGrid'
 import CalendarMonthHeader from '../../components/calendar/CalendarMonthHeader'
 import CalendarMonthlySummary from '../../components/calendar/CalendarMonthlySummary'
 import DesktopSidePanel from '../../components/sidePanel/DesktopSidePanel'
-
-const getDateKey = (date: Date, day: number) => {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const dateOfMonth = String(day).padStart(2, '0')
-
-  return `${year}-${month}-${dateOfMonth}`
-}
-
-const monthlySummary = {
-  expense: 3200,
-  fixedExpense: 456,
-  fixedIncome: 120000,
-  income: 54124,
-}
-
-const getSampleDayAmounts = (currentDate: Date) => [
-  { date: getDateKey(currentDate, 3), expense: 12800 },
-  { date: getDateKey(currentDate, 7), income: 54124 },
-  { date: getDateKey(currentDate, 12), expense: 3200, income: 120000 },
-  { date: getDateKey(currentDate, 18), expense: 456 },
-  { date: getDateKey(currentDate, 25), income: 30000, expense: 6800 },
-]
+import { getMockCalendarDayAmounts, mockMonthlySummary } from '../../mocks/data'
 
 export default function DesktopMainContainer() {
   const [currentDate, setCurrentDate] = useState(new Date())
@@ -46,10 +24,10 @@ export default function DesktopMainContainer() {
         onPrevMonth={handlePrevMonth}
       />
 
-      <CalendarMonthlySummary {...monthlySummary} />
+      <CalendarMonthlySummary {...mockMonthlySummary} />
 
       <div className="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)_380px] gap-8 mt-2">
-        <CalendarGrid currentDate={currentDate} dayAmounts={getSampleDayAmounts(currentDate)} />
+        <CalendarGrid currentDate={currentDate} dayAmounts={getMockCalendarDayAmounts(currentDate)} />
 
         <DesktopSidePanel />
       </div>
