@@ -103,7 +103,7 @@ export default function CalendarGrid({ currentDate, dayAmounts = [] }: CalendarG
             <button
               type="button"
               className={cn(
-                'flex min-h-28 min-w-0 cursor-pointer flex-col items-start bg-white px-2 pt-2 pb-3 text-left',
+                'flex min-h-[88px] min-w-0 cursor-pointer flex-col items-start bg-white px-2 pt-2 pb-3 text-left',
                 index % 7 > 0 ? 'border-l' : '',
                 index >= 7 ? 'border-t' : '',
                 calendarBorderClassName,
