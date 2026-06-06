@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost'
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'soft'
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: ReactNode
@@ -11,6 +11,7 @@ const buttonVariantClasses: Record<ButtonVariant, string> = {
   primary: 'border-transparent bg-black text-white',
   secondary: 'border-black bg-white text-black',
   ghost: 'border-transparent bg-transparent text-black',
+  soft: 'border-transparent bg-gray-100 text-gray-500',
 }
 
 export default function Button({

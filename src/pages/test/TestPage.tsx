@@ -12,14 +12,17 @@ import Textarea from '../../components/common/Textarea'
 import UnderInput from '../../components/common/UnderInput'
 import DesktopSidePanel from '../../components/sidePanel/DesktopSidePanel'
 import AmountInput from '../../components/transactions/AmountInput'
+import TransactionFormModal from '../../components/transactions/TransactionFormModal'
 import TransactionListBottomSheet from '../../components/transactions/bottomSheet/TransactionListBottomSheet'
-import { mockTransactions } from '../../mocks/data'
+import { mockExpenseCategories, mockIncomeCategories, mockTransactions } from '../../mocks/data'
 
 const tabs = [
   { id: 'stats', label: '통계' },
   { id: 'review', label: '회고' },
   { id: 'categories', label: '카테고리' },
 ]
+
+type TransactionType = 'income' | 'expense'
 
 const getDateKey = (date: Date, day: number) => {
   const year = date.getFullYear()
@@ -35,7 +38,15 @@ export default function TestPage() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false)
+  const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
   const [isTransactionListOpen, setIsTransactionListOpen] = useState(false)
+  const [transactionType, setTransactionType] = useState<TransactionType>('expense')
+
+  const openTransactionForm = (type: TransactionType) => {
+    setTransactionType(type)
+    setSelectedDate((date) => date ?? new Date(currentDate.getFullYear(), currentDate.getMonth(), 1))
+    setIsTransactionFormOpen(true)
+  }
 
   const handlePrevMonth = () => {
     setCurrentDate((date) => new Date(date.getFullYear(), date.getMonth() - 1, 1))
@@ -76,7 +87,11 @@ export default function TestPage() {
           ]}
           onDateSelect={setSelectedDate}
         />
-        <CalendarDateActions selectedDate={selectedDate} />
+        <CalendarDateActions
+          onAddExpense={() => openTransactionForm('expense')}
+          onAddIncome={() => openTransactionForm('income')}
+          selectedDate={selectedDate}
+        />
       </section>
 
       <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
@@ -116,6 +131,12 @@ export default function TestPage() {
           <Button onClick={() => setIsCategoryModalOpen(true)} variant="secondary">
             카테고리 모달 열기
           </Button>
+          <Button onClick={() => openTransactionForm('income')} variant="secondary">
+            수입 입력 모달 열기
+          </Button>
+          <Button onClick={() => openTransactionForm('expense')} variant="secondary">
+            지출 입력 모달 열기
+          </Button>
           <Button
             onClick={() => {
               setSelectedDate((date) => date ?? new Date(currentDate.getFullYear(), currentDate.getMonth(), 1))
@@ -146,9 +167,21 @@ export default function TestPage() {
 
       <TransactionListBottomSheet
         isOpen={isTransactionListOpen}
+        onAddExpense={() => openTransactionForm('expense')}
+        onAddIncome={() => openTransactionForm('income')}
         onClose={() => setIsTransactionListOpen(false)}
         selectedDate={selectedDate}
         transactions={mockTransactions}
+      />
+
+      <TransactionFormModal
+        categories={transactionType === 'income' ? mockIncomeCategories : mockExpenseCategories}
+        isOpen={isTransactionFormOpen}
+        onClose={() => setIsTransactionFormOpen(false)}
+        onDelete={() => setIsTransactionFormOpen(false)}
+        onSave={() => setIsTransactionFormOpen(false)}
+        selectedDate={selectedDate}
+        type={transactionType}
       />
     </main>
   )

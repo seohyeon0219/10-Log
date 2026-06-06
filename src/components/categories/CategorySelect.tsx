@@ -25,10 +25,10 @@ export default function CategorySelect({
           <button
             aria-pressed={category.id === selectedCategoryId}
             className={[
-              'inline-flex min-h-11 min-w-0 cursor-pointer items-center gap-2 rounded-lg border border-(--color-gray) bg-white px-3 text-left text-sm text-black',
+              'inline-flex min-h-11 min-w-0 cursor-pointer items-center gap-2 rounded-lg border bg-white px-3 text-left text-sm text-black',
               category.id === selectedCategoryId
                 ? 'border-black bg-(--color-warm-gray) font-bold'
-                : 'font-semibold',
+                : 'border-transparent font-semibold',
             ].join(' ').trim()}
             key={category.id}
             onClick={() => onChange(category.id)}

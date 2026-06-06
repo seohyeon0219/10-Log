@@ -59,3 +59,16 @@ export const mockTransactions = [
     type: 'expense',
   },
 ]
+
+export const mockIncomeCategories = [
+  { id: 'salary', name: '급여', color: '#1863dc' },
+  { id: 'side-job', name: '부수입', color: '#4c8df6' },
+  { id: 'allowance', name: '용돈', color: '#69a7ff' },
+]
+
+export const mockExpenseCategories = [
+  { id: 'food', name: '식비', color: '#f05650' },
+  { id: 'coffee', name: '카페', color: '#ffb74d' },
+  { id: 'transport', name: '교통', color: '#007fff' },
+  { id: 'shopping', name: '쇼핑', color: '#ab47bc' },
+]
