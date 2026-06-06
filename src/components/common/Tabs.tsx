@@ -16,10 +16,10 @@ export default function Tabs({ activeTabId, onChange, tabs }: TabsProps) {
         <button
           aria-selected={tab.id === activeTabId}
           className={[
-            'min-h-10 flex-none cursor-pointer border-0 border-b-2 bg-transparent pb-2 font-bold',
+            'min-h-10 flex-none cursor-pointer border-0 border-b-2 bg-transparent pb-2',
             tab.id === activeTabId
-              ? 'border-black text-black'
-              : 'border-transparent text-(--color-gray)',
+              ? 'font-medium text-black'
+              : 'font-normal border-transparent text-(--color-gray)',
           ].join(' ').trim()}
           key={tab.id}
           onClick={() => onChange(tab.id)}
