@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import CalendarDateActions from '../../components/calendar/CalendarDateActions'
 import CalendarGrid from '../../components/calendar/CalendarGrid'
 import CalendarMonthHeader from '../../components/calendar/CalendarMonthHeader'
 import CalendarMonthlySummary from '../../components/calendar/CalendarMonthlySummary'
@@ -7,6 +8,7 @@ import { getMockCalendarDayAmounts, mockMonthlySummary } from '../../mocks/data'
 
 export default function DesktopMainContainer() {
   const [currentDate, setCurrentDate] = useState(new Date())
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
   const handlePrevMonth = () => {
     setCurrentDate((date) => new Date(date.getFullYear(), date.getMonth() - 1, 1))
@@ -27,7 +29,14 @@ export default function DesktopMainContainer() {
       <CalendarMonthlySummary {...mockMonthlySummary} />
 
       <div className="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)_380px] gap-8 mt-2">
-        <CalendarGrid currentDate={currentDate} dayAmounts={getMockCalendarDayAmounts(currentDate)} />
+        <div>
+          <CalendarGrid
+            currentDate={currentDate}
+            dayAmounts={getMockCalendarDayAmounts(currentDate)}
+            onDateSelect={setSelectedDate}
+          />
+          <CalendarDateActions selectedDate={selectedDate} />
+        </div>
 
         <DesktopSidePanel />
       </div>

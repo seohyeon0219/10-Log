@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import CategoryModal from '../../components/categories/CategoryModal'
 import CategorySelect from '../../components/categories/CategorySelect'
+import CalendarDateActions from '../../components/calendar/CalendarDateActions'
 import CalendarGrid from '../../components/calendar/CalendarGrid'
 import CalendarMonthHeader from '../../components/calendar/CalendarMonthHeader'
 import CalendarMonthlySummary from '../../components/calendar/CalendarMonthlySummary'
-import ActionMenu from '../../components/common/ActionMenu'
 import Button from '../../components/common/Button'
 import Checkbox from '../../components/common/Checkbox'
 import ConfirmModal from '../../components/common/ConfirmModal'
@@ -40,6 +40,7 @@ const getDateKey = (date: Date, day: number) => {
 export default function TestPage() {
   const [activeTabId, setActiveTabId] = useState(tabs[0].id)
   const [currentDate, setCurrentDate] = useState(new Date())
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false)
   const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
@@ -83,7 +84,9 @@ export default function TestPage() {
             { date: getDateKey(currentDate, 18), expense: 456 },
             { date: getDateKey(currentDate, 25), income: 30000, expense: 6800 },
           ]}
+          onDateSelect={setSelectedDate}
         />
+        <CalendarDateActions selectedDate={selectedDate} />
       </section>
 
       <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
@@ -114,14 +117,6 @@ export default function TestPage() {
         <h2 className="mb-4 text-base font-bold">Tabs</h2>
         <Tabs activeTabId={activeTabId} onChange={setActiveTabId} tabs={tabs} />
         <p className="text-(--color-gray)">현재 선택된 탭: {activeTabId}</p>
-      </section>
-
-      <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
-        <h2 className="mb-4 text-base font-bold">ActionMenu</h2>
-        <div className="flex w-full items-center justify-between gap-4 rounded-lg border border-(--color-gray) p-3">
-          <span>식비 · 12,000원</span>
-          <ActionMenu onDelete={() => undefined} onEdit={() => undefined} />
-        </div>
       </section>
 
       <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">

@@ -7,6 +7,7 @@ type CalendarDayAmount = {
 type CalendarGridProps = {
   currentDate: Date
   dayAmounts?: CalendarDayAmount[]
+  onDateSelect?: (date: Date) => void
 }
 
 type CalendarDay = {
@@ -76,7 +77,7 @@ const getDateTextClassName = (day: CalendarDay) => {
   return getWeekDayTextClassName(day.weekDayIndex)
 }
 
-export default function CalendarGrid({ currentDate, dayAmounts = [] }: CalendarGridProps) {
+export default function CalendarGrid({ currentDate, dayAmounts = [], onDateSelect }: CalendarGridProps) {
   const amountByDate = new Map(dayAmounts.map((amount) => [amount.date, amount]))
   const calendarDays = getCalendarDays(currentDate)
 
@@ -109,6 +110,7 @@ export default function CalendarGrid({ currentDate, dayAmounts = [] }: CalendarG
                 calendarBorderClassName,
               )}
               key={day.dateKey}
+              onClick={() => onDateSelect?.(day.date)}
             >
               <span className={cn('text-sm font-medium', getDateTextClassName(day))}>
                 {day.date.getDate()}
