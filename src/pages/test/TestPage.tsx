@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import CategoryModal from '../../components/categories/CategoryModal'
 import CategorySelect from '../../components/categories/CategorySelect'
+import CalendarGrid from '../../components/calendar/CalendarGrid'
 import CalendarMonthHeader from '../../components/calendar/CalendarMonthHeader'
 import CalendarMonthlySummary from '../../components/calendar/CalendarMonthlySummary'
 import ActionMenu from '../../components/common/ActionMenu'
@@ -26,6 +27,14 @@ const categories = [
   { id: 'transport', name: '교통', color: '#007fff' },
   { id: 'shopping', name: '쇼핑', color: '#ab47bc' },
 ]
+
+const getDateKey = (date: Date, day: number) => {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const dateOfMonth = String(day).padStart(2, '0')
+
+  return `${year}-${month}-${dateOfMonth}`
+}
 
 export default function TestPage() {
   const [activeTabId, setActiveTabId] = useState(tabs[0].id)
@@ -63,6 +72,16 @@ export default function TestPage() {
           fixedExpense={456}
           fixedIncome={120000}
           income={54124}
+        />
+        <CalendarGrid
+          currentDate={currentDate}
+          dayAmounts={[
+            { date: getDateKey(currentDate, 3), expense: 12800 },
+            { date: getDateKey(currentDate, 7), income: 54124 },
+            { date: getDateKey(currentDate, 12), expense: 3200, income: 120000 },
+            { date: getDateKey(currentDate, 18), expense: 456 },
+            { date: getDateKey(currentDate, 25), income: 30000, expense: 6800 },
+          ]}
         />
       </section>
 
