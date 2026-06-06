@@ -12,9 +12,9 @@ export default function UnderInput({ error, id, label, className = '', suffix = 
   return (
     <label className={['grid w-full gap-2', className].join(' ').trim()} htmlFor={inputId}>
       {label ? <span className="font-bold text-black">{label}</span> : null}
-      <div className="flex items-center border-b border-black">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center border-b border-(-color-black)">
         <input
-          className="min-h-11 min-w-0 flex-1 border-0 bg-transparent text-black outline-none placeholder:text-(--color-gray)"
+          className="min-h-11 w-full min-w-0 border-0 bg-transparent text-black outline-none placeholder:text-(--color-gray)"
           id={inputId}
           {...props}
         />

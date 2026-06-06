@@ -41,7 +41,7 @@ export default function LandingPage() {
         </div>
 
         <button
-          className="inline-flex min-h-16 w-full max-w-sm cursor-pointer items-center justify-center gap-5 rounded-[var(--radius-2xl)] border border-gray-200 bg-white px-8 text-lg font-semibold text-gray-700 shadow-md transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 max-sm:min-h-14 max-sm:gap-4 max-sm:text-base"
+          className="inline-flex min-h-16 w-full max-w-sm cursor-pointer items-center justify-center gap-5 rounded-2xl border border-gray-200 bg-white px-8 text-lg font-semibold text-gray-700 shadow-md transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 max-sm:min-h-14 max-sm:gap-4 max-sm:text-base"
           disabled={isSigningIn}
           onClick={handleGoogleSignIn}
           type="button"
