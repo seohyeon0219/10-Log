@@ -20,22 +20,7 @@ export default function CalendarMonthHeader({
         onClick={onPrevMonth}
         aria-label="이전 달"
       >
-        <svg
-          aria-hidden="true"
-          className="rotate-180"
-          width="7"
-          height="12"
-          viewBox="0 0 7 12"
-          fill="none"
-        >
-          <path
-            d="M1 1L6 6L1 11"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <MonthArrowIcon className="rotate-180" />
       </button>
 
       <h1 className="min-w-0 text-center text-lg font-bold text-gray-950">
@@ -48,16 +33,33 @@ export default function CalendarMonthHeader({
         onClick={onNextMonth}
         aria-label="다음 달"
       >
-        <svg aria-hidden="true" width="7" height="12" viewBox="0 0 7 12" fill="none">
-          <path
-            d="M1 1L6 6L1 11"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <MonthArrowIcon />
       </button>
     </header>
+  )
+}
+
+type MonthArrowIconProps = {
+  className?: string
+}
+
+function MonthArrowIcon({ className = '' }: MonthArrowIconProps) {
+  return (
+    <svg
+      aria-hidden="true"
+      className={className}
+      width="7"
+      height="12"
+      viewBox="0 0 7 12"
+      fill="none"
+    >
+      <path
+        d="M1 1L6 6L1 11"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   )
 }

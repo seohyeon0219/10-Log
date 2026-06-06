@@ -8,6 +8,7 @@ type CalendarMonthlySummaryProps = {
 }
 
 const formatAmount = (amount: number) => amount.toLocaleString('ko-KR')
+const cn = (...classNames: string[]) => classNames.filter(Boolean).join(' ')
 
 export default function CalendarMonthlySummary({
   income,
@@ -160,9 +161,9 @@ function SummaryDetailRow({
   const weightClassName = isEmphasized ? 'font-bold' : 'font-medium'
 
   return (
-    <div className={['flex min-w-0 items-center justify-between gap-3 text-sm', isEmphasized ? 'mt-1' : ''].join(' ').trim()}>
-      <span className={['truncate text-(--color-dark-gray)', weightClassName].join(' ')}>{label}</span>
-      <strong className={['truncate text-right', weightClassName, valueClassName].join(' ')}>
+    <div className={cn('flex min-w-0 items-center justify-between gap-3 text-sm', isEmphasized ? 'mt-1' : '')}>
+      <span className={cn('truncate text-(--color-dark-gray)', weightClassName)}>{label}</span>
+      <strong className={cn('truncate text-right', weightClassName, valueClassName)}>
         {formatAmount(value)}
       </strong>
     </div>

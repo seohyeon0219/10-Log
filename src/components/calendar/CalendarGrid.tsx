@@ -18,8 +18,11 @@ type CalendarDay = {
 
 const weekDays = ['월', '화', '수', '목', '금', '토', '일']
 const calendarBorderClassName = 'border-[#ebe8f0]'
+const saturdayIndex = 5
+const sundayIndex = 6
 
 const formatAmount = (amount: number) => amount.toLocaleString('ko-KR')
+const cn = (...classNames: string[]) => classNames.filter(Boolean).join(' ')
 
 const toDateKey = (date: Date) => {
   const year = date.getFullYear()
@@ -54,15 +57,15 @@ const getCalendarDays = (currentDate: Date): CalendarDay[] => {
 }
 
 const getWeekDayTextClassName = (weekDayIndex: number) => {
-  if (weekDayIndex === 5) {
+  if (weekDayIndex === saturdayIndex) {
     return 'text-(--color-income-blue)'
   }
 
-  if (weekDayIndex === 6) {
+  if (weekDayIndex === sundayIndex) {
     return 'text-(--color-expense-red)'
   }
 
-  return 'text-black text-xs'
+  return 'text-black'
 }
 
 const getDateTextClassName = (day: CalendarDay) => {
@@ -82,7 +85,7 @@ export default function CalendarGrid({ currentDate, dayAmounts = [] }: CalendarG
       <div className="grid grid-cols-7">
         {weekDays.map((weekDay, index) => (
           <div
-            className={['px-3 py-2 text-center text-sm font-normal', getWeekDayTextClassName(index)].join(' ')}
+            className={cn('px-3 py-2 text-center text-sm font-normal', getWeekDayTextClassName(index))}
             key={weekDay}
           >
             {weekDay}
@@ -91,9 +94,7 @@ export default function CalendarGrid({ currentDate, dayAmounts = [] }: CalendarG
       </div>
 
       <div
-        className={['grid grid-cols-7 overflow-hidden rounded-lg border bg-white', calendarBorderClassName].join(
-          ' ',
-        )}
+        className={cn('grid grid-cols-7 overflow-hidden rounded-lg border bg-white', calendarBorderClassName)}
       >
         {calendarDays.map((day, index) => {
           const amount = amountByDate.get(day.dateKey)
@@ -101,15 +102,15 @@ export default function CalendarGrid({ currentDate, dayAmounts = [] }: CalendarG
           return (
             <button
               type="button"
-              className={[
+              className={cn(
                 'flex min-h-28 min-w-0 cursor-pointer flex-col items-start bg-white px-2 pt-2 pb-3 text-left',
                 index % 7 > 0 ? 'border-l' : '',
                 index >= 7 ? 'border-t' : '',
                 calendarBorderClassName,
-              ].join(' ')}
+              )}
               key={day.dateKey}
             >
-              <span className={['text-sm font-medium', getDateTextClassName(day)].join(' ')}>
+              <span className={cn('text-sm font-medium', getDateTextClassName(day))}>
                 {day.date.getDate()}
               </span>
 
