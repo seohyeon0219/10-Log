@@ -11,7 +11,6 @@ import UnderInput from '../../components/common/UnderInput'
 import AmountInput from '../../components/transactions/AmountInput'
 import TransactionFormBottomSheet from '../../components/transactions/bottomSheet/TransactionFormBottomSheet'
 import TransactionListBottomSheet from '../../components/transactions/bottomSheet/TransactionListBottomSheet'
-import './testPage.css'
 
 const tabs = [
   { id: 'stats', label: '통계' },
@@ -35,24 +34,24 @@ export default function TestPage() {
   const [selectedCategoryId, setSelectedCategoryId] = useState(categories[0].id)
 
   return (
-    <main className="test-page">
-      <section className="test-page-header">
-        <p>일공로그 공통 컴포넌트</p>
-        <h1>Component Test Page</h1>
+    <main className="mx-auto min-h-dvh w-[min(960px,100%)] p-6 max-[480px]:p-4">
+      <section className="mb-6">
+        <p className="text-[var(--color-gray)]">일공로그 공통 컴포넌트</p>
+        <h1 className="mt-2 text-3xl font-extrabold">Component Test Page</h1>
       </section>
 
-      <section className="test-section">
-        <h2>Button</h2>
-        <div className="test-row">
+      <section className="mb-6 rounded-[var(--radius-12)] border border-[var(--color-gray)] bg-[var(--color-white)] p-6 max-[480px]:p-4">
+        <h2 className="mb-4 text-base font-bold">Button</h2>
+        <div className="flex flex-wrap gap-3">
           <Button>검정 버튼</Button>
           <Button variant="secondary">흰색 버튼</Button>
           <Button variant="ghost">고스트 버튼</Button>
         </div>
       </section>
 
-      <section className="test-section">
-        <h2>Input</h2>
-        <div className="test-grid">
+      <section className="mb-6 rounded-[var(--radius-12)] border border-[var(--color-gray)] bg-[var(--color-white)] p-6 max-[480px]:p-4">
+        <h2 className="mb-4 text-base font-bold">Input</h2>
+        <div className="grid gap-4">
           <AmountInput label="금액" placeholder="숫자만 입력돼요" />
           <UnderInput inputMode="numeric" label="밑줄 금액 입력" placeholder="12000" />
           <Textarea label="오늘 소비에 대한 한줄평" placeholder="오늘 소비를 돌아보며 기록해보세요." />
@@ -60,23 +59,23 @@ export default function TestPage() {
         </div>
       </section>
 
-      <section className="test-section">
-        <h2>Tabs</h2>
+      <section className="mb-6 rounded-[var(--radius-12)] border border-[var(--color-gray)] bg-[var(--color-white)] p-6 max-[480px]:p-4">
+        <h2 className="mb-4 text-base font-bold">Tabs</h2>
         <Tabs activeTabId={activeTabId} onChange={setActiveTabId} tabs={tabs} />
-        <p className="test-helper">현재 선택된 탭: {activeTabId}</p>
+        <p className="text-[var(--color-gray)]">현재 선택된 탭: {activeTabId}</p>
       </section>
 
-      <section className="test-section">
-        <h2>ActionMenu</h2>
-        <div className="test-menu-preview">
+      <section className="mb-6 rounded-[var(--radius-12)] border border-[var(--color-gray)] bg-[var(--color-white)] p-6 max-[480px]:p-4">
+        <h2 className="mb-4 text-base font-bold">ActionMenu</h2>
+        <div className="flex w-full items-center justify-between gap-4 rounded-[var(--radius-8)] border border-[var(--color-gray)] p-3">
           <span>식비 · 12,000원</span>
           <ActionMenu onDelete={() => undefined} onEdit={() => undefined} />
         </div>
       </section>
 
-      <section className="test-section">
-        <h2>ConfirmModal / CategoryModal / TransactionBottomSheet</h2>
-        <div className="test-row">
+      <section className="mb-6 rounded-[var(--radius-12)] border border-[var(--color-gray)] bg-[var(--color-white)] p-6 max-[480px]:p-4">
+        <h2 className="mb-4 text-base font-bold">ConfirmModal / CategoryModal / TransactionBottomSheet</h2>
+        <div className="flex flex-wrap gap-3">
           <Button onClick={() => setIsModalOpen(true)}>확인 모달 열기</Button>
           <Button onClick={() => setIsCategoryModalOpen(true)} variant="secondary">
             카테고리 모달 열기
@@ -111,7 +110,7 @@ export default function TestPage() {
         onClose={() => setIsTransactionFormOpen(false)}
         title="지출 추가"
       >
-        <div className="test-grid">
+        <div className="grid gap-4">
           <UnderInput inputMode="numeric" label="금액" placeholder="12000" />
           <CategorySelect
             categories={categories}
@@ -120,7 +119,7 @@ export default function TestPage() {
           />
           <Textarea label="메모" placeholder="선택한 소비에 대한 생각을 남겨보세요." />
         </div>
-        <div className="test-actions">
+        <div className="mt-4">
           <Button onClick={() => setIsTransactionFormOpen(false)}>저장하기</Button>
         </div>
       </TransactionFormBottomSheet>
@@ -132,19 +131,19 @@ export default function TestPage() {
         onAddIncome={() => setIsTransactionFormOpen(true)}
         onClose={() => setIsTransactionListOpen(false)}
       >
-        <div className="common-transaction-list-item">
-          <span className="common-transaction-list-item-title">
-            <span className="common-transaction-list-item-dot" style={{ backgroundColor: '#ff6b1a' }} />
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 border-b border-[#f0f0f2] py-4">
+          <span className="inline-flex min-w-0 items-center gap-3 font-extrabold text-[#1f2937]">
+            <span className="h-2.5 w-2.5 flex-none rounded-full" style={{ backgroundColor: '#ff6b1a' }} />
             편의점
           </span>
-          <strong className="common-transaction-list-item-amount expense">-323</strong>
+          <strong className="font-black text-[var(--color-expense-red)]">-323</strong>
         </div>
-        <div className="common-transaction-list-item">
-          <span className="common-transaction-list-item-title">
-            <span className="common-transaction-list-item-dot" style={{ backgroundColor: '#f4b400' }} />
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 py-4">
+          <span className="inline-flex min-w-0 items-center gap-3 font-extrabold text-[#1f2937]">
+            <span className="h-2.5 w-2.5 flex-none rounded-full" style={{ backgroundColor: '#f4b400' }} />
             배달
           </span>
-          <strong className="common-transaction-list-item-amount income">+134,124</strong>
+          <strong className="font-black text-[var(--color-income-blue)]">+134,124</strong>
         </div>
       </TransactionListBottomSheet>
     </main>

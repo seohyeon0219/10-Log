@@ -25,12 +25,12 @@ export default function ActionMenu({ items, onDelete, onEdit }: ActionMenuProps)
   }
 
   return (
-    <div className="common-action-menu">
+    <div className="relative inline-flex">
       <button
         aria-expanded={isOpen}
         aria-haspopup="menu"
         aria-label="더보기"
-        className="common-action-menu-trigger"
+        className="h-9 w-9 cursor-pointer rounded-[var(--radius-8)] border-0 bg-transparent text-2xl leading-none font-extrabold text-[var(--color-black)] hover:bg-[var(--color-warm-gray)] aria-expanded:bg-[var(--color-warm-gray)]"
         onClick={() => setIsOpen((current) => !current)}
         type="button"
       >
@@ -38,10 +38,16 @@ export default function ActionMenu({ items, onDelete, onEdit }: ActionMenuProps)
       </button>
 
       {isOpen ? (
-        <div className="common-action-menu-list" role="menu">
+        <div
+          className="absolute top-[calc(100%+var(--spacing-8))] right-0 z-20 grid min-w-24 overflow-hidden rounded-[var(--radius-8)] border border-[var(--color-gray)] bg-[var(--color-white)] shadow-[0_12px_28px_rgb(17_17_17_/_12%)]"
+          role="menu"
+        >
           {menuItems.map((item) => (
             <button
-              className={`common-action-menu-item common-action-menu-item-${item.variant ?? 'default'}`}
+              className={[
+                'min-h-10 cursor-pointer border-0 bg-transparent px-3 text-left text-[var(--color-black)] hover:bg-[var(--color-warm-gray)]',
+                item.variant === 'danger' ? 'text-[var(--color-expense-red)]' : '',
+              ].join(' ').trim()}
               key={item.label}
               onClick={() => handleItemClick(item.onClick)}
               role="menuitem"

@@ -7,6 +7,12 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: ButtonVariant
 }
 
+const buttonVariantClasses: Record<ButtonVariant, string> = {
+  primary: 'border-transparent bg-[var(--color-black)] text-[var(--color-white)]',
+  secondary: 'border-[var(--color-black)] bg-[var(--color-white)] text-[var(--color-black)]',
+  ghost: 'border-transparent bg-transparent text-[var(--color-black)]',
+}
+
 export default function Button({
   children,
   variant = 'primary',
@@ -15,7 +21,15 @@ export default function Button({
   ...props
 }: ButtonProps) {
   return (
-    <button className={`common-button common-button-${variant} ${className}`.trim()} type={type} {...props}>
+    <button
+      className={[
+        'min-h-11 w-full max-w-full cursor-pointer rounded-[var(--radius-8)] border px-4 font-bold disabled:cursor-not-allowed disabled:opacity-50',
+        buttonVariantClasses[variant],
+        className,
+      ].join(' ').trim()}
+      type={type}
+      {...props}
+    >
       {children}
     </button>
   )

@@ -8,10 +8,14 @@ export default function Checkbox({ children, className = '', id, ...props }: Che
   const checkboxId = id ?? props.name
 
   return (
-    <label className={`common-checkbox ${className}`.trim()} htmlFor={checkboxId}>
-      <input id={checkboxId} type="checkbox" {...props} />
-      <span aria-hidden="true" />
-      <strong>{children}</strong>
+    <label className={['inline-flex cursor-pointer items-center gap-2 text-[var(--color-black)]', className].join(' ').trim()} htmlFor={checkboxId}>
+      <input
+        className="h-[18px] w-[18px] rounded border-[var(--color-black)] accent-[var(--color-black)]"
+        id={checkboxId}
+        type="checkbox"
+        {...props}
+      />
+      <strong className="font-bold">{children}</strong>
     </label>
   )
 }

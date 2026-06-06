@@ -9,10 +9,14 @@ export default function Input({ error, id, label, className = '', ...props }: In
   const inputId = id ?? props.name
 
   return (
-    <label className={`common-input-field ${className}`.trim()} htmlFor={inputId}>
-      {label ? <span>{label}</span> : null}
-      <input id={inputId} {...props} />
-      {error ? <small role="alert">{error}</small> : null}
+    <label className={['grid w-full gap-2', className].join(' ').trim()} htmlFor={inputId}>
+      {label ? <span className="font-bold text-[var(--color-black)]">{label}</span> : null}
+      <input
+        className="min-h-11 w-full rounded-[var(--radius-8)] border border-[var(--color-gray)] px-3 text-[var(--color-black)] outline-none focus:border-[var(--color-gray)]"
+        id={inputId}
+        {...props}
+      />
+      {error ? <small className="text-[var(--color-expense-red)]" role="alert">{error}</small> : null}
     </label>
   )
 }

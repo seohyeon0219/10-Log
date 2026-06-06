@@ -18,19 +18,24 @@ export default function CategorySelect({
   selectedCategoryId,
 }: CategorySelectProps) {
   return (
-    <fieldset className="common-category-select">
-      <legend>{label}</legend>
-      <div className="common-category-select-list">
+    <fieldset className="m-0 min-w-0 border-0 p-0">
+      <legend className="mb-3 p-0 text-sm font-bold text-[var(--color-black)]">{label}</legend>
+      <div className="grid grid-cols-2 gap-2 min-[420px]:grid-cols-3">
         {categories.map((category) => (
           <button
             aria-pressed={category.id === selectedCategoryId}
-            className="common-category-chip"
+            className={[
+              'inline-flex min-h-11 min-w-0 cursor-pointer items-center gap-2 rounded-[var(--radius-8)] border border-[var(--color-gray)] bg-[var(--color-white)] px-3 text-left text-sm text-[var(--color-black)]',
+              category.id === selectedCategoryId
+                ? 'border-[var(--color-black)] bg-[var(--color-warm-gray)] font-bold'
+                : 'font-semibold',
+            ].join(' ').trim()}
             key={category.id}
             onClick={() => onChange(category.id)}
             type="button"
           >
-            <span style={{ backgroundColor: category.color }} />
-            {category.name}
+            <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: category.color }} />
+            <span className="min-w-0 truncate">{category.name}</span>
           </button>
         ))}
       </div>
