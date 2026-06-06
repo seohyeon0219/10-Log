@@ -25,20 +25,13 @@ const getDateKey = (date: Date, day: number) => {
   return `${year}-${month}-${dateOfMonth}`
 }
 
-export const getMockCalendarDayAmounts = (currentDate: Date) => [
-  { date: getDateKey(currentDate, 3), expense: 12800 },
-  { date: getDateKey(currentDate, 7), income: 54124 },
-  { date: getDateKey(currentDate, 12), expense: 3200, income: 120000 },
-  { date: getDateKey(currentDate, 18), expense: 456 },
-  { date: getDateKey(currentDate, 25), income: 30000, expense: 6800 },
-]
-
 export const mockTransactions = [
   {
     id: 'transaction-1',
     amount: 12800,
     categoryColor: '#f05650',
     categoryName: '식비',
+    day: 3,
     memo: '점심 식사',
     type: 'expense',
   },
@@ -47,18 +40,61 @@ export const mockTransactions = [
     amount: 54124,
     categoryColor: '#1863dc',
     categoryName: '급여',
+    day: 12,
     memo: '추가 정산',
     type: 'income',
   },
   {
     id: 'transaction-3',
+    amount: 3200,
+    categoryColor: '#007fff',
+    categoryName: '교통',
+    day: 12,
+    memo: '지하철',
+    type: 'expense',
+  },
+  {
+    id: 'transaction-4',
     amount: 6800,
     categoryColor: '#ffb74d',
     categoryName: '카페',
+    day: 25,
     memo: '오후 커피',
     type: 'expense',
   },
 ]
+
+export const getMockTransactions = (currentDate: Date) =>
+  mockTransactions.map((transaction) => ({
+    ...transaction,
+    date: getDateKey(currentDate, transaction.day),
+  }))
+
+export const getMockCalendarDayAmounts = (currentDate: Date) =>
+  getMockTransactions(currentDate).reduce<
+    Array<{ date: string; expense?: number; income?: number }>
+  >((dayAmounts, transaction) => {
+    const dayAmount = dayAmounts.find((amount) => amount.date === transaction.date)
+
+    if (!dayAmount) {
+      dayAmounts.push({
+        date: transaction.date,
+        [transaction.type]: transaction.amount,
+      })
+
+      return dayAmounts
+    }
+
+    if (transaction.type === 'income') {
+      dayAmount.income = (dayAmount.income ?? 0) + transaction.amount
+    }
+
+    if (transaction.type === 'expense') {
+      dayAmount.expense = (dayAmount.expense ?? 0) + transaction.amount
+    }
+
+    return dayAmounts
+  }, [])
 
 export const mockIncomeCategories = [
   { id: 'salary', name: '급여', color: '#1863dc' },

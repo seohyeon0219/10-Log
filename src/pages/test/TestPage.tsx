@@ -6,6 +6,7 @@ import CalendarMonthlySummary from '../../components/calendar/CalendarMonthlySum
 import Button from '../../components/common/Button'
 import Checkbox from '../../components/common/Checkbox'
 import ConfirmModal from '../../components/common/ConfirmModal'
+import ListItem from '../../components/common/ListItem'
 import Tabs from '../../components/common/Tabs'
 import Textarea from '../../components/common/Textarea'
 import UnderInput from '../../components/common/UnderInput'
@@ -14,7 +15,13 @@ import AmountInput from '../../components/transactions/AmountInput'
 import TransactionFormModal from '../../components/transactions/TransactionFormModal'
 import TransactionFormBottomSheet from '../../components/transactions/bottomSheet/TransactionFormBottomSheet'
 import TransactionListBottomSheet from '../../components/transactions/bottomSheet/TransactionListBottomSheet'
-import { mockExpenseCategories, mockIncomeCategories, mockTransactions } from '../../mocks/data'
+import {
+  getMockCalendarDayAmounts,
+  getMockTransactions,
+  mockExpenseCategories,
+  mockIncomeCategories,
+  mockTransactions,
+} from '../../mocks/data'
 
 const tabs = [
   { id: 'stats', label: '통계' },
@@ -41,6 +48,10 @@ export default function TestPage() {
   const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
   const [isTransactionListOpen, setIsTransactionListOpen] = useState(false)
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
+  const selectedDateKey = selectedDate ? getDateKey(selectedDate, selectedDate.getDate()) : ''
+  const selectedDateTransactions = getMockTransactions(currentDate).filter(
+    (transaction) => transaction.date === selectedDateKey,
+  )
 
   const openTransactionForm = (type: TransactionType) => {
     setTransactionType(type)
@@ -52,6 +63,18 @@ export default function TestPage() {
     setTransactionType(type)
     setSelectedDate((date) => date ?? new Date(currentDate.getFullYear(), currentDate.getMonth(), 1))
     setIsTransactionFormBottomSheetOpen(true)
+  }
+
+  const handleDateSelect = (date: Date) => {
+    const dateKey = getDateKey(date, date.getDate())
+
+    setSelectedDate((currentSelectedDate) => {
+      if (currentSelectedDate && getDateKey(currentSelectedDate, currentSelectedDate.getDate()) === dateKey) {
+        return null
+      }
+
+      return date
+    })
   }
 
   const handlePrevMonth = () => {
@@ -84,20 +107,29 @@ export default function TestPage() {
         />
         <CalendarGrid
           currentDate={currentDate}
-          dayAmounts={[
-            { date: getDateKey(currentDate, 3), expense: 12800 },
-            { date: getDateKey(currentDate, 7), income: 54124 },
-            { date: getDateKey(currentDate, 12), expense: 3200, income: 120000 },
-            { date: getDateKey(currentDate, 18), expense: 456 },
-            { date: getDateKey(currentDate, 25), income: 30000, expense: 6800 },
-          ]}
-          onDateSelect={setSelectedDate}
+          dayAmounts={getMockCalendarDayAmounts(currentDate)}
+          onDateSelect={handleDateSelect}
+          selectedDate={selectedDate}
         />
         <CalendarDateActions
           onAddExpense={() => openTransactionForm('expense')}
           onAddIncome={() => openTransactionForm('income')}
           selectedDate={selectedDate}
         />
+        {selectedDate ? (
+          <div className="mt-3 grid gap-1 border-t border-gray-100 pt-2">
+            {selectedDateTransactions.map((transaction) => (
+              <ListItem
+                amount={transaction.amount}
+                color={transaction.categoryColor}
+                key={transaction.id}
+                memo={transaction.memo}
+                title={transaction.categoryName}
+                type={transaction.type}
+              />
+            ))}
+          </div>
+        ) : null}
       </section>
 
       <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
@@ -121,6 +153,22 @@ export default function TestPage() {
           <UnderInput inputMode="numeric" label="밑줄 금액 입력" placeholder="12000" />
           <Textarea label="오늘 소비에 대한 한줄평" placeholder="오늘 소비를 돌아보며 기록해보세요." />
           <Checkbox name="fixed-transaction">고정 수입/지출로 등록</Checkbox>
+        </div>
+      </section>
+
+      <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
+        <h2 className="mb-4 text-base font-bold">ListItem</h2>
+        <div className="grid gap-1">
+          {mockTransactions.map((transaction) => (
+            <ListItem
+              amount={transaction.amount}
+              color={transaction.categoryColor}
+              key={transaction.id}
+              memo={transaction.memo}
+              title={transaction.categoryName}
+              type={transaction.type}
+            />
+          ))}
         </div>
       </section>
 
@@ -174,7 +222,7 @@ export default function TestPage() {
         onAddIncome={() => openTransactionForm('income')}
         onClose={() => setIsTransactionListOpen(false)}
         selectedDate={selectedDate}
-        transactions={mockTransactions}
+        transactions={selectedDateTransactions}
       />
 
       <TransactionFormModal

@@ -8,6 +8,7 @@ type CalendarGridProps = {
   currentDate: Date
   dayAmounts?: CalendarDayAmount[]
   onDateSelect?: (date: Date) => void
+  selectedDate?: Date | null
 }
 
 type CalendarDay = {
@@ -77,9 +78,15 @@ const getDateTextClassName = (day: CalendarDay) => {
   return getWeekDayTextClassName(day.weekDayIndex)
 }
 
-export default function CalendarGrid({ currentDate, dayAmounts = [], onDateSelect }: CalendarGridProps) {
+export default function CalendarGrid({
+  currentDate,
+  dayAmounts = [],
+  onDateSelect,
+  selectedDate,
+}: CalendarGridProps) {
   const amountByDate = new Map(dayAmounts.map((amount) => [amount.date, amount]))
   const calendarDays = getCalendarDays(currentDate)
+  const selectedDateKey = selectedDate ? toDateKey(selectedDate) : ''
 
   return (
     <section>
@@ -99,12 +106,14 @@ export default function CalendarGrid({ currentDate, dayAmounts = [], onDateSelec
       >
         {calendarDays.map((day, index) => {
           const amount = amountByDate.get(day.dateKey)
+          const isSelected = day.dateKey === selectedDateKey
 
           return (
             <button
               type="button"
               className={cn(
-                'flex min-h-[88px] min-w-0 cursor-pointer flex-col items-start bg-white px-2 pt-2 pb-3 text-left',
+                'flex min-h-[88px] min-w-0 cursor-pointer flex-col items-start px-2 pt-2 pb-3 text-left',
+                isSelected ? 'bg-gray-100' : 'bg-white',
                 index % 7 > 0 ? 'border-l' : '',
                 index >= 7 ? 'border-t' : '',
                 calendarBorderClassName,

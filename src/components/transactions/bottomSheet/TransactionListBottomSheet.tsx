@@ -1,4 +1,5 @@
 import CalendarDateActions from '../../calendar/CalendarDateActions'
+import ListItem from '../../common/ListItem'
 
 type TransactionItem = {
   id: string
@@ -17,8 +18,6 @@ type TransactionListBottomSheetProps = {
   selectedDate: Date | null
   transactions: TransactionItem[]
 }
-
-const formatAmount = (amount: number) => amount.toLocaleString('ko-KR')
 
 export default function TransactionListBottomSheet({
   isOpen,
@@ -63,48 +62,18 @@ export default function TransactionListBottomSheet({
 
           <div className="mt-5 grid gap-1 border-t border-gray-100 pt-2">
             {transactions.map((transaction) => (
-              <TransactionListItem key={transaction.id} transaction={transaction} />
+              <ListItem
+                amount={transaction.amount}
+                color={transaction.categoryColor}
+                key={transaction.id}
+                memo={transaction.memo}
+                title={transaction.categoryName}
+                type={transaction.type}
+              />
             ))}
           </div>
         </div>
       </section>
-    </div>
-  )
-}
-
-type TransactionListItemProps = {
-  transaction: TransactionItem
-}
-
-function TransactionListItem({ transaction }: TransactionListItemProps) {
-  const isIncome = transaction.type === 'income'
-
-  return (
-    <div className="flex min-h-16 items-center justify-between gap-4 rounded-xl px-1 py-3.5 active:bg-gray-50">
-      <div className="flex min-w-0 items-center gap-3">
-        <span
-          className="h-3 w-3 flex-none rounded-full"
-          style={{ backgroundColor: transaction.categoryColor }}
-        />
-        <div className="min-w-0">
-          <p className="m-0 truncate text-[15px] font-bold leading-5 text-black md:text-base">{transaction.categoryName}</p>
-          {transaction.memo ? (
-            <p className="m-0 mt-0.5 truncate text-[13px] leading-5 font-medium text-(--color-dark-gray)">
-              {transaction.memo}
-            </p>
-          ) : null}
-        </div>
-      </div>
-
-      <strong
-        className={[
-          'shrink-0 text-right text-[15px] font-bold leading-5 md:text-base',
-          isIncome ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
-        ].join(' ')}
-      >
-        {isIncome ? '+' : '-'}
-        {formatAmount(transaction.amount)}
-      </strong>
     </div>
   )
 }
