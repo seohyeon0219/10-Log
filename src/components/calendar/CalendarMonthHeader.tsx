@@ -38,7 +38,7 @@ export default function CalendarMonthHeader({
         </svg>
       </button>
 
-      <h1 className="min-w-0 text-center text-2xl font-bold text-gray-950">
+      <h1 className="min-w-0 text-center text-lg font-bold text-gray-950">
         {year}년 {month}월
       </h1>
 
