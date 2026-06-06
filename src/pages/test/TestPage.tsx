@@ -12,6 +12,7 @@ import UnderInput from '../../components/common/UnderInput'
 import DesktopSidePanel from '../../components/sidePanel/DesktopSidePanel'
 import AmountInput from '../../components/transactions/AmountInput'
 import TransactionFormModal from '../../components/transactions/TransactionFormModal'
+import TransactionFormBottomSheet from '../../components/transactions/bottomSheet/TransactionFormBottomSheet'
 import TransactionListBottomSheet from '../../components/transactions/bottomSheet/TransactionListBottomSheet'
 import { mockExpenseCategories, mockIncomeCategories, mockTransactions } from '../../mocks/data'
 
@@ -36,6 +37,7 @@ export default function TestPage() {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isTransactionFormBottomSheetOpen, setIsTransactionFormBottomSheetOpen] = useState(false)
   const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
   const [isTransactionListOpen, setIsTransactionListOpen] = useState(false)
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
@@ -44,6 +46,12 @@ export default function TestPage() {
     setTransactionType(type)
     setSelectedDate((date) => date ?? new Date(currentDate.getFullYear(), currentDate.getMonth(), 1))
     setIsTransactionFormOpen(true)
+  }
+
+  const openTransactionFormBottomSheet = (type: TransactionType) => {
+    setTransactionType(type)
+    setSelectedDate((date) => date ?? new Date(currentDate.getFullYear(), currentDate.getMonth(), 1))
+    setIsTransactionFormBottomSheetOpen(true)
   }
 
   const handlePrevMonth = () => {
@@ -132,6 +140,12 @@ export default function TestPage() {
           <Button onClick={() => openTransactionForm('expense')} variant="secondary">
             지출 입력 모달 열기
           </Button>
+          <Button onClick={() => openTransactionFormBottomSheet('income')} variant="secondary">
+            수입 입력 바텀시트 열기
+          </Button>
+          <Button onClick={() => openTransactionFormBottomSheet('expense')} variant="secondary">
+            지출 입력 바텀시트 열기
+          </Button>
           <Button
             onClick={() => {
               setSelectedDate((date) => date ?? new Date(currentDate.getFullYear(), currentDate.getMonth(), 1))
@@ -169,6 +183,16 @@ export default function TestPage() {
         onClose={() => setIsTransactionFormOpen(false)}
         onDelete={() => setIsTransactionFormOpen(false)}
         onSave={() => setIsTransactionFormOpen(false)}
+        selectedDate={selectedDate}
+        type={transactionType}
+      />
+
+      <TransactionFormBottomSheet
+        categories={transactionType === 'income' ? mockIncomeCategories : mockExpenseCategories}
+        isOpen={isTransactionFormBottomSheetOpen}
+        onClose={() => setIsTransactionFormBottomSheetOpen(false)}
+        onDelete={() => setIsTransactionFormBottomSheetOpen(false)}
+        onSave={() => setIsTransactionFormBottomSheetOpen(false)}
         selectedDate={selectedDate}
         type={transactionType}
       />
