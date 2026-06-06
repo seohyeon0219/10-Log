@@ -23,7 +23,7 @@ export default function CalendarMonthlySummary({
   const total = totalIncome - totalExpense
 
   return (
-    <section className="w-full px-2 py-5">
+    <section className="w-full px-2 py-4 border-b border-gray-100">
       <div className="grid grid-cols-3 gap-6">
         <div className="relative min-w-0 pr-10">
           <p className="mb-1 text-xs text-(--color-dark-gray)">수입</p>
