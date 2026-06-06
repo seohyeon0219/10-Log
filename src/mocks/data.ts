@@ -32,3 +32,30 @@ export const getMockCalendarDayAmounts = (currentDate: Date) => [
   { date: getDateKey(currentDate, 18), expense: 456 },
   { date: getDateKey(currentDate, 25), income: 30000, expense: 6800 },
 ]
+
+export const mockTransactions = [
+  {
+    id: 'transaction-1',
+    amount: 12800,
+    categoryColor: '#f05650',
+    categoryName: '식비',
+    memo: '점심 식사',
+    type: 'expense',
+  },
+  {
+    id: 'transaction-2',
+    amount: 54124,
+    categoryColor: '#1863dc',
+    categoryName: '급여',
+    memo: '추가 정산',
+    type: 'income',
+  },
+  {
+    id: 'transaction-3',
+    amount: 6800,
+    categoryColor: '#ffb74d',
+    categoryName: '카페',
+    memo: '오후 커피',
+    type: 'expense',
+  },
+]

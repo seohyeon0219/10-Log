@@ -15,6 +15,7 @@ import DesktopSidePanel from '../../components/sidePanel/DesktopSidePanel'
 import AmountInput from '../../components/transactions/AmountInput'
 import TransactionFormBottomSheet from '../../components/transactions/bottomSheet/TransactionFormBottomSheet'
 import TransactionListBottomSheet from '../../components/transactions/bottomSheet/TransactionListBottomSheet'
+import { mockTransactions } from '../../mocks/data'
 
 const tabs = [
   { id: 'stats', label: '통계' },
@@ -129,7 +130,13 @@ export default function TestPage() {
           <Button onClick={() => setIsTransactionFormOpen(true)} variant="secondary">
             거래 입력 바텀시트 열기
           </Button>
-          <Button onClick={() => setIsTransactionListOpen(true)} variant="secondary">
+          <Button
+            onClick={() => {
+              setSelectedDate((date) => date ?? new Date(currentDate.getFullYear(), currentDate.getMonth(), 1))
+              setIsTransactionListOpen(true)
+            }}
+            variant="secondary"
+          >
             거래 목록 바텀시트 열기
           </Button>
         </div>
@@ -171,27 +178,13 @@ export default function TestPage() {
       </TransactionFormBottomSheet>
 
       <TransactionListBottomSheet
-        dateLabel="6월 2일 (화)"
         isOpen={isTransactionListOpen}
         onAddExpense={() => setIsTransactionFormOpen(true)}
         onAddIncome={() => setIsTransactionFormOpen(true)}
         onClose={() => setIsTransactionListOpen(false)}
-      >
-        <div className="flex items-center justify-between gap-4 border-b border-gray-100 py-4">
-          <span className="inline-flex min-w-0 items-center gap-3 font-extrabold text-gray-800">
-            <span className="h-2 w-2 flex-none rounded-full" style={{ backgroundColor: '#ff6b1a' }} />
-            편의점
-          </span>
-          <strong className="font-black text-(--color-expense-red)">-323</strong>
-        </div>
-        <div className="flex items-center justify-between gap-4 py-4">
-          <span className="inline-flex min-w-0 items-center gap-3 font-extrabold text-gray-800">
-            <span className="h-2 w-2 flex-none rounded-full" style={{ backgroundColor: '#f4b400' }} />
-            배달
-          </span>
-          <strong className="font-black text-(--color-income-blue)">+134,124</strong>
-        </div>
-      </TransactionListBottomSheet>
+        selectedDate={selectedDate}
+        transactions={mockTransactions}
+      />
     </main>
   )
 }
