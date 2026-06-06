@@ -1,10 +1,49 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import logoImage from '../assets/logo.png'
 import { supabase } from '../lib/supabase'
 
+const tabletBreakpointMediaQuery = '(min-width: 768px)'
+
+const getMainPagePath = () => {
+  if (window.matchMedia(tabletBreakpointMediaQuery).matches) {
+    return '/desktop'
+  }
+
+  return '/mobile'
+}
+
 export default function LandingPage() {
+  const navigate = useNavigate()
   const [errorMessage, setErrorMessage] = useState('')
   const [isSigningIn, setIsSigningIn] = useState(false)
+
+  useEffect(() => {
+    let isMounted = true
+
+    const moveToMainPage = () => {
+      navigate(getMainPagePath(), { replace: true })
+    }
+
+    supabase.auth.getSession().then(({ data }) => {
+      if (isMounted && data.session) {
+        moveToMainPage()
+      }
+    })
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        moveToMainPage()
+      }
+    })
+
+    return () => {
+      isMounted = false
+      subscription.unsubscribe()
+    }
+  }, [navigate])
 
   const handleGoogleSignIn = async () => {
     setErrorMessage('')
@@ -24,7 +63,7 @@ export default function LandingPage() {
   }
 
   return (
-    <main className="flex min-h-dvh items-center justify-center bg-white p-6 max-sm:items-start max-sm:pt-48">
+    <main className="flex min-h-dvh items-center justify-center bg-white px-4 py-6 max-sm:items-start max-sm:pt-48 md:px-6">
       <section className="flex w-full max-w-md flex-col items-center gap-12 text-center" aria-label="일공로그 시작 화면">
         <div className="flex flex-col items-center gap-1">
           <img className="h-auto w-32 max-w-xs object-contain" src={logoImage} alt="일공로그 로고" />
@@ -35,9 +74,6 @@ export default function LandingPage() {
           <p className="m-0 text-sm leading-relaxed font-medium text-gray-400">
             오늘 1분의 기록이 내일 10분의 가치를 만듭니다.
           </p>
-          {/* <p className="m-0 text-sm leading-relaxed font-medium text-(--color-gray)">
-            돈의 흐름과 함께 나의 성장을 기록해보세요
-          </p> */}
         </div>
 
         <button
