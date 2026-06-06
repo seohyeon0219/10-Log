@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import logoImage from '../assets/logo.png'
 import { supabase } from '../lib/supabase'
 
-const appPath = '/app'
+const appPath = '/app/calendar'
 
 export default function LandingPage() {
   const navigate = useNavigate()
