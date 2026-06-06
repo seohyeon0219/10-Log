@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import CategoryModal from '../../components/categories/CategoryModal'
 import CalendarDateActions from '../../components/calendar/CalendarDateActions'
 import CalendarGrid from '../../components/calendar/CalendarGrid'
 import CalendarMonthHeader from '../../components/calendar/CalendarMonthHeader'
@@ -37,7 +36,6 @@ export default function TestPage() {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false)
   const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
   const [isTransactionListOpen, setIsTransactionListOpen] = useState(false)
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
@@ -125,12 +123,9 @@ export default function TestPage() {
       </section>
 
       <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
-        <h2 className="mb-4 text-base font-bold">ConfirmModal / CategoryModal / TransactionBottomSheet</h2>
+        <h2 className="mb-4 text-base font-bold">ConfirmModal / TransactionBottomSheet</h2>
         <div className="flex flex-wrap gap-3">
           <Button onClick={() => setIsModalOpen(true)}>확인 모달 열기</Button>
-          <Button onClick={() => setIsCategoryModalOpen(true)} variant="secondary">
-            카테고리 모달 열기
-          </Button>
           <Button onClick={() => openTransactionForm('income')} variant="secondary">
             수입 입력 모달 열기
           </Button>
@@ -157,12 +152,6 @@ export default function TestPage() {
         onClose={() => setIsModalOpen(false)}
         onConfirm={() => setIsModalOpen(false)}
         title="정말 로그아웃하시겠어요?"
-      />
-
-      <CategoryModal
-        isOpen={isCategoryModalOpen}
-        onClose={() => setIsCategoryModalOpen(false)}
-        onSubmit={() => setIsCategoryModalOpen(false)}
       />
 
       <TransactionListBottomSheet

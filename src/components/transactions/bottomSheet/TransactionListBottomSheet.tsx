@@ -33,37 +33,39 @@ export default function TransactionListBottomSheet({
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40">
+    <div className="fixed inset-0 z-50 bg-black/35">
       <section
         aria-modal="true"
-        className="fixed right-0 bottom-0 left-0 max-h-dvh overflow-y-auto rounded-t-xl bg-white p-6 max-sm:px-4 max-sm:pb-4"
+        className="fixed right-0 bottom-0 left-0 max-h-[82dvh] overflow-y-auto rounded-t-3xl bg-white px-5 pt-3 pb-[calc(20px+env(safe-area-inset-bottom))] shadow-xl md:px-6"
         role="dialog"
       >
-        <header className="relative mb-4 flex w-full items-center justify-end">
-          <span
-            aria-hidden="true"
-            className="absolute top-2 left-1/2 h-1 w-10 -translate-x-1/2 rounded-full bg-(--color-gray)"
+        <div className="mx-auto w-full max-w-2xl">
+          <header className="mb-4 grid w-full gap-2">
+            <span
+              aria-hidden="true"
+              className="mx-auto h-1 w-9 rounded-full bg-gray-200"
+            />
+            <button
+              aria-label="거래 내역 닫기"
+              className="ml-auto flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-3xl leading-none text-gray-300 active:bg-gray-100"
+              onClick={onClose}
+              type="button"
+            >
+              ×
+            </button>
+          </header>
+
+          <CalendarDateActions
+            onAddExpense={onAddExpense}
+            onAddIncome={onAddIncome}
+            selectedDate={selectedDate}
           />
-          <button
-            aria-label="거래 내역 닫기"
-            className="h-9 w-9 cursor-pointer border-0 bg-transparent text-3xl leading-none text-gray-400"
-            onClick={onClose}
-            type="button"
-          >
-            ×
-          </button>
-        </header>
 
-        <CalendarDateActions
-          onAddExpense={onAddExpense}
-          onAddIncome={onAddIncome}
-          selectedDate={selectedDate}
-        />
-
-        <div className="mt-5 grid gap-0 border-t border-gray-100">
-          {transactions.map((transaction) => (
-            <TransactionListItem key={transaction.id} transaction={transaction} />
-          ))}
+          <div className="mt-5 grid gap-1 border-t border-gray-100 pt-2">
+            {transactions.map((transaction) => (
+              <TransactionListItem key={transaction.id} transaction={transaction} />
+            ))}
+          </div>
         </div>
       </section>
     </div>
@@ -78,16 +80,16 @@ function TransactionListItem({ transaction }: TransactionListItemProps) {
   const isIncome = transaction.type === 'income'
 
   return (
-    <div className="flex items-center justify-between gap-4 border-b border-gray-100 py-4">
+    <div className="flex min-h-16 items-center justify-between gap-4 rounded-xl px-1 py-3.5 active:bg-gray-50">
       <div className="flex min-w-0 items-center gap-3">
         <span
           className="h-3 w-3 flex-none rounded-full"
           style={{ backgroundColor: transaction.categoryColor }}
         />
         <div className="min-w-0">
-          <p className="m-0 truncate text-sm font-bold text-black">{transaction.categoryName}</p>
+          <p className="m-0 truncate text-[15px] font-bold leading-5 text-black md:text-base">{transaction.categoryName}</p>
           {transaction.memo ? (
-            <p className="m-0 truncate text-xs font-medium text-(--color-dark-gray)">
+            <p className="m-0 mt-0.5 truncate text-[13px] leading-5 font-medium text-(--color-dark-gray)">
               {transaction.memo}
             </p>
           ) : null}
@@ -96,7 +98,7 @@ function TransactionListItem({ transaction }: TransactionListItemProps) {
 
       <strong
         className={[
-          'shrink-0 text-right text-sm font-bold',
+          'shrink-0 text-right text-[15px] font-bold leading-5 md:text-base',
           isIncome ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
         ].join(' ')}
       >
