@@ -160,7 +160,7 @@ function SummaryDetailRow({
   const weightClassName = isEmphasized ? 'font-bold' : 'font-medium'
 
   return (
-    <div className="flex min-w-0 items-center justify-between gap-3 text-sm">
+    <div className={['flex min-w-0 items-center justify-between gap-3 text-sm', isEmphasized ? 'mt-1' : ''].join(' ').trim()}>
       <span className={['truncate text-(--color-dark-gray)', weightClassName].join(' ')}>{label}</span>
       <strong className={['truncate text-right', weightClassName, valueClassName].join(' ')}>
         {formatAmount(value)}
