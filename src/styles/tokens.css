@@ -2,7 +2,7 @@
   --color-black: #111111;
   --color-white: #ffffff;
   --color-gray: #d5d5d8;
-  --color-dark-gray: #777777;
+  --color-dark-gray: #898989;
   --color-warm-gray: #f0eee9;
   --color-muted-lavender: #c8c3d4;
   --color-income-blue: #007fff;
@@ -15,5 +15,4 @@
 
   --radius-8: 8px;
   --radius-12: 12px;
-  --radius-2xl: 16px;
 }
