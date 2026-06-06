@@ -5,17 +5,12 @@ export const mockMonthlySummary = {
   income: 54124,
 }
 
-export const mockSidePanelTabs = [
+export const mockNavTabs = [
+  { id: 'calendar', label: '캘린더' },
   { id: 'stats', label: '통계' },
   { id: 'review', label: '회고' },
   { id: 'more', label: '더보기' },
 ]
-
-export const mockSidePanelTabContentById: Record<string, string> = {
-  stats: '통계 탭입니다',
-  review: '회고 탭입니다',
-  more: '더보기 탭입니다',
-}
 
 const getDateKey = (date: Date, day: number) => {
   const year = date.getFullYear()
