@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import CategoryModal from '../../components/categories/CategoryModal'
 import CategorySelect from '../../components/categories/CategorySelect'
+import CalendarMonthHeader from '../../components/calendar/CalendarMonthHeader'
 import ActionMenu from '../../components/common/ActionMenu'
 import Button from '../../components/common/Button'
 import Checkbox from '../../components/common/Checkbox'
@@ -27,17 +28,35 @@ const categories = [
 
 export default function TestPage() {
   const [activeTabId, setActiveTabId] = useState(tabs[0].id)
+  const [currentDate, setCurrentDate] = useState(new Date())
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false)
   const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
   const [isTransactionListOpen, setIsTransactionListOpen] = useState(false)
   const [selectedCategoryId, setSelectedCategoryId] = useState(categories[0].id)
 
+  const handlePrevMonth = () => {
+    setCurrentDate((date) => new Date(date.getFullYear(), date.getMonth() - 1, 1))
+  }
+
+  const handleNextMonth = () => {
+    setCurrentDate((date) => new Date(date.getFullYear(), date.getMonth() + 1, 1))
+  }
+
   return (
     <main className="mx-auto min-h-dvh w-full max-w-5xl p-6 max-sm:p-4">
       <section className="mb-6">
         <p className="text-(--color-gray)">일공로그 공통 컴포넌트</p>
         <h1 className="mt-2 text-3xl font-extrabold">Component Test Page</h1>
+      </section>
+
+      <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
+        <h2 className="mb-4 text-base font-bold">CalendarMonthHeader</h2>
+        <CalendarMonthHeader
+          currentDate={currentDate}
+          onNextMonth={handleNextMonth}
+          onPrevMonth={handlePrevMonth}
+        />
       </section>
 
       <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
