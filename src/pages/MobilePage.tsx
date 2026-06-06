@@ -1,7 +1,14 @@
+import { useParams } from 'react-router-dom'
+import MobileLayout from '../components/layouts/MobileLayout'
+import { mockNavTabs } from '../mocks/data'
+
 export default function MobilePage() {
+  const { tabId } = useParams()
+  const activeTab = mockNavTabs.find((tab) => tab.id === tabId) ?? mockNavTabs[0]
+
   return (
-    <main className="flex min-h-dvh items-center justify-center bg-white px-4 py-6">
-      <p className="text-base font-bold text-black">모바일 페이지입니다</p>
-    </main>
+    <MobileLayout>
+      <p className="text-base font-bold text-black">{activeTab.label} 모바일 페이지입니다</p>
+    </MobileLayout>
   )
 }
