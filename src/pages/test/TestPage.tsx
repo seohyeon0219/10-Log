@@ -2,6 +2,7 @@ import { useState } from 'react'
 import CategoryModal from '../../components/categories/CategoryModal'
 import CategorySelect from '../../components/categories/CategorySelect'
 import CalendarMonthHeader from '../../components/calendar/CalendarMonthHeader'
+import CalendarMonthlySummary from '../../components/calendar/CalendarMonthlySummary'
 import ActionMenu from '../../components/common/ActionMenu'
 import Button from '../../components/common/Button'
 import Checkbox from '../../components/common/Checkbox'
@@ -44,7 +45,7 @@ export default function TestPage() {
   }
 
   return (
-    <main className="mx-auto min-h-dvh w-full max-w-5xl p-6 max-sm:p-4">
+    <main className="mx-auto min-h-dvh w-full max-w-8xl p-6 max-sm:p-4">
       <section className="mb-6">
         <p className="text-(--color-gray)">일공로그 공통 컴포넌트</p>
         <h1 className="mt-2 text-3xl font-extrabold">Component Test Page</h1>
@@ -56,6 +57,12 @@ export default function TestPage() {
           currentDate={currentDate}
           onNextMonth={handleNextMonth}
           onPrevMonth={handlePrevMonth}
+        />
+        <CalendarMonthlySummary
+          expense={3200}
+          fixedExpense={456}
+          fixedIncome={120000}
+          income={54124}
         />
       </section>
 
