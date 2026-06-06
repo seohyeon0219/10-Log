@@ -25,15 +25,15 @@ export default function TransactionListBottomSheet({
     <div className="fixed inset-0 z-50 bg-black/40">
       <section
         aria-modal="true"
-        className="fixed right-0 bottom-0 left-0 max-h-dvh overflow-y-auto rounded-t-xl bg-[var(--color-white)] p-6 max-sm:px-4 max-sm:pb-4"
+        className="fixed right-0 bottom-0 left-0 max-h-dvh overflow-y-auto rounded-t-xl bg-white p-6 max-sm:px-4 max-sm:pb-4"
         role="dialog"
       >
         <header className="relative mb-6 flex w-full items-center justify-between gap-3">
           <span
             aria-hidden="true"
-            className="absolute top-2 left-1/2 h-1 w-10 -translate-x-1/2 rounded-full bg-[var(--color-gray)]"
+            className="absolute top-2 left-1/2 h-1 w-10 -translate-x-1/2 rounded-full bg-(--color-gray)"
           />
-          <h2 className="m-0 min-w-0 flex-1 text-xl font-extrabold text-[var(--color-black)]">{dateLabel}</h2>
+          <h2 className="m-0 min-w-0 flex-1 text-xl font-extrabold text-black">{dateLabel}</h2>
           <button
             aria-label="거래 내역 닫기"
             className="h-9 w-9 cursor-pointer border-0 bg-transparent text-3xl leading-none text-gray-400"
@@ -46,14 +46,14 @@ export default function TransactionListBottomSheet({
 
         <div className="mb-6 grid grid-cols-2 gap-3">
           <button
-            className="min-h-12 cursor-pointer rounded-xl border border-blue-200 bg-blue-50 font-extrabold text-[var(--color-income-blue)]"
+            className="min-h-12 cursor-pointer rounded-xl border border-blue-200 bg-blue-50 font-extrabold text-(--color-income-blue)"
             onClick={onAddIncome}
             type="button"
           >
             + 수입
           </button>
           <button
-            className="min-h-12 cursor-pointer rounded-xl border border-red-200 bg-red-50 font-extrabold text-[var(--color-expense-red)]"
+            className="min-h-12 cursor-pointer rounded-xl border border-red-200 bg-red-50 font-extrabold text-(--color-expense-red)"
             onClick={onAddExpense}
             type="button"
           >

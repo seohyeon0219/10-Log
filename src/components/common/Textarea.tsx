@@ -10,13 +10,13 @@ export default function Textarea({ error, id, label, className = '', ...props }:
 
   return (
     <label className={['grid w-full gap-2', className].join(' ').trim()} htmlFor={textareaId}>
-      {label ? <span className="font-bold text-[var(--color-black)]">{label}</span> : null}
+      {label ? <span className="font-bold text-black">{label}</span> : null}
       <textarea
-        className="min-h-32 w-full resize-y rounded-lg border border-[var(--color-gray)] p-3 leading-relaxed text-[var(--color-black)] outline-none focus:border-[var(--color-gray)]"
+        className="min-h-32 w-full resize-y rounded-lg border border-(--color-gray) p-3 leading-relaxed text-black outline-none focus:border-(--color-gray)"
         id={textareaId}
         {...props}
       />
-      {error ? <small className="text-[var(--color-expense-red)]" role="alert">{error}</small> : null}
+      {error ? <small className="text-(--color-expense-red)" role="alert">{error}</small> : null}
     </label>
   )
 }

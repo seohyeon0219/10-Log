@@ -19,15 +19,15 @@ export default function CategorySelect({
 }: CategorySelectProps) {
   return (
     <fieldset className="m-0 min-w-0 border-0 p-0">
-      <legend className="mb-3 p-0 text-sm font-bold text-[var(--color-black)]">{label}</legend>
+      <legend className="mb-3 p-0 text-sm font-bold text-black">{label}</legend>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
         {categories.map((category) => (
           <button
             aria-pressed={category.id === selectedCategoryId}
             className={[
-              'inline-flex min-h-11 min-w-0 cursor-pointer items-center gap-2 rounded-lg border border-[var(--color-gray)] bg-[var(--color-white)] px-3 text-left text-sm text-[var(--color-black)]',
+              'inline-flex min-h-11 min-w-0 cursor-pointer items-center gap-2 rounded-lg border border-(--color-gray) bg-white px-3 text-left text-sm text-black',
               category.id === selectedCategoryId
-                ? 'border-[var(--color-black)] bg-[var(--color-warm-gray)] font-bold'
+                ? 'border-black bg-(--color-warm-gray) font-bold'
                 : 'font-semibold',
             ].join(' ').trim()}
             key={category.id}

@@ -24,24 +24,24 @@ export default function LandingPage() {
   }
 
   return (
-    <main className="grid min-h-dvh place-items-center bg-[var(--color-white)] p-6 max-sm:items-start max-sm:pt-48">
+    <main className="grid min-h-dvh place-items-center bg-white p-6 max-sm:items-start max-sm:pt-48">
       <section className="grid w-full max-w-md justify-items-center gap-12 text-center" aria-label="일공로그 시작 화면">
         <div className="grid justify-items-center gap-3">
           <img className="h-auto w-48 max-w-xs object-contain" src={logoImage} alt="일공로그 로고" />
 
-          <h1 className="m-0 text-lg leading-relaxed font-semibold text-[var(--color-dark-gray)] sm:text-xl">
+          <h1 className="m-0 text-lg leading-relaxed font-semibold text-(--color-dark-gray) sm:text-xl">
             하루 1분, 소비를 돌아보는 시간
           </h1>
-          <p className="m-0 text-sm leading-relaxed font-medium text-[var(--color-gray)]">
+          <p className="m-0 text-sm leading-relaxed font-medium text-(--color-gray)">
             오늘 1분의 기록이 내일 10분의 가치를 만듭니다.
           </p>
-          <p className="m-0 text-sm leading-relaxed font-medium text-[var(--color-gray)]">
+          <p className="m-0 text-sm leading-relaxed font-medium text-(--color-gray)">
             돈의 흐름과 함께 나의 성장을 기록해보세요
           </p>
         </div>
 
         <button
-          className="inline-flex min-h-16 w-full max-w-sm cursor-pointer items-center justify-center gap-5 rounded-[var(--radius-2xl)] border border-gray-200 bg-[var(--color-white)] px-8 text-lg font-semibold text-gray-700 shadow-md transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 max-sm:min-h-14 max-sm:gap-4 max-sm:text-base"
+          className="inline-flex min-h-16 w-full max-w-sm cursor-pointer items-center justify-center gap-5 rounded-[var(--radius-2xl)] border border-gray-200 bg-white px-8 text-lg font-semibold text-gray-700 shadow-md transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 max-sm:min-h-14 max-sm:gap-4 max-sm:text-base"
           disabled={isSigningIn}
           onClick={handleGoogleSignIn}
           type="button"
@@ -58,7 +58,7 @@ export default function LandingPage() {
           </svg>
           <span>{isSigningIn ? '로그인 연결 중...' : 'Google로 시작하기'}</span>
         </button>
-        {errorMessage ? <p className="m-0 text-sm font-bold text-[var(--color-expense-red)]">{errorMessage}</p> : null}
+        {errorMessage ? <p className="m-0 text-sm font-bold text-(--color-expense-red)">{errorMessage}</p> : null}
       </section>
     </main>
   )

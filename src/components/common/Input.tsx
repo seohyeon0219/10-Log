@@ -10,13 +10,13 @@ export default function Input({ error, id, label, className = '', ...props }: In
 
   return (
     <label className={['grid w-full gap-2', className].join(' ').trim()} htmlFor={inputId}>
-      {label ? <span className="font-bold text-[var(--color-black)]">{label}</span> : null}
+      {label ? <span className="font-bold text-black">{label}</span> : null}
       <input
-        className="min-h-11 w-full rounded-lg border border-[var(--color-gray)] px-3 text-[var(--color-black)] outline-none focus:border-[var(--color-gray)]"
+        className="min-h-11 w-full rounded-lg border border-(--color-gray) px-3 text-black outline-none focus:border-(--color-gray)"
         id={inputId}
         {...props}
       />
-      {error ? <small className="text-[var(--color-expense-red)]" role="alert">{error}</small> : null}
+      {error ? <small className="text-(--color-expense-red)" role="alert">{error}</small> : null}
     </label>
   )
 }

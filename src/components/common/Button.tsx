@@ -8,9 +8,9 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 }
 
 const buttonVariantClasses: Record<ButtonVariant, string> = {
-  primary: 'border-transparent bg-[var(--color-black)] text-[var(--color-white)]',
-  secondary: 'border-[var(--color-black)] bg-[var(--color-white)] text-[var(--color-black)]',
-  ghost: 'border-transparent bg-transparent text-[var(--color-black)]',
+  primary: 'border-transparent bg-black text-white',
+  secondary: 'border-black bg-white text-black',
+  ghost: 'border-transparent bg-transparent text-black',
 }
 
 export default function Button({

@@ -30,7 +30,7 @@ export default function ActionMenu({ items, onDelete, onEdit }: ActionMenuProps)
         aria-expanded={isOpen}
         aria-haspopup="menu"
         aria-label="더보기"
-        className="h-9 w-9 cursor-pointer rounded-lg border-0 bg-transparent text-2xl leading-none font-extrabold text-[var(--color-black)] hover:bg-[var(--color-warm-gray)] aria-expanded:bg-[var(--color-warm-gray)]"
+        className="h-9 w-9 cursor-pointer rounded-lg border-0 bg-transparent text-2xl leading-none font-extrabold text-black hover:bg-(--color-warm-gray) aria-expanded:bg-(--color-warm-gray)"
         onClick={() => setIsOpen((current) => !current)}
         type="button"
       >
@@ -39,14 +39,14 @@ export default function ActionMenu({ items, onDelete, onEdit }: ActionMenuProps)
 
       {isOpen ? (
         <div
-          className="absolute top-full right-0 z-20 mt-2 grid min-w-24 overflow-hidden rounded-lg border border-[var(--color-gray)] bg-[var(--color-white)] shadow-lg"
+          className="absolute top-full right-0 z-20 mt-2 grid min-w-24 overflow-hidden rounded-lg border border-(--color-gray) bg-white shadow-lg"
           role="menu"
         >
           {menuItems.map((item) => (
             <button
               className={[
-                'min-h-10 cursor-pointer border-0 bg-transparent px-3 text-left text-[var(--color-black)] hover:bg-[var(--color-warm-gray)]',
-                item.variant === 'danger' ? 'text-[var(--color-expense-red)]' : '',
+                'min-h-10 cursor-pointer border-0 bg-transparent px-3 text-left text-black hover:bg-(--color-warm-gray)',
+                item.variant === 'danger' ? 'text-(--color-expense-red)' : '',
               ].join(' ').trim()}
               key={item.label}
               onClick={() => handleItemClick(item.onClick)}

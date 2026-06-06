@@ -36,11 +36,11 @@ export default function TestPage() {
   return (
     <main className="mx-auto min-h-dvh w-full max-w-5xl p-6 max-sm:p-4">
       <section className="mb-6">
-        <p className="text-[var(--color-gray)]">일공로그 공통 컴포넌트</p>
+        <p className="text-(--color-gray)">일공로그 공통 컴포넌트</p>
         <h1 className="mt-2 text-3xl font-extrabold">Component Test Page</h1>
       </section>
 
-      <section className="mb-6 rounded-xl border border-[var(--color-gray)] bg-[var(--color-white)] p-6 max-sm:p-4">
+      <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
         <h2 className="mb-4 text-base font-bold">Button</h2>
         <div className="flex flex-wrap gap-3">
           <Button>검정 버튼</Button>
@@ -49,7 +49,7 @@ export default function TestPage() {
         </div>
       </section>
 
-      <section className="mb-6 rounded-xl border border-[var(--color-gray)] bg-[var(--color-white)] p-6 max-sm:p-4">
+      <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
         <h2 className="mb-4 text-base font-bold">Input</h2>
         <div className="grid gap-4">
           <AmountInput label="금액" placeholder="숫자만 입력돼요" />
@@ -59,21 +59,21 @@ export default function TestPage() {
         </div>
       </section>
 
-      <section className="mb-6 rounded-xl border border-[var(--color-gray)] bg-[var(--color-white)] p-6 max-sm:p-4">
+      <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
         <h2 className="mb-4 text-base font-bold">Tabs</h2>
         <Tabs activeTabId={activeTabId} onChange={setActiveTabId} tabs={tabs} />
-        <p className="text-[var(--color-gray)]">현재 선택된 탭: {activeTabId}</p>
+        <p className="text-(--color-gray)">현재 선택된 탭: {activeTabId}</p>
       </section>
 
-      <section className="mb-6 rounded-xl border border-[var(--color-gray)] bg-[var(--color-white)] p-6 max-sm:p-4">
+      <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
         <h2 className="mb-4 text-base font-bold">ActionMenu</h2>
-        <div className="flex w-full items-center justify-between gap-4 rounded-lg border border-[var(--color-gray)] p-3">
+        <div className="flex w-full items-center justify-between gap-4 rounded-lg border border-(--color-gray) p-3">
           <span>식비 · 12,000원</span>
           <ActionMenu onDelete={() => undefined} onEdit={() => undefined} />
         </div>
       </section>
 
-      <section className="mb-6 rounded-xl border border-[var(--color-gray)] bg-[var(--color-white)] p-6 max-sm:p-4">
+      <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
         <h2 className="mb-4 text-base font-bold">ConfirmModal / CategoryModal / TransactionBottomSheet</h2>
         <div className="flex flex-wrap gap-3">
           <Button onClick={() => setIsModalOpen(true)}>확인 모달 열기</Button>
@@ -136,14 +136,14 @@ export default function TestPage() {
             <span className="h-2 w-2 flex-none rounded-full" style={{ backgroundColor: '#ff6b1a' }} />
             편의점
           </span>
-          <strong className="font-black text-[var(--color-expense-red)]">-323</strong>
+          <strong className="font-black text-(--color-expense-red)">-323</strong>
         </div>
         <div className="flex items-center justify-between gap-4 py-4">
           <span className="inline-flex min-w-0 items-center gap-3 font-extrabold text-gray-800">
             <span className="h-2 w-2 flex-none rounded-full" style={{ backgroundColor: '#f4b400' }} />
             배달
           </span>
-          <strong className="font-black text-[var(--color-income-blue)]">+134,124</strong>
+          <strong className="font-black text-(--color-income-blue)">+134,124</strong>
         </div>
       </TransactionListBottomSheet>
     </main>
