@@ -23,7 +23,7 @@ export default function Button({
   return (
     <button
       className={[
-        'min-h-11 w-full max-w-full cursor-pointer rounded-[var(--radius-8)] border px-4 font-bold disabled:cursor-not-allowed disabled:opacity-50',
+        'min-h-11 w-full max-w-full cursor-pointer rounded-lg border px-4 font-bold disabled:cursor-not-allowed disabled:opacity-50',
         buttonVariantClasses[variant],
         className,
       ].join(' ').trim()}

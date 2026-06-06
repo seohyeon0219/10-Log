@@ -30,7 +30,7 @@ export default function ActionMenu({ items, onDelete, onEdit }: ActionMenuProps)
         aria-expanded={isOpen}
         aria-haspopup="menu"
         aria-label="더보기"
-        className="h-9 w-9 cursor-pointer rounded-[var(--radius-8)] border-0 bg-transparent text-2xl leading-none font-extrabold text-[var(--color-black)] hover:bg-[var(--color-warm-gray)] aria-expanded:bg-[var(--color-warm-gray)]"
+        className="h-9 w-9 cursor-pointer rounded-lg border-0 bg-transparent text-2xl leading-none font-extrabold text-[var(--color-black)] hover:bg-[var(--color-warm-gray)] aria-expanded:bg-[var(--color-warm-gray)]"
         onClick={() => setIsOpen((current) => !current)}
         type="button"
       >
@@ -39,7 +39,7 @@ export default function ActionMenu({ items, onDelete, onEdit }: ActionMenuProps)
 
       {isOpen ? (
         <div
-          className="absolute top-[calc(100%+var(--spacing-8))] right-0 z-20 grid min-w-24 overflow-hidden rounded-[var(--radius-8)] border border-[var(--color-gray)] bg-[var(--color-white)] shadow-[0_12px_28px_rgb(17_17_17_/_12%)]"
+          className="absolute top-full right-0 z-20 mt-2 grid min-w-24 overflow-hidden rounded-lg border border-[var(--color-gray)] bg-[var(--color-white)] shadow-lg"
           role="menu"
         >
           {menuItems.map((item) => (

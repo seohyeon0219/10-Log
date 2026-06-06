@@ -34,17 +34,17 @@ export default function CategoryModal({
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/40 px-4 py-6">
       <section
         aria-modal="true"
-        className="grid max-h-[calc(100dvh-48px)] w-full max-w-[420px] overflow-y-auto rounded-[var(--radius-12)] bg-[var(--color-white)] p-6 shadow-[0_24px_60px_rgb(17_17_17_/_18%)] max-[480px]:p-5"
+        className="grid max-h-dvh w-full max-w-md overflow-y-auto rounded-xl bg-[var(--color-white)] p-6 shadow-2xl max-sm:p-5"
         role="dialog"
       >
-        <header className="mb-6 grid grid-cols-[minmax(0,1fr)_36px] items-start gap-3">
+        <header className="mb-6 flex items-start justify-between gap-3">
           <div className="grid gap-1">
             <h2 className="m-0 text-xl font-extrabold leading-tight text-[var(--color-black)]">{title}</h2>
             <p className="m-0 text-sm font-semibold text-[var(--color-gray)]">이름과 색상을 정해주세요.</p>
           </div>
           <button
             aria-label="카테고리 모달 닫기"
-            className="grid h-9 w-9 cursor-pointer place-items-center rounded-[var(--radius-8)] border-0 bg-transparent text-2xl leading-none text-gray-400 hover:bg-[var(--color-warm-gray)]"
+            className="grid h-9 w-9 flex-none cursor-pointer place-items-center rounded-lg border-0 bg-transparent text-2xl leading-none text-gray-400 hover:bg-[var(--color-warm-gray)]"
             onClick={onClose}
             type="button"
           >
@@ -53,7 +53,7 @@ export default function CategoryModal({
         </header>
 
         <div className="mb-6 grid gap-5">
-          <div className="flex min-h-12 items-center gap-3 rounded-[var(--radius-8)] bg-[var(--color-warm-gray)] px-4">
+          <div className="flex min-h-12 items-center gap-3 rounded-lg bg-[var(--color-warm-gray)] px-4">
             <span className="h-3 w-3 rounded-full" style={{ backgroundColor: color }} />
             <span className="font-bold text-[var(--color-black)]">{name || '카테고리 미리보기'}</span>
           </div>
@@ -73,9 +73,9 @@ export default function CategoryModal({
                   aria-label={`${option} 색상 선택`}
                   aria-pressed={option === color}
                   className={[
-                    'aspect-square w-full cursor-pointer rounded-full border-2 border-[var(--color-white)] shadow-[0_0_0_1px_var(--color-gray)] transition',
+                    'aspect-square w-full cursor-pointer rounded-full border-2 border-[var(--color-white)] ring-1 ring-gray-300 transition',
                     option === color
-                      ? 'scale-105 shadow-[0_0_0_3px_var(--color-black)]'
+                      ? 'scale-105 ring-2 ring-black'
                       : '',
                   ].join(' ').trim()}
                   key={option}

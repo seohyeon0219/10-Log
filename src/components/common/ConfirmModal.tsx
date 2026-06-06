@@ -24,10 +24,10 @@ export default function ConfirmModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 grid place-items-center bg-[rgb(17_17_17_/_40%)] p-4">
+    <div className="fixed inset-0 z-50 grid place-items-center bg-black/40 p-4">
       <section
         aria-modal="true"
-        className="max-h-[calc(100dvh-32px)] w-[min(420px,calc(100vw-32px))] overflow-y-auto rounded-[var(--radius-12)] bg-[var(--color-white)] p-6 shadow-[0_24px_60px_rgb(17_17_17_/_20%)] max-[480px]:w-full max-[480px]:p-4"
+        className="max-h-dvh w-full max-w-md overflow-y-auto rounded-xl bg-[var(--color-white)] p-6 shadow-2xl max-sm:p-4"
         role="dialog"
       >
         <div className="mb-6 grid gap-2">
