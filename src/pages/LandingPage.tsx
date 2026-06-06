@@ -3,15 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import logoImage from '../assets/logo.png'
 import { supabase } from '../lib/supabase'
 
-const tabletBreakpointMediaQuery = '(min-width: 768px)'
-
-const getMainPagePath = () => {
-  if (window.matchMedia(tabletBreakpointMediaQuery).matches) {
-    return '/desktop'
-  }
-
-  return '/mobile'
-}
+const appPath = '/app'
 
 export default function LandingPage() {
   const navigate = useNavigate()
@@ -22,7 +14,7 @@ export default function LandingPage() {
     let isMounted = true
 
     const moveToMainPage = () => {
-      navigate(getMainPagePath(), { replace: true })
+      navigate(appPath, { replace: true })
     }
 
     supabase.auth.getSession().then(({ data }) => {
@@ -52,7 +44,7 @@ export default function LandingPage() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: `${window.location.origin}${appPath}`,
       },
     })
 
