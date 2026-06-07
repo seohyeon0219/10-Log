@@ -17,7 +17,7 @@ export default function IncomeExpenseToggle({ onChange, value }: IncomeExpenseTo
         <button
           aria-pressed={option.id === value}
           className={[
-            'min-h-8 cursor-pointer rounded-md border-0 px-3 text-sm font-extrabold transition',
+            'min-h-8 cursor-pointer rounded-md border-0 px-3 text-sm font-extrabold transition max-[380px]:px-2.5',
             option.id === value ? 'bg-white text-black shadow-sm' : 'bg-transparent text-gray-400',
           ].join(' ')}
           key={option.id}

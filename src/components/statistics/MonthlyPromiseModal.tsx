@@ -34,14 +34,14 @@ export default function MonthlyPromiseModal({
   return (
     <FormModal description="이번 달 돈 관리의 기준을 정해보세요." isOpen={isOpen} onClose={onClose} title="월간 다짐 수정">
       <form className="grid gap-5" onSubmit={handleSubmit}>
-        <div className="rounded-xl bg-yellow-50 px-4 py-4">
+        <div className="rounded-xl bg-yellow-50 px-4 py-4 max-[380px]:px-3">
           <p className="text-base font-bold text-black">이번 달 나와의 약속</p>
           <p className="mt-1 break-keep text-sm leading-6 font-semibold text-gray-500">
             목표 예산과 한 줄 다짐은 통계 탭의 가장 위에서 계속 보여요.
           </p>
         </div>
 
-        <div className="grid gap-5 rounded-xl border border-gray-100 bg-white p-4">
+        <div className="grid gap-5 rounded-xl border border-gray-100 bg-white p-4 max-[380px]:p-3">
           <UnderInput
             inputMode="numeric"
             label="이번 달 목표 예산"

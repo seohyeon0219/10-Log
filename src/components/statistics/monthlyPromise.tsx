@@ -31,7 +31,7 @@ export default function MonthlyPromise({
     >
       <div className="mt-5">
         <p className="text-sm font-bold text-(--color-dark-gray)">한 줄 다짐</p>
-        <h3 className="mt-2 break-keep text-2xl leading-9 font-extrabold text-black">
+        <h3 className="mt-2 break-keep text-2xl leading-9 font-extrabold text-black max-[380px]:text-xl max-[380px]:leading-8">
           <span className="bg-linear-to-t from-yellow-200 from-45% to-transparent to-45% px-1 [box-decoration-break:clone]">
             {promise}
           </span>
@@ -39,9 +39,9 @@ export default function MonthlyPromise({
       </div>
 
       <div className="mt-5 rounded-xl bg-gray-50 px-4 py-4">
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-4 max-[380px]:items-start">
           <p className="text-sm font-bold text-(--color-dark-gray)">목표 예산</p>
-          <p className="text-xl font-extrabold tracking-normal text-black">{formatWon(budgetAmount)}</p>
+          <p className="text-xl font-extrabold tracking-normal text-black max-[380px]:text-lg">{formatWon(budgetAmount)}</p>
         </div>
       </div>
     </StatisticsCard>

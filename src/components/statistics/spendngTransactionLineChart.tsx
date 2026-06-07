@@ -98,7 +98,7 @@ export default function SpendngTransactionLineChart({ data }: SpendngTransaction
   const gridLines = getGridLines(maxAmount)
   const activePointIndex = hoveredPointIndex ?? selectedPointIndex
   const activePoint = activePointIndex !== null ? chartPoints[activePointIndex] : null
-  const tooltipX = activePoint ? Math.min(Math.max(activePoint.x, plotLeft + 42), chartWidth - plotRight - 42) : 0
+  const tooltipX = activePoint ? Math.min(Math.max(activePoint.x, plotLeft + 46), chartWidth - plotRight - 46) : 0
   const tooltipY = activePoint ? Math.max(activePoint.y - 42, 10) : 0
 
   return (
@@ -107,13 +107,13 @@ export default function SpendngTransactionLineChart({ data }: SpendngTransaction
       eyebrow="최근 6개월 거래 추이"
       title={`${lineChartType === 'expense' ? '소비' : '수입'} 흐름을 한눈에 봐요`}
     >
-      <div className="mt-5 rounded-xl bg-gray-50 p-4">
-        <div className="flex items-end justify-between gap-3">
+      <div className="mt-5 rounded-xl bg-gray-50 p-4 max-[380px]:p-3">
+        <div className="flex items-end justify-between gap-3 max-[380px]:items-start">
           <div>
             <p className="text-sm font-bold text-(--color-dark-gray)">이번 달</p>
             <p className="mt-1 text-base font-extrabold text-black">{lineChartType === 'expense' ? '전체 지출' : '전체 수입'}</p>
           </div>
-          <p className="text-xl font-extrabold" style={{ color: lineColor }}>
+          <p className="text-xl font-extrabold max-[380px]:text-lg" style={{ color: lineColor }}>
             {formatWon(latestPoint.amount)}
           </p>
         </div>
@@ -132,7 +132,7 @@ export default function SpendngTransactionLineChart({ data }: SpendngTransaction
             {activePoint ? (
               <g>
                 <line stroke={lineColor} strokeDasharray="3 4" strokeWidth="1.5" x1={activePoint.x} x2={activePoint.x} y1={plotTop} y2={plotTop + plotHeight} />
-                <rect fill="white" height="34" rx="9" stroke="#e5e7eb" width="84" x={tooltipX - 42} y={tooltipY} />
+                <rect fill="white" height="34" rx="9" stroke="#e5e7eb" width="92" x={tooltipX - 46} y={tooltipY} />
                 <text fill="#111111" fontSize="11" fontWeight="800" textAnchor="middle" x={tooltipX} y={tooltipY + 14}>
                   {activePoint.month}
                 </text>
