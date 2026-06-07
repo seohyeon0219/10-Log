@@ -74,11 +74,11 @@ export default function CategoryTransactionRatio({ items, onSelectTransaction }:
       eyebrow="카테고리 거래 비율"
       title={`이번 달 ${ratioType === 'expense' ? '소비' : '수입'}가 어디에 모였는지 봐요`}
     >
-      <div className="mt-5 grid gap-5 md:grid-cols-[180px_minmax(0,1fr)] md:items-center max-[380px]:gap-4">
-        <div className="relative mx-auto h-44 w-44 rounded-full max-[380px]:h-38 max-[380px]:w-38" style={{ background: `conic-gradient(${donutGradient})` }}>
-          <div className="absolute inset-6 grid place-items-center rounded-full bg-white text-center max-[380px]:inset-5">
-            <p className="mt-4 text-base font-bold text-(--color-dark-gray) max-[380px]:text-sm">{selectedItem.label}</p>
-            <p className="mb-4 text-2xl font-extrabold text-black max-[380px]:text-xl">{selectedPercent}%</p>
+      <div className="mt-5 grid gap-5 md:grid-cols-[180px_minmax(0,1fr)] md:items-center">
+        <div className="relative mx-auto h-44 w-44 rounded-full" style={{ background: `conic-gradient(${donutGradient})` }}>
+          <div className="absolute inset-6 grid place-items-center rounded-full bg-white text-center">
+            <p className="mt-4 text-base font-bold text-(--color-dark-gray)">{selectedItem.label}</p>
+            <p className="mb-4 text-2xl font-extrabold text-black">{selectedPercent}%</p>
           </div>
         </div>
 
@@ -90,7 +90,7 @@ export default function CategoryTransactionRatio({ items, onSelectTransaction }:
             return (
               <button
                 className={[
-                  'grid min-h-12 cursor-pointer grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border px-4 text-left transition max-[380px]:px-3',
+                  'grid min-h-12 cursor-pointer grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border px-4 text-left transition',
                   isSelected ? 'border-gray-200 bg-gray-50' : 'border-transparent bg-white hover:bg-gray-50',
                 ].join(' ')}
                 key={item.id}
@@ -106,13 +106,13 @@ export default function CategoryTransactionRatio({ items, onSelectTransaction }:
         </div>
       </div>
 
-      <div className="mt-5 rounded-xl border border-gray-200 bg-white p-4 shadow-[0_4px_14px_rgba(0,0,0,0.03)] max-[380px]:p-3">
-        <div className="flex items-end justify-between gap-3">
+      <div className="mt-5 rounded-xl border border-gray-200 bg-white p-4 shadow-[0_4px_14px_rgba(0,0,0,0.03)]">
+        <div className="flex items-end justify-between gap-3 p-2">
           <div>
             <p className="text-sm font-bold text-black">{selectedItem.label} 내역</p>
             {/* <p className="mt-1 text-xs font-bold text-gray-400">거래를 누르면 수정할 수 있어요</p> */}
           </div>
-          <p className="shrink-0 text-sm font-extrabold text-(--color-dark-gray)">{selectedItem.amount.toLocaleString('ko-KR')}원</p>
+          <p className="text-sm font-extrabold text-(--color-dark-gray)">{selectedItem.amount.toLocaleString('ko-KR')}원</p>
         </div>
 
         <div className="mt-4 grid gap-1 border-t border-gray-100 pt-2">

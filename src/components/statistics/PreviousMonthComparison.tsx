@@ -59,7 +59,7 @@ export default function PreviousMonthComparison({ items }: PreviousMonthComparis
   const expandedItem = items.find((item) => item.id === expandedItemId)
 
   return (
-    <StatisticsCard eyebrow="전월 비교 분석" title="지난달보다 이렇게 달라졌어요">
+    <StatisticsCard className="h-full" eyebrow="전월 비교 분석" title="지난달보다 이렇게 달라졌어요">
       <dl className="mt-5 grid grid-cols-3 gap-3 max-sm:grid-cols-1 max-[380px]:gap-2">
         {items.map((item) => (
           <div className="relative min-w-0 rounded-xl bg-gray-50 p-4 pr-12 max-[380px]:p-3 max-[380px]:pr-11" key={item.id}>

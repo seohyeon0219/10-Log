@@ -12,7 +12,7 @@ const options: Array<{ id: IncomeExpenseType; label: string }> = [
 
 export default function IncomeExpenseToggle({ onChange, value }: IncomeExpenseToggleProps) {
   return (
-    <div className="flex shrink-0 rounded-lg bg-gray-100 p-1">
+    <div className="inline-flex w-auto shrink-0 rounded-lg bg-gray-100 p-1">
       {options.map((option) => (
         <button
           aria-pressed={option.id === value}

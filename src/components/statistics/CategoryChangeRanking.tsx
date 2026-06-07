@@ -44,13 +44,16 @@ export default function CategoryChangeRanking({ items }: CategoryChangeRankingPr
 
   return (
     <StatisticsCard
-      action={<IncomeExpenseToggle onChange={setActiveType} value={activeType} />}
+      className="h-full"
       eyebrow="카테고리별 증감"
       title="지난 달에 비해 변화가 큰 항목이에요"
     >
+      <div className="mt-4">
+        <IncomeExpenseToggle onChange={setActiveType} value={activeType} />
+      </div>
       <ol className="mt-5 grid gap-2">
         {activeItems.map((item, index) => (
-          <li className="grid grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-3 rounded-xl bg-gray-50 p-4" key={item.id}>
+          <li className="grid grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-3 rounded-xl bg-gray-50 px-4 py-5" key={item.id}>
             <span className="text-sm font-extrabold text-gray-400">{index + 1}</span>
             <span className="min-w-0 truncate text-base font-extrabold text-black">{item.label}</span>
             <span className={['text-base font-extrabold', getRateClassName(item.rate)].join(' ')}>
