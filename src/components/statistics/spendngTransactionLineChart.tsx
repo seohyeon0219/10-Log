@@ -105,7 +105,7 @@ export default function SpendngTransactionLineChart({ data }: SpendngTransaction
     <StatisticsCard
       action={<IncomeExpenseToggle onChange={setLineChartType} value={lineChartType} />}
       eyebrow="최근 6개월 거래 추이"
-      title={`${lineChartType === 'expense' ? '소비' : '수입'} 흐름을 한눈에 봐요`}
+      title={`${lineChartType === 'expense' ? '지출' : '수입'} 흐름을 한눈에 봐요`}
     >
       <div className="mt-5 rounded-xl bg-gray-50 p-4 max-[380px]:p-3">
         <div className="flex items-end justify-between gap-3 max-[380px]:items-start">
