@@ -1,14 +1,19 @@
-import DesktopPage from './DesktopPage'
-import MobilePage from './MobilePage'
+import { Outlet } from 'react-router-dom'
+import DesktopLayout from '../layouts/DesktopLayout'
+import MobileLayout from '../layouts/MobileLayout'
 
 export default function AppPage() {
   return (
     <>
-      <div className="block md:hidden">
-        <MobilePage />
-      </div>
       <div className="hidden md:block">
-        <DesktopPage />
+        <DesktopLayout>
+          <Outlet />
+        </DesktopLayout>
+      </div>
+      <div className="block md:hidden">
+        <MobileLayout>
+          <Outlet />
+        </MobileLayout>
       </div>
     </>
   )
