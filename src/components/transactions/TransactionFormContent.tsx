@@ -10,9 +10,14 @@ import type { TransactionCategory, TransactionType } from './transactionFormConf
 type TransactionFormContentProps = {
   categories: TransactionCategory[]
   fixedLabel: string
+  initialAmount?: number
+  initialCategoryId?: string
+  initialMemo?: string
   onDelete?: () => void
+  onManageCategories?: () => void
   onSave?: () => void
   selectedDate?: Date | null
+  submitText?: string
   type: TransactionType
 }
 
@@ -27,17 +32,22 @@ const toInputDateValue = (date: Date) => {
 export default function TransactionFormContent({
   categories,
   fixedLabel,
+  initialAmount,
+  initialCategoryId,
+  initialMemo,
   onDelete,
+  onManageCategories,
   onSave,
   selectedDate,
+  submitText = '저장',
   type,
 }: TransactionFormContentProps) {
-  const [selectedCategoryId, setSelectedCategoryId] = useState(categories[0]?.id ?? '')
+  const [selectedCategoryId, setSelectedCategoryId] = useState(initialCategoryId || categories[0]?.id || '')
   const dateValue = selectedDate ? toInputDateValue(selectedDate) : ''
 
   useEffect(() => {
-    setSelectedCategoryId(categories[0]?.id ?? '')
-  }, [categories, type])
+    setSelectedCategoryId(initialCategoryId || categories[0]?.id || '')
+  }, [categories, initialCategoryId, type])
 
   const handleAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.currentTarget.value = event.currentTarget.value.replace(/\D/g, '')
@@ -47,6 +57,7 @@ export default function TransactionFormContent({
     <>
       <div className="grid gap-6">
         <UnderInput
+          defaultValue={initialAmount}
           inputMode="numeric"
           label="금액"
           onChange={handleAmountChange}
@@ -58,12 +69,17 @@ export default function TransactionFormContent({
         <CategorySelect
           categories={categories}
           onChange={setSelectedCategoryId}
+          onManageCategories={onManageCategories}
           selectedCategoryId={selectedCategoryId}
         />
 
         <UnderInput defaultValue={dateValue} label="날짜" suffix="" type="date" />
 
-        <Input label="메모" placeholder="기록해두고 싶은 내용을 남겨보세요." />
+        <Input
+          defaultValue={initialMemo}
+          label="메모"
+          placeholder="기록해두고 싶은 내용을 남겨보세요."
+        />
 
         <Checkbox className="text-sm" name={`fixed-${type}`}>
           {fixedLabel}
@@ -74,7 +90,7 @@ export default function TransactionFormContent({
         <Button onClick={onDelete} variant="soft">
           삭제
         </Button>
-        <Button onClick={onSave}>저장</Button>
+        <Button onClick={onSave}>{submitText}</Button>
       </div>
     </>
   )
