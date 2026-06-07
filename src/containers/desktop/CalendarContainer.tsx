@@ -12,6 +12,13 @@ import {
 import { useCalendarStore } from '../../stores/calendarStore'
 
 type TransactionType = 'income' | 'expense'
+type TransactionFormMode = 'create' | 'edit'
+type EditableTransaction = {
+  amount: number
+  categoryName: string
+  memo?: string
+  type: string
+}
 
 const getDateKey = (date: Date) => {
   const year = date.getFullYear()
@@ -23,6 +30,8 @@ const getDateKey = (date: Date) => {
 
 export default function DesktopCalendarContainer() {
   const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
+  const [editingTransaction, setEditingTransaction] = useState<EditableTransaction | null>(null)
+  const [transactionFormMode, setTransactionFormMode] = useState<TransactionFormMode>('create')
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
   const currentDate = useCalendarStore((state) => state.currentDate)
   const selectedDate = useCalendarStore((state) => state.selectedDate)
@@ -35,11 +44,29 @@ export default function DesktopCalendarContainer() {
 
   const openTransactionForm = (type: TransactionType) => {
     setTransactionType(type)
+    setTransactionFormMode('create')
+    setEditingTransaction(null)
     if (!selectedDate) {
       setSelectedDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), 1))
     }
     setIsTransactionFormOpen(true)
   }
+
+  const openTransactionEditor = (transaction: EditableTransaction) => {
+    if (transaction.type !== 'income' && transaction.type !== 'expense') {
+      return
+    }
+
+    setTransactionType(transaction.type)
+    setTransactionFormMode('edit')
+    setEditingTransaction({ ...transaction, type: transaction.type })
+    setIsTransactionFormOpen(true)
+  }
+
+  const activeCategories = transactionType === 'income' ? mockIncomeCategories : mockExpenseCategories
+  const initialCategoryId = editingTransaction
+    ? activeCategories.find((category) => category.name === editingTransaction.categoryName)?.id
+    : undefined
 
   return (
     <>
@@ -64,6 +91,7 @@ export default function DesktopCalendarContainer() {
                   color={transaction.categoryColor}
                   key={transaction.id}
                   memo={transaction.memo}
+                  onClick={() => openTransactionEditor(transaction)}
                   title={transaction.categoryName}
                   type={transaction.type}
                 />
@@ -75,8 +103,14 @@ export default function DesktopCalendarContainer() {
       </div>
 
       <TransactionFormModal
-        categories={transactionType === 'income' ? mockIncomeCategories : mockExpenseCategories}
+        categories={activeCategories}
+        expenseCategories={mockExpenseCategories}
+        incomeCategories={mockIncomeCategories}
+        initialAmount={editingTransaction?.amount}
+        initialCategoryId={initialCategoryId}
+        initialMemo={editingTransaction?.memo}
         isOpen={isTransactionFormOpen}
+        mode={transactionFormMode}
         onClose={() => setIsTransactionFormOpen(false)}
         onDelete={() => setIsTransactionFormOpen(false)}
         onSave={() => setIsTransactionFormOpen(false)}

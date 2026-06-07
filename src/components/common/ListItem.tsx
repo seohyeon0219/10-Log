@@ -2,17 +2,23 @@ type ListItemProps = {
   amount: number
   color: string
   memo?: string
+  onClick?: () => void
   title: string
   type: string
 }
 
 const formatAmount = (amount: number) => amount.toLocaleString('ko-KR')
 
-export default function ListItem({ amount, color, memo, title, type }: ListItemProps) {
+export default function ListItem({ amount, color, memo, onClick, title, type }: ListItemProps) {
   const isIncome = type === 'income'
+  const Component = onClick ? 'button' : 'div'
 
   return (
-    <div className="flex min-h-14 items-center justify-between gap-4 rounded-xl px-2 py-2 transition hover:bg-gray-50 active:bg-gray-100">
+    <Component
+      className="flex min-h-14 w-full items-center justify-between gap-4 rounded-xl border-0 bg-transparent px-2 py-2 text-left transition hover:bg-gray-50 active:bg-gray-100"
+      onClick={onClick}
+      type={onClick ? 'button' : undefined}
+    >
       <div className="flex min-w-0 items-center gap-3">
         <span className="h-3 w-3 flex-none rounded-full" style={{ backgroundColor: color }} />
         <div className="min-w-0">
@@ -34,6 +40,6 @@ export default function ListItem({ amount, color, memo, title, type }: ListItemP
         {isIncome ? '+' : '-'}
         {formatAmount(amount)}
       </strong>
-    </div>
+    </Component>
   )
 }
