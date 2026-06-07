@@ -72,7 +72,7 @@ export default function CategoryTransactionRatio({ items, onSelectTransaction }:
         />
       }
       eyebrow="카테고리 거래 비율"
-      title={`이번 달 ${ratioType === 'expense' ? '소비' : '수입'}가 어디에 모였는지 봐요`}
+      title={`이번 달 ${ratioType === 'expense' ? '지출이' : '수입이'} 어디에 모였는지 봐요`}
     >
       <div className="mt-5 grid gap-5 md:grid-cols-[180px_minmax(0,1fr)] md:items-center">
         <div className="relative mx-auto h-44 w-44 rounded-full" style={{ background: `conic-gradient(${donutGradient})` }}>
@@ -115,7 +115,7 @@ export default function CategoryTransactionRatio({ items, onSelectTransaction }:
           <p className="text-sm font-extrabold text-(--color-dark-gray)">{selectedItem.amount.toLocaleString('ko-KR')}원</p>
         </div>
 
-        <div className="mt-4 grid gap-1 border-t border-gray-100 pt-2">
+        <div className="mt-2 grid gap-1 border-t border-gray-100 pt-2">
           {selectedItem.transactions.map((transaction) => (
             <SimpleListItem
               amount={transaction.amount}
