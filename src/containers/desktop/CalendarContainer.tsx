@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import CalendarDateActions from '../../components/calendar/CalendarDateActions'
 import CalendarGrid from '../../components/calendar/CalendarGrid'
-import ListItem from '../../components/common/ListItem'
+import TransactionDateList, {
+  type TransactionDateListItem,
+} from '../../components/transactions/TransactionDateList'
 import TransactionFormModal from '../../components/transactions/TransactionFormModal'
 import {
   getMockCalendarDayAmounts,
@@ -13,12 +14,6 @@ import { useCalendarStore } from '../../stores/calendarStore'
 
 type TransactionType = 'income' | 'expense'
 type TransactionFormMode = 'create' | 'edit'
-type EditableTransaction = {
-  amount: number
-  categoryName: string
-  memo?: string
-  type: string
-}
 
 const getDateKey = (date: Date) => {
   const year = date.getFullYear()
@@ -30,7 +25,7 @@ const getDateKey = (date: Date) => {
 
 export default function DesktopCalendarContainer() {
   const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
-  const [editingTransaction, setEditingTransaction] = useState<EditableTransaction | null>(null)
+  const [editingTransaction, setEditingTransaction] = useState<TransactionDateListItem | null>(null)
   const [transactionFormMode, setTransactionFormMode] = useState<TransactionFormMode>('create')
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
   const currentDate = useCalendarStore((state) => state.currentDate)
@@ -52,7 +47,7 @@ export default function DesktopCalendarContainer() {
     setIsTransactionFormOpen(true)
   }
 
-  const openTransactionEditor = (transaction: EditableTransaction) => {
+  const openTransactionEditor = (transaction: TransactionDateListItem) => {
     if (transaction.type !== 'income' && transaction.type !== 'expense') {
       return
     }
@@ -78,28 +73,17 @@ export default function DesktopCalendarContainer() {
             onDateSelect={selectDate}
             selectedDate={selectedDate}
           />
-          <CalendarDateActions
+        </div>
+
+        <aside className="mt-9 min-h-80 rounded-xl border border-gray-100 bg-white px-4 py-4">
+          <TransactionDateList
             onAddExpense={() => openTransactionForm('expense')}
             onAddIncome={() => openTransactionForm('income')}
+            onSelectTransaction={openTransactionEditor}
             selectedDate={selectedDate}
+            transactions={selectedDateTransactions}
           />
-          {selectedDate ? (
-            <div className="mt-3 grid gap-1 border-t border-gray-100 pt-2">
-              {selectedDateTransactions.map((transaction) => (
-                <ListItem
-                  amount={transaction.amount}
-                  color={transaction.categoryColor}
-                  key={transaction.id}
-                  memo={transaction.memo}
-                  onClick={() => openTransactionEditor(transaction)}
-                  title={transaction.categoryName}
-                  type={transaction.type}
-                />
-              ))}
-            </div>
-          ) : null}
-        </div>
-        <aside className="min-h-80 rounded-lg border border-gray-100 bg-white" />
+        </aside>
       </div>
 
       <TransactionFormModal

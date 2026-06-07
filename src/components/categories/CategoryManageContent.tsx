@@ -196,7 +196,8 @@ export default function CategoryManageContent({
                 {category.name}
               </span>
               <button
-                className="cursor-pointer rounded-lg px-2 py-1 text-sm font-medium text-gray-400 transition hover:bg-gray-100 hover:text-black"
+                className="cursor-pointer rounded-lg px-2 py-1 text-sm font- src/pages/test/TestPage.tsx
+                 text-gray-400 transition hover:bg-gray-100 hover:text-black"
                 onClick={() => handleEdit(category)}
                 type="button"
               >

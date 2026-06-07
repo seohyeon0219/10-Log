@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import CalendarDateActions from '../../components/calendar/CalendarDateActions'
 import CalendarGrid from '../../components/calendar/CalendarGrid'
 import CategoryManageBottomSheet from '../../components/categories/CategoryManageBottomSheet'
 import CategoryManageModal from '../../components/categories/CategoryManageModal'
@@ -13,6 +12,7 @@ import UnderInput from '../../components/common/UnderInput'
 import Header from '../../components/desktop/Header'
 import AmountInput from '../../components/transactions/AmountInput'
 import TransactionFormModal from '../../components/transactions/TransactionFormModal'
+import TransactionDateActions from '../../components/transactions/TransactionDateActions'
 import TransactionFormBottomSheet from '../../components/transactions/bottomSheet/TransactionFormBottomSheet'
 import TransactionListBottomSheet from '../../components/transactions/bottomSheet/TransactionListBottomSheet'
 import {
@@ -95,7 +95,7 @@ export default function TestPage() {
           onDateSelect={handleDateSelect}
           selectedDate={selectedDate}
         />
-        <CalendarDateActions
+        <TransactionDateActions
           onAddExpense={() => openTransactionForm('expense')}
           onAddIncome={() => openTransactionForm('income')}
           selectedDate={selectedDate}

@@ -27,7 +27,7 @@ export default function ConfirmModal({
     <div className="fixed inset-0 z-50 grid place-items-center bg-black/35 px-4 py-6">
       <section
         aria-modal="true"
-        className="max-h-dvh w-full max-w-[360px] overflow-y-auto rounded-2xl bg-white px-6 pt-7 pb-5 shadow-xl"
+        className="max-h-dvh w-full max-w-90 overflow-y-auto rounded-2xl bg-white px-6 pt-7 pb-5 shadow-xl"
         role="dialog"
       >
         <div className="mb-7 grid gap-2">
