@@ -10,6 +10,14 @@ import Tabs from '../../components/common/Tabs'
 import Textarea from '../../components/common/Textarea'
 import UnderInput from '../../components/common/UnderInput'
 import Header from '../../components/desktop/Header'
+import AiMonthlyReview from '../../components/statistics/AiMonthlyReview'
+import CategoryChangeRanking from '../../components/statistics/CategoryChangeRanking'
+import CategoryTransactionRatio from '../../components/statistics/CategoryTransactionRatio'
+import MonthlyPromiseModal from '../../components/statistics/MonthlyPromiseModal'
+import PreviousMonthComparison from '../../components/statistics/PreviousMonthComparison'
+import MonthlyPromise from '../../components/statistics/monthlyPromise'
+import MonthlyMoneySummary from '../../components/statistics/monthlymoneysummary'
+import SpendngTransactionLineChart from '../../components/statistics/spendngTransactionLineChart'
 import AmountInput from '../../components/transactions/AmountInput'
 import TransactionFormModal from '../../components/transactions/TransactionFormModal'
 import TransactionDateActions from '../../components/transactions/TransactionDateActions'
@@ -18,10 +26,16 @@ import TransactionListBottomSheet from '../../components/transactions/bottomShee
 import {
   getMockCalendarDayAmounts,
   getMockTransactions,
+  mockCategoryChangeRanking,
+  mockCategoryTransactionRatio,
   mockExpenseCategories,
   mockIncomeCategories,
+  mockMonthlyMoneySummary,
+  mockPreviousMonthComparison,
+  mockSpendingTransactionLineChart,
   mockTransactions,
 } from '../../mocks/data'
+import { useStatisticsStore } from '../../stores/statisticsStore'
 
 const tabs = [
   { id: 'stats', label: '통계' },
@@ -49,6 +63,9 @@ export default function TestPage() {
   const [isTransactionListOpen, setIsTransactionListOpen] = useState(false)
   const [isCategoryManageOpen, setIsCategoryManageOpen] = useState(false)
   const [isCategoryManageBottomSheetOpen, setIsCategoryManageBottomSheetOpen] = useState(false)
+  const [isMonthlyPromiseOpen, setIsMonthlyPromiseOpen] = useState(false)
+  const monthlyPromise = useStatisticsStore((state) => state.monthlyPromise)
+  const updateMonthlyPromise = useStatisticsStore((state) => state.updateMonthlyPromise)
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
   const selectedDateKey = selectedDate ? getDateKey(selectedDate, selectedDate.getDate()) : ''
   const selectedDateTransactions = getMockTransactions(currentDate).filter(
@@ -157,6 +174,24 @@ export default function TestPage() {
         <p className="text-(--color-gray)">현재 선택된 탭: {activeTabId}</p>
       </section>
 
+      <section className="mb-6 rounded-xl border border-(--color-gray) bg-gray-50 p-6 max-sm:p-4">
+        <h2 className="mb-4 text-base font-bold">Statistics</h2>
+        <div className="grid gap-4">
+          <MonthlyPromise
+            budgetAmount={monthlyPromise.budgetAmount}
+            monthLabel={monthlyPromise.monthLabel}
+            onEdit={() => setIsMonthlyPromiseOpen(true)}
+            promise={monthlyPromise.promise}
+          />
+          <MonthlyMoneySummary {...mockMonthlyMoneySummary} budgetAmount={monthlyPromise.budgetAmount} />
+          <AiMonthlyReview monthLabel="6월" />
+          <PreviousMonthComparison items={mockPreviousMonthComparison} />
+          <CategoryChangeRanking items={mockCategoryChangeRanking} />
+          <CategoryTransactionRatio items={mockCategoryTransactionRatio} />
+          <SpendngTransactionLineChart data={mockSpendingTransactionLineChart} />
+        </div>
+      </section>
+
       <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
         <h2 className="mb-4 text-base font-bold">ConfirmModal / TransactionBottomSheet</h2>
         <div className="flex flex-wrap gap-3">
@@ -214,6 +249,19 @@ export default function TestPage() {
         isOpen={isCategoryManageBottomSheetOpen}
         onClose={() => setIsCategoryManageBottomSheetOpen(false)}
       />
+
+      {isMonthlyPromiseOpen ? (
+        <MonthlyPromiseModal
+          budgetAmount={monthlyPromise.budgetAmount}
+          isOpen={isMonthlyPromiseOpen}
+          onClose={() => setIsMonthlyPromiseOpen(false)}
+          onSave={(values) => {
+            updateMonthlyPromise(values)
+            setIsMonthlyPromiseOpen(false)
+          }}
+          promise={monthlyPromise.promise}
+        />
+      ) : null}
 
       <TransactionListBottomSheet
         isOpen={isTransactionListOpen}
