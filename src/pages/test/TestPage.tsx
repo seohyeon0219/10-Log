@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import CalendarDateActions from '../../components/calendar/CalendarDateActions'
 import CalendarGrid from '../../components/calendar/CalendarGrid'
+import CategoryManageBottomSheet from '../../components/categories/CategoryManageBottomSheet'
 import CategoryManageModal from '../../components/categories/CategoryManageModal'
 import Button from '../../components/common/Button'
 import Checkbox from '../../components/common/Checkbox'
@@ -47,6 +48,7 @@ export default function TestPage() {
   const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
   const [isTransactionListOpen, setIsTransactionListOpen] = useState(false)
   const [isCategoryManageOpen, setIsCategoryManageOpen] = useState(false)
+  const [isCategoryManageBottomSheetOpen, setIsCategoryManageBottomSheetOpen] = useState(false)
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
   const selectedDateKey = selectedDate ? getDateKey(selectedDate, selectedDate.getDate()) : ''
   const selectedDateTransactions = getMockTransactions(currentDate).filter(
@@ -162,6 +164,9 @@ export default function TestPage() {
           <Button onClick={() => setIsCategoryManageOpen(true)} variant="secondary">
             카테고리 관리 모달 열기
           </Button>
+          <Button onClick={() => setIsCategoryManageBottomSheetOpen(true)} variant="secondary">
+            카테고리 관리 바텀시트 열기
+          </Button>
           <Button onClick={() => openTransactionForm('income')} variant="secondary">
             수입 입력 모달 열기
           </Button>
@@ -201,6 +206,13 @@ export default function TestPage() {
         incomeCategories={mockIncomeCategories}
         isOpen={isCategoryManageOpen}
         onClose={() => setIsCategoryManageOpen(false)}
+      />
+
+      <CategoryManageBottomSheet
+        expenseCategories={mockExpenseCategories}
+        incomeCategories={mockIncomeCategories}
+        isOpen={isCategoryManageBottomSheetOpen}
+        onClose={() => setIsCategoryManageBottomSheetOpen(false)}
       />
 
       <TransactionListBottomSheet
