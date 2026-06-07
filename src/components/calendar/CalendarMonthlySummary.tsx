@@ -23,10 +23,10 @@ export default function CalendarMonthlySummary({
   const total = totalIncome - totalExpense
 
   return (
-    <section className="w-full px-2 py-4 border-b border-gray-100">
+    <section className="w-full border-b border-gray-100 px-2 py-4">
       <div className="grid grid-cols-3 gap-6">
         <div className="relative min-w-0 pr-10">
-          <p className="mb-1 text-xs text-(--color-dark-gray)">수입</p>
+          <p className="mb-1 text-xs font-semibold text-gray-400">수입</p>
           <strong className="block truncate text-base font-bold text-(--color-income-blue)">
             {formatAmount(totalIncome)}
           </strong>
@@ -38,7 +38,7 @@ export default function CalendarMonthlySummary({
         </div>
 
         <div className="relative min-w-0 pr-10">
-          <p className="mb-1 text-xs text-(--color-dark-gray)">지출</p>
+          <p className="mb-1 text-xs font-semibold text-gray-400">지출</p>
           <strong className="block truncate text-base font-bold text-(--color-expense-red)">
             {formatAmount(totalExpense)}
           </strong>
@@ -50,7 +50,7 @@ export default function CalendarMonthlySummary({
         </div>
 
         <div className="min-w-0">
-          <p className="mb-1 text-xs text-(--color-dark-gray)">합계</p>
+          <p className="mb-1 text-xs font-semibold text-gray-400">합계</p>
           <strong
             className={[
               'block truncate text-base font-bold',
@@ -120,7 +120,7 @@ function SummaryExpandButton({ ariaLabel, isExpanded, onClick }: SummaryExpandBu
   return (
     <button
       type="button"
-      className="absolute right-0 bottom-0 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-(--color-dark-gray)"
+      className="absolute right-0 bottom-0 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-gray-400 transition hover:bg-gray-50 hover:text-gray-600 active:bg-gray-100"
       onClick={onClick}
       aria-expanded={isExpanded}
       aria-label={ariaLabel}
@@ -162,7 +162,7 @@ function SummaryDetailRow({
 
   return (
     <div className={cn('flex min-w-0 items-center justify-between gap-3 text-sm', isEmphasized ? 'mt-1' : '')}>
-      <span className={cn('truncate text-(--color-dark-gray)', weightClassName)}>{label}</span>
+      <span className={cn('truncate text-gray-400', weightClassName)}>{label}</span>
       <strong className={cn('truncate text-right', weightClassName, valueClassName)}>
         {formatAmount(value)}
       </strong>

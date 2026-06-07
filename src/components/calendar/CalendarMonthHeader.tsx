@@ -16,20 +16,20 @@ export default function CalendarMonthHeader({
     <header className="flex w-full items-center justify-center gap-4">
       <button
         type="button"
-        className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center"
+        className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full text-gray-500"
         onClick={onPrevMonth}
         aria-label="이전 달"
       >
         <MonthArrowIcon className="rotate-180" />
       </button>
 
-      <h1 className="min-w-0 text-center text-lg font-bold text-gray-950">
+      <h1 className="min-w-0 text-center text-lg font-bold text-black">
         {year}년 {month}월
       </h1>
 
       <button
         type="button"
-        className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center"
+        className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full text-gray-500"
         onClick={onNextMonth}
         aria-label="다음 달"
       >

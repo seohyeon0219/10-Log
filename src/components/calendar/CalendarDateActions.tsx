@@ -23,14 +23,14 @@ export default function CalendarDateActions({
       <div className="flex shrink-0 items-center gap-2">
         <button
           type="button"
-          className="min-h-10 cursor-pointer rounded-lg border border-(--color-income-blue) px-4 text-sm font-bold text-(--color-income-blue)"
+          className="min-h-10 cursor-pointer rounded-xl border border-transparent bg-blue-50 px-4 text-sm font-bold text-(--color-income-blue) transition hover:bg-blue-100 active:bg-blue-100"
           onClick={onAddIncome}
         >
           수입
         </button>
         <button
           type="button"
-          className="min-h-10 cursor-pointer rounded-lg border border-(--color-expense-red) px-4 text-sm font-bold text-(--color-expense-red)"
+          className="min-h-10 cursor-pointer rounded-xl border border-transparent bg-red-50 px-4 text-sm font-bold text-(--color-expense-red) transition hover:bg-red-100 active:bg-red-100"
           onClick={onAddExpense}
         >
           지출

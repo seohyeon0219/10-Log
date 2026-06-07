@@ -19,7 +19,7 @@ type CalendarDay = {
 }
 
 const weekDays = ['월', '화', '수', '목', '금', '토', '일']
-const calendarBorderClassName = 'border-[#ebe8f0]'
+const calendarBorderClassName = 'border-gray-100'
 const saturdayIndex = 5
 const sundayIndex = 6
 
@@ -67,7 +67,7 @@ const getWeekDayTextClassName = (weekDayIndex: number) => {
     return 'text-(--color-expense-red)'
   }
 
-  return 'text-black'
+  return 'text-gray-700'
 }
 
 const getDateTextClassName = (day: CalendarDay) => {
@@ -93,7 +93,7 @@ export default function CalendarGrid({
       <div className="grid grid-cols-7">
         {weekDays.map((weekDay, index) => (
           <div
-            className={cn('px-3 py-2 text-center text-sm font-normal', getWeekDayTextClassName(index))}
+            className={cn('px-3 py-2 text-center text-sm font-semibold', getWeekDayTextClassName(index))}
             key={weekDay}
           >
             {weekDay}
@@ -102,7 +102,7 @@ export default function CalendarGrid({
       </div>
 
       <div
-        className={cn('grid grid-cols-7 overflow-hidden rounded-lg border bg-white', calendarBorderClassName)}
+        className={cn('grid grid-cols-7 overflow-hidden rounded-xl border bg-white', calendarBorderClassName)}
       >
         {calendarDays.map((day, index) => {
           const amount = amountByDate.get(day.dateKey)
@@ -112,8 +112,8 @@ export default function CalendarGrid({
             <button
               type="button"
               className={cn(
-                'flex min-h-[88px] min-w-0 cursor-pointer flex-col items-start px-2 pt-2 pb-3 text-left',
-                isSelected ? 'bg-gray-100' : 'bg-white',
+                'flex min-h-[88px] min-w-0 cursor-pointer flex-col items-start px-2 pt-2 pb-3 text-left transition',
+                isSelected ? 'bg-gray-100' : 'bg-white hover:bg-gray-50 active:bg-gray-100',
                 index % 7 > 0 ? 'border-l' : '',
                 index >= 7 ? 'border-t' : '',
                 calendarBorderClassName,
@@ -121,18 +121,18 @@ export default function CalendarGrid({
               key={day.dateKey}
               onClick={() => onDateSelect?.(day.date)}
             >
-              <span className={cn('text-sm font-medium', getDateTextClassName(day))}>
+              <span className={cn('text-sm font-semibold', getDateTextClassName(day))}>
                 {day.date.getDate()}
               </span>
 
               <span className="mt-auto grid w-full min-w-0 gap-1">
                 {amount?.income ? (
-                  <span className="truncate text-xs font-medium text-(--color-income-blue)">
+                  <span className="truncate text-xs font-semibold text-(--color-income-blue)">
                     +{formatAmount(amount.income)}
                   </span>
                 ) : null}
                 {amount?.expense ? (
-                  <span className="truncate text-xs font-medium text-(--color-expense-red)">
+                  <span className="truncate text-xs font-semibold text-(--color-expense-red)">
                     -{formatAmount(amount.expense)}
                   </span>
                 ) : null}
