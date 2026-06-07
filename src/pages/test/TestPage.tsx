@@ -10,11 +10,11 @@ import Tabs from '../../components/common/Tabs'
 import Textarea from '../../components/common/Textarea'
 import UnderInput from '../../components/common/UnderInput'
 import Header from '../../components/desktop/Header'
+import MonthlyPromise from '../../components/calendar/MonthlyPromise'
+import MonthlyPromiseModal from '../../components/calendar/MonthlyPromiseModal'
 import CategoryChangeRanking from '../../components/statistics/CategoryChangeRanking'
 import CategoryTransactionRatio from '../../components/statistics/CategoryTransactionRatio'
-import MonthlyPromiseModal from '../../components/statistics/MonthlyPromiseModal'
 import PreviousMonthComparison from '../../components/statistics/PreviousMonthComparison'
-import MonthlyPromise from '../../components/statistics/monthlyPromise'
 import MonthlyMoneySummary from '../../components/statistics/monthlymoneysummary'
 import SpendngTransactionLineChart from '../../components/statistics/spendngTransactionLineChart'
 import AmountInput from '../../components/transactions/AmountInput'
@@ -190,7 +190,6 @@ export default function TestPage() {
           <MonthlyPromise
             budgetAmount={monthlyPromise.budgetAmount}
             isRegistered={monthlyPromise.isRegistered}
-            monthLabel={monthlyPromise.monthLabel}
             onEdit={() => setIsMonthlyPromiseOpen(true)}
             promise={monthlyPromise.promise}
           />

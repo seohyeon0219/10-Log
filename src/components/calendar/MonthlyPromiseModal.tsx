@@ -46,7 +46,7 @@ export default function MonthlyPromiseModal({
         <div className="rounded-xl bg-yellow-50 px-4 py-4 max-[380px]:px-3">
           <p className="text-base font-bold text-black">이번 달 나와의 약속</p>
           <p className="mt-1 break-keep text-sm leading-6 font-semibold text-gray-500">
-            목표 예산과 한 줄 다짐은 통계 탭의 가장 위에서 계속 보여요.
+            목표 예산과 한 줄 다짐은 캘린더 화면에서 계속 보여요.
           </p>
         </div>
 

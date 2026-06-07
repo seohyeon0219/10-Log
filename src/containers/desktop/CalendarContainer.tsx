@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import CalendarGrid from '../../components/calendar/CalendarGrid'
+import MonthlyPromise from '../../components/calendar/MonthlyPromise'
+import MonthlyPromiseModal from '../../components/calendar/MonthlyPromiseModal'
 import TransactionDateList, {
   type TransactionDateListItem,
 } from '../../components/transactions/TransactionDateList'
@@ -11,6 +13,7 @@ import {
   mockIncomeCategories,
 } from '../../mocks/data'
 import { useCalendarStore } from '../../stores/calendarStore'
+import { useStatisticsStore } from '../../stores/statisticsStore'
 
 type TransactionType = 'income' | 'expense'
 type TransactionFormMode = 'create' | 'edit'
@@ -24,6 +27,7 @@ const getDateKey = (date: Date) => {
 }
 
 export default function DesktopCalendarContainer() {
+  const [isMonthlyPromiseOpen, setIsMonthlyPromiseOpen] = useState(false)
   const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
   const [editingTransaction, setEditingTransaction] = useState<TransactionDateListItem | null>(null)
   const [transactionFormMode, setTransactionFormMode] = useState<TransactionFormMode>('create')
@@ -32,6 +36,9 @@ export default function DesktopCalendarContainer() {
   const selectedDate = useCalendarStore((state) => state.selectedDate)
   const selectDate = useCalendarStore((state) => state.selectDate)
   const setSelectedDate = useCalendarStore((state) => state.setSelectedDate)
+  const deleteMonthlyPromise = useStatisticsStore((state) => state.deleteMonthlyPromise)
+  const monthlyPromise = useStatisticsStore((state) => state.monthlyPromise)
+  const updateMonthlyPromise = useStatisticsStore((state) => state.updateMonthlyPromise)
   const selectedDateKey = selectedDate ? getDateKey(selectedDate) : ''
   const selectedDateTransactions = getMockTransactions(currentDate).filter(
     (transaction) => transaction.date === selectedDateKey,
@@ -65,6 +72,15 @@ export default function DesktopCalendarContainer() {
 
   return (
     <>
+      <div className="mt-5">
+        <MonthlyPromise
+          budgetAmount={monthlyPromise.budgetAmount}
+          isRegistered={monthlyPromise.isRegistered}
+          onEdit={() => setIsMonthlyPromiseOpen(true)}
+          promise={monthlyPromise.promise}
+        />
+      </div>
+
       <div className="mt-2 grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)_380px] gap-8">
         <div>
           <CalendarGrid
@@ -85,6 +101,21 @@ export default function DesktopCalendarContainer() {
           />
         </aside>
       </div>
+
+      {isMonthlyPromiseOpen ? (
+        <MonthlyPromiseModal
+          budgetAmount={monthlyPromise.budgetAmount}
+          isRegistered={monthlyPromise.isRegistered}
+          isOpen={isMonthlyPromiseOpen}
+          onClose={() => setIsMonthlyPromiseOpen(false)}
+          onDelete={deleteMonthlyPromise}
+          onSave={(values) => {
+            updateMonthlyPromise(values)
+            setIsMonthlyPromiseOpen(false)
+          }}
+          promise={monthlyPromise.promise}
+        />
+      ) : null}
 
       <TransactionFormModal
         categories={activeCategories}

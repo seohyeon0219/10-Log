@@ -13,9 +13,7 @@ import TransactionFormModal from '../transactions/TransactionFormModal'
 import type { TransactionType } from '../transactions/transactionFormConfig'
 import CategoryChangeRanking from './CategoryChangeRanking'
 import CategoryTransactionRatio from './CategoryTransactionRatio'
-import MonthlyPromiseModal from './MonthlyPromiseModal'
 import PreviousMonthComparison from './PreviousMonthComparison'
-import MonthlyPromise from './monthlyPromise'
 import MonthlyMoneySummary from './monthlymoneysummary'
 import SpendngTransactionLineChart from './spendngTransactionLineChart'
 
@@ -36,22 +34,12 @@ const toSelectedDate = (dateText: string) => {
 }
 
 export default function StatisticsContent() {
-  const [isMonthlyPromiseOpen, setIsMonthlyPromiseOpen] = useState(false)
   const [selectedStatisticsTransaction, setSelectedStatisticsTransaction] = useState<SelectedStatisticsTransaction | null>(null)
-  const deleteMonthlyPromise = useStatisticsStore((state) => state.deleteMonthlyPromise)
   const monthlyPromise = useStatisticsStore((state) => state.monthlyPromise)
-  const updateMonthlyPromise = useStatisticsStore((state) => state.updateMonthlyPromise)
 
   return (
     <>
       <div className="grid gap-4">
-        <MonthlyPromise
-          budgetAmount={monthlyPromise.budgetAmount}
-          isRegistered={monthlyPromise.isRegistered}
-          monthLabel={monthlyPromise.monthLabel}
-          onEdit={() => setIsMonthlyPromiseOpen(true)}
-          promise={monthlyPromise.promise}
-        />
         <MonthlyMoneySummary {...mockMonthlyMoneySummary} budgetAmount={monthlyPromise.budgetAmount} />
       </div>
 
@@ -70,21 +58,6 @@ export default function StatisticsContent() {
       <div className="mt-4">
         <SpendngTransactionLineChart data={mockSpendingTransactionLineChart} />
       </div>
-
-      {isMonthlyPromiseOpen ? (
-        <MonthlyPromiseModal
-          budgetAmount={monthlyPromise.budgetAmount}
-          isRegistered={monthlyPromise.isRegistered}
-          isOpen={isMonthlyPromiseOpen}
-          onClose={() => setIsMonthlyPromiseOpen(false)}
-          onDelete={deleteMonthlyPromise}
-          onSave={(values) => {
-            updateMonthlyPromise(values)
-            setIsMonthlyPromiseOpen(false)
-          }}
-          promise={monthlyPromise.promise}
-        />
-      ) : null}
 
       {selectedStatisticsTransaction ? (
         <TransactionFormModal
