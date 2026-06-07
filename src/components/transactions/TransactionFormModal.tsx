@@ -71,7 +71,7 @@ export default function TransactionFormModal({
         role="dialog"
       >
         <header className="mb-8 flex items-start justify-between gap-4">
-          <h2 className="m-0 pt-1 text-2xl font-extrabold text-black">{formText.title}</h2>
+          <h2 className="m-0 pt-1 text-xl font-bold text-black">{formText.title}</h2>
           <button
             aria-label="거래 입력 닫기"
             className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full bg-transparent text-3xl leading-none text-gray-300 hover:bg-(--color-warm-gray) hover:text-gray-500"

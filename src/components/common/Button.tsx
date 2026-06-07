@@ -8,10 +8,10 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 }
 
 const buttonVariantClasses: Record<ButtonVariant, string> = {
-  primary: 'border-transparent bg-black text-white',
-  secondary: 'border-black bg-white text-black',
-  ghost: 'border-transparent bg-transparent text-black',
-  soft: 'border-transparent bg-gray-100 text-gray-500',
+  primary: 'border-transparent bg-black text-white hover:bg-gray-800 active:bg-black',
+  secondary: 'border-gray-200 bg-white text-black hover:bg-gray-50 active:bg-gray-100',
+  ghost: 'border-transparent bg-transparent text-gray-700 hover:bg-gray-50 active:bg-gray-100',
+  soft: 'border-transparent bg-gray-100 text-gray-500 hover:bg-gray-200 active:bg-gray-200',
 }
 
 export default function Button({
@@ -24,7 +24,7 @@ export default function Button({
   return (
     <button
       className={[
-        'min-h-11 w-full max-w-full cursor-pointer rounded-lg border px-4 font-bold disabled:cursor-not-allowed disabled:opacity-50',
+        'min-h-12 w-full max-w-full cursor-pointer rounded-xl border px-4 text-base font-bold transition disabled:cursor-not-allowed disabled:opacity-50',
         buttonVariantClasses[variant],
         className,
       ].join(' ').trim()}

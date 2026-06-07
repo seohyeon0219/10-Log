@@ -8,14 +8,17 @@ export default function Checkbox({ children, className = '', id, ...props }: Che
   const checkboxId = id ?? props.name
 
   return (
-    <label className={['inline-flex cursor-pointer items-center gap-2 text-black', className].join(' ').trim()} htmlFor={checkboxId}>
+    <label
+      className={['inline-flex cursor-pointer items-center gap-2.5 text-black', className].join(' ').trim()}
+      htmlFor={checkboxId}
+    >
       <input
-        className="h-5 w-5 rounded border-black accent-black"
+        className="h-5 w-5 rounded-md border-gray-300 accent-black"
         id={checkboxId}
         type="checkbox"
         {...props}
       />
-      <strong className="font-bold">{children}</strong>
+      <strong className="text-sm font-semibold text-gray-600">{children}</strong>
     </label>
   )
 }

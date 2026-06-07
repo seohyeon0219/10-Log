@@ -74,7 +74,7 @@ export default function TransactionFormBottomSheet({
           <header className="mb-6 grid gap-3">
             <span aria-hidden="true" className="mx-auto h-1 w-9 rounded-full bg-gray-200" />
             <div className="flex items-start justify-between gap-4">
-              <h2 className="m-0 pt-2 text-2xl font-extrabold text-black">{formText.title}</h2>
+              <h2 className="m-0 pt-2 text-xl font-bold text-black">{formText.title}</h2>
               <button
                 aria-label="거래 입력 닫기"
                 className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-3xl leading-none text-gray-300 active:bg-gray-100"

@@ -135,7 +135,7 @@ export default function CategoryManageModal({
       >
         <header className="flex shrink-0 items-start justify-between gap-4 px-6 pt-6 pb-4">
           <div>
-            <h2 className="m-0 text-2xl font-extrabold text-black">카테고리 관리</h2>
+            <h2 className="m-0 text-xl font-bold text-black">카테고리 관리</h2>
             <p className="mt-2 mb-0 text-sm font-medium text-gray-400">
               기록할 때 분류할 카테고리를 정리해요
             </p>
@@ -221,7 +221,7 @@ export default function CategoryManageModal({
 
           <section className="mt-7">
             <div className="mb-3 flex items-center justify-between">
-              <h3 className="m-0 text-base font-extrabold text-black">
+              <h3 className="m-0 text-base font-bold text-black">
                 {categoryLabelByType[activeType]}
               </h3>
               <span className="text-sm font-bold text-gray-400">{activeItems.length}개</span>
