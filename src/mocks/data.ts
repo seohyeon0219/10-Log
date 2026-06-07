@@ -18,9 +18,36 @@ export const mockMonthlyMoneySummary = {
 }
 
 export const mockPreviousMonthComparison = [
-  { id: 'income', label: '수입', rate: 5 },
-  { id: 'expense', label: '지출', rate: -12 },
-  { id: 'balance', label: '잔액', rate: 18 },
+  {
+    id: 'income',
+    label: '수입',
+    rate: 5,
+    details: [
+      { label: '수입', value: 54124 },
+      { label: '고정수입', value: 120000 },
+      { label: '총수입', value: 174124, isEmphasized: true },
+    ],
+  },
+  {
+    id: 'expense',
+    label: '지출',
+    rate: -12,
+    details: [
+      { label: '지출', value: 3200 },
+      { label: '고정지출', value: 456 },
+      { label: '총지출', value: 3656, isEmphasized: true },
+    ],
+  },
+  {
+    id: 'balance',
+    label: '잔액',
+    rate: 18,
+    details: [
+      { label: '총수입', value: 174124 },
+      { label: '총지출', value: 3656 },
+      { label: '잔액', value: 170468, isEmphasized: true },
+    ],
+  },
 ]
 
 export const mockCategoryChangeRanking = {
@@ -225,4 +252,6 @@ export const mockExpenseCategories = [
   { id: 'coffee', name: '카페', color: '#ffb74d' },
   { id: 'transport', name: '교통', color: '#007fff' },
   { id: 'shopping', name: '쇼핑', color: '#ab47bc' },
+  { id: 'culture', name: '문화', color: '#00a878' },
+  { id: 'etc', name: '기타', color: '#898989' },
 ]

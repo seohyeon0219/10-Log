@@ -39,7 +39,7 @@ export default function MonthlyPromise({
       </div>
 
       <div className="mt-5 rounded-xl bg-gray-50 px-4 py-4">
-        <div className="flex items-end justify-between gap-4">
+        <div className="flex items-center justify-between gap-4">
           <p className="text-sm font-bold text-(--color-dark-gray)">목표 예산</p>
           <p className="text-xl font-extrabold tracking-normal text-black">{formatWon(budgetAmount)}</p>
         </div>

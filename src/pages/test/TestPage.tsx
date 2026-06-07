@@ -45,6 +45,15 @@ const tabs = [
 
 type TransactionType = 'income' | 'expense'
 
+type SelectedStatisticsTransaction = {
+  amount: number
+  categoryId: string
+  date: string
+  id: string
+  memo: string
+  type: TransactionType
+}
+
 const getDateKey = (date: Date, day: number) => {
   const year = date.getFullYear()
   const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -64,6 +73,7 @@ export default function TestPage() {
   const [isCategoryManageOpen, setIsCategoryManageOpen] = useState(false)
   const [isCategoryManageBottomSheetOpen, setIsCategoryManageBottomSheetOpen] = useState(false)
   const [isMonthlyPromiseOpen, setIsMonthlyPromiseOpen] = useState(false)
+  const [selectedStatisticsTransaction, setSelectedStatisticsTransaction] = useState<SelectedStatisticsTransaction | null>(null)
   const monthlyPromise = useStatisticsStore((state) => state.monthlyPromise)
   const updateMonthlyPromise = useStatisticsStore((state) => state.updateMonthlyPromise)
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
@@ -187,7 +197,10 @@ export default function TestPage() {
           <AiMonthlyReview monthLabel="6월" />
           <PreviousMonthComparison items={mockPreviousMonthComparison} />
           <CategoryChangeRanking items={mockCategoryChangeRanking} />
-          <CategoryTransactionRatio items={mockCategoryTransactionRatio} />
+          <CategoryTransactionRatio
+            items={mockCategoryTransactionRatio}
+            onSelectTransaction={setSelectedStatisticsTransaction}
+          />
           <SpendngTransactionLineChart data={mockSpendingTransactionLineChart} />
         </div>
       </section>
@@ -283,6 +296,26 @@ export default function TestPage() {
         selectedDate={selectedDate}
         type={transactionType}
       />
+
+      {selectedStatisticsTransaction ? (
+        <TransactionFormModal
+          categories={
+            selectedStatisticsTransaction.type === 'income' ? mockIncomeCategories : mockExpenseCategories
+          }
+          expenseCategories={mockExpenseCategories}
+          incomeCategories={mockIncomeCategories}
+          initialAmount={selectedStatisticsTransaction.amount}
+          initialCategoryId={selectedStatisticsTransaction.categoryId}
+          initialMemo={selectedStatisticsTransaction.memo}
+          isOpen={Boolean(selectedStatisticsTransaction)}
+          mode="edit"
+          onClose={() => setSelectedStatisticsTransaction(null)}
+          onDelete={() => setSelectedStatisticsTransaction(null)}
+          onSave={() => setSelectedStatisticsTransaction(null)}
+          selectedDate={new Date(`2026/${selectedStatisticsTransaction.date.replace('/', '/')}`)}
+          type={selectedStatisticsTransaction.type}
+        />
+      ) : null}
 
       <TransactionFormBottomSheet
         categories={transactionType === 'income' ? mockIncomeCategories : mockExpenseCategories}

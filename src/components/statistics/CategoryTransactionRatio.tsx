@@ -7,6 +7,7 @@ type TransactionType = 'income' | 'expense'
 
 type CategoryTransaction = {
   amount: number
+  categoryId?: string
   date: string
   id: string
   memo: string
@@ -22,6 +23,14 @@ type CategoryRatioItem = {
 
 type CategoryTransactionRatioProps = {
   items: Record<TransactionType, CategoryRatioItem[]>
+  onSelectTransaction?: (transaction: {
+    amount: number
+    categoryId: string
+    date: string
+    id: string
+    memo: string
+    type: TransactionType
+  }) => void
 }
 
 const getDonutGradient = (items: CategoryRatioItem[], totalAmount: number) => {
@@ -39,7 +48,7 @@ const getDonutGradient = (items: CategoryRatioItem[], totalAmount: number) => {
     .join(', ')
 }
 
-export default function CategoryTransactionRatio({ items }: CategoryTransactionRatioProps) {
+export default function CategoryTransactionRatio({ items, onSelectTransaction }: CategoryTransactionRatioProps) {
   const ratioType = useStatisticsStore((state) => state.ratioType)
   const selectedCategoryId = useStatisticsStore((state) => state.ratioSelectedCategoryId)
   const setRatioType = useStatisticsStore((state) => state.setRatioType)
@@ -97,13 +106,16 @@ export default function CategoryTransactionRatio({ items }: CategoryTransactionR
         </div>
       </div>
 
-      <div className="mt-5 rounded-xl bg-gray-50 p-4">
+      <div className="mt-5 rounded-xl border border-gray-200 bg-white p-4 shadow-[0_4px_14px_rgba(0,0,0,0.03)]">
         <div className="flex items-end justify-between gap-3">
-          <p className="text-sm font-extrabold text-black">{selectedItem.label}</p>
-          <p className="text-sm font-bold text-(--color-dark-gray)">{selectedItem.amount.toLocaleString('ko-KR')}원</p>
+          <div>
+            <p className="text-sm font-bold text-black">{selectedItem.label} 내역</p>
+            {/* <p className="mt-1 text-xs font-bold text-gray-400">거래를 누르면 수정할 수 있어요</p> */}
+          </div>
+          <p className="text-sm font-extrabold text-(--color-dark-gray)">{selectedItem.amount.toLocaleString('ko-KR')}원</p>
         </div>
 
-        <div className="mt-3 grid gap-1 border-t border-gray-100 pt-2">
+        <div className="mt-4 grid gap-1 border-t border-gray-100 pt-2">
           {selectedItem.transactions.map((transaction) => (
             <SimpleListItem
               amount={transaction.amount}
@@ -112,6 +124,13 @@ export default function CategoryTransactionRatio({ items }: CategoryTransactionR
               date={transaction.date}
               key={transaction.id}
               memo={transaction.memo}
+              onClick={() =>
+                onSelectTransaction?.({
+                  ...transaction,
+                  categoryId: transaction.categoryId ?? selectedItem.id,
+                  type: ratioType,
+                })
+              }
               type={ratioType}
             />
           ))}

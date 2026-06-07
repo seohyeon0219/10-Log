@@ -10,10 +10,12 @@ type MonthlyPromise = {
 type TransactionType = 'income' | 'expense'
 
 type StatisticsStore = {
+  lineChartSelectedPointIndex: number | null
   lineChartType: TransactionType
   monthlyPromise: MonthlyPromise
   ratioSelectedCategoryId: string
   ratioType: TransactionType
+  setLineChartSelectedPointIndex: (index: number | null) => void
   setLineChartType: (type: TransactionType) => void
   setRatioSelectedCategoryId: (categoryId: string) => void
   setRatioType: (type: TransactionType) => void
@@ -21,11 +23,17 @@ type StatisticsStore = {
 }
 
 export const useStatisticsStore = create<StatisticsStore>((set) => ({
+  lineChartSelectedPointIndex: null,
   lineChartType: 'expense',
   monthlyPromise: mockMonthlyPromise,
   ratioSelectedCategoryId: 'food',
   ratioType: 'expense',
-  setLineChartType: (type) => set({ lineChartType: type }),
+  setLineChartSelectedPointIndex: (index) => set({ lineChartSelectedPointIndex: index }),
+  setLineChartType: (type) =>
+    set({
+      lineChartSelectedPointIndex: null,
+      lineChartType: type,
+    }),
   setRatioSelectedCategoryId: (categoryId) => set({ ratioSelectedCategoryId: categoryId }),
   setRatioType: (type) =>
     set({

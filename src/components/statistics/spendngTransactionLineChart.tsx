@@ -69,7 +69,10 @@ const lineColorByType: Record<TransactionType, string> = {
 export default function SpendngTransactionLineChart({ data }: SpendngTransactionLineChartProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [chartWidth, setChartWidth] = useState(420)
+  const [hoveredPointIndex, setHoveredPointIndex] = useState<number | null>(null)
+  const selectedPointIndex = useStatisticsStore((state) => state.lineChartSelectedPointIndex)
   const lineChartType = useStatisticsStore((state) => state.lineChartType)
+  const setSelectedPointIndex = useStatisticsStore((state) => state.setLineChartSelectedPointIndex)
   const setLineChartType = useStatisticsStore((state) => state.setLineChartType)
 
   useEffect(() => {
@@ -93,6 +96,10 @@ export default function SpendngTransactionLineChart({ data }: SpendngTransaction
   const chartPoints = getChartPoints(activePoints, maxAmount, chartWidth)
   const polylinePoints = chartPoints.map((point) => `${point.x},${point.y}`).join(' ')
   const gridLines = getGridLines(maxAmount)
+  const activePointIndex = hoveredPointIndex ?? selectedPointIndex
+  const activePoint = activePointIndex !== null ? chartPoints[activePointIndex] : null
+  const tooltipX = activePoint ? Math.min(Math.max(activePoint.x, plotLeft + 42), chartWidth - plotRight - 42) : 0
+  const tooltipY = activePoint ? Math.max(activePoint.y - 42, 10) : 0
 
   return (
     <StatisticsCard
@@ -122,8 +129,32 @@ export default function SpendngTransactionLineChart({ data }: SpendngTransaction
               </g>
             ))}
             <polyline fill="none" points={polylinePoints} stroke={lineColor} strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" />
-            {chartPoints.map((point) => (
-              <circle cx={point.x} cy={point.y} fill="white" key={point.month} r="5" stroke={lineColor} strokeWidth="3" />
+            {activePoint ? (
+              <g>
+                <line stroke={lineColor} strokeDasharray="3 4" strokeWidth="1.5" x1={activePoint.x} x2={activePoint.x} y1={plotTop} y2={plotTop + plotHeight} />
+                <rect fill="white" height="34" rx="9" stroke="#e5e7eb" width="84" x={tooltipX - 42} y={tooltipY} />
+                <text fill="#111111" fontSize="11" fontWeight="800" textAnchor="middle" x={tooltipX} y={tooltipY + 14}>
+                  {activePoint.month}
+                </text>
+                <text fill={lineColor} fontSize="11" fontWeight="800" textAnchor="middle" x={tooltipX} y={tooltipY + 28}>
+                  {formatWon(activePoint.amount)}
+                </text>
+              </g>
+            ) : null}
+            {chartPoints.map((point, index) => (
+              <circle
+                cx={point.x}
+                cy={point.y}
+                fill="white"
+                key={point.month}
+                onClick={() => setSelectedPointIndex(selectedPointIndex === index ? null : index)}
+                onMouseEnter={() => setHoveredPointIndex(index)}
+                onMouseLeave={() => setHoveredPointIndex(null)}
+                r={activePointIndex === index ? '7' : '5'}
+                stroke={lineColor}
+                strokeWidth="3"
+                style={{ cursor: 'pointer' }}
+              />
             ))}
             {chartPoints.map((point) => (
               <text fill="#9ca3af" fontSize="11" fontWeight="700" key={point.month} textAnchor="middle" x={point.x} y={chartHeight - 12}>
