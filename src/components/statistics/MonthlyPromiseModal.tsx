@@ -6,21 +6,25 @@ import UnderInput from '../common/UnderInput'
 
 type MonthlyPromiseModalProps = {
   budgetAmount: number
+  isRegistered: boolean
   isOpen: boolean
   onClose: () => void
+  onDelete: () => void
   onSave: (values: { budgetAmount: number; promise: string }) => void
   promise: string
 }
 
 export default function MonthlyPromiseModal({
   budgetAmount,
+  isRegistered,
   isOpen,
   onClose,
+  onDelete,
   onSave,
   promise,
 }: MonthlyPromiseModalProps) {
   const [budgetValue, setBudgetValue] = useState(String(budgetAmount))
-  const [promiseValue, setPromiseValue] = useState(promise)
+  const [promiseValue, setPromiseValue] = useState(isRegistered ? promise : '')
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -32,7 +36,12 @@ export default function MonthlyPromiseModal({
   }
 
   return (
-    <FormModal description="이번 달 돈 관리의 기준을 정해보세요." isOpen={isOpen} onClose={onClose} title="월간 다짐 수정">
+    <FormModal
+      description="이번 달 돈 관리의 기준을 정해보세요."
+      isOpen={isOpen}
+      onClose={onClose}
+      title={isRegistered ? '월간 다짐 수정' : '월간 다짐 등록'}
+    >
       <form className="grid gap-5" onSubmit={handleSubmit}>
         <div className="rounded-xl bg-yellow-50 px-4 py-4 max-[380px]:px-3">
           <p className="text-base font-bold text-black">이번 달 나와의 약속</p>
@@ -62,8 +71,15 @@ export default function MonthlyPromiseModal({
         </div>
 
         <div className="grid grid-cols-[96px_minmax(0,1fr)] gap-3 pt-1">
-          <Button onClick={onClose} variant="soft">
-            취소
+          <Button
+            disabled={!isRegistered}
+            onClick={() => {
+              onDelete()
+              onClose()
+            }}
+            variant="soft"
+          >
+            삭제
           </Button>
           <Button disabled={!promiseValue.trim() || Number(budgetValue) <= 0} type="submit">
             저장

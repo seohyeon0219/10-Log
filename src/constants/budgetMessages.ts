@@ -15,6 +15,8 @@ export const BUDGET_MESSAGES = {
   ],
 } as const
 
+export const DEFAULT_MONTHLY_PROMISE = '이번 달의 돈 관리 다짐을 등록해보세요!'
+
 export type BudgetStatus = keyof typeof BUDGET_MESSAGES
 
 export const getBudgetStatus = (spent: number, budget: number): BudgetStatus => {

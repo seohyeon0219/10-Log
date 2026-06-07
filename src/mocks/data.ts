@@ -1,3 +1,5 @@
+import { DEFAULT_MONTHLY_PROMISE } from '../constants/budgetMessages'
+
 export const mockMonthlySummary = {
   expense: 3200,
   fixedExpense: 456,
@@ -7,8 +9,9 @@ export const mockMonthlySummary = {
 
 export const mockMonthlyPromise = {
   budgetAmount: 200000,
+  isRegistered: false,
   monthLabel: '이번 달',
-  promise: '예산 안에서 필요한 만큼만 쓰기',
+  promise: DEFAULT_MONTHLY_PROMISE,
 }
 
 export const mockMonthlyMoneySummary = {

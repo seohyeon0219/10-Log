@@ -1,8 +1,10 @@
 import { create } from 'zustand'
+import { DEFAULT_MONTHLY_PROMISE } from '../constants/budgetMessages'
 import { mockMonthlyPromise } from '../mocks/data'
 
 type MonthlyPromise = {
   budgetAmount: number
+  isRegistered: boolean
   monthLabel: string
   promise: string
 }
@@ -15,6 +17,7 @@ type StatisticsStore = {
   monthlyPromise: MonthlyPromise
   ratioSelectedCategoryId: string
   ratioType: TransactionType
+  deleteMonthlyPromise: () => void
   setLineChartSelectedPointIndex: (index: number | null) => void
   setLineChartType: (type: TransactionType) => void
   setRatioSelectedCategoryId: (categoryId: string) => void
@@ -28,6 +31,14 @@ export const useStatisticsStore = create<StatisticsStore>((set) => ({
   monthlyPromise: mockMonthlyPromise,
   ratioSelectedCategoryId: 'food',
   ratioType: 'expense',
+  deleteMonthlyPromise: () =>
+    set((state) => ({
+      monthlyPromise: {
+        ...state.monthlyPromise,
+        isRegistered: false,
+        promise: DEFAULT_MONTHLY_PROMISE,
+      },
+    })),
   setLineChartSelectedPointIndex: (index) => set({ lineChartSelectedPointIndex: index }),
   setLineChartType: (type) =>
     set({
@@ -44,6 +55,7 @@ export const useStatisticsStore = create<StatisticsStore>((set) => ({
     set((state) => ({
       monthlyPromise: {
         ...state.monthlyPromise,
+        isRegistered: true,
         ...values,
       },
     })),

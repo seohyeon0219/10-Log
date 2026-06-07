@@ -10,7 +10,6 @@ import Tabs from '../../components/common/Tabs'
 import Textarea from '../../components/common/Textarea'
 import UnderInput from '../../components/common/UnderInput'
 import Header from '../../components/desktop/Header'
-import AiMonthlyReview from '../../components/statistics/AiMonthlyReview'
 import CategoryChangeRanking from '../../components/statistics/CategoryChangeRanking'
 import CategoryTransactionRatio from '../../components/statistics/CategoryTransactionRatio'
 import MonthlyPromiseModal from '../../components/statistics/MonthlyPromiseModal'
@@ -74,6 +73,7 @@ export default function TestPage() {
   const [isCategoryManageBottomSheetOpen, setIsCategoryManageBottomSheetOpen] = useState(false)
   const [isMonthlyPromiseOpen, setIsMonthlyPromiseOpen] = useState(false)
   const [selectedStatisticsTransaction, setSelectedStatisticsTransaction] = useState<SelectedStatisticsTransaction | null>(null)
+  const deleteMonthlyPromise = useStatisticsStore((state) => state.deleteMonthlyPromise)
   const monthlyPromise = useStatisticsStore((state) => state.monthlyPromise)
   const updateMonthlyPromise = useStatisticsStore((state) => state.updateMonthlyPromise)
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
@@ -189,12 +189,12 @@ export default function TestPage() {
         <div className="grid gap-4">
           <MonthlyPromise
             budgetAmount={monthlyPromise.budgetAmount}
+            isRegistered={monthlyPromise.isRegistered}
             monthLabel={monthlyPromise.monthLabel}
             onEdit={() => setIsMonthlyPromiseOpen(true)}
             promise={monthlyPromise.promise}
           />
           <MonthlyMoneySummary {...mockMonthlyMoneySummary} budgetAmount={monthlyPromise.budgetAmount} />
-          <AiMonthlyReview monthLabel="6월" />
           <PreviousMonthComparison items={mockPreviousMonthComparison} />
           <CategoryChangeRanking items={mockCategoryChangeRanking} />
           <CategoryTransactionRatio
@@ -266,8 +266,10 @@ export default function TestPage() {
       {isMonthlyPromiseOpen ? (
         <MonthlyPromiseModal
           budgetAmount={monthlyPromise.budgetAmount}
+          isRegistered={monthlyPromise.isRegistered}
           isOpen={isMonthlyPromiseOpen}
           onClose={() => setIsMonthlyPromiseOpen(false)}
+          onDelete={deleteMonthlyPromise}
           onSave={(values) => {
             updateMonthlyPromise(values)
             setIsMonthlyPromiseOpen(false)

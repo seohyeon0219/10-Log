@@ -1,3 +1,10 @@
+import AiMonthlyReview from '../../components/review/AiMonthlyReview'
+
 export default function MobileReviewContainer() {
-  return <p className="text-base font-bold text-black">회고 모바일 페이지입니다</p>
+  return (
+    <section className="w-full self-start">
+      <h2 className="mb-4 text-xl font-bold text-black">회고</h2>
+      <AiMonthlyReview monthLabel="6월" />
+    </section>
+  )
 }

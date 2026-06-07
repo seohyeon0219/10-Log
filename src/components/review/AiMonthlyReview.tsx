@@ -1,4 +1,4 @@
-import StatisticsCard from './StatisticsCard'
+import StatisticsCard from '../statistics/StatisticsCard'
 
 type AiMonthlyReviewProps = {
   monthLabel?: string

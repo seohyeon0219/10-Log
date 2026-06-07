@@ -2,6 +2,7 @@ import StatisticsCard from './StatisticsCard'
 
 type MonthlyPromiseProps = {
   budgetAmount: number
+  isRegistered: boolean
   monthLabel: string
   onEdit?: () => void
   promise: string
@@ -11,6 +12,7 @@ const formatWon = (amount: number) => `${amount.toLocaleString('ko-KR')}원`
 
 export default function MonthlyPromise({
   budgetAmount,
+  isRegistered,
   monthLabel,
   onEdit,
   promise,
@@ -19,11 +21,16 @@ export default function MonthlyPromise({
     <StatisticsCard
       action={
         <button
-          className="min-h-8 shrink-0 cursor-pointer rounded-lg border-0 bg-gray-100 px-3 text-sm font-extrabold whitespace-nowrap text-gray-500 transition hover:bg-gray-200 active:bg-gray-200"
+          className={[
+            'min-h-8 shrink-0 cursor-pointer rounded-lg border px-3 text-sm font-extrabold whitespace-nowrap transition',
+            isRegistered
+              ? 'border-transparent bg-gray-100 text-gray-500 hover:bg-gray-200 active:bg-gray-200'
+              : 'border-transparent bg-black text-white shadow-sm hover:bg-gray-800 active:bg-black',
+          ].join(' ')}
           onClick={onEdit}
           type="button"
         >
-          수정
+          {isRegistered ? '수정' : '등록'}
         </button>
       }
       eyebrow={`${monthLabel} 다짐`}

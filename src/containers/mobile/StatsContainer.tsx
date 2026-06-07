@@ -1,3 +1,10 @@
+import StatisticsContent from '../../components/statistics/StatisticsContent'
+
 export default function MobileStatsContainer() {
-  return <p className="text-base font-bold text-black">통계 모바일 페이지입니다</p>
+  return (
+    <section className="w-full self-start">
+      <h2 className="mb-4 text-xl font-bold text-black">통계</h2>
+      <StatisticsContent />
+    </section>
+  )
 }
