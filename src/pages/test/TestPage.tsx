@@ -226,6 +226,8 @@ export default function TestPage() {
 
       <TransactionFormModal
         categories={transactionType === 'income' ? mockIncomeCategories : mockExpenseCategories}
+        expenseCategories={mockExpenseCategories}
+        incomeCategories={mockIncomeCategories}
         isOpen={isTransactionFormOpen}
         onClose={() => setIsTransactionFormOpen(false)}
         onDelete={() => setIsTransactionFormOpen(false)}
@@ -236,6 +238,8 @@ export default function TestPage() {
 
       <TransactionFormBottomSheet
         categories={transactionType === 'income' ? mockIncomeCategories : mockExpenseCategories}
+        expenseCategories={mockExpenseCategories}
+        incomeCategories={mockIncomeCategories}
         isOpen={isTransactionFormBottomSheetOpen}
         onClose={() => setIsTransactionFormBottomSheetOpen(false)}
         onDelete={() => setIsTransactionFormBottomSheetOpen(false)}

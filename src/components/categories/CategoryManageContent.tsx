@@ -196,14 +196,14 @@ export default function CategoryManageContent({
                 {category.name}
               </span>
               <button
-                className="cursor-pointer rounded-lg px-2 py-1 text-sm font-bold text-gray-400 transition hover:bg-gray-100 hover:text-black"
+                className="cursor-pointer rounded-lg px-2 py-1 text-sm font-medium text-gray-400 transition hover:bg-gray-100 hover:text-black"
                 onClick={() => handleEdit(category)}
                 type="button"
               >
                 수정
               </button>
               <button
-                className="cursor-pointer rounded-lg px-2 py-1 text-sm font-bold text-gray-400 transition hover:bg-gray-100 hover:text-(--color-expense-red)"
+                className="cursor-pointer rounded-lg px-2 py-1 text-sm font-medium text-gray-400 transition hover:bg-gray-100 hover:text-(--color-expense-red)"
                 onClick={() => handleDelete(category.id)}
                 type="button"
               >
