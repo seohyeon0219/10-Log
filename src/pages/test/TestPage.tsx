@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import CalendarDateActions from '../../components/calendar/CalendarDateActions'
 import CalendarGrid from '../../components/calendar/CalendarGrid'
-import CalendarMonthHeader from '../../components/calendar/CalendarMonthHeader'
-import CalendarMonthlySummary from '../../components/calendar/CalendarMonthlySummary'
 import Button from '../../components/common/Button'
 import Checkbox from '../../components/common/Checkbox'
 import ConfirmModal from '../../components/common/ConfirmModal'
@@ -10,7 +8,7 @@ import ListItem from '../../components/common/ListItem'
 import Tabs from '../../components/common/Tabs'
 import Textarea from '../../components/common/Textarea'
 import UnderInput from '../../components/common/UnderInput'
-import DesktopSidePanel from '../../components/sidePanel/DesktopSidePanel'
+import Header from '../../components/desktop/Header'
 import AmountInput from '../../components/transactions/AmountInput'
 import TransactionFormModal from '../../components/transactions/TransactionFormModal'
 import TransactionFormBottomSheet from '../../components/transactions/bottomSheet/TransactionFormBottomSheet'
@@ -41,7 +39,7 @@ const getDateKey = (date: Date, day: number) => {
 
 export default function TestPage() {
   const [activeTabId, setActiveTabId] = useState(tabs[0].id)
-  const [currentDate, setCurrentDate] = useState(new Date())
+  const [currentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isTransactionFormBottomSheetOpen, setIsTransactionFormBottomSheetOpen] = useState(false)
@@ -77,14 +75,6 @@ export default function TestPage() {
     })
   }
 
-  const handlePrevMonth = () => {
-    setCurrentDate((date) => new Date(date.getFullYear(), date.getMonth() - 1, 1))
-  }
-
-  const handleNextMonth = () => {
-    setCurrentDate((date) => new Date(date.getFullYear(), date.getMonth() + 1, 1))
-  }
-
   return (
     <main className="mx-auto min-h-dvh w-full max-w-8xl px-4 py-6 md:px-6">
       <section className="mb-6">
@@ -93,18 +83,8 @@ export default function TestPage() {
       </section>
 
       <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
-        <h2 className="mb-4 text-base font-bold">CalendarMonthHeader</h2>
-        <CalendarMonthHeader
-          currentDate={currentDate}
-          onNextMonth={handleNextMonth}
-          onPrevMonth={handlePrevMonth}
-        />
-        <CalendarMonthlySummary
-          expense={3200}
-          fixedExpense={456}
-          fixedIncome={120000}
-          income={54124}
-        />
+        <h2 className="mb-4 text-base font-bold">Header / Calendar</h2>
+        <Header />
         <CalendarGrid
           currentDate={currentDate}
           dayAmounts={getMockCalendarDayAmounts(currentDate)}
@@ -130,11 +110,6 @@ export default function TestPage() {
             ))}
           </div>
         ) : null}
-      </section>
-
-      <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
-        <h2 className="mb-4 text-base font-bold">DesktopSidePanel</h2>
-        <DesktopSidePanel />
       </section>
 
       <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">

@@ -3,16 +3,16 @@ import { useNavigate, useParams } from 'react-router-dom'
 import CalendarDateActions from '../../components/calendar/CalendarDateActions'
 import CalendarGrid from '../../components/calendar/CalendarGrid'
 import ListItem from '../../components/common/ListItem'
-import DesktopLayout from '../../components/layouts/DesktopLayout'
 import TransactionFormModal from '../../components/transactions/TransactionFormModal'
+import DesktopLayout from '../../layouts/DesktopLayout'
 import {
   getMockCalendarDayAmounts,
   getMockTransactions,
   mockExpenseCategories,
   mockIncomeCategories,
-  mockMonthlySummary,
-  mockNavTabs,
 } from '../../mocks/data'
+import { useCalendarStore } from '../../stores/calendarStore'
+import { useNavigationStore } from '../../stores/navigationStore'
 
 type TransactionType = 'income' | 'expense'
 
@@ -27,11 +27,14 @@ const getDateKey = (date: Date) => {
 export default function DesktopMainContainer() {
   const navigate = useNavigate()
   const { tabId } = useParams()
-  const [currentDate, setCurrentDate] = useState(new Date())
   const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
-  const activeTabId = tabId && mockNavTabs.some((tab) => tab.id === tabId) ? tabId : mockNavTabs[0].id
+  const currentDate = useCalendarStore((state) => state.currentDate)
+  const selectedDate = useCalendarStore((state) => state.selectedDate)
+  const selectDate = useCalendarStore((state) => state.selectDate)
+  const setSelectedDate = useCalendarStore((state) => state.setSelectedDate)
+  const navTabs = useNavigationStore((state) => state.tabs)
+  const activeTabId = tabId && navTabs.some((tab) => tab.id === tabId) ? tabId : navTabs[0].id
   const isCalendarTab = activeTabId === 'calendar'
   const selectedDateKey = selectedDate ? getDateKey(selectedDate) : ''
   const selectedDateTransactions = getMockTransactions(currentDate).filter(
@@ -39,57 +42,29 @@ export default function DesktopMainContainer() {
   )
 
   useEffect(() => {
-    if (!tabId || mockNavTabs.some((tab) => tab.id === tabId)) {
+    if (!tabId || navTabs.some((tab) => tab.id === tabId)) {
       return
     }
 
     navigate('/app/calendar', { replace: true })
-  }, [navigate, tabId])
-
-  const handleTabChange = (nextTabId: string) => {
-    navigate(`/app/${nextTabId}`)
-  }
+  }, [navigate, navTabs, tabId])
 
   const openTransactionForm = (type: TransactionType) => {
     setTransactionType(type)
-    setSelectedDate((date) => date ?? new Date(currentDate.getFullYear(), currentDate.getMonth(), 1))
+    if (!selectedDate) {
+      setSelectedDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), 1))
+    }
     setIsTransactionFormOpen(true)
   }
 
   const handleDateSelect = (date: Date) => {
-    const dateKey = getDateKey(date)
-
-    setSelectedDate((currentSelectedDate) => {
-      if (currentSelectedDate && getDateKey(currentSelectedDate) === dateKey) {
-        return null
-      }
-
-      return date
-    })
+    selectDate(date)
   }
 
-  const handlePrevMonth = () => {
-    setCurrentDate((date) => new Date(date.getFullYear(), date.getMonth() - 1, 1))
-    setSelectedDate(null)
-  }
-
-  const handleNextMonth = () => {
-    setCurrentDate((date) => new Date(date.getFullYear(), date.getMonth() + 1, 1))
-    setSelectedDate(null)
-  }
-
-  const activeTabLabel = mockNavTabs.find((tab) => tab.id === activeTabId)?.label ?? ''
+  const activeTabLabel = navTabs.find((tab) => tab.id === activeTabId)?.label ?? ''
 
   return (
-    <DesktopLayout
-      activeTabId={activeTabId}
-      currentDate={currentDate}
-      monthlySummary={mockMonthlySummary}
-      navTabs={mockNavTabs}
-      onNavChange={handleTabChange}
-      onNextMonth={handleNextMonth}
-      onPrevMonth={handlePrevMonth}
-    >
+    <DesktopLayout>
       {isCalendarTab ? (
         <div className="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)_380px] gap-8 mt-2">
           <div>

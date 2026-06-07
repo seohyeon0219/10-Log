@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import MobileLayout from '../components/layouts/MobileLayout'
+import MobileLayout from '../layouts/MobileLayout'
 import { mockNavTabs } from '../mocks/data'
 
 export default function MobilePage() {
