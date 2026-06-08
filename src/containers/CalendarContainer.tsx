@@ -1,19 +1,19 @@
 import { useState } from 'react'
-import CalendarGrid from '../../components/calendar/CalendarGrid'
-import MonthlyPromise from '../../components/calendar/MonthlyPromise'
-import MonthlyPromiseModal from '../../components/calendar/MonthlyPromiseModal'
+import CalendarGrid from '../components/calendar/CalendarGrid'
+import MonthlyPromise from '../components/calendar/MonthlyPromise'
+import MonthlyPromiseModal from '../components/calendar/MonthlyPromiseModal'
 import TransactionDateList, {
   type TransactionDateListItem,
-} from '../../components/transactions/TransactionDateList'
-import TransactionFormModal from '../../components/transactions/TransactionFormModal'
+} from '../components/transactions/TransactionDateList'
+import TransactionFormModal from '../components/transactions/TransactionFormModal'
 import {
   getMockCalendarDayAmounts,
   getMockTransactions,
   mockExpenseCategories,
   mockIncomeCategories,
-} from '../../mocks/data'
-import { useCalendarStore } from '../../stores/calendarStore'
-import { useStatisticsStore } from '../../stores/statisticsStore'
+} from '../mocks/data'
+import { useCalendarStore } from '../stores/calendarStore'
+import { useStatisticsStore } from '../stores/statisticsStore'
 
 type TransactionType = 'income' | 'expense'
 type TransactionFormMode = 'create' | 'edit'
@@ -26,7 +26,7 @@ const getDateKey = (date: Date) => {
   return `${year}-${month}-${day}`
 }
 
-export default function DesktopCalendarContainer() {
+export default function CalendarContainer() {
   const [isMonthlyPromiseOpen, setIsMonthlyPromiseOpen] = useState(false)
   const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
   const [editingTransaction, setEditingTransaction] = useState<TransactionDateListItem | null>(null)
@@ -71,8 +71,8 @@ export default function DesktopCalendarContainer() {
     : undefined
 
   return (
-    <>
-      <div className="mt-5">
+    <section className="w-full self-start">
+      <div className="md:mt-5">
         <MonthlyPromise
           budgetAmount={monthlyPromise.budgetAmount}
           isRegistered={monthlyPromise.isRegistered}
@@ -81,7 +81,7 @@ export default function DesktopCalendarContainer() {
         />
       </div>
 
-      <div className="mt-2 grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)_380px] gap-8">
+      <div className="mt-2 hidden min-h-0 flex-1 grid-cols-[minmax(0,1fr)_380px] gap-8 md:grid">
         <div>
           <CalendarGrid
             currentDate={currentDate}
@@ -132,6 +132,6 @@ export default function DesktopCalendarContainer() {
         selectedDate={selectedDate}
         type={transactionType}
       />
-    </>
+    </section>
   )
 }

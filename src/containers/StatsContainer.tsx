@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import CategoryChangeRanking from '../../components/statistics/CategoryChangeRanking'
-import CategoryTransactionRatio from '../../components/statistics/CategoryTransactionRatio'
-import MonthlyMoneySummary from '../../components/statistics/monthlymoneysummary'
-import PreviousMonthComparison from '../../components/statistics/PreviousMonthComparison'
-import SpendngTransactionLineChart from '../../components/statistics/spendngTransactionLineChart'
-import TransactionFormModal from '../../components/transactions/TransactionFormModal'
-import type { TransactionType } from '../../components/transactions/transactionFormConfig'
+import CategoryChangeRanking from '../components/statistics/CategoryChangeRanking'
+import CategoryTransactionRatio from '../components/statistics/CategoryTransactionRatio'
+import MonthlyMoneySummary from '../components/statistics/monthlymoneysummary'
+import PreviousMonthComparison from '../components/statistics/PreviousMonthComparison'
+import SpendngTransactionLineChart from '../components/statistics/spendngTransactionLineChart'
+import TransactionFormModal from '../components/transactions/TransactionFormModal'
+import type { TransactionType } from '../components/transactions/transactionFormConfig'
 import {
   mockCategoryChangeRanking,
   mockCategoryTransactionRatio,
@@ -14,8 +14,8 @@ import {
   mockMonthlyMoneySummary,
   mockPreviousMonthComparison,
   mockSpendingTransactionLineChart,
-} from '../../mocks/data'
-import { useStatisticsStore } from '../../stores/statisticsStore'
+} from '../mocks/data'
+import { useStatisticsStore } from '../stores/statisticsStore'
 
 type SelectedStatisticsTransaction = {
   amount: number
@@ -33,14 +33,14 @@ const toSelectedDate = (dateText: string) => {
   return new Date(currentYear, (month || 1) - 1, day || 1)
 }
 
-export default function DesktopStatsContainer() {
+export default function StatsContainer() {
   const [selectedStatisticsTransaction, setSelectedStatisticsTransaction] = useState<SelectedStatisticsTransaction | null>(null)
   const monthlyPromise = useStatisticsStore((state) => state.monthlyPromise)
 
   return (
-    <section className="mt-6 min-h-80">
-      <h2 className="m-0 text-xl font-bold text-black">통계</h2>
-      <div className="mt-5 grid gap-4">
+    <section className="w-full self-start md:mt-6 md:min-h-80">
+      <h2 className="mb-4 text-xl font-bold text-black md:m-0">통계</h2>
+      <div className="grid gap-4 md:mt-5">
         <MonthlyMoneySummary {...mockMonthlyMoneySummary} budgetAmount={monthlyPromise.budgetAmount} />
       </div>
 
