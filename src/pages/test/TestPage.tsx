@@ -11,6 +11,7 @@ import Textarea from '../../components/common/Textarea'
 import UnderInput from '../../components/common/UnderInput'
 import Header from '../../components/desktop/Header'
 import MonthlyPromise from '../../components/calendar/MonthlyPromise'
+import MonthlyPromiseBottomSheet from '../../components/calendar/MonthlyPromiseBottomSheet'
 import MonthlyPromiseModal from '../../components/calendar/MonthlyPromiseModal'
 import CategoryChangeRanking from '../../components/statistics/CategoryChangeRanking'
 import CategoryTransactionRatio from '../../components/statistics/CategoryTransactionRatio'
@@ -78,6 +79,7 @@ export default function TestPage() {
   const [isCategoryManageOpen, setIsCategoryManageOpen] = useState(false)
   const [isCategoryManageBottomSheetOpen, setIsCategoryManageBottomSheetOpen] = useState(false)
   const [isMonthlyPromiseOpen, setIsMonthlyPromiseOpen] = useState(false)
+  const [isMonthlyPromiseBottomSheetOpen, setIsMonthlyPromiseBottomSheetOpen] = useState(false)
   const [selectedStatisticsTransaction, setSelectedStatisticsTransaction] = useState<SelectedStatisticsTransaction | null>(null)
   const deleteMonthlyPromise = useStatisticsStore((state) => state.deleteMonthlyPromise)
   const monthlyPromise = useStatisticsStore((state) => state.monthlyPromise)
@@ -235,6 +237,9 @@ export default function TestPage() {
           <Button onClick={() => setIsCategoryManageBottomSheetOpen(true)} variant="secondary">
             카테고리 관리 바텀시트 열기
           </Button>
+          <Button onClick={() => setIsMonthlyPromiseBottomSheetOpen(true)} variant="secondary">
+            월간 다짐 바텀시트 열기
+          </Button>
           <Button onClick={() => openTransactionForm('income')} variant="secondary">
             수입 입력 모달 열기
           </Button>
@@ -297,6 +302,19 @@ export default function TestPage() {
           promise={monthlyPromise.promise}
         />
       ) : null}
+
+      <MonthlyPromiseBottomSheet
+        budgetAmount={monthlyPromise.budgetAmount}
+        isRegistered={monthlyPromise.isRegistered}
+        isOpen={isMonthlyPromiseBottomSheetOpen}
+        onClose={() => setIsMonthlyPromiseBottomSheetOpen(false)}
+        onDelete={deleteMonthlyPromise}
+        onSave={(values) => {
+          updateMonthlyPromise(values)
+          setIsMonthlyPromiseBottomSheetOpen(false)
+        }}
+        promise={monthlyPromise.promise}
+      />
 
       <TransactionListBottomSheet
         isOpen={isTransactionListOpen}
