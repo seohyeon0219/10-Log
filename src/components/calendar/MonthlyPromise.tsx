@@ -24,13 +24,13 @@ export default function MonthlyPromise({
             </span>
           </h3>
         </div>
-        <div className="flex justify-center items-center rounded-xl bg-gray-50 gap-5 px-4 py-3 max-[640px]:col-start-1 max-[640px]:row-start-2 max-[380px]:px-3">
+        <div className="flex items-center justify-center gap-5 rounded-xl bg-gray-50 px-4 py-3 max-[640px]:col-start-1 max-[640px]:row-start-2 max-[380px]:gap-3 max-[380px]:px-3">
           <p className="text-xs font-bold text-(--color-dark-gray)">목표 예산</p>
-          <p className="text-base font-extrabold tracking-normal text-black">{formatWon(budgetAmount)}</p>
+          <p className="whitespace-nowrap text-base font-extrabold tracking-normal text-black max-[380px]:text-sm">{formatWon(budgetAmount)}</p>
         </div>
         <button
           className={[
-            'min-h-9 shrink-0 cursor-pointer rounded-lg border px-3 text-sm font-extrabold whitespace-nowrap transition max-[640px]:col-start-2 max-[640px]:row-span-2 max-[640px]:row-start-1',
+            'min-h-9 shrink-0 cursor-pointer rounded-lg border px-3 text-sm font-extrabold whitespace-nowrap transition max-[640px]:col-start-2 max-[640px]:row-start-2',
             isRegistered
               ? 'border-transparent text-gray-500 hover:bg-gray-100 active:bg-gray-100'
               : 'border-transparent bg-black text-white shadow-sm hover:bg-gray-800 active:bg-black',
