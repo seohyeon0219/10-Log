@@ -3,13 +3,13 @@ import MobileReviewContainer from '../containers/mobile/ReviewContainer'
 
 export default function ReviewPage() {
   return (
-    <div className="min-h-dvh">
+    <>
       <div className="hidden md:block">
         <DesktopReviewContainer />
       </div>
       <div className="block md:hidden">
         <MobileReviewContainer />
       </div>
-    </div>
+    </>
   )
 }
