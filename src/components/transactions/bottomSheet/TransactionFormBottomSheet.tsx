@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import CategoryManageBottomSheet from '../../categories/CategoryManageBottomSheet'
 import BottomSheet from '../../common/BottomSheet'
 import TransactionFormContent from '../TransactionFormContent'
@@ -40,37 +39,32 @@ export default function TransactionFormBottomSheet({
   selectedDate,
   type,
 }: TransactionFormBottomSheetProps) {
-  const [isCategoryManageOpen, setIsCategoryManageOpen] = useState(false)
   const formText = transactionFormTextByType[type]
   const canManageCategories = Boolean(expenseCategories?.length && incomeCategories?.length)
   const title = mode === 'edit' ? formText.editTitle : formText.createTitle
 
   return (
-    <>
-      <BottomSheet isOpen={isOpen} onClose={onClose} title={title}>
-        <TransactionFormContent
-          categories={categories}
-          fixedLabel={formText.fixedLabel}
-          initialAmount={initialAmount}
-          initialCategoryId={initialCategoryId}
-          initialMemo={initialMemo}
-          onDelete={onDelete}
-          onManageCategories={canManageCategories ? () => setIsCategoryManageOpen(true) : undefined}
-          onSave={onSave}
-          selectedDate={selectedDate}
-          submitText={mode === 'edit' ? '수정 저장' : '저장'}
-          type={type}
-        />
-      </BottomSheet>
-
-      {canManageCategories ? (
-        <CategoryManageBottomSheet
-          expenseCategories={expenseCategories ?? []}
-          incomeCategories={incomeCategories ?? []}
-          isOpen={isCategoryManageOpen}
-          onClose={() => setIsCategoryManageOpen(false)}
-        />
-      ) : null}
-    </>
+    <BottomSheet isOpen={isOpen} onClose={onClose} title={title}>
+      <TransactionFormContent
+        categories={categories}
+        categoryManageOverlay={canManageCategories ? (isOpen, onClose) => (
+          <CategoryManageBottomSheet
+            expenseCategories={expenseCategories ?? []}
+            incomeCategories={incomeCategories ?? []}
+            isOpen={isOpen}
+            onClose={onClose}
+          />
+        ) : undefined}
+        fixedLabel={formText.fixedLabel}
+        initialAmount={initialAmount}
+        initialCategoryId={initialCategoryId}
+        initialMemo={initialMemo}
+        onDelete={onDelete}
+        onSave={onSave}
+        selectedDate={selectedDate}
+        submitText={mode === 'edit' ? '수정 저장' : '저장'}
+        type={type}
+      />
+    </BottomSheet>
   )
 }

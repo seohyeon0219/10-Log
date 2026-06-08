@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, ReactNode } from 'react'
 import CategorySelect from '../categories/CategorySelect'
 import Button from '../common/Button'
 import Checkbox from '../common/Checkbox'
@@ -9,12 +9,12 @@ import type { TransactionCategory, TransactionType } from './transactionFormConf
 
 type TransactionFormContentProps = {
   categories: TransactionCategory[]
+  categoryManageOverlay?: (isOpen: boolean, onClose: () => void) => ReactNode
   fixedLabel: string
   initialAmount?: number
   initialCategoryId?: string
   initialMemo?: string
   onDelete?: () => void
-  onManageCategories?: () => void
   onSave?: () => void
   selectedDate?: Date | null
   submitText?: string
@@ -31,12 +31,12 @@ const toInputDateValue = (date: Date) => {
 
 export default function TransactionFormContent({
   categories,
+  categoryManageOverlay,
   fixedLabel,
   initialAmount,
   initialCategoryId,
   initialMemo,
   onDelete,
-  onManageCategories,
   onSave,
   selectedDate,
   submitText = '저장',
@@ -44,6 +44,7 @@ export default function TransactionFormContent({
 }: TransactionFormContentProps) {
   const initialSelectedCategoryId = initialCategoryId || categories[0]?.id || ''
   const [selectedCategoryId, setSelectedCategoryId] = useState(initialSelectedCategoryId)
+  const [isCategoryManageOpen, setIsCategoryManageOpen] = useState(false)
   const resolvedSelectedCategoryId = categories.some((category) => category.id === selectedCategoryId)
     ? selectedCategoryId
     : initialSelectedCategoryId
@@ -69,7 +70,7 @@ export default function TransactionFormContent({
         <CategorySelect
           categories={categories}
           onChange={setSelectedCategoryId}
-          onManageCategories={onManageCategories}
+          onManageCategories={categoryManageOverlay ? () => setIsCategoryManageOpen(true) : undefined}
           selectedCategoryId={resolvedSelectedCategoryId}
         />
 
@@ -92,6 +93,8 @@ export default function TransactionFormContent({
         </Button>
         <Button onClick={onSave}>{submitText}</Button>
       </div>
+
+      {categoryManageOverlay?.(isCategoryManageOpen, () => setIsCategoryManageOpen(false))}
     </>
   )
 }
