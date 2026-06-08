@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { mockNavTabs } from '../mocks/data'
+import { navTabs } from '../constants/navigation'
 
 type NavTab = {
   id: string
@@ -11,5 +11,5 @@ type NavigationStore = {
 }
 
 export const useNavigationStore = create<NavigationStore>(() => ({
-  tabs: mockNavTabs,
+  tabs: navTabs,
 }))
