@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import CalendarGrid from '../components/calendar/CalendarGrid'
-import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
 import CalendarMonthlySummary from '../components/calendar/CalendarMonthlySummary'
 import MonthlyPromise from '../components/calendar/MonthlyPromise'
 import MonthlyPromiseBottomSheet from '../components/calendar/MonthlyPromiseBottomSheet'
@@ -35,8 +34,6 @@ export default function CalendarContainer() {
   const calendarDayAmounts = useCalendarStore((state) => state.calendarDayAmounts)
   const currentDate = useCalendarStore((state) => state.currentDate)
   const expenseCategories = useCalendarStore((state) => state.expenseCategories)
-  const goNextMonth = useCalendarStore((state) => state.goNextMonth)
-  const goPrevMonth = useCalendarStore((state) => state.goPrevMonth)
   const incomeCategories = useCalendarStore((state) => state.incomeCategories)
   const monthlySummary = useCalendarStore((state) => state.monthlySummary)
   const selectedDate = useCalendarStore((state) => state.selectedDate)
@@ -88,11 +85,6 @@ export default function CalendarContainer() {
   return (
     <section className="w-full self-start">
       <div className="md:hidden">
-        <CalendarMonthHeader
-          currentDate={currentDate}
-          onNextMonth={goNextMonth}
-          onPrevMonth={goPrevMonth}
-        />
         <CalendarMonthlySummary {...monthlySummary} />
       </div>
 

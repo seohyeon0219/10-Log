@@ -48,7 +48,7 @@ export default function MoreContainer() {
 
   return (
     <section className="w-full self-start md:mt-6 md:min-h-80">
-      <h2 className="mb-4 text-xl font-bold text-black md:m-0 md:mb-5">더보기</h2>
+      <h2 className="mb-4 hidden text-xl font-bold text-black md:mb-5 md:block">더보기</h2>
 
       {/* 프로필 */}
       <div className="mb-2 flex items-center gap-4 rounded-2xl bg-white px-5 py-5">

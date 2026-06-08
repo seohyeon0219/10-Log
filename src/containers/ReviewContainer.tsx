@@ -10,7 +10,7 @@ export default function ReviewContainer() {
 
   return (
     <section className="w-full self-start md:mt-6 md:min-h-80">
-      <h2 className="mb-4 text-xl font-bold text-black md:m-0">회고</h2>
+      <h2 className="mb-4 hidden text-xl font-bold text-black md:mb-0 md:block">회고</h2>
       <div className="md:mt-5">
         <MiniSummaryCard transactions={todayTransactions} />
       </div>

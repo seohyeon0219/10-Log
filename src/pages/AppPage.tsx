@@ -6,7 +6,7 @@ import MobileBottomNavigation from '../components/navigation/MobileBottomNavigat
 
 export default function AppPage() {
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-360 flex-col px-4 pt-15 pb-24 md:bg-white md:px-6 md:py-6 md:pt-6">
+    <main className="mx-auto flex min-h-dvh w-full max-w-360 flex-col px-4 pt-16 pb-24 md:bg-white md:px-6 md:py-6 md:pt-6">
       <div className="hidden md:block">
         <Header />
         <Nav />
