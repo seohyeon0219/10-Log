@@ -127,12 +127,12 @@ export default function CalendarGrid({
 
               <span className="mt-auto grid w-full min-w-0 gap-1">
                 {amount?.income ? (
-                  <span className="truncate text-xs font-semibold text-(--color-income-blue)">
+                  <span className="min-w-0 break-all text-[9px] leading-3 font-semibold text-(--color-income-blue) md:truncate md:text-xs md:leading-4" title={`+${formatAmount(amount.income)}`}>
                     +{formatAmount(amount.income)}
                   </span>
                 ) : null}
                 {amount?.expense ? (
-                  <span className="truncate text-xs font-semibold text-(--color-expense-red)">
+                  <span className="min-w-0 break-all text-[9px] leading-3 font-semibold text-(--color-expense-red) md:truncate md:text-xs md:leading-4" title={`-${formatAmount(amount.expense)}`}>
                     -{formatAmount(amount.expense)}
                   </span>
                 ) : null}

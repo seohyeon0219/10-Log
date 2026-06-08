@@ -1,10 +1,10 @@
 import { DEFAULT_MONTHLY_PROMISE } from '../constants/budgetMessages'
 
 export const mockMonthlySummary = {
-  expense: 3200,
-  fixedExpense: 456,
-  fixedIncome: 120000,
-  income: 54124,
+  expense: 1234000,
+  fixedExpense: 980000,
+  fixedIncome: 2450000,
+  income: 1750000,
 }
 
 export const mockMonthlyPromise = {
@@ -271,7 +271,7 @@ export const mockTransactions: MockTransaction[] = [
   },
   {
     id: 'transaction-5',
-    amount: 34000,
+    amount: 1234000,
     categoryColor: '#00a878',
     categoryName: '문화',
     day: 8,
@@ -280,7 +280,7 @@ export const mockTransactions: MockTransaction[] = [
   },
   {
     id: 'transaction-6',
-    amount: 12000,
+    amount: 980000,
     categoryColor: '#f05650',
     categoryName: '식비',
     day: 8,
@@ -289,7 +289,7 @@ export const mockTransactions: MockTransaction[] = [
   },
   {
     id: 'transaction-7',
-    amount: 80000,
+    amount: 2450000,
     categoryColor: '#4c8df6',
     categoryName: '부수입',
     day: 8,
@@ -352,7 +352,7 @@ export const mockTransactions: MockTransaction[] = [
   },
   {
     id: 'transaction-14',
-    amount: 35000,
+    amount: 1750000,
     categoryColor: '#69a7ff',
     categoryName: '용돈',
     day: 8,
