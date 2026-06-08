@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import CategoryManageBottomSheet from '../components/categories/CategoryManageBottomSheet'
 import CategoryManageModal from '../components/categories/CategoryManageModal'
+import ConfirmModal from '../components/common/ConfirmModal'
 import MenuItem from '../components/common/MenuItem'
 import { supabase } from '../lib/supabase'
 import { useCalendarStore } from '../stores/calendarStore'
@@ -28,6 +29,7 @@ function Divider() {
 export default function MoreContainer() {
   const [user, setUser] = useState<User | null>(null)
   const [isCategoryOpen, setIsCategoryOpen] = useState(false)
+  const [isLogoutOpen, setIsLogoutOpen] = useState(false)
   const expenseCategories = useCalendarStore((state) => state.expenseCategories)
   const incomeCategories = useCalendarStore((state) => state.incomeCategories)
 
@@ -79,12 +81,22 @@ export default function MoreContainer() {
       <div className="mt-1 border-t border-gray-100 pt-2">
         <button
           className="flex w-full items-center justify-center px-4 py-4 text-[15px] font-normal text-gray-400 transition active:bg-gray-50"
-          onClick={handleLogout}
+          onClick={() => setIsLogoutOpen(true)}
           type="button"
         >
           로그아웃
         </button>
       </div>
+
+      <ConfirmModal
+        cancelText="취소"
+        confirmText="로그아웃"
+        description="로그아웃하면 다시 로그인이 필요해요."
+        isOpen={isLogoutOpen}
+        onClose={() => setIsLogoutOpen(false)}
+        onConfirm={handleLogout}
+        title="로그아웃할까요?"
+      />
 
       {/* 카테고리 관리 오버레이 */}
       <div className="hidden md:block">
