@@ -173,7 +173,17 @@ const getDateKey = (date: Date, day: number) => {
   return `${year}-${month}-${dateOfMonth}`
 }
 
-export const mockTransactions = [
+type MockTransaction = {
+  amount: number
+  categoryColor: string
+  categoryName: string
+  day: number
+  id: string
+  memo: string
+  type: 'expense' | 'income'
+}
+
+export const mockTransactions: MockTransaction[] = [
   {
     id: 'transaction-1',
     amount: 12800,
@@ -202,6 +212,33 @@ export const mockTransactions = [
     type: 'expense',
   },
   {
+    id: 'transaction-5',
+    amount: 34000,
+    categoryColor: '#00a878',
+    categoryName: '문화',
+    day: 8,
+    memo: '전시 티켓',
+    type: 'expense',
+  },
+  {
+    id: 'transaction-6',
+    amount: 12000,
+    categoryColor: '#f05650',
+    categoryName: '식비',
+    day: 8,
+    memo: '점심 식사',
+    type: 'expense',
+  },
+  {
+    id: 'transaction-7',
+    amount: 80000,
+    categoryColor: '#4c8df6',
+    categoryName: '부수입',
+    day: 8,
+    memo: '작업 정산',
+    type: 'income',
+  },
+  {
     id: 'transaction-4',
     amount: 6800,
     categoryColor: '#ffb74d',
@@ -217,6 +254,12 @@ export const getMockTransactions = (currentDate: Date) =>
     ...transaction,
     date: getDateKey(currentDate, transaction.day),
   }))
+
+export const getMockTodayTransactions = (currentDate: Date) => {
+  const todayKey = getDateKey(currentDate, currentDate.getDate())
+
+  return getMockTransactions(currentDate).filter((transaction) => transaction.date === todayKey)
+}
 
 export const getMockCalendarDayAmounts = (currentDate: Date) =>
   getMockTransactions(currentDate).reduce<
