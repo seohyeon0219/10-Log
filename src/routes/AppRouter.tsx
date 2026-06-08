@@ -1,4 +1,8 @@
+import type { Session } from '@supabase/supabase-js'
+import { useEffect, useState } from 'react'
+import type { ReactNode } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { supabase } from '../lib/supabase'
 import AppPage from '../pages/AppPage'
 import CalendarPage from '../pages/CalendarPage'
 import LandingPage from '../pages/LandingPage'
@@ -7,12 +11,30 @@ import ReviewPage from '../pages/ReviewPage'
 import StatsPage from '../pages/StatsPage'
 import TestPage from '../pages/test/TestPage'
 
+function ProtectedRoute({ children }: { children: ReactNode }) {
+  const [session, setSession] = useState<Session | null | undefined>(undefined)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSession(data.session))
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
+      setSession(session)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  if (session === undefined) return null
+  if (!session) return <Navigate to="/" replace />
+  return <>{children}</>
+}
+
 export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/app" element={<AppPage />}>
+        <Route path="/app" element={<ProtectedRoute><AppPage /></ProtectedRoute>}>
           <Route index element={<Navigate to="calendar" replace />} />
           <Route path="calendar" element={<CalendarPage />} />
           <Route path="stats" element={<StatsPage />} />
