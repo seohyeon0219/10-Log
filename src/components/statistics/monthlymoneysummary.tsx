@@ -23,13 +23,13 @@ export default function MonthlyMoneySummary({
   const reviewText = useMemo(() => getRandomMessage(budgetStatus), [budgetStatus])
 
   return (
-    <StatisticsCard eyebrow="이번 달 한줄 평" title={reviewText} titleClassName="text-xl leading-7 font-bold text-gray-800 max-[380px]:text-lg max-[380px]:leading-7">
+    <StatisticsCard eyebrow="이번 달 한줄 평" title={reviewText} titleClassName="text-xl leading-7 font-bold text-gray-800">
 
       <div className="mt-6">
-        <div className="flex items-end justify-between gap-4 max-[380px]:items-start">
+        <div className="flex items-end justify-between gap-4">
           <div>
             <p className="text-sm font-semibold text-(--color-dark-gray)">사용 금액</p>
-            <p className="mt-1 text-3xl font-extrabold text-black max-[380px]:text-2xl">{formatWon(spentAmount)}</p>
+            <p className="mt-1 text-3xl font-extrabold text-black">{formatWon(spentAmount)}</p>
           </div>
           <p className="pb-1 text-sm font-bold text-(--color-income-blue)">{usagePercent}% 사용</p>
         </div>
@@ -39,7 +39,7 @@ export default function MonthlyMoneySummary({
         </div>
 
         <p className="mt-3 text-sm font-medium leading-6 text-(--color-dark-gray)">
-          현재 {formatWon(spentAmount)} / {formatWon(budgetAmount)}을 사용하여 예산의 {usagePercent}%를 사용했습니다.
+          현재 {formatWon(spentAmount)} / {formatWon(budgetAmount)}을 사용하여 예산의 {usagePercent}%를 사용했어요.
         </p>
       </div>
 
