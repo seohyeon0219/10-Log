@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { REVIEW_LOOKBACK_COPY } from '../../constants/reviewMessages'
+import ExpandButton from '../common/ExpandButton'
 
 type LookbackSpendItem = {
   category: string
@@ -76,15 +77,12 @@ function LookbackListCard({ accentClassName, items, title }: LookbackListCardPro
       <div className="flex items-center justify-between gap-3">
         <h4 className="min-w-0 text-base font-black text-stone-950">{title}</h4>
         {hasMoreItems ? (
-          <button
-            aria-expanded={isExpanded}
-            className="group flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-stone-400 transition hover:bg-stone-50 hover:text-stone-600 active:bg-stone-100"
+          <ExpandButton
+            ariaLabel={isExpanded ? '목록 접기' : '목록 더 보기'}
+            className="shrink-0"
+            isExpanded={isExpanded}
             onClick={() => setIsExpanded((expanded) => !expanded)}
-            type="button"
-          >
-            <span className="sr-only">{isExpanded ? '목록 접기' : '목록 더 보기'}</span>
-            <LookbackExpandIcon isExpanded={isExpanded} />
-          </button>
+          />
         ) : null}
       </div>
 
@@ -133,30 +131,5 @@ function LookbackListItem({ accentClassName, index, item }: LookbackListItemProp
         <p className="mt-0.5 break-keep text-sm leading-6 font-semibold text-stone-500">{item.memo}</p>
       </div>
     </li>
-  )
-}
-
-type LookbackExpandIconProps = {
-  isExpanded: boolean
-}
-
-function LookbackExpandIcon({ isExpanded }: LookbackExpandIconProps) {
-  return (
-    <svg
-      aria-hidden="true"
-      className={isExpanded ? 'rotate-180 transition-transform' : 'transition-transform'}
-      fill="none"
-      height="7"
-      viewBox="0 0 12 7"
-      width="12"
-    >
-      <path
-        d="M1 1L6 6L11 1"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-      />
-    </svg>
   )
 }

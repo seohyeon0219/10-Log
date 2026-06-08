@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import ExpandButton from '../common/ExpandButton'
 import StatisticsCard from './StatisticsCard'
 
 type PreviousMonthComparisonItem = {
@@ -67,24 +68,12 @@ export default function PreviousMonthComparison({ items }: PreviousMonthComparis
             <dd className={['block truncate text-base font-bold', getRateClassName(item.rate)].join(' ')}>
               {getRateText(item.rate)}
             </dd>
-            <button
-              aria-expanded={expandedItemId === item.id}
-              aria-label={`${item.label} 상세 보기`}
-              className="absolute right-3 bottom-3 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-gray-400 transition hover:bg-gray-50 hover:text-gray-600 active:bg-gray-100"
+            <ExpandButton
+              ariaLabel={`${item.label} 상세 보기`}
+              className="absolute right-0 bottom-0"
+              isExpanded={expandedItemId === item.id}
               onClick={() => setExpandedItemId((currentId) => (currentId === item.id ? '' : item.id))}
-              type="button"
-            >
-              <svg
-                aria-hidden="true"
-                className={expandedItemId === item.id ? 'rotate-180 transition-transform' : 'transition-transform'}
-                fill="none"
-                height="7"
-                viewBox="0 0 12 7"
-                width="12"
-              >
-                <path d="M1 1L6 6L11 1" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
-              </svg>
-            </button>
+            />
           </div>
         ))}
       </dl>
