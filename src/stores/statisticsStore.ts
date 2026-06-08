@@ -1,6 +1,13 @@
 import { create } from 'zustand'
 import { DEFAULT_MONTHLY_PROMISE } from '../constants/budgetMessages'
-import { mockMonthlyPromise } from '../mocks/data'
+import {
+  mockCategoryChangeRanking,
+  mockCategoryTransactionRatio,
+  mockMonthlyMoneySummary,
+  mockMonthlyPromise,
+  mockPreviousMonthComparison,
+  mockSpendingTransactionLineChart,
+} from '../mocks/data'
 
 type MonthlyPromise = {
   budgetAmount: number
@@ -9,14 +16,79 @@ type MonthlyPromise = {
   promise: string
 }
 
+type MonthlyMoneySummary = {
+  budgetAmount: number
+  remainingDays: number
+  spentAmount: number
+}
+
+type PreviousMonthComparisonDetail = {
+  isEmphasized?: boolean
+  label: string
+  value: number
+}
+
+type PreviousMonthComparisonItem = {
+  details: PreviousMonthComparisonDetail[]
+  id: string
+  label: string
+  rate: number
+}
+
+type CategoryChangeRankingItem = {
+  id: string
+  label: string
+  rate: number
+}
+
+type CategoryChangeRanking = {
+  expense: CategoryChangeRankingItem[]
+  income: CategoryChangeRankingItem[]
+}
+
+type CategoryTransaction = {
+  amount: number
+  date: string
+  id: string
+  memo: string
+}
+
+type CategoryTransactionRatioItem = {
+  amount: number
+  color: string
+  id: string
+  label: string
+  transactions: CategoryTransaction[]
+}
+
+type CategoryTransactionRatio = {
+  expense: CategoryTransactionRatioItem[]
+  income: CategoryTransactionRatioItem[]
+}
+
+type LineChartPoint = {
+  amount: number
+  month: string
+}
+
+type SpendingTransactionLineChart = {
+  expense: LineChartPoint[]
+  income: LineChartPoint[]
+}
+
 type TransactionType = 'income' | 'expense'
 
 type StatisticsStore = {
+  categoryChangeRanking: CategoryChangeRanking
+  categoryTransactionRatio: CategoryTransactionRatio
   lineChartSelectedPointIndex: number | null
   lineChartType: TransactionType
+  monthlyMoneySummary: MonthlyMoneySummary
   monthlyPromise: MonthlyPromise
+  previousMonthComparison: PreviousMonthComparisonItem[]
   ratioSelectedCategoryId: string
   ratioType: TransactionType
+  spendingTransactionLineChart: SpendingTransactionLineChart
   deleteMonthlyPromise: () => void
   setLineChartSelectedPointIndex: (index: number | null) => void
   setLineChartType: (type: TransactionType) => void
@@ -26,11 +98,16 @@ type StatisticsStore = {
 }
 
 export const useStatisticsStore = create<StatisticsStore>((set) => ({
+  categoryChangeRanking: mockCategoryChangeRanking,
+  categoryTransactionRatio: mockCategoryTransactionRatio,
   lineChartSelectedPointIndex: null,
   lineChartType: 'expense',
+  monthlyMoneySummary: mockMonthlyMoneySummary,
   monthlyPromise: mockMonthlyPromise,
+  previousMonthComparison: mockPreviousMonthComparison,
   ratioSelectedCategoryId: 'food',
   ratioType: 'expense',
+  spendingTransactionLineChart: mockSpendingTransactionLineChart,
   deleteMonthlyPromise: () =>
     set((state) => ({
       monthlyPromise: {

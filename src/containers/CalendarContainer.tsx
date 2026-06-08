@@ -11,12 +11,6 @@ import TransactionDateList, {
 import TransactionFormModal from '../components/transactions/TransactionFormModal'
 import TransactionFormBottomSheet from '../components/transactions/bottomSheet/TransactionFormBottomSheet'
 import TransactionListBottomSheet from '../components/transactions/bottomSheet/TransactionListBottomSheet'
-import {
-  getMockCalendarDayAmounts,
-  getMockTransactions,
-  mockExpenseCategories,
-  mockIncomeCategories,
-} from '../mocks/data'
 import { useCalendarStore } from '../stores/calendarStore'
 import { useStatisticsStore } from '../stores/statisticsStore'
 
@@ -40,18 +34,22 @@ export default function CalendarContainer() {
   const [editingTransaction, setEditingTransaction] = useState<TransactionDateListItem | null>(null)
   const [transactionFormMode, setTransactionFormMode] = useState<TransactionFormMode>('create')
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
+  const calendarDayAmounts = useCalendarStore((state) => state.calendarDayAmounts)
   const currentDate = useCalendarStore((state) => state.currentDate)
+  const expenseCategories = useCalendarStore((state) => state.expenseCategories)
   const goNextMonth = useCalendarStore((state) => state.goNextMonth)
   const goPrevMonth = useCalendarStore((state) => state.goPrevMonth)
+  const incomeCategories = useCalendarStore((state) => state.incomeCategories)
   const monthlySummary = useCalendarStore((state) => state.monthlySummary)
   const selectedDate = useCalendarStore((state) => state.selectedDate)
   const selectDate = useCalendarStore((state) => state.selectDate)
   const setSelectedDate = useCalendarStore((state) => state.setSelectedDate)
+  const transactions = useCalendarStore((state) => state.transactions)
   const deleteMonthlyPromise = useStatisticsStore((state) => state.deleteMonthlyPromise)
   const monthlyPromise = useStatisticsStore((state) => state.monthlyPromise)
   const updateMonthlyPromise = useStatisticsStore((state) => state.updateMonthlyPromise)
   const selectedDateKey = selectedDate ? getDateKey(selectedDate) : ''
-  const selectedDateTransactions = getMockTransactions(currentDate).filter(
+  const selectedDateTransactions = transactions.filter(
     (transaction) => transaction.date === selectedDateKey,
   )
 
@@ -94,7 +92,7 @@ export default function CalendarContainer() {
     setIsTransactionListBottomSheetOpen(true)
   }
 
-  const activeCategories = transactionType === 'income' ? mockIncomeCategories : mockExpenseCategories
+  const activeCategories = transactionType === 'income' ? incomeCategories : expenseCategories
   const initialCategoryId = editingTransaction
     ? activeCategories.find((category) => category.name === editingTransaction.categoryName)?.id
     : undefined
@@ -131,7 +129,7 @@ export default function CalendarContainer() {
       <div className="mt-4 md:hidden">
         <CalendarGrid
           currentDate={currentDate}
-          dayAmounts={getMockCalendarDayAmounts(currentDate)}
+          dayAmounts={calendarDayAmounts}
           onDateSelect={selectMobileDate}
           selectedDate={selectedDate}
         />
@@ -141,7 +139,7 @@ export default function CalendarContainer() {
         <div>
           <CalendarGrid
             currentDate={currentDate}
-            dayAmounts={getMockCalendarDayAmounts(currentDate)}
+            dayAmounts={calendarDayAmounts}
             onDateSelect={selectDate}
             selectedDate={selectedDate}
           />
@@ -188,8 +186,8 @@ export default function CalendarContainer() {
 
       <TransactionFormModal
         categories={activeCategories}
-        expenseCategories={mockExpenseCategories}
-        incomeCategories={mockIncomeCategories}
+        expenseCategories={expenseCategories}
+        incomeCategories={incomeCategories}
         initialAmount={editingTransaction?.amount}
         initialCategoryId={initialCategoryId}
         initialMemo={editingTransaction?.memo}
@@ -214,8 +212,8 @@ export default function CalendarContainer() {
 
       <TransactionFormBottomSheet
         categories={activeCategories}
-        expenseCategories={mockExpenseCategories}
-        incomeCategories={mockIncomeCategories}
+        expenseCategories={expenseCategories}
+        incomeCategories={incomeCategories}
         initialAmount={editingTransaction?.amount}
         initialCategoryId={initialCategoryId}
         initialMemo={editingTransaction?.memo}

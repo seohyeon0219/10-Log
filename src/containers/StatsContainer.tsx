@@ -6,15 +6,7 @@ import PreviousMonthComparison from '../components/statistics/PreviousMonthCompa
 import SpendngTransactionLineChart from '../components/statistics/spendngTransactionLineChart'
 import TransactionFormModal from '../components/transactions/TransactionFormModal'
 import type { TransactionType } from '../components/transactions/transactionFormConfig'
-import {
-  mockCategoryChangeRanking,
-  mockCategoryTransactionRatio,
-  mockExpenseCategories,
-  mockIncomeCategories,
-  mockMonthlyMoneySummary,
-  mockPreviousMonthComparison,
-  mockSpendingTransactionLineChart,
-} from '../mocks/data'
+import { useCalendarStore } from '../stores/calendarStore'
 import { useStatisticsStore } from '../stores/statisticsStore'
 
 type SelectedStatisticsTransaction = {
@@ -35,36 +27,43 @@ const toSelectedDate = (dateText: string) => {
 
 export default function StatsContainer() {
   const [selectedStatisticsTransaction, setSelectedStatisticsTransaction] = useState<SelectedStatisticsTransaction | null>(null)
+  const expenseCategories = useCalendarStore((state) => state.expenseCategories)
+  const incomeCategories = useCalendarStore((state) => state.incomeCategories)
+  const categoryChangeRanking = useStatisticsStore((state) => state.categoryChangeRanking)
+  const categoryTransactionRatio = useStatisticsStore((state) => state.categoryTransactionRatio)
+  const monthlyMoneySummary = useStatisticsStore((state) => state.monthlyMoneySummary)
   const monthlyPromise = useStatisticsStore((state) => state.monthlyPromise)
+  const previousMonthComparison = useStatisticsStore((state) => state.previousMonthComparison)
+  const spendingTransactionLineChart = useStatisticsStore((state) => state.spendingTransactionLineChart)
 
   return (
     <section className="w-full self-start md:mt-6 md:min-h-80">
       <h2 className="mb-4 text-xl font-bold text-black md:m-0">통계</h2>
       <div className="grid gap-4 md:mt-5">
-        <MonthlyMoneySummary {...mockMonthlyMoneySummary} budgetAmount={monthlyPromise.budgetAmount} />
+        <MonthlyMoneySummary {...monthlyMoneySummary} budgetAmount={monthlyPromise.budgetAmount} />
       </div>
 
       <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)]">
-        <PreviousMonthComparison items={mockPreviousMonthComparison} />
-        <CategoryChangeRanking items={mockCategoryChangeRanking} />
+        <PreviousMonthComparison items={previousMonthComparison} />
+        <CategoryChangeRanking items={categoryChangeRanking} />
       </div>
 
       <div className="mt-4">
         <CategoryTransactionRatio
-          items={mockCategoryTransactionRatio}
+          items={categoryTransactionRatio}
           onSelectTransaction={setSelectedStatisticsTransaction}
         />
       </div>
 
       <div className="mt-4">
-        <SpendngTransactionLineChart data={mockSpendingTransactionLineChart} />
+        <SpendngTransactionLineChart data={spendingTransactionLineChart} />
       </div>
 
       {selectedStatisticsTransaction ? (
         <TransactionFormModal
-          categories={selectedStatisticsTransaction.type === 'income' ? mockIncomeCategories : mockExpenseCategories}
-          expenseCategories={mockExpenseCategories}
-          incomeCategories={mockIncomeCategories}
+          categories={selectedStatisticsTransaction.type === 'income' ? incomeCategories : expenseCategories}
+          expenseCategories={expenseCategories}
+          incomeCategories={incomeCategories}
           initialAmount={selectedStatisticsTransaction.amount}
           initialCategoryId={selectedStatisticsTransaction.categoryId}
           initialMemo={selectedStatisticsTransaction.memo}

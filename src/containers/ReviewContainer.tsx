@@ -2,10 +2,11 @@ import AiMonthlyReview from '../components/review/AiMonthlyReview'
 import DailyReviewForm from '../components/review/DailyReviewForm'
 import MiniSummaryCard from '../components/review/MiniSummaryCard'
 import ReviewLookback from '../components/review/ReviewLookback'
-import { getMockTodayTransactions, mockReviewLookback } from '../mocks/data'
+import { useReviewStore } from '../stores/reviewStore'
 
 export default function ReviewContainer() {
-  const todayTransactions = getMockTodayTransactions(new Date())
+  const reviewLookback = useReviewStore((state) => state.reviewLookback)
+  const todayTransactions = useReviewStore((state) => state.todayTransactions)
 
   return (
     <section className="w-full self-start md:mt-6 md:min-h-80">
@@ -17,7 +18,7 @@ export default function ReviewContainer() {
         <DailyReviewForm transactions={todayTransactions} />
       </div>
       <div className="mt-4">
-        <ReviewLookback {...mockReviewLookback} />
+        <ReviewLookback {...reviewLookback} />
       </div>
       <div className="mt-4">
         <AiMonthlyReview monthLabel="6월" />

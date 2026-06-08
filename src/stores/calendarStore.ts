@@ -1,5 +1,11 @@
 import { create } from 'zustand'
-import { mockMonthlySummary } from '../mocks/data'
+import {
+  getMockCalendarDayAmounts,
+  getMockTransactions,
+  mockExpenseCategories,
+  mockIncomeCategories,
+  mockMonthlySummary,
+} from '../mocks/data'
 
 type MonthlySummary = {
   expense: number
@@ -8,15 +14,42 @@ type MonthlySummary = {
   income: number
 }
 
+type Category = {
+  color: string
+  id: string
+  name: string
+}
+
+type Transaction = {
+  amount: number
+  categoryColor: string
+  categoryName: string
+  date: string
+  day: number
+  id: string
+  memo: string
+  type: 'expense' | 'income'
+}
+
+type CalendarDayAmount = {
+  date: string
+  expense?: number
+  income?: number
+}
+
 type CalendarStore = {
+  calendarDayAmounts: CalendarDayAmount[]
   clearSelectedDate: () => void
   currentDate: Date
+  expenseCategories: Category[]
   goNextMonth: () => void
   goPrevMonth: () => void
+  incomeCategories: Category[]
   monthlySummary: MonthlySummary
   selectedDate: Date | null
   selectDate: (date: Date) => void
   setSelectedDate: (date: Date | null) => void
+  transactions: Transaction[]
 }
 
 const getDateKey = (date: Date) => {
@@ -27,19 +60,34 @@ const getDateKey = (date: Date) => {
   return `${year}-${month}-${day}`
 }
 
+const initialDate = new Date()
+
 export const useCalendarStore = create<CalendarStore>((set) => ({
+  calendarDayAmounts: getMockCalendarDayAmounts(initialDate),
   clearSelectedDate: () => set({ selectedDate: null }),
-  currentDate: new Date(),
+  currentDate: initialDate,
+  expenseCategories: mockExpenseCategories,
   goNextMonth: () =>
-    set((state) => ({
-      currentDate: new Date(state.currentDate.getFullYear(), state.currentDate.getMonth() + 1, 1),
-      selectedDate: null,
-    })),
+    set((state) => {
+      const newDate = new Date(state.currentDate.getFullYear(), state.currentDate.getMonth() + 1, 1)
+      return {
+        calendarDayAmounts: getMockCalendarDayAmounts(newDate),
+        currentDate: newDate,
+        selectedDate: null,
+        transactions: getMockTransactions(newDate),
+      }
+    }),
   goPrevMonth: () =>
-    set((state) => ({
-      currentDate: new Date(state.currentDate.getFullYear(), state.currentDate.getMonth() - 1, 1),
-      selectedDate: null,
-    })),
+    set((state) => {
+      const newDate = new Date(state.currentDate.getFullYear(), state.currentDate.getMonth() - 1, 1)
+      return {
+        calendarDayAmounts: getMockCalendarDayAmounts(newDate),
+        currentDate: newDate,
+        selectedDate: null,
+        transactions: getMockTransactions(newDate),
+      }
+    }),
+  incomeCategories: mockIncomeCategories,
   monthlySummary: mockMonthlySummary,
   selectedDate: null,
   selectDate: (date) =>
@@ -51,4 +99,5 @@ export const useCalendarStore = create<CalendarStore>((set) => ({
       return { selectedDate: date }
     }),
   setSelectedDate: (date) => set({ selectedDate: date }),
+  transactions: getMockTransactions(initialDate),
 }))
