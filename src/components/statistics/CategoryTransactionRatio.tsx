@@ -58,7 +58,29 @@ export default function CategoryTransactionRatio({ items, onSelectTransaction }:
   const totalAmount = activeItems.reduce((total, item) => total + item.amount, 0)
   const selectedItem = activeItems.find((item) => item.id === selectedCategoryId) ?? activeItems[0]
   const donutGradient = getDonutGradient(activeItems, totalAmount)
-  const selectedPercent = totalAmount > 0 ? Math.round((selectedItem.amount / totalAmount) * 100) : 0
+  const selectedPercent = selectedItem && totalAmount > 0 ? Math.round((selectedItem.amount / totalAmount) * 100) : 0
+
+  if (activeItems.length === 0 || !selectedItem) {
+    return (
+      <StatisticsCard
+        action={
+          <IncomeExpenseToggle
+            onChange={(type) => {
+              setRatioType(type)
+              setSelectedCategoryId(items[type][0]?.id ?? '')
+            }}
+            value={ratioType}
+          />
+        }
+        eyebrow="카테고리 거래 비율"
+        title={`이번 달 ${ratioType === 'expense' ? '지출이' : '수입이'} 어디에 모였는지 봐요`}
+      >
+        <div className="mt-5 rounded-xl bg-gray-50 px-4 py-8 text-center text-sm font-semibold text-gray-400">
+          아직 기록된 내역이 없어요.
+        </div>
+      </StatisticsCard>
+    )
+  }
 
   return (
     <StatisticsCard

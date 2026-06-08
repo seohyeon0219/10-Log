@@ -51,17 +51,29 @@ export default function CategoryChangeRanking({ items }: CategoryChangeRankingPr
       <div className="mt-4">
         <IncomeExpenseToggle onChange={setActiveType} value={activeType} />
       </div>
-      <ol className="mt-5 grid gap-2">
-        {activeItems.map((item, index) => (
-          <li className="grid grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-3 rounded-xl bg-gray-50 px-4 py-5" key={item.id}>
-            <span className="text-sm font-extrabold text-gray-400">{index + 1}</span>
-            <span className="min-w-0 truncate text-base font-extrabold text-black">{item.label}</span>
-            <span className={['text-base font-extrabold', getRateClassName(item.rate)].join(' ')}>
-              {getRateText(item.rate)}
-            </span>
-          </li>
-        ))}
-      </ol>
+
+      {activeItems.length === 0 ? (
+        <div className="mt-5 rounded-xl bg-gray-50 px-4 py-8 text-center text-sm font-semibold text-gray-400">
+          아직 기록된 내역이 없어요.
+        </div>
+      ) : (
+        <ol className="mt-5 grid gap-2">
+          {activeItems.map((item, index) => (
+            <li
+              className="grid grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-3 rounded-xl bg-gray-50 px-4 py-5"
+              key={item.id}
+            >
+              <span className="text-sm font-extrabold text-gray-400">{index + 1}</span>
+              <span className="min-w-0 truncate text-base font-extrabold text-black">
+                {item.label}
+              </span>
+              <span className={['text-base font-extrabold', getRateClassName(item.rate)].join(' ')}>
+                {getRateText(item.rate)}
+              </span>
+            </li>
+          ))}
+        </ol>
+      )}
     </StatisticsCard>
   )
 }
