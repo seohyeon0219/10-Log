@@ -26,10 +26,8 @@ const getDateKey = (date: Date) => {
 }
 
 export default function CalendarContainer() {
-  const [isMonthlyPromiseModalOpen, setIsMonthlyPromiseModalOpen] = useState(false)
-  const [isMonthlyPromiseBottomSheetOpen, setIsMonthlyPromiseBottomSheetOpen] = useState(false)
-  const [isTransactionFormModalOpen, setIsTransactionFormModalOpen] = useState(false)
-  const [isTransactionFormBottomSheetOpen, setIsTransactionFormBottomSheetOpen] = useState(false)
+  const [isMonthlyPromiseOpen, setIsMonthlyPromiseOpen] = useState(false)
+  const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
   const [isTransactionListBottomSheetOpen, setIsTransactionListBottomSheetOpen] = useState(false)
   const [editingTransaction, setEditingTransaction] = useState<TransactionDateListItem | null>(null)
   const [transactionFormMode, setTransactionFormMode] = useState<TransactionFormMode>('create')
@@ -62,29 +60,19 @@ export default function CalendarContainer() {
     }
   }
 
-  const openTransactionFormModal = (type: TransactionType) => {
+  const openTransactionForm = (type: TransactionType) => {
     prepareTransactionForm(type, 'create')
-    setIsTransactionFormModalOpen(true)
+    setIsTransactionFormOpen(true)
   }
 
-  const openTransactionFormBottomSheet = (type: TransactionType) => {
-    prepareTransactionForm(type, 'create')
-    setIsTransactionFormBottomSheetOpen(true)
-  }
-
-  const openTransactionEditor = (transaction: TransactionDateListItem, surface: 'bottomSheet' | 'modal') => {
+  const openTransactionEditor = (transaction: TransactionDateListItem) => {
     if (transaction.type !== 'income' && transaction.type !== 'expense') {
       return
     }
 
     prepareTransactionForm(transaction.type, 'edit', { ...transaction, type: transaction.type })
-    if (surface === 'bottomSheet') {
-      setIsTransactionListBottomSheetOpen(false)
-      setIsTransactionFormBottomSheetOpen(true)
-      return
-    }
-
-    setIsTransactionFormModalOpen(true)
+    setIsTransactionListBottomSheetOpen(false)
+    setIsTransactionFormOpen(true)
   }
 
   const selectMobileDate = (date: Date) => {
@@ -112,7 +100,7 @@ export default function CalendarContainer() {
         <MonthlyPromise
           budgetAmount={monthlyPromise.budgetAmount}
           isRegistered={monthlyPromise.isRegistered}
-          onEdit={() => setIsMonthlyPromiseBottomSheetOpen(true)}
+          onEdit={() => setIsMonthlyPromiseOpen(true)}
           promise={monthlyPromise.promise}
         />
       </div>
@@ -121,7 +109,7 @@ export default function CalendarContainer() {
         <MonthlyPromise
           budgetAmount={monthlyPromise.budgetAmount}
           isRegistered={monthlyPromise.isRegistered}
-          onEdit={() => setIsMonthlyPromiseModalOpen(true)}
+          onEdit={() => setIsMonthlyPromiseOpen(true)}
           promise={monthlyPromise.promise}
         />
       </div>
@@ -147,84 +135,90 @@ export default function CalendarContainer() {
 
         <aside className="mt-9 min-h-80 rounded-xl border border-gray-100 bg-white px-4 py-4">
           <TransactionDateList
-            onAddExpense={() => openTransactionFormModal('expense')}
-            onAddIncome={() => openTransactionFormModal('income')}
-            onSelectTransaction={(transaction) => openTransactionEditor(transaction, 'modal')}
+            onAddExpense={() => openTransactionForm('expense')}
+            onAddIncome={() => openTransactionForm('income')}
+            onSelectTransaction={openTransactionEditor}
             selectedDate={selectedDate}
             transactions={selectedDateTransactions}
           />
         </aside>
       </div>
 
-      {isMonthlyPromiseModalOpen ? (
+      <div className="hidden md:block">
         <MonthlyPromiseModal
           budgetAmount={monthlyPromise.budgetAmount}
           isRegistered={monthlyPromise.isRegistered}
-          isOpen={isMonthlyPromiseModalOpen}
-          onClose={() => setIsMonthlyPromiseModalOpen(false)}
+          isOpen={isMonthlyPromiseOpen}
+          onClose={() => setIsMonthlyPromiseOpen(false)}
           onDelete={deleteMonthlyPromise}
           onSave={(values) => {
             updateMonthlyPromise(values)
-            setIsMonthlyPromiseModalOpen(false)
+            setIsMonthlyPromiseOpen(false)
           }}
           promise={monthlyPromise.promise}
         />
-      ) : null}
+      </div>
 
-      <MonthlyPromiseBottomSheet
-        budgetAmount={monthlyPromise.budgetAmount}
-        isRegistered={monthlyPromise.isRegistered}
-        isOpen={isMonthlyPromiseBottomSheetOpen}
-        onClose={() => setIsMonthlyPromiseBottomSheetOpen(false)}
-        onDelete={deleteMonthlyPromise}
-        onSave={(values) => {
-          updateMonthlyPromise(values)
-          setIsMonthlyPromiseBottomSheetOpen(false)
-        }}
-        promise={monthlyPromise.promise}
-      />
+      <div className="md:hidden">
+        <MonthlyPromiseBottomSheet
+          budgetAmount={monthlyPromise.budgetAmount}
+          isRegistered={monthlyPromise.isRegistered}
+          isOpen={isMonthlyPromiseOpen}
+          onClose={() => setIsMonthlyPromiseOpen(false)}
+          onDelete={deleteMonthlyPromise}
+          onSave={(values) => {
+            updateMonthlyPromise(values)
+            setIsMonthlyPromiseOpen(false)
+          }}
+          promise={monthlyPromise.promise}
+        />
+      </div>
 
-      <TransactionFormModal
-        categories={activeCategories}
-        expenseCategories={expenseCategories}
-        incomeCategories={incomeCategories}
-        initialAmount={editingTransaction?.amount}
-        initialCategoryId={initialCategoryId}
-        initialMemo={editingTransaction?.memo}
-        isOpen={isTransactionFormModalOpen}
-        mode={transactionFormMode}
-        onClose={() => setIsTransactionFormModalOpen(false)}
-        onDelete={() => setIsTransactionFormModalOpen(false)}
-        onSave={() => setIsTransactionFormModalOpen(false)}
-        selectedDate={selectedDate}
-        type={transactionType}
-      />
+      <div className="hidden md:block">
+        <TransactionFormModal
+          categories={activeCategories}
+          expenseCategories={expenseCategories}
+          incomeCategories={incomeCategories}
+          initialAmount={editingTransaction?.amount}
+          initialCategoryId={initialCategoryId}
+          initialMemo={editingTransaction?.memo}
+          isOpen={isTransactionFormOpen}
+          mode={transactionFormMode}
+          onClose={() => setIsTransactionFormOpen(false)}
+          onDelete={() => setIsTransactionFormOpen(false)}
+          onSave={() => setIsTransactionFormOpen(false)}
+          selectedDate={selectedDate}
+          type={transactionType}
+        />
+      </div>
 
       <TransactionListBottomSheet
         isOpen={isTransactionListBottomSheetOpen}
-        onAddExpense={() => openTransactionFormBottomSheet('expense')}
-        onAddIncome={() => openTransactionFormBottomSheet('income')}
+        onAddExpense={() => openTransactionForm('expense')}
+        onAddIncome={() => openTransactionForm('income')}
         onClose={() => setIsTransactionListBottomSheetOpen(false)}
-        onSelectTransaction={(transaction) => openTransactionEditor(transaction, 'bottomSheet')}
+        onSelectTransaction={openTransactionEditor}
         selectedDate={selectedDate}
         transactions={selectedDateTransactions}
       />
 
-      <TransactionFormBottomSheet
-        categories={activeCategories}
-        expenseCategories={expenseCategories}
-        incomeCategories={incomeCategories}
-        initialAmount={editingTransaction?.amount}
-        initialCategoryId={initialCategoryId}
-        initialMemo={editingTransaction?.memo}
-        isOpen={isTransactionFormBottomSheetOpen}
-        mode={transactionFormMode}
-        onClose={() => setIsTransactionFormBottomSheetOpen(false)}
-        onDelete={() => setIsTransactionFormBottomSheetOpen(false)}
-        onSave={() => setIsTransactionFormBottomSheetOpen(false)}
-        selectedDate={selectedDate}
-        type={transactionType}
-      />
+      <div className="md:hidden">
+        <TransactionFormBottomSheet
+          categories={activeCategories}
+          expenseCategories={expenseCategories}
+          incomeCategories={incomeCategories}
+          initialAmount={editingTransaction?.amount}
+          initialCategoryId={initialCategoryId}
+          initialMemo={editingTransaction?.memo}
+          isOpen={isTransactionFormOpen}
+          mode={transactionFormMode}
+          onClose={() => setIsTransactionFormOpen(false)}
+          onDelete={() => setIsTransactionFormOpen(false)}
+          onSave={() => setIsTransactionFormOpen(false)}
+          selectedDate={selectedDate}
+          type={transactionType}
+        />
+      </div>
     </section>
   )
 }
