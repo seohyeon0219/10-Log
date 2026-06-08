@@ -112,11 +112,10 @@ export default function CalendarGrid({
             <button
               type="button"
               className={cn(
-                'flex min-h-18 min-w-0 cursor-pointer flex-col items-start px-2 pt-2 pb-3 text-left transition md:min-h-[88px]',
+                'flex min-h-18 min-w-0 cursor-pointer flex-col items-start p-1 text-left transition md:min-h-22',
                 isSelected ? 'bg-gray-100' : 'bg-white hover:bg-gray-50 active:bg-gray-100',
-                index % 7 > 0 ? 'border-l' : '',
-                index >= 7 ? 'border-t' : '',
-                calendarBorderClassName,
+                index % 7 > 0 ? 'md:border-l md:border-gray-100' : '',
+                index >= 7 ? 'md:border-t md:border-gray-100' : '',
               )}
               key={day.dateKey}
               onClick={() => onDateSelect?.(day.date)}
@@ -127,12 +126,12 @@ export default function CalendarGrid({
 
               <span className="mt-auto grid w-full min-w-0 gap-1">
                 {amount?.income ? (
-                  <span className="min-w-0 break-all text-[9px] leading-3 font-semibold text-(--color-income-blue) md:truncate md:text-xs md:leading-4" title={`+${formatAmount(amount.income)}`}>
+                  <span className="min-w-0 break-all text-[8px] leading-3 font-semibold text-(--color-income-blue) md:truncate md:text-[13px] md:leading-4" title={`+${formatAmount(amount.income)}`}>
                     +{formatAmount(amount.income)}
                   </span>
                 ) : null}
                 {amount?.expense ? (
-                  <span className="min-w-0 break-all text-[9px] leading-3 font-semibold text-(--color-expense-red) md:truncate md:text-xs md:leading-4" title={`-${formatAmount(amount.expense)}`}>
+                  <span className="min-w-0 break-all text-[8px] leading-3 font-semibold text-(--color-expense-red) md:truncate md:text-[13px] md:leading-4" title={`-${formatAmount(amount.expense)}`}>
                     -{formatAmount(amount.expense)}
                   </span>
                 ) : null}
