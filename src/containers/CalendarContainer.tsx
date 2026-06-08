@@ -123,7 +123,7 @@ export default function CalendarContainer() {
         />
       </div>
 
-      <div className="mt-2 hidden min-h-0 flex-1 grid-cols-[minmax(0,1fr)_380px] gap-8 md:grid">
+      <div className="mt-2 hidden min-h-0 flex-1 grid-cols-[minmax(0,1fr)_300px] gap-6 md:grid lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-8">
         <div>
           <CalendarGrid
             currentDate={currentDate}
@@ -192,15 +192,18 @@ export default function CalendarContainer() {
         />
       </div>
 
-      <TransactionListBottomSheet
-        isOpen={isTransactionListBottomSheetOpen}
-        onAddExpense={() => openTransactionForm('expense')}
-        onAddIncome={() => openTransactionForm('income')}
-        onClose={() => setIsTransactionListBottomSheetOpen(false)}
-        onSelectTransaction={openTransactionEditor}
-        selectedDate={selectedDate}
-        transactions={selectedDateTransactions}
-      />
+      <div className="md:hidden">
+        <TransactionListBottomSheet
+            isOpen={isTransactionListBottomSheetOpen}
+            onAddExpense={() => openTransactionForm('expense')}
+            onAddIncome={() => openTransactionForm('income')}
+            onClose={() => setIsTransactionListBottomSheetOpen(false)}
+            onSelectTransaction={openTransactionEditor}
+            selectedDate={selectedDate}
+            transactions={selectedDateTransactions}
+          />
+      </div>
+      
 
       <div className="md:hidden">
         <TransactionFormBottomSheet
