@@ -112,7 +112,7 @@ export default function CalendarGrid({
             <button
               type="button"
               className={cn(
-                'flex min-h-[88px] min-w-0 cursor-pointer flex-col items-start px-2 pt-2 pb-3 text-left transition',
+                'flex min-h-18 min-w-0 cursor-pointer flex-col items-start px-2 pt-2 pb-3 text-left transition md:min-h-[88px]',
                 isSelected ? 'bg-gray-100' : 'bg-white hover:bg-gray-50 active:bg-gray-100',
                 index % 7 > 0 ? 'border-l' : '',
                 index >= 7 ? 'border-t' : '',
