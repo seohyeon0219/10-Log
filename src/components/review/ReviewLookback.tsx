@@ -31,19 +31,19 @@ export default function ReviewLookback({
               오늘 남긴 회고가 이번 달 소비 패턴의 단서가 돼요.
             </p>
           </div>
-          <span className="shrink-0 rounded-full border border-amber-100 bg-amber-50 px-3 py-1 text-xs font-extrabold text-amber-700">
+          <span className="w-fit max-w-full shrink-0 justify-self-start rounded-full border border-amber-100 bg-amber-50 px-3 py-1 text-xs font-extrabold text-amber-700">
             월간 회고 준비 중
           </span>
         </div>
 
         <div className="mt-5 grid gap-4 lg:grid-cols-2">
           <LookbackListCard
-            accentClassName="bg-emerald-400"
+            accentClassName="bg-green-100 text-green-600"
             items={goodSpends}
             title={REVIEW_LOOKBACK_COPY.goodSpendTitle}
           />
           <LookbackListCard
-            accentClassName="bg-rose-400"
+            accentClassName="bg-rose-100 text-rose-600"
             items={regretSpends}
             title={REVIEW_LOOKBACK_COPY.regretSpendTitle}
           />
@@ -122,7 +122,7 @@ function LookbackListItem({ accentClassName, index, item }: LookbackListItemProp
     <li className="flex min-w-0 items-start gap-3">
       <span
         className={[
-          'grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs font-black text-white',
+          'grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs font-black',
           accentClassName,
         ].join(' ')}
       >
