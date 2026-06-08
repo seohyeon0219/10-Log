@@ -15,7 +15,7 @@ type MenuGroupProps = {
 function MenuGroup({ children, title }: MenuGroupProps) {
   return (
     <div className="mb-4">
-      <p className="mb-1 px-1 text-xs font-semibold text-gray-400">{title}</p>
+      <p className="mb-1 px-1 text-xs font-medium text-gray-400">{title}</p>
       <div className="overflow-hidden rounded-2xl bg-white">{children}</div>
     </div>
   )
