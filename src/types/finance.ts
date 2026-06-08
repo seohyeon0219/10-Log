@@ -52,3 +52,11 @@ export type TransactionFormValues = {
   isFixed: boolean
   memo: string
 }
+
+export type DailyReviewValues = {
+  goodComment: string
+  goodTransactionId: string | null
+  regretComment: string
+  regretTransactionId: string | null
+  satisfactionRating: number
+}

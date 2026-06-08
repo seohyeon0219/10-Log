@@ -19,6 +19,13 @@ type ReviewTransaction = {
 }
 
 type DailyReviewFormProps = {
+  onSave?: (values: {
+    goodComment: string
+    goodTransactionId: string | null
+    regretComment: string
+    regretTransactionId: string | null
+    satisfactionRating: number
+  }) => Promise<void> | void
   transactions: ReviewTransaction[]
 }
 
@@ -32,18 +39,36 @@ type TransactionSelectFieldProps = {
 
 const formatWon = (amount: number) => `${amount.toLocaleString('ko-KR')}원`
 
-export default function DailyReviewForm({ transactions }: DailyReviewFormProps) {
+export default function DailyReviewForm({ onSave, transactions }: DailyReviewFormProps) {
   const expenseTransactions = transactions.filter((transaction) => transaction.type === 'expense')
   const [goodSpendId, setGoodSpendId] = useState('')
   const [regretSpendId, setRegretSpendId] = useState('')
   const [goodSpendComment, setGoodSpendComment] = useState('')
   const [regretSpendComment, setRegretSpendComment] = useState('')
   const [satisfactionRating, setSatisfactionRating] = useState(4)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [isSaving, setIsSaving] = useState(false)
   const [isSuccessOpen, setIsSuccessOpen] = useState(false)
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setIsSuccessOpen(true)
+    setErrorMessage('')
+    setIsSaving(true)
+
+    try {
+      await onSave?.({
+        goodComment: goodSpendComment.trim(),
+        goodTransactionId: goodSpendId || null,
+        regretComment: regretSpendComment.trim(),
+        regretTransactionId: regretSpendId || null,
+        satisfactionRating,
+      })
+      setIsSuccessOpen(true)
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : '회고를 저장하지 못했어요.')
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   return (
@@ -96,8 +121,16 @@ export default function DailyReviewForm({ transactions }: DailyReviewFormProps) 
           </div>
 
           <div className="mt-5">
-            <Button type="submit">회고 제출하기</Button>
+            <Button disabled={isSaving} type="submit">
+              {isSaving ? '저장 중...' : '회고 제출하기'}
+            </Button>
           </div>
+
+          {errorMessage ? (
+            <p className="mt-3 text-sm font-bold text-(--color-expense-red)" role="alert">
+              {errorMessage}
+            </p>
+          ) : null}
         </div>
       </form>
 
