@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
-import Header from '../components/desktop/Header'
-import Nav from '../components/desktop/Nav'
+import Header from '../components/navigation/DesktopHeader'
+import Nav from '../components/navigation/DesktopNav'
 
 type DesktopLayoutProps = {
   children: ReactNode
