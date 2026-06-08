@@ -17,8 +17,8 @@ export default function MonthlyPromise({
     <section className="rounded-2xl border border-gray-100 bg-white px-5 py-4 shadow-[0_4px_14px_rgba(0,0,0,0.03)] max-[380px]:px-4">
       <div className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-4 max-[640px]:grid-cols-[minmax(0,1fr)_auto] max-[640px]:gap-y-3">
         <div className="flex min-w-0 items-center gap-4 max-[640px]:items-start max-[380px]:gap-3">
-          <p className="shrink-0 text-sm font-semibold text-(--color-dark-gray)">한 줄 다짐</p>
-          <h3 className="min-w-0 break-keep text-xl leading-8 font-extrabold text-black max-[380px]:text-lg max-[380px]:leading-7">
+          <p className="shrink-0 text-sm font-semibold text-(--color-dark-gray) max-[640px]:mt-1">한 줄 다짐</p>
+          <h3 className="min-w-0 break-keep text-xl leading-8 font-extrabold text-black max-[640px]:text-lg max-[640px]:leading-7 max-[380px]:text-lg max-[380px]:leading-7">
             <span className="bg-linear-to-t from-yellow-200 from-50% to-transparent to-50% px-1 [box-decoration-break:clone]">
               {promise}
             </span>
