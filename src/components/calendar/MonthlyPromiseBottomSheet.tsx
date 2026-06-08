@@ -1,7 +1,7 @@
-import FormModal from '../common/FormModal'
+import BottomSheet from '../common/BottomSheet'
 import MonthlyPromiseFormContent from './MonthlyPromiseFormContent'
 
-type MonthlyPromiseModalProps = {
+type MonthlyPromiseBottomSheetProps = {
   budgetAmount: number
   isRegistered: boolean
   isOpen: boolean
@@ -11,7 +11,7 @@ type MonthlyPromiseModalProps = {
   promise: string
 }
 
-export default function MonthlyPromiseModal({
+export default function MonthlyPromiseBottomSheet({
   budgetAmount,
   isRegistered,
   isOpen,
@@ -19,9 +19,9 @@ export default function MonthlyPromiseModal({
   onDelete,
   onSave,
   promise,
-}: MonthlyPromiseModalProps) {
+}: MonthlyPromiseBottomSheetProps) {
   return (
-    <FormModal
+    <BottomSheet
       description="이번 달 돈 관리의 기준을 정해보세요."
       isOpen={isOpen}
       onClose={onClose}
@@ -35,6 +35,6 @@ export default function MonthlyPromiseModal({
         onSave={onSave}
         promise={promise}
       />
-    </FormModal>
+    </BottomSheet>
   )
 }
