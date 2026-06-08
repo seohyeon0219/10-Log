@@ -30,12 +30,17 @@ export default function MoreContainer() {
   const [user, setUser] = useState<User | null>(null)
   const [isCategoryOpen, setIsCategoryOpen] = useState(false)
   const [isLogoutOpen, setIsLogoutOpen] = useState(false)
+  const addCategory = useCalendarStore((state) => state.addCategory)
+  const deleteCategory = useCalendarStore((state) => state.deleteCategory)
   const expenseCategories = useCalendarStore((state) => state.expenseCategories)
   const incomeCategories = useCalendarStore((state) => state.incomeCategories)
+  const loadMonth = useCalendarStore((state) => state.loadMonth)
+  const updateCategory = useCalendarStore((state) => state.updateCategory)
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user))
-  }, [])
+    void loadMonth()
+  }, [loadMonth])
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -104,7 +109,10 @@ export default function MoreContainer() {
           expenseCategories={expenseCategories}
           incomeCategories={incomeCategories}
           isOpen={isCategoryOpen}
+          onCreateCategory={addCategory}
           onClose={() => setIsCategoryOpen(false)}
+          onDeleteCategory={deleteCategory}
+          onUpdateCategory={updateCategory}
         />
       </div>
       <div className="md:hidden">
@@ -112,7 +120,10 @@ export default function MoreContainer() {
           expenseCategories={expenseCategories}
           incomeCategories={incomeCategories}
           isOpen={isCategoryOpen}
+          onCreateCategory={addCategory}
           onClose={() => setIsCategoryOpen(false)}
+          onDeleteCategory={deleteCategory}
+          onUpdateCategory={updateCategory}
         />
       </div>
     </section>

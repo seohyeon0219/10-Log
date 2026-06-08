@@ -14,6 +14,12 @@ type Category = {
 type CategoryManageContentProps = {
   expenseCategories: Category[]
   incomeCategories: Category[]
+  onCreateCategory?: (values: { color: string; name: string; type: CategoryType }) => Promise<void> | void
+  onDeleteCategory?: (categoryId: string) => Promise<void> | void
+  onUpdateCategory?: (
+    categoryId: string,
+    values: { color: string; name: string },
+  ) => Promise<void> | void
 }
 
 const typeOptions: Array<{ id: CategoryType; label: string }> = [
@@ -29,59 +35,57 @@ const categoryLabelByType: Record<CategoryType, string> = {
 export default function CategoryManageContent({
   expenseCategories,
   incomeCategories,
+  onCreateCategory,
+  onDeleteCategory,
+  onUpdateCategory,
 }: CategoryManageContentProps) {
   const [activeType, setActiveType] = useState<CategoryType>('expense')
   const [editingCategoryId, setEditingCategoryId] = useState('')
-  const [expenseItems, setExpenseItems] = useState(expenseCategories)
-  const [incomeItems, setIncomeItems] = useState(incomeCategories)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [isSaving, setIsSaving] = useState(false)
   const [name, setName] = useState('')
   const [selectedColor, setSelectedColor] = useState(categoryColors[0])
-  const activeItems = activeType === 'expense' ? expenseItems : incomeItems
+  const activeItems = activeType === 'expense' ? expenseCategories : incomeCategories
   const isEditing = editingCategoryId.length > 0
   const trimmedName = name.trim()
-  const canSave = trimmedName.length > 0
+  const canSave = trimmedName.length > 0 && !isSaving
 
   const resetForm = () => {
     setEditingCategoryId('')
+    setErrorMessage('')
     setName('')
     setSelectedColor(categoryColors[0])
   }
 
-  const updateItems = (nextItems: Category[]) => {
-    if (activeType === 'expense') {
-      setExpenseItems(nextItems)
-      return
-    }
-
-    setIncomeItems(nextItems)
-  }
-
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!canSave) {
       return
     }
 
-    if (isEditing) {
-      updateItems(
-        activeItems.map((category) =>
-          category.id === editingCategoryId
-            ? { ...category, color: selectedColor, name: trimmedName }
-            : category,
-        ),
-      )
-      resetForm()
-      return
-    }
+    setErrorMessage('')
+    setIsSaving(true)
 
-    updateItems([
-      ...activeItems,
-      {
+    try {
+      if (isEditing) {
+        await onUpdateCategory?.(editingCategoryId, {
+          color: selectedColor,
+          name: trimmedName,
+        })
+        resetForm()
+        return
+      }
+
+      await onCreateCategory?.({
         color: selectedColor,
-        id: `${activeType}-${Date.now()}`,
         name: trimmedName,
-      },
-    ])
-    resetForm()
+        type: activeType,
+      })
+      resetForm()
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : '카테고리를 저장하지 못했어요.')
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   const handleEdit = (category: Category) => {
@@ -90,17 +94,24 @@ export default function CategoryManageContent({
     setSelectedColor(category.color)
   }
 
-  const handleDelete = (categoryId: string) => {
-    if (activeType === 'expense') {
-      setExpenseItems((items) => items.filter((category) => category.id !== categoryId))
-    }
+  const handleDelete = async (categoryId: string) => {
+    setErrorMessage('')
+    setIsSaving(true)
 
-    if (activeType === 'income') {
-      setIncomeItems((items) => items.filter((category) => category.id !== categoryId))
-    }
+    try {
+      await onDeleteCategory?.(categoryId)
 
-    if (editingCategoryId === categoryId) {
-      resetForm()
+      if (editingCategoryId === categoryId) {
+        resetForm()
+      }
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : '카테고리를 삭제하지 못했어요. 연결된 내역이 있는지 확인해주세요.',
+      )
+    } finally {
+      setIsSaving(false)
     }
   }
 
@@ -162,6 +173,12 @@ export default function CategoryManageContent({
               {isEditing ? '수정 저장' : '저장'}
             </Button>
           </div>
+
+          {errorMessage ? (
+            <p className="m-0 text-sm font-semibold text-(--color-expense-red)" role="alert">
+              {errorMessage}
+            </p>
+          ) : null}
         </div>
       </section>
 
@@ -188,6 +205,7 @@ export default function CategoryManageContent({
               </span>
               <button
                 className="cursor-pointer rounded-lg px-2 py-1 text-sm font-medium text-gray-400 transition hover:bg-gray-100 hover:text-black"
+                disabled={isSaving}
                 onClick={() => handleEdit(category)}
                 type="button"
               >
@@ -195,6 +213,7 @@ export default function CategoryManageContent({
               </button>
               <button
                 className="cursor-pointer rounded-lg px-2 py-1 text-sm font-medium text-gray-400 transition hover:bg-gray-100 hover:text-(--color-expense-red)"
+                disabled={isSaving}
                 onClick={() => handleDelete(category.id)}
                 type="button"
               >

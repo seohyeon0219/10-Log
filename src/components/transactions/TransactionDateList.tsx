@@ -2,10 +2,13 @@ import ListItem from '../common/ListItem'
 import TransactionDateActions from './TransactionDateActions'
 
 export type TransactionDateListItem = {
-  id: string
   amount: number
+  categoryId?: string
   categoryColor: string
   categoryName: string
+  date?: string
+  id: string
+  isFixed?: boolean
   memo?: string
   type: string
 }

@@ -1,5 +1,6 @@
 import CategoryManageModal from '../categories/CategoryManageModal'
 import FormModal from '../common/FormModal'
+import type { TransactionFormValues } from '../../types/finance'
 import TransactionFormContent from './TransactionFormContent'
 import {
   transactionFormTextByType,
@@ -14,12 +15,16 @@ type TransactionFormModalProps = {
   incomeCategories?: TransactionCategory[]
   initialAmount?: number
   initialCategoryId?: string
+  initialIsFixed?: boolean
   initialMemo?: string
   isOpen: boolean
   mode?: TransactionFormMode
   onClose: () => void
+  onCreateCategory?: Parameters<typeof CategoryManageModal>[0]['onCreateCategory']
   onDelete?: () => void
-  onSave?: () => void
+  onDeleteCategory?: Parameters<typeof CategoryManageModal>[0]['onDeleteCategory']
+  onSave?: (values: TransactionFormValues) => void
+  onUpdateCategory?: Parameters<typeof CategoryManageModal>[0]['onUpdateCategory']
   selectedDate?: Date | null
   type: TransactionType
 }
@@ -30,12 +35,16 @@ export default function TransactionFormModal({
   incomeCategories,
   initialAmount,
   initialCategoryId,
+  initialIsFixed,
   initialMemo,
   isOpen,
   mode = 'create',
   onClose,
+  onCreateCategory,
   onDelete,
+  onDeleteCategory,
   onSave,
+  onUpdateCategory,
   selectedDate,
   type,
 }: TransactionFormModalProps) {
@@ -52,12 +61,16 @@ export default function TransactionFormModal({
             expenseCategories={expenseCategories ?? []}
             incomeCategories={incomeCategories ?? []}
             isOpen={isOpen}
+            onCreateCategory={onCreateCategory}
             onClose={onClose}
+            onDeleteCategory={onDeleteCategory}
+            onUpdateCategory={onUpdateCategory}
           />
         ) : undefined}
         fixedLabel={formText.fixedLabel}
         initialAmount={initialAmount}
         initialCategoryId={initialCategoryId}
+        initialIsFixed={initialIsFixed}
         initialMemo={initialMemo}
         onDelete={onDelete}
         onSave={onSave}

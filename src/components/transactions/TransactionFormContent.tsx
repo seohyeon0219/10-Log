@@ -5,6 +5,7 @@ import Button from '../common/Button'
 import Checkbox from '../common/Checkbox'
 import Input from '../common/Input'
 import UnderInput from '../common/UnderInput'
+import type { TransactionFormValues } from '../../types/finance'
 import type { TransactionCategory, TransactionType } from './transactionFormConfig'
 
 type TransactionFormContentProps = {
@@ -13,9 +14,10 @@ type TransactionFormContentProps = {
   fixedLabel: string
   initialAmount?: number
   initialCategoryId?: string
+  initialIsFixed?: boolean
   initialMemo?: string
   onDelete?: () => void
-  onSave?: () => void
+  onSave?: (values: TransactionFormValues) => void
   selectedDate?: Date | null
   submitText?: string
   type: TransactionType
@@ -35,6 +37,7 @@ export default function TransactionFormContent({
   fixedLabel,
   initialAmount,
   initialCategoryId,
+  initialIsFixed = false,
   initialMemo,
   onDelete,
   onSave,
@@ -45,25 +48,44 @@ export default function TransactionFormContent({
   const initialSelectedCategoryId = initialCategoryId || categories[0]?.id || ''
   const [selectedCategoryId, setSelectedCategoryId] = useState(initialSelectedCategoryId)
   const [isCategoryManageOpen, setIsCategoryManageOpen] = useState(false)
+  const [amount, setAmount] = useState(initialAmount ? String(initialAmount) : '')
+  const [date, setDate] = useState(selectedDate ? toInputDateValue(selectedDate) : '')
+  const [memo, setMemo] = useState(initialMemo ?? '')
+  const [isFixed, setIsFixed] = useState(initialIsFixed)
   const resolvedSelectedCategoryId = categories.some((category) => category.id === selectedCategoryId)
     ? selectedCategoryId
     : initialSelectedCategoryId
-  const dateValue = selectedDate ? toInputDateValue(selectedDate) : ''
 
   const handleAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
-    event.currentTarget.value = event.currentTarget.value.replace(/\D/g, '')
+    setAmount(event.currentTarget.value.replace(/\D/g, ''))
+  }
+
+  const handleSave = () => {
+    const numericAmount = Number(amount)
+
+    if (!numericAmount || !resolvedSelectedCategoryId || !date) {
+      return
+    }
+
+    onSave?.({
+      amount: numericAmount,
+      categoryId: resolvedSelectedCategoryId,
+      date,
+      isFixed,
+      memo,
+    })
   }
 
   return (
     <>
       <div className="grid gap-6">
         <UnderInput
-          defaultValue={initialAmount}
           inputMode="numeric"
           label="금액"
           onChange={handleAmountChange}
           pattern="[0-9]*"
           placeholder="0"
+          value={amount}
           variant="amount"
         />
 
@@ -74,15 +96,27 @@ export default function TransactionFormContent({
           selectedCategoryId={resolvedSelectedCategoryId}
         />
 
-        <UnderInput defaultValue={dateValue} label="날짜" suffix="" type="date" />
-
-        <Input
-          defaultValue={initialMemo}
-          label="메모"
-          placeholder="기록해두고 싶은 내용을 남겨보세요."
+        <UnderInput
+          label="날짜"
+          onChange={(event) => setDate(event.currentTarget.value)}
+          suffix=""
+          type="date"
+          value={date}
         />
 
-        <Checkbox className="text-sm" name={`fixed-${type}`}>
+        <Input
+          label="메모"
+          onChange={(event) => setMemo(event.currentTarget.value)}
+          placeholder="기록해두고 싶은 내용을 남겨보세요."
+          value={memo}
+        />
+
+        <Checkbox
+          checked={isFixed}
+          className="text-sm"
+          name={`fixed-${type}`}
+          onChange={(event) => setIsFixed(event.currentTarget.checked)}
+        >
           {fixedLabel}
         </Checkbox>
       </div>
@@ -91,7 +125,7 @@ export default function TransactionFormContent({
         <Button onClick={onDelete} variant="soft">
           삭제
         </Button>
-        <Button onClick={onSave}>{submitText}</Button>
+        <Button onClick={handleSave}>{submitText}</Button>
       </div>
 
       {categoryManageOverlay?.(isCategoryManageOpen, () => setIsCategoryManageOpen(false))}

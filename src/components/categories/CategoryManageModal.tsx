@@ -11,6 +11,9 @@ type CategoryManageModalProps = {
   expenseCategories: Category[]
   incomeCategories: Category[]
   isOpen: boolean
+  onCreateCategory?: Parameters<typeof CategoryManageContent>[0]['onCreateCategory']
+  onDeleteCategory?: Parameters<typeof CategoryManageContent>[0]['onDeleteCategory']
+  onUpdateCategory?: Parameters<typeof CategoryManageContent>[0]['onUpdateCategory']
   onClose: () => void
 }
 
@@ -18,7 +21,10 @@ export default function CategoryManageModal({
   expenseCategories,
   incomeCategories,
   isOpen,
+  onCreateCategory,
   onClose,
+  onDeleteCategory,
+  onUpdateCategory,
 }: CategoryManageModalProps) {
   return (
     <FormModal
@@ -30,6 +36,9 @@ export default function CategoryManageModal({
       <CategoryManageContent
         expenseCategories={expenseCategories}
         incomeCategories={incomeCategories}
+        onCreateCategory={onCreateCategory}
+        onDeleteCategory={onDeleteCategory}
+        onUpdateCategory={onUpdateCategory}
       />
     </FormModal>
   )

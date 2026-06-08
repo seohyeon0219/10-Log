@@ -1,55 +1,47 @@
 import { create } from 'zustand'
 import {
-  getMockCalendarDayAmounts,
-  getMockTransactions,
-  mockExpenseCategories,
-  mockIncomeCategories,
-  mockMonthlySummary,
-} from '../mocks/data'
-
-type MonthlySummary = {
-  expense: number
-  fixedExpense: number
-  fixedIncome: number
-  income: number
-}
-
-type Category = {
-  color: string
-  id: string
-  name: string
-}
-
-type Transaction = {
-  amount: number
-  categoryColor: string
-  categoryName: string
-  date: string
-  day: number
-  id: string
-  memo: string
-  type: 'expense' | 'income'
-}
-
-type CalendarDayAmount = {
-  date: string
-  expense?: number
-  income?: number
-}
+  createCategory,
+  createTransaction,
+  deleteCategory,
+  deleteTransaction,
+  getCalendarDayAmounts,
+  getCategories,
+  getMonthlySummary,
+  getMonthlyTransactions,
+  updateCategory,
+  updateTransaction,
+} from '../lib/financeApi'
+import type {
+  CalendarDayAmount,
+  Category,
+  MonthlySummary,
+  Transaction,
+  TransactionFormValues,
+  TransactionType,
+} from '../types/finance'
 
 type CalendarStore = {
+  addCategory: (values: Pick<Category, 'color' | 'name' | 'type'>) => Promise<void>
+  addTransaction: (type: TransactionType, values: TransactionFormValues) => Promise<void>
   calendarDayAmounts: CalendarDayAmount[]
   clearSelectedDate: () => void
   currentDate: Date
+  deleteCategory: (categoryId: string) => Promise<void>
+  deleteTransaction: (transactionId: string) => Promise<void>
+  error: string | null
   expenseCategories: Category[]
   goNextMonth: () => void
   goPrevMonth: () => void
   incomeCategories: Category[]
+  isLoading: boolean
+  loadMonth: (date?: Date) => Promise<void>
   monthlySummary: MonthlySummary
   selectedDate: Date | null
   selectDate: (date: Date) => void
   setSelectedDate: (date: Date | null) => void
   transactions: Transaction[]
+  updateCategory: (categoryId: string, values: Pick<Category, 'color' | 'name'>) => Promise<void>
+  updateTransaction: (transactionId: string, values: TransactionFormValues) => Promise<void>
 }
 
 const getDateKey = (date: Date) => {
@@ -61,34 +53,87 @@ const getDateKey = (date: Date) => {
 }
 
 const initialDate = new Date()
+const emptyMonthlySummary = {
+  expense: 0,
+  fixedExpense: 0,
+  fixedIncome: 0,
+  income: 0,
+}
 
-export const useCalendarStore = create<CalendarStore>((set) => ({
-  calendarDayAmounts: getMockCalendarDayAmounts(initialDate),
+export const useCalendarStore = create<CalendarStore>((set, get) => ({
+  addCategory: async (values) => {
+    await createCategory(values)
+    await get().loadMonth()
+  },
+  addTransaction: async (type, values) => {
+    await createTransaction(type, values)
+    await get().loadMonth()
+  },
+  calendarDayAmounts: [],
   clearSelectedDate: () => set({ selectedDate: null }),
   currentDate: initialDate,
-  expenseCategories: mockExpenseCategories,
+  deleteCategory: async (categoryId) => {
+    await deleteCategory(categoryId)
+    await get().loadMonth()
+  },
+  deleteTransaction: async (transactionId) => {
+    await deleteTransaction(transactionId)
+    await get().loadMonth()
+  },
+  error: null,
+  expenseCategories: [],
   goNextMonth: () =>
     set((state) => {
       const newDate = new Date(state.currentDate.getFullYear(), state.currentDate.getMonth() + 1, 1)
+      void get().loadMonth(newDate)
+
       return {
-        calendarDayAmounts: getMockCalendarDayAmounts(newDate),
         currentDate: newDate,
         selectedDate: null,
-        transactions: getMockTransactions(newDate),
       }
     }),
   goPrevMonth: () =>
     set((state) => {
       const newDate = new Date(state.currentDate.getFullYear(), state.currentDate.getMonth() - 1, 1)
+      void get().loadMonth(newDate)
+
       return {
-        calendarDayAmounts: getMockCalendarDayAmounts(newDate),
         currentDate: newDate,
         selectedDate: null,
-        transactions: getMockTransactions(newDate),
       }
     }),
-  incomeCategories: mockIncomeCategories,
-  monthlySummary: mockMonthlySummary,
+  incomeCategories: [],
+  isLoading: false,
+  loadMonth: async (date) => {
+    const targetDate = date ?? get().currentDate
+
+    set({ error: null, isLoading: true })
+
+    try {
+      const [categories, transactions] = await Promise.all([
+        getCategories(),
+        getMonthlyTransactions(targetDate),
+      ])
+
+      set({
+        calendarDayAmounts: getCalendarDayAmounts(transactions),
+        currentDate: targetDate,
+        expenseCategories: categories.filter((category) => category.type === 'expense'),
+        incomeCategories: categories.filter((category) => category.type === 'income'),
+        isLoading: false,
+        monthlySummary: getMonthlySummary(transactions),
+        transactions,
+      })
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Supabase 데이터를 불러오지 못했어요.'
+
+      set({
+        error: message,
+        isLoading: false,
+      })
+    }
+  },
+  monthlySummary: emptyMonthlySummary,
   selectedDate: null,
   selectDate: (date) =>
     set((state) => {
@@ -99,5 +144,13 @@ export const useCalendarStore = create<CalendarStore>((set) => ({
       return { selectedDate: date }
     }),
   setSelectedDate: (date) => set({ selectedDate: date }),
-  transactions: getMockTransactions(initialDate),
+  transactions: [],
+  updateCategory: async (categoryId, values) => {
+    await updateCategory(categoryId, values)
+    await get().loadMonth()
+  },
+  updateTransaction: async (transactionId, values) => {
+    await updateTransaction(transactionId, values)
+    await get().loadMonth(new Date(`${values.date}T00:00:00`))
+  },
 }))

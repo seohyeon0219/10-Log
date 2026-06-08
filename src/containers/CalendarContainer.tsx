@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CalendarGrid from '../components/calendar/CalendarGrid'
 import CalendarMonthlySummary from '../components/calendar/CalendarMonthlySummary'
 import MonthlyPromise from '../components/calendar/MonthlyPromise'
@@ -33,13 +33,22 @@ export default function CalendarContainer() {
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
   const calendarDayAmounts = useCalendarStore((state) => state.calendarDayAmounts)
   const currentDate = useCalendarStore((state) => state.currentDate)
+  const addCategory = useCalendarStore((state) => state.addCategory)
+  const addTransaction = useCalendarStore((state) => state.addTransaction)
+  const deleteCategory = useCalendarStore((state) => state.deleteCategory)
+  const deleteTransaction = useCalendarStore((state) => state.deleteTransaction)
+  const error = useCalendarStore((state) => state.error)
   const expenseCategories = useCalendarStore((state) => state.expenseCategories)
   const incomeCategories = useCalendarStore((state) => state.incomeCategories)
+  const isLoading = useCalendarStore((state) => state.isLoading)
+  const loadMonth = useCalendarStore((state) => state.loadMonth)
   const monthlySummary = useCalendarStore((state) => state.monthlySummary)
   const selectedDate = useCalendarStore((state) => state.selectedDate)
   const selectDate = useCalendarStore((state) => state.selectDate)
   const setSelectedDate = useCalendarStore((state) => state.setSelectedDate)
   const transactions = useCalendarStore((state) => state.transactions)
+  const updateCategory = useCalendarStore((state) => state.updateCategory)
+  const updateTransaction = useCalendarStore((state) => state.updateTransaction)
   const deleteMonthlyPromise = useStatisticsStore((state) => state.deleteMonthlyPromise)
   const monthlyPromise = useStatisticsStore((state) => state.monthlyPromise)
   const updateMonthlyPromise = useStatisticsStore((state) => state.updateMonthlyPromise)
@@ -47,6 +56,10 @@ export default function CalendarContainer() {
   const selectedDateTransactions = transactions.filter(
     (transaction) => transaction.date === selectedDateKey,
   )
+
+  useEffect(() => {
+    void loadMonth()
+  }, [loadMonth])
 
   const prepareTransactionForm = (type: TransactionType, mode: TransactionFormMode, transaction?: TransactionDateListItem) => {
     setTransactionType(type)
@@ -79,11 +92,49 @@ export default function CalendarContainer() {
 
   const activeCategories = transactionType === 'income' ? incomeCategories : expenseCategories
   const initialCategoryId = editingTransaction
-    ? activeCategories.find((category) => category.name === editingTransaction.categoryName)?.id
+    ? editingTransaction.categoryId ??
+      activeCategories.find((category) => category.name === editingTransaction.categoryName)?.id
     : undefined
+
+  const closeTransactionForm = () => {
+    setIsTransactionFormOpen(false)
+    setEditingTransaction(null)
+  }
+
+  const saveTransaction = async (values: Parameters<typeof addTransaction>[1]) => {
+    if (transactionFormMode === 'edit' && editingTransaction) {
+      await updateTransaction(editingTransaction.id, values)
+    } else {
+      await addTransaction(transactionType, values)
+    }
+
+    closeTransactionForm()
+  }
+
+  const removeTransaction = async () => {
+    if (!editingTransaction) {
+      closeTransactionForm()
+      return
+    }
+
+    await deleteTransaction(editingTransaction.id)
+    closeTransactionForm()
+  }
 
   return (
     <section className="w-full self-start">
+      {error ? (
+        <div className="mb-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-semibold text-(--color-expense-red)">
+          {error}
+        </div>
+      ) : null}
+
+      {isLoading ? (
+        <div className="mb-4 rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-sm font-semibold text-gray-500">
+          데이터를 불러오는 중이에요.
+        </div>
+      ) : null}
+
       <div className="md:hidden">
         <CalendarMonthlySummary {...monthlySummary} />
       </div>
@@ -173,12 +224,16 @@ export default function CalendarContainer() {
           incomeCategories={incomeCategories}
           initialAmount={editingTransaction?.amount}
           initialCategoryId={initialCategoryId}
+          initialIsFixed={editingTransaction?.isFixed}
           initialMemo={editingTransaction?.memo}
           isOpen={isTransactionFormOpen}
           mode={transactionFormMode}
-          onClose={() => setIsTransactionFormOpen(false)}
-          onDelete={() => setIsTransactionFormOpen(false)}
-          onSave={() => setIsTransactionFormOpen(false)}
+          onClose={closeTransactionForm}
+          onCreateCategory={addCategory}
+          onDelete={removeTransaction}
+          onDeleteCategory={deleteCategory}
+          onSave={saveTransaction}
+          onUpdateCategory={updateCategory}
           selectedDate={selectedDate}
           type={transactionType}
         />
@@ -204,12 +259,16 @@ export default function CalendarContainer() {
           incomeCategories={incomeCategories}
           initialAmount={editingTransaction?.amount}
           initialCategoryId={initialCategoryId}
+          initialIsFixed={editingTransaction?.isFixed}
           initialMemo={editingTransaction?.memo}
           isOpen={isTransactionFormOpen}
           mode={transactionFormMode}
-          onClose={() => setIsTransactionFormOpen(false)}
-          onDelete={() => setIsTransactionFormOpen(false)}
-          onSave={() => setIsTransactionFormOpen(false)}
+          onClose={closeTransactionForm}
+          onCreateCategory={addCategory}
+          onDelete={removeTransaction}
+          onDeleteCategory={deleteCategory}
+          onSave={saveTransaction}
+          onUpdateCategory={updateCategory}
           selectedDate={selectedDate}
           type={transactionType}
         />

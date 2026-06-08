@@ -11,6 +11,9 @@ type CategoryManageBottomSheetProps = {
   expenseCategories: Category[]
   incomeCategories: Category[]
   isOpen: boolean
+  onCreateCategory?: Parameters<typeof CategoryManageContent>[0]['onCreateCategory']
+  onDeleteCategory?: Parameters<typeof CategoryManageContent>[0]['onDeleteCategory']
+  onUpdateCategory?: Parameters<typeof CategoryManageContent>[0]['onUpdateCategory']
   onClose: () => void
 }
 
@@ -18,7 +21,10 @@ export default function CategoryManageBottomSheet({
   expenseCategories,
   incomeCategories,
   isOpen,
+  onCreateCategory,
   onClose,
+  onDeleteCategory,
+  onUpdateCategory,
 }: CategoryManageBottomSheetProps) {
   return (
     <BottomSheet
@@ -30,6 +36,9 @@ export default function CategoryManageBottomSheet({
       <CategoryManageContent
         expenseCategories={expenseCategories}
         incomeCategories={incomeCategories}
+        onCreateCategory={onCreateCategory}
+        onDeleteCategory={onDeleteCategory}
+        onUpdateCategory={onUpdateCategory}
       />
     </BottomSheet>
   )
