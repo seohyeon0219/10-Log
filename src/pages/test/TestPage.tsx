@@ -78,7 +78,7 @@ export default function TestPage() {
   const [isTransactionListOpen, setIsTransactionListOpen] = useState(false)
   const [isCategoryManageOpen, setIsCategoryManageOpen] = useState(false)
   const [isCategoryManageBottomSheetOpen, setIsCategoryManageBottomSheetOpen] = useState(false)
-  const [isMonthlyPromiseOpen, setIsMonthlyPromiseOpen] = useState(false)
+  const [isMonthlyPromiseModalOpen, setIsMonthlyPromiseModalOpen] = useState(false)
   const [isMonthlyPromiseBottomSheetOpen, setIsMonthlyPromiseBottomSheetOpen] = useState(false)
   const [selectedStatisticsTransaction, setSelectedStatisticsTransaction] = useState<SelectedStatisticsTransaction | null>(null)
   const deleteMonthlyPromise = useStatisticsStore((state) => state.deleteMonthlyPromise)
@@ -199,7 +199,7 @@ export default function TestPage() {
           <MonthlyPromise
             budgetAmount={monthlyPromise.budgetAmount}
             isRegistered={monthlyPromise.isRegistered}
-            onEdit={() => setIsMonthlyPromiseOpen(true)}
+            onEdit={() => setIsMonthlyPromiseModalOpen(true)}
             promise={monthlyPromise.promise}
           />
           <MonthlyMoneySummary {...mockMonthlyMoneySummary} budgetAmount={monthlyPromise.budgetAmount} />
@@ -288,16 +288,16 @@ export default function TestPage() {
         onClose={() => setIsCategoryManageBottomSheetOpen(false)}
       />
 
-      {isMonthlyPromiseOpen ? (
+      {isMonthlyPromiseModalOpen ? (
         <MonthlyPromiseModal
           budgetAmount={monthlyPromise.budgetAmount}
           isRegistered={monthlyPromise.isRegistered}
-          isOpen={isMonthlyPromiseOpen}
-          onClose={() => setIsMonthlyPromiseOpen(false)}
+          isOpen={isMonthlyPromiseModalOpen}
+          onClose={() => setIsMonthlyPromiseModalOpen(false)}
           onDelete={deleteMonthlyPromise}
           onSave={(values) => {
             updateMonthlyPromise(values)
-            setIsMonthlyPromiseOpen(false)
+            setIsMonthlyPromiseModalOpen(false)
           }}
           promise={monthlyPromise.promise}
         />

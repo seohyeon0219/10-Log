@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { type RefObject, useLayoutEffect, useRef, useState } from 'react'
 import ExpandButton from '../common/ExpandButton'
 
 type SummaryType = 'income' | 'expense'
@@ -12,6 +12,7 @@ type CalendarMonthlySummaryProps = {
 
 const formatAmount = (amount: number) => amount.toLocaleString('ko-KR')
 const cn = (...classNames: string[]) => classNames.filter(Boolean).join(' ')
+const amountTextClassName = 'block min-w-0 truncate whitespace-nowrap text-sm leading-5 font-bold md:text-base'
 
 export default function CalendarMonthlySummary({
   income,
@@ -72,6 +73,7 @@ export default function CalendarMonthlySummary({
     let animationFrameId = 0
 
     const updateStackState = () => {
+      window.cancelAnimationFrame(animationFrameId)
       animationFrameId = window.requestAnimationFrame(() => {
         const hasOverflow = measureAmountRefs.current.some((element) => {
           if (!element) {
@@ -116,7 +118,7 @@ export default function CalendarMonthlySummary({
       >
         <div className="relative min-w-0 pr-8 md:pr-10">
           <p className="mb-1 text-xs font-semibold text-gray-400">수입</p>
-          <strong className="block min-w-0 truncate whitespace-nowrap text-sm leading-5 font-bold text-(--color-income-blue) md:text-base">
+          <strong className={cn(amountTextClassName, 'text-(--color-income-blue)')}>
             {formatAmount(totalIncome)}
           </strong>
           <ExpandButton
@@ -129,7 +131,7 @@ export default function CalendarMonthlySummary({
 
         <div className="relative min-w-0 pr-8 md:pr-10">
           <p className="mb-1 text-xs font-semibold text-gray-400">지출</p>
-          <strong className="block min-w-0 truncate whitespace-nowrap text-sm leading-5 font-bold text-(--color-expense-red) md:text-base">
+          <strong className={cn(amountTextClassName, 'text-(--color-expense-red)')}>
             {formatAmount(totalExpense)}
           </strong>
           <ExpandButton
@@ -144,7 +146,7 @@ export default function CalendarMonthlySummary({
           <p className="mb-1 text-xs font-semibold text-gray-400">합계</p>
           <strong
             className={[
-              'block min-w-0 truncate whitespace-nowrap text-sm leading-5 font-bold md:text-base',
+              amountTextClassName,
               total >= 0 ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
             ].join(' ')}
           >
@@ -176,7 +178,7 @@ export default function CalendarMonthlySummary({
 
 type MeasurementGridProps = {
   refCallback: (element: HTMLElement | null, index: number) => void
-  rootRef: React.RefObject<HTMLDivElement | null>
+  rootRef: RefObject<HTMLDivElement | null>
   total: number
   totalExpense: number
   totalIncome: number
@@ -198,7 +200,7 @@ function MeasurementGrid({
       <div className="min-w-0 pr-8 md:pr-10">
         <p className="mb-1 text-xs font-semibold">수입</p>
         <strong
-          className="block min-w-0 truncate whitespace-nowrap text-sm leading-5 font-bold md:text-base"
+          className={amountTextClassName}
           ref={(element) => refCallback(element, 0)}
         >
           {formatAmount(totalIncome)}
@@ -207,7 +209,7 @@ function MeasurementGrid({
       <div className="min-w-0 pr-8 md:pr-10">
         <p className="mb-1 text-xs font-semibold">지출</p>
         <strong
-          className="block min-w-0 truncate whitespace-nowrap text-sm leading-5 font-bold md:text-base"
+          className={amountTextClassName}
           ref={(element) => refCallback(element, 1)}
         >
           {formatAmount(totalExpense)}
@@ -216,7 +218,7 @@ function MeasurementGrid({
       <div className="min-w-0">
         <p className="mb-1 text-xs font-semibold">합계</p>
         <strong
-          className="block min-w-0 truncate whitespace-nowrap text-sm leading-5 font-bold md:text-base"
+          className={amountTextClassName}
           ref={(element) => refCallback(element, 2)}
         >
           {total >= 0 ? '+' : '-'}

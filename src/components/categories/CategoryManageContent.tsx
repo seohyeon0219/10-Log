@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Button from '../common/Button'
 import Input from '../common/Input'
 import { categoryColors } from '../../constants/color'
@@ -40,15 +40,6 @@ export default function CategoryManageContent({
   const isEditing = editingCategoryId.length > 0
   const trimmedName = name.trim()
   const canSave = trimmedName.length > 0
-
-  useEffect(() => {
-    setExpenseItems(expenseCategories)
-    setIncomeItems(incomeCategories)
-    setActiveType('expense')
-    setEditingCategoryId('')
-    setName('')
-    setSelectedColor(categoryColors[0])
-  }, [expenseCategories, incomeCategories])
 
   const resetForm = () => {
     setEditingCategoryId('')
@@ -196,8 +187,7 @@ export default function CategoryManageContent({
                 {category.name}
               </span>
               <button
-                className="cursor-pointer rounded-lg px-2 py-1 text-sm font- src/pages/test/TestPage.tsx
-                 text-gray-400 transition hover:bg-gray-100 hover:text-black"
+                className="cursor-pointer rounded-lg px-2 py-1 text-sm font-medium text-gray-400 transition hover:bg-gray-100 hover:text-black"
                 onClick={() => handleEdit(category)}
                 type="button"
               >

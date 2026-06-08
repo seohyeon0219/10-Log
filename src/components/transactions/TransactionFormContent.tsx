@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import type { ChangeEvent } from 'react'
 import CategorySelect from '../categories/CategorySelect'
 import Button from '../common/Button'
@@ -42,12 +42,12 @@ export default function TransactionFormContent({
   submitText = '저장',
   type,
 }: TransactionFormContentProps) {
-  const [selectedCategoryId, setSelectedCategoryId] = useState(initialCategoryId || categories[0]?.id || '')
+  const initialSelectedCategoryId = initialCategoryId || categories[0]?.id || ''
+  const [selectedCategoryId, setSelectedCategoryId] = useState(initialSelectedCategoryId)
+  const resolvedSelectedCategoryId = categories.some((category) => category.id === selectedCategoryId)
+    ? selectedCategoryId
+    : initialSelectedCategoryId
   const dateValue = selectedDate ? toInputDateValue(selectedDate) : ''
-
-  useEffect(() => {
-    setSelectedCategoryId(initialCategoryId || categories[0]?.id || '')
-  }, [categories, initialCategoryId, type])
 
   const handleAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.currentTarget.value = event.currentTarget.value.replace(/\D/g, '')
@@ -70,7 +70,7 @@ export default function TransactionFormContent({
           categories={categories}
           onChange={setSelectedCategoryId}
           onManageCategories={onManageCategories}
-          selectedCategoryId={selectedCategoryId}
+          selectedCategoryId={resolvedSelectedCategoryId}
         />
 
         <UnderInput defaultValue={dateValue} label="날짜" suffix="" type="date" />
