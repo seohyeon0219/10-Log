@@ -18,6 +18,9 @@ import PreviousMonthComparison from '../../components/statistics/PreviousMonthCo
 import MonthlyMoneySummary from '../../components/statistics/monthlymoneysummary'
 import SpendngTransactionLineChart from '../../components/statistics/spendngTransactionLineChart'
 import AiMonthlyReview from '../../components/review/AiMonthlyReview'
+import DailyReviewForm from '../../components/review/DailyReviewForm'
+import MiniSummaryCard from '../../components/review/MiniSummaryCard'
+import ReviewLookback from '../../components/review/ReviewLookback'
 import AmountInput from '../../components/transactions/AmountInput'
 import TransactionFormModal from '../../components/transactions/TransactionFormModal'
 import TransactionDateActions from '../../components/transactions/TransactionDateActions'
@@ -26,12 +29,14 @@ import TransactionListBottomSheet from '../../components/transactions/bottomShee
 import {
   getMockCalendarDayAmounts,
   getMockTransactions,
+  getMockTodayTransactions,
   mockCategoryChangeRanking,
   mockCategoryTransactionRatio,
   mockExpenseCategories,
   mockIncomeCategories,
   mockMonthlyMoneySummary,
   mockPreviousMonthComparison,
+  mockReviewLookback,
   mockSpendingTransactionLineChart,
   mockTransactions,
 } from '../../mocks/data'
@@ -82,7 +87,7 @@ export default function TestPage() {
   const selectedDateTransactions = getMockTransactions(currentDate).filter(
     (transaction) => transaction.date === selectedDateKey,
   )
-  
+  const todayTransactions = getMockTodayTransactions(currentDate)
 
   const openTransactionForm = (type: TransactionType) => {
     setTransactionType(type)
@@ -208,7 +213,16 @@ export default function TestPage() {
 
       <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
         <h2 className="mb-4 text-base font-bold">Review</h2>
-        <AiMonthlyReview monthLabel="6월" />
+        <MiniSummaryCard transactions={todayTransactions} />
+        <div className="mt-4">
+          <DailyReviewForm transactions={todayTransactions} />
+        </div>
+        <div className="mt-4">
+          <ReviewLookback {...mockReviewLookback} />
+        </div>
+        <div className="mt-4">
+          <AiMonthlyReview monthLabel="6월" />
+        </div>
       </section>
 
       <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
@@ -254,8 +268,6 @@ export default function TestPage() {
         onConfirm={() => setIsModalOpen(false)}
         title="정말 로그아웃하시겠어요?"
       />
-
-      
 
       <CategoryManageModal
         expenseCategories={mockExpenseCategories}

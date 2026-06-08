@@ -158,6 +158,64 @@ export const mockSpendingTransactionLineChart = {
   ],
 }
 
+export const mockReviewLookback = {
+  goodSpends: [
+    {
+      id: 'good-food',
+      category: '식비',
+      memo: '친구와의 약속',
+    },
+    {
+      id: 'good-learning',
+      category: '자기계발',
+      memo: '강의 결제',
+    },
+    {
+      id: 'good-living',
+      category: '생활용품',
+      memo: '꼭 필요했던 구매',
+    },
+    {
+      id: 'good-culture',
+      category: '문화',
+      memo: '전시를 보며 기분 전환',
+    },
+    {
+      id: 'good-health',
+      category: '건강',
+      memo: '미뤄둔 운동 등록',
+    },
+  ],
+  regretSpends: [
+    {
+      id: 'regret-coffee',
+      category: '카페',
+      memo: '습관처럼 산 커피',
+    },
+    {
+      id: 'regret-delivery',
+      category: '배달',
+      memo: '늦은 저녁 주문',
+    },
+    {
+      id: 'regret-shopping',
+      category: '쇼핑',
+      memo: '계획에 없던 구매',
+    },
+    {
+      id: 'regret-snack',
+      category: '간식',
+      memo: '배고프지 않았는데 산 간식',
+    },
+    {
+      id: 'regret-taxi',
+      category: '교통',
+      memo: '조금만 일찍 나왔으면 줄였을 택시비',
+    },
+  ],
+  weeklyNote: '이번 주는 식비를 줄이는 대신\n취미에 투자하며 만족도가 높아졌어요.\n\n꽤나 전략적인 일주일이었네요.',
+}
+
 export const mockNavTabs = [
   { id: 'calendar', label: '캘린더' },
   { id: 'stats', label: '통계' },
@@ -236,6 +294,69 @@ export const mockTransactions: MockTransaction[] = [
     categoryName: '부수입',
     day: 8,
     memo: '작업 정산',
+    type: 'income',
+  },
+  {
+    id: 'transaction-8',
+    amount: 4500,
+    categoryColor: '#ffb74d',
+    categoryName: '카페',
+    day: 8,
+    memo: '아침 라떼',
+    type: 'expense',
+  },
+  {
+    id: 'transaction-9',
+    amount: 3200,
+    categoryColor: '#007fff',
+    categoryName: '교통',
+    day: 8,
+    memo: '버스',
+    type: 'expense',
+  },
+  {
+    id: 'transaction-10',
+    amount: 18500,
+    categoryColor: '#ab47bc',
+    categoryName: '쇼핑',
+    day: 8,
+    memo: '생활용품',
+    type: 'expense',
+  },
+  {
+    id: 'transaction-11',
+    amount: 9000,
+    categoryColor: '#f05650',
+    categoryName: '식비',
+    day: 8,
+    memo: '저녁 김밥',
+    type: 'expense',
+  },
+  {
+    id: 'transaction-12',
+    amount: 7000,
+    categoryColor: '#898989',
+    categoryName: '기타',
+    day: 8,
+    memo: '문구류',
+    type: 'expense',
+  },
+  {
+    id: 'transaction-13',
+    amount: 25000,
+    categoryColor: '#00a878',
+    categoryName: '문화',
+    day: 8,
+    memo: '독립서점 책',
+    type: 'expense',
+  },
+  {
+    id: 'transaction-14',
+    amount: 35000,
+    categoryColor: '#69a7ff',
+    categoryName: '용돈',
+    day: 8,
+    memo: '가족 정산',
     type: 'income',
   },
   {
