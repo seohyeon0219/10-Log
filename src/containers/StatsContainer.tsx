@@ -43,16 +43,16 @@ export default function StatsContainer() {
         <MonthlyMoneySummary {...monthlyMoneySummary} budgetAmount={monthlyPromise.budgetAmount} />
       </div>
 
-      <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)]">
-        <PreviousMonthComparison items={previousMonthComparison} />
-        <CategoryChangeRanking items={categoryChangeRanking} />
-      </div>
-
       <div className="mt-4">
         <CategoryTransactionRatio
           items={categoryTransactionRatio}
           onSelectTransaction={setSelectedStatisticsTransaction}
         />
+      </div>
+
+      <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)]">
+        <PreviousMonthComparison items={previousMonthComparison} />
+        <CategoryChangeRanking items={categoryChangeRanking} />
       </div>
 
       <div className="mt-4">
