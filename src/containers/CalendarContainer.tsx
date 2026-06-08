@@ -7,7 +7,6 @@ import MonthlyPromiseModal from '../components/calendar/MonthlyPromiseModal'
 import TransactionDateList, {
   type TransactionDateListItem,
 } from '../components/transactions/TransactionDateList'
-import TransactionDateActions from '../components/transactions/TransactionDateActions'
 import TransactionFormModal from '../components/transactions/TransactionFormModal'
 import TransactionFormBottomSheet from '../components/transactions/bottomSheet/TransactionFormBottomSheet'
 import TransactionListBottomSheet from '../components/transactions/bottomSheet/TransactionListBottomSheet'
@@ -125,13 +124,6 @@ export default function CalendarContainer() {
           onDateSelect={selectMobileDate}
           selectedDate={selectedDate}
         />
-        <div className="mt-3">
-          <TransactionDateActions
-            onAddExpense={() => openTransactionFormBottomSheet('expense')}
-            onAddIncome={() => openTransactionFormBottomSheet('income')}
-            selectedDate={selectedDate}
-          />
-        </div>
       </div>
 
       <div className="mt-2 hidden min-h-0 flex-1 grid-cols-[minmax(0,1fr)_380px] gap-8 md:grid">
