@@ -6,7 +6,7 @@ type MobileLayoutProps = {
 
 export default function MobileLayout({ children }: MobileLayoutProps) {
   return (
-    <main className="flex min-h-dvh bg-stone-50 px-4 py-5">
+    <main className="flex min-h-dvh px-4 py-5">
       {children}
     </main>
   )
