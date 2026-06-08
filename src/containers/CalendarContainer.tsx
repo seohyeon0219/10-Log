@@ -3,6 +3,7 @@ import CalendarGrid from '../components/calendar/CalendarGrid'
 import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
 import CalendarMonthlySummary from '../components/calendar/CalendarMonthlySummary'
 import MonthlyPromise from '../components/calendar/MonthlyPromise'
+import MonthlyPromiseBottomSheet from '../components/calendar/MonthlyPromiseBottomSheet'
 import MonthlyPromiseModal from '../components/calendar/MonthlyPromiseModal'
 import TransactionDateList, {
   type TransactionDateListItem,
@@ -31,7 +32,8 @@ const getDateKey = (date: Date) => {
 }
 
 export default function CalendarContainer() {
-  const [isMonthlyPromiseOpen, setIsMonthlyPromiseOpen] = useState(false)
+  const [isMonthlyPromiseModalOpen, setIsMonthlyPromiseModalOpen] = useState(false)
+  const [isMonthlyPromiseBottomSheetOpen, setIsMonthlyPromiseBottomSheetOpen] = useState(false)
   const [isTransactionFormModalOpen, setIsTransactionFormModalOpen] = useState(false)
   const [isTransactionFormBottomSheetOpen, setIsTransactionFormBottomSheetOpen] = useState(false)
   const [isTransactionListBottomSheetOpen, setIsTransactionListBottomSheetOpen] = useState(false)
@@ -108,11 +110,20 @@ export default function CalendarContainer() {
         <CalendarMonthlySummary {...monthlySummary} />
       </div>
 
-      <div className="md:mt-5">
+      <div className="md:hidden">
         <MonthlyPromise
           budgetAmount={monthlyPromise.budgetAmount}
           isRegistered={monthlyPromise.isRegistered}
-          onEdit={() => setIsMonthlyPromiseOpen(true)}
+          onEdit={() => setIsMonthlyPromiseBottomSheetOpen(true)}
+          promise={monthlyPromise.promise}
+        />
+      </div>
+
+      <div className="hidden md:mt-5 md:block">
+        <MonthlyPromise
+          budgetAmount={monthlyPromise.budgetAmount}
+          isRegistered={monthlyPromise.isRegistered}
+          onEdit={() => setIsMonthlyPromiseModalOpen(true)}
           promise={monthlyPromise.promise}
         />
       </div>
@@ -147,20 +158,33 @@ export default function CalendarContainer() {
         </aside>
       </div>
 
-      {isMonthlyPromiseOpen ? (
+      {isMonthlyPromiseModalOpen ? (
         <MonthlyPromiseModal
           budgetAmount={monthlyPromise.budgetAmount}
           isRegistered={monthlyPromise.isRegistered}
-          isOpen={isMonthlyPromiseOpen}
-          onClose={() => setIsMonthlyPromiseOpen(false)}
+          isOpen={isMonthlyPromiseModalOpen}
+          onClose={() => setIsMonthlyPromiseModalOpen(false)}
           onDelete={deleteMonthlyPromise}
           onSave={(values) => {
             updateMonthlyPromise(values)
-            setIsMonthlyPromiseOpen(false)
+            setIsMonthlyPromiseModalOpen(false)
           }}
           promise={monthlyPromise.promise}
         />
       ) : null}
+
+      <MonthlyPromiseBottomSheet
+        budgetAmount={monthlyPromise.budgetAmount}
+        isRegistered={monthlyPromise.isRegistered}
+        isOpen={isMonthlyPromiseBottomSheetOpen}
+        onClose={() => setIsMonthlyPromiseBottomSheetOpen(false)}
+        onDelete={deleteMonthlyPromise}
+        onSave={(values) => {
+          updateMonthlyPromise(values)
+          setIsMonthlyPromiseBottomSheetOpen(false)
+        }}
+        promise={monthlyPromise.promise}
+      />
 
       <TransactionFormModal
         categories={activeCategories}
