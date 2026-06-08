@@ -1,11 +1,16 @@
 import { useState } from 'react'
 import CalendarGrid from '../components/calendar/CalendarGrid'
+import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
+import CalendarMonthlySummary from '../components/calendar/CalendarMonthlySummary'
 import MonthlyPromise from '../components/calendar/MonthlyPromise'
 import MonthlyPromiseModal from '../components/calendar/MonthlyPromiseModal'
 import TransactionDateList, {
   type TransactionDateListItem,
 } from '../components/transactions/TransactionDateList'
+import TransactionDateActions from '../components/transactions/TransactionDateActions'
 import TransactionFormModal from '../components/transactions/TransactionFormModal'
+import TransactionFormBottomSheet from '../components/transactions/bottomSheet/TransactionFormBottomSheet'
+import TransactionListBottomSheet from '../components/transactions/bottomSheet/TransactionListBottomSheet'
 import {
   getMockCalendarDayAmounts,
   getMockTransactions,
@@ -28,11 +33,16 @@ const getDateKey = (date: Date) => {
 
 export default function CalendarContainer() {
   const [isMonthlyPromiseOpen, setIsMonthlyPromiseOpen] = useState(false)
-  const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
+  const [isTransactionFormModalOpen, setIsTransactionFormModalOpen] = useState(false)
+  const [isTransactionFormBottomSheetOpen, setIsTransactionFormBottomSheetOpen] = useState(false)
+  const [isTransactionListBottomSheetOpen, setIsTransactionListBottomSheetOpen] = useState(false)
   const [editingTransaction, setEditingTransaction] = useState<TransactionDateListItem | null>(null)
   const [transactionFormMode, setTransactionFormMode] = useState<TransactionFormMode>('create')
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
   const currentDate = useCalendarStore((state) => state.currentDate)
+  const goNextMonth = useCalendarStore((state) => state.goNextMonth)
+  const goPrevMonth = useCalendarStore((state) => state.goPrevMonth)
+  const monthlySummary = useCalendarStore((state) => state.monthlySummary)
   const selectedDate = useCalendarStore((state) => state.selectedDate)
   const selectDate = useCalendarStore((state) => state.selectDate)
   const setSelectedDate = useCalendarStore((state) => state.setSelectedDate)
@@ -44,25 +54,43 @@ export default function CalendarContainer() {
     (transaction) => transaction.date === selectedDateKey,
   )
 
-  const openTransactionForm = (type: TransactionType) => {
+  const prepareTransactionForm = (type: TransactionType, mode: TransactionFormMode, transaction?: TransactionDateListItem) => {
     setTransactionType(type)
-    setTransactionFormMode('create')
-    setEditingTransaction(null)
+    setTransactionFormMode(mode)
+    setEditingTransaction(transaction ?? null)
     if (!selectedDate) {
       setSelectedDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), 1))
     }
-    setIsTransactionFormOpen(true)
   }
 
-  const openTransactionEditor = (transaction: TransactionDateListItem) => {
+  const openTransactionFormModal = (type: TransactionType) => {
+    prepareTransactionForm(type, 'create')
+    setIsTransactionFormModalOpen(true)
+  }
+
+  const openTransactionFormBottomSheet = (type: TransactionType) => {
+    prepareTransactionForm(type, 'create')
+    setIsTransactionFormBottomSheetOpen(true)
+  }
+
+  const openTransactionEditor = (transaction: TransactionDateListItem, surface: 'bottomSheet' | 'modal') => {
     if (transaction.type !== 'income' && transaction.type !== 'expense') {
       return
     }
 
-    setTransactionType(transaction.type)
-    setTransactionFormMode('edit')
-    setEditingTransaction({ ...transaction, type: transaction.type })
-    setIsTransactionFormOpen(true)
+    prepareTransactionForm(transaction.type, 'edit', { ...transaction, type: transaction.type })
+    if (surface === 'bottomSheet') {
+      setIsTransactionListBottomSheetOpen(false)
+      setIsTransactionFormBottomSheetOpen(true)
+      return
+    }
+
+    setIsTransactionFormModalOpen(true)
+  }
+
+  const selectMobileDate = (date: Date) => {
+    selectDate(date)
+    setIsTransactionListBottomSheetOpen(true)
   }
 
   const activeCategories = transactionType === 'income' ? mockIncomeCategories : mockExpenseCategories
@@ -72,6 +100,15 @@ export default function CalendarContainer() {
 
   return (
     <section className="w-full self-start">
+      <div className="md:hidden">
+        <CalendarMonthHeader
+          currentDate={currentDate}
+          onNextMonth={goNextMonth}
+          onPrevMonth={goPrevMonth}
+        />
+        <CalendarMonthlySummary {...monthlySummary} />
+      </div>
+
       <div className="md:mt-5">
         <MonthlyPromise
           budgetAmount={monthlyPromise.budgetAmount}
@@ -79,6 +116,22 @@ export default function CalendarContainer() {
           onEdit={() => setIsMonthlyPromiseOpen(true)}
           promise={monthlyPromise.promise}
         />
+      </div>
+
+      <div className="mt-4 md:hidden">
+        <CalendarGrid
+          currentDate={currentDate}
+          dayAmounts={getMockCalendarDayAmounts(currentDate)}
+          onDateSelect={selectMobileDate}
+          selectedDate={selectedDate}
+        />
+        <div className="mt-3">
+          <TransactionDateActions
+            onAddExpense={() => openTransactionFormBottomSheet('expense')}
+            onAddIncome={() => openTransactionFormBottomSheet('income')}
+            selectedDate={selectedDate}
+          />
+        </div>
       </div>
 
       <div className="mt-2 hidden min-h-0 flex-1 grid-cols-[minmax(0,1fr)_380px] gap-8 md:grid">
@@ -93,9 +146,9 @@ export default function CalendarContainer() {
 
         <aside className="mt-9 min-h-80 rounded-xl border border-gray-100 bg-white px-4 py-4">
           <TransactionDateList
-            onAddExpense={() => openTransactionForm('expense')}
-            onAddIncome={() => openTransactionForm('income')}
-            onSelectTransaction={openTransactionEditor}
+            onAddExpense={() => openTransactionFormModal('expense')}
+            onAddIncome={() => openTransactionFormModal('income')}
+            onSelectTransaction={(transaction) => openTransactionEditor(transaction, 'modal')}
             selectedDate={selectedDate}
             transactions={selectedDateTransactions}
           />
@@ -124,11 +177,37 @@ export default function CalendarContainer() {
         initialAmount={editingTransaction?.amount}
         initialCategoryId={initialCategoryId}
         initialMemo={editingTransaction?.memo}
-        isOpen={isTransactionFormOpen}
+        isOpen={isTransactionFormModalOpen}
         mode={transactionFormMode}
-        onClose={() => setIsTransactionFormOpen(false)}
-        onDelete={() => setIsTransactionFormOpen(false)}
-        onSave={() => setIsTransactionFormOpen(false)}
+        onClose={() => setIsTransactionFormModalOpen(false)}
+        onDelete={() => setIsTransactionFormModalOpen(false)}
+        onSave={() => setIsTransactionFormModalOpen(false)}
+        selectedDate={selectedDate}
+        type={transactionType}
+      />
+
+      <TransactionListBottomSheet
+        isOpen={isTransactionListBottomSheetOpen}
+        onAddExpense={() => openTransactionFormBottomSheet('expense')}
+        onAddIncome={() => openTransactionFormBottomSheet('income')}
+        onClose={() => setIsTransactionListBottomSheetOpen(false)}
+        onSelectTransaction={(transaction) => openTransactionEditor(transaction, 'bottomSheet')}
+        selectedDate={selectedDate}
+        transactions={selectedDateTransactions}
+      />
+
+      <TransactionFormBottomSheet
+        categories={activeCategories}
+        expenseCategories={mockExpenseCategories}
+        incomeCategories={mockIncomeCategories}
+        initialAmount={editingTransaction?.amount}
+        initialCategoryId={initialCategoryId}
+        initialMemo={editingTransaction?.memo}
+        isOpen={isTransactionFormBottomSheetOpen}
+        mode={transactionFormMode}
+        onClose={() => setIsTransactionFormBottomSheetOpen(false)}
+        onDelete={() => setIsTransactionFormBottomSheetOpen(false)}
+        onSave={() => setIsTransactionFormBottomSheetOpen(false)}
         selectedDate={selectedDate}
         type={transactionType}
       />
