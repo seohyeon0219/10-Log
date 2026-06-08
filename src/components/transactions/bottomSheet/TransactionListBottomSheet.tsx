@@ -15,6 +15,7 @@ type TransactionListBottomSheetProps = {
   onAddExpense?: () => void
   onAddIncome?: () => void
   onClose: () => void
+  onSelectTransaction?: (transaction: TransactionItem) => void
   selectedDate: Date | null
   transactions: TransactionItem[]
 }
@@ -24,6 +25,7 @@ export default function TransactionListBottomSheet({
   onAddExpense,
   onAddIncome,
   onClose,
+  onSelectTransaction,
   selectedDate,
   transactions,
 }: TransactionListBottomSheetProps) {
@@ -32,6 +34,7 @@ export default function TransactionListBottomSheet({
       <TransactionDateList
         onAddExpense={onAddExpense}
         onAddIncome={onAddIncome}
+        onSelectTransaction={onSelectTransaction}
         selectedDate={selectedDate}
         transactions={transactions}
       />
