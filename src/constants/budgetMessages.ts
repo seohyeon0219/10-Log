@@ -1,4 +1,9 @@
 export const BUDGET_MESSAGES = {
+  empty: [
+    '이번 달 소비 기록을 시작해볼까요? 작은 기록 하나가 나의 흐름을 보여줘요.',
+    '아직 기록된 소비가 없어요. 오늘의 첫 소비를 가볍게 남겨보세요.',
+    '이번 달의 돈 흐름은 이제부터 시작이에요. 부담 없이 하나씩 기록해봐요.',
+  ],
   safe: [
     '이번 달은 아주 단단하게 보내고 있네요! 지금처럼만 해요.',
     '예산이라는 든든한 울타리 안에서 나를 잘 돌보고 있어요.',
@@ -20,6 +25,10 @@ export const DEFAULT_MONTHLY_PROMISE = '이번 달의 돈 관리 다짐을 등�
 export type BudgetStatus = keyof typeof BUDGET_MESSAGES
 
 export const getBudgetStatus = (spent: number, budget: number): BudgetStatus => {
+  if (spent <= 0 && budget <= 0) {
+    return 'empty'
+  }
+
   if (budget <= 0 || spent > budget) {
     return 'over'
   }
