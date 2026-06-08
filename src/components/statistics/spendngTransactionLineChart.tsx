@@ -98,8 +98,16 @@ export default function SpendngTransactionLineChart({ data }: SpendngTransaction
   const gridLines = getGridLines(maxAmount)
   const activePointIndex = hoveredPointIndex ?? selectedPointIndex
   const activePoint = activePointIndex !== null ? chartPoints[activePointIndex] : null
-  const tooltipX = activePoint ? Math.min(Math.max(activePoint.x, plotLeft + 46), chartWidth - plotRight - 46) : 0
-  const tooltipY = activePoint ? Math.max(activePoint.y - 42, 10) : 0
+  const tooltipWidth = 108
+  const tooltipHeight = 36
+  const tooltipX = activePoint ? Math.min(Math.max(activePoint.x, plotLeft + tooltipWidth / 2), chartWidth - plotRight - tooltipWidth / 2) : 0
+  const shouldPlaceTooltipBelow = activePoint ? activePoint.y < plotTop + tooltipHeight + 8 : false
+  const tooltipY = activePoint
+    ? Math.min(
+      Math.max(shouldPlaceTooltipBelow ? activePoint.y + 14 : activePoint.y - tooltipHeight - 10, 8),
+      chartHeight - plotBottom - tooltipHeight,
+    )
+    : 0
 
   return (
     <StatisticsCard
@@ -132,11 +140,11 @@ export default function SpendngTransactionLineChart({ data }: SpendngTransaction
             {activePoint ? (
               <g>
                 <line stroke={lineColor} strokeDasharray="3 4" strokeWidth="1.5" x1={activePoint.x} x2={activePoint.x} y1={plotTop} y2={plotTop + plotHeight} />
-                <rect fill="white" height="34" rx="9" stroke="#e5e7eb" width="92" x={tooltipX - 46} y={tooltipY} />
-                <text fill="#111111" fontSize="11" fontWeight="800" textAnchor="middle" x={tooltipX} y={tooltipY + 14}>
+                <rect fill="white" height={tooltipHeight} rx="9" stroke="#e5e7eb" width={tooltipWidth} x={tooltipX - tooltipWidth / 2} y={tooltipY} />
+                <text fill="#111111" fontSize="11" fontWeight="800" textAnchor="middle" x={tooltipX} y={tooltipY + 15}>
                   {activePoint.month}
                 </text>
-                <text fill={lineColor} fontSize="11" fontWeight="800" textAnchor="middle" x={tooltipX} y={tooltipY + 28}>
+                <text fill={lineColor} fontSize="11" fontWeight="800" textAnchor="middle" x={tooltipX} y={tooltipY + 29}>
                   {formatWon(activePoint.amount)}
                 </text>
               </g>
