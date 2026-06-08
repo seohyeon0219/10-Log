@@ -33,6 +33,18 @@ export type MonthlySummary = {
   income: number
 }
 
+export type MonthlyPromise = {
+  budgetAmount: number
+  isRegistered: boolean
+  monthLabel: string
+  promise: string
+}
+
+export type MonthlyPromiseValues = {
+  budgetAmount: number
+  promise: string
+}
+
 export type TransactionFormValues = {
   amount: number
   categoryId: string

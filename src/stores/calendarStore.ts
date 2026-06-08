@@ -3,17 +3,23 @@ import {
   createCategory,
   createTransaction,
   deleteCategory,
+  deleteMonthlyPromise,
   deleteTransaction,
   getCalendarDayAmounts,
   getCategories,
+  getMonthlyPromise,
   getMonthlySummary,
   getMonthlyTransactions,
+  upsertMonthlyPromise,
   updateCategory,
   updateTransaction,
 } from '../lib/financeApi'
+import { DEFAULT_MONTHLY_PROMISE } from '../constants/budgetMessages'
 import type {
   CalendarDayAmount,
   Category,
+  MonthlyPromise,
+  MonthlyPromiseValues,
   MonthlySummary,
   Transaction,
   TransactionFormValues,
@@ -27,6 +33,7 @@ type CalendarStore = {
   clearSelectedDate: () => void
   currentDate: Date
   deleteCategory: (categoryId: string) => Promise<void>
+  deleteMonthlyPromise: () => Promise<void>
   deleteTransaction: (transactionId: string) => Promise<void>
   error: string | null
   expenseCategories: Category[]
@@ -35,12 +42,14 @@ type CalendarStore = {
   incomeCategories: Category[]
   isLoading: boolean
   loadMonth: (date?: Date) => Promise<void>
+  monthlyPromise: MonthlyPromise
   monthlySummary: MonthlySummary
   selectedDate: Date | null
   selectDate: (date: Date) => void
   setSelectedDate: (date: Date | null) => void
   transactions: Transaction[]
   updateCategory: (categoryId: string, values: Pick<Category, 'color' | 'name'>) => Promise<void>
+  updateMonthlyPromise: (values: MonthlyPromiseValues) => Promise<void>
   updateTransaction: (transactionId: string, values: TransactionFormValues) => Promise<void>
 }
 
@@ -59,6 +68,12 @@ const emptyMonthlySummary = {
   fixedIncome: 0,
   income: 0,
 }
+const emptyMonthlyPromise = {
+  budgetAmount: 0,
+  isRegistered: false,
+  monthLabel: '이번 달',
+  promise: DEFAULT_MONTHLY_PROMISE,
+}
 
 export const useCalendarStore = create<CalendarStore>((set, get) => ({
   addCategory: async (values) => {
@@ -74,6 +89,10 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
   currentDate: initialDate,
   deleteCategory: async (categoryId) => {
     await deleteCategory(categoryId)
+    await get().loadMonth()
+  },
+  deleteMonthlyPromise: async () => {
+    await deleteMonthlyPromise(get().currentDate)
     await get().loadMonth()
   },
   deleteTransaction: async (transactionId) => {
@@ -110,9 +129,10 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
     set({ error: null, isLoading: true })
 
     try {
-      const [categories, transactions] = await Promise.all([
+      const [categories, transactions, monthlyPromise] = await Promise.all([
         getCategories(),
         getMonthlyTransactions(targetDate),
+        getMonthlyPromise(targetDate, DEFAULT_MONTHLY_PROMISE),
       ])
 
       set({
@@ -121,6 +141,7 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
         expenseCategories: categories.filter((category) => category.type === 'expense'),
         incomeCategories: categories.filter((category) => category.type === 'income'),
         isLoading: false,
+        monthlyPromise,
         monthlySummary: getMonthlySummary(transactions),
         transactions,
       })
@@ -133,6 +154,7 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
       })
     }
   },
+  monthlyPromise: emptyMonthlyPromise,
   monthlySummary: emptyMonthlySummary,
   selectedDate: null,
   selectDate: (date) =>
@@ -147,6 +169,10 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
   transactions: [],
   updateCategory: async (categoryId, values) => {
     await updateCategory(categoryId, values)
+    await get().loadMonth()
+  },
+  updateMonthlyPromise: async (values) => {
+    await upsertMonthlyPromise(get().currentDate, values)
     await get().loadMonth()
   },
   updateTransaction: async (transactionId, values) => {

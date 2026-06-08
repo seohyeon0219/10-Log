@@ -2,6 +2,8 @@ import { supabase } from './supabase'
 import type {
   CalendarDayAmount,
   Category,
+  MonthlyPromise,
+  MonthlyPromiseValues,
   MonthlySummary,
   Transaction,
   TransactionFormValues,
@@ -58,6 +60,13 @@ const toDateKey = (date: Date) => {
   return `${year}-${month}-${day}`
 }
 
+const toMonthKey = (date: Date) => {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+
+  return `${year}-${month}-01`
+}
+
 const mapTransaction = (row: TransactionRow): Transaction => {
   const category = row.categories
 
@@ -72,6 +81,60 @@ const mapTransaction = (row: TransactionRow): Transaction => {
     isFixed: row.is_fixed,
     memo: row.memo ?? '',
     type: row.type,
+  }
+}
+
+export const getMonthlyPromise = async (
+  date: Date,
+  fallbackPromise: string,
+): Promise<MonthlyPromise> => {
+  const { data, error } = await supabase
+    .from('monthly_promises')
+    .select('budget_amount, promise')
+    .eq('month', toMonthKey(date))
+    .maybeSingle()
+
+  if (error) {
+    throw error
+  }
+
+  return {
+    budgetAmount: data?.budget_amount ?? 0,
+    isRegistered: Boolean(data),
+    monthLabel: '이번 달',
+    promise: data?.promise ?? fallbackPromise,
+  }
+}
+
+export const upsertMonthlyPromise = async (date: Date, values: MonthlyPromiseValues) => {
+  const { data: userData, error: userError } = await supabase.auth.getUser()
+
+  if (userError) {
+    throw userError
+  }
+
+  const { error } = await supabase.from('monthly_promises').upsert(
+    {
+      budget_amount: values.budgetAmount,
+      month: toMonthKey(date),
+      promise: values.promise,
+      user_id: userData.user.id,
+    },
+    {
+      onConflict: 'user_id,month',
+    },
+  )
+
+  if (error) {
+    throw error
+  }
+}
+
+export const deleteMonthlyPromise = async (date: Date) => {
+  const { error } = await supabase.from('monthly_promises').delete().eq('month', toMonthKey(date))
+
+  if (error) {
+    throw error
   }
 }
 

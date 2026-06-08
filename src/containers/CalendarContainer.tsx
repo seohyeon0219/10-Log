@@ -11,7 +11,6 @@ import TransactionFormModal from '../components/transactions/TransactionFormModa
 import TransactionFormBottomSheet from '../components/transactions/bottomSheet/TransactionFormBottomSheet'
 import TransactionListBottomSheet from '../components/transactions/bottomSheet/TransactionListBottomSheet'
 import { useCalendarStore } from '../stores/calendarStore'
-import { useStatisticsStore } from '../stores/statisticsStore'
 
 type TransactionType = 'income' | 'expense'
 type TransactionFormMode = 'create' | 'edit'
@@ -36,22 +35,22 @@ export default function CalendarContainer() {
   const addCategory = useCalendarStore((state) => state.addCategory)
   const addTransaction = useCalendarStore((state) => state.addTransaction)
   const deleteCategory = useCalendarStore((state) => state.deleteCategory)
+  const deleteMonthlyPromise = useCalendarStore((state) => state.deleteMonthlyPromise)
   const deleteTransaction = useCalendarStore((state) => state.deleteTransaction)
   const error = useCalendarStore((state) => state.error)
   const expenseCategories = useCalendarStore((state) => state.expenseCategories)
   const incomeCategories = useCalendarStore((state) => state.incomeCategories)
   const isLoading = useCalendarStore((state) => state.isLoading)
   const loadMonth = useCalendarStore((state) => state.loadMonth)
+  const monthlyPromise = useCalendarStore((state) => state.monthlyPromise)
   const monthlySummary = useCalendarStore((state) => state.monthlySummary)
   const selectedDate = useCalendarStore((state) => state.selectedDate)
   const selectDate = useCalendarStore((state) => state.selectDate)
   const setSelectedDate = useCalendarStore((state) => state.setSelectedDate)
   const transactions = useCalendarStore((state) => state.transactions)
   const updateCategory = useCalendarStore((state) => state.updateCategory)
+  const updateMonthlyPromise = useCalendarStore((state) => state.updateMonthlyPromise)
   const updateTransaction = useCalendarStore((state) => state.updateTransaction)
-  const deleteMonthlyPromise = useStatisticsStore((state) => state.deleteMonthlyPromise)
-  const monthlyPromise = useStatisticsStore((state) => state.monthlyPromise)
-  const updateMonthlyPromise = useStatisticsStore((state) => state.updateMonthlyPromise)
   const selectedDateKey = selectedDate ? getDateKey(selectedDate) : ''
   const selectedDateTransactions = transactions.filter(
     (transaction) => transaction.date === selectedDateKey,
@@ -193,9 +192,12 @@ export default function CalendarContainer() {
           isRegistered={monthlyPromise.isRegistered}
           isOpen={isMonthlyPromiseOpen}
           onClose={() => setIsMonthlyPromiseOpen(false)}
-          onDelete={deleteMonthlyPromise}
+          onDelete={() => {
+            void deleteMonthlyPromise()
+            setIsMonthlyPromiseOpen(false)
+          }}
           onSave={(values) => {
-            updateMonthlyPromise(values)
+            void updateMonthlyPromise(values)
             setIsMonthlyPromiseOpen(false)
           }}
           promise={monthlyPromise.promise}
@@ -208,9 +210,12 @@ export default function CalendarContainer() {
           isRegistered={monthlyPromise.isRegistered}
           isOpen={isMonthlyPromiseOpen}
           onClose={() => setIsMonthlyPromiseOpen(false)}
-          onDelete={deleteMonthlyPromise}
+          onDelete={() => {
+            void deleteMonthlyPromise()
+            setIsMonthlyPromiseOpen(false)
+          }}
           onSave={(values) => {
-            updateMonthlyPromise(values)
+            void updateMonthlyPromise(values)
             setIsMonthlyPromiseOpen(false)
           }}
           promise={monthlyPromise.promise}
