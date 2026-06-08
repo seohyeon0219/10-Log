@@ -36,12 +36,12 @@ import {
   mockExpenseCategories,
   mockIncomeCategories,
   mockMonthlyMoneySummary,
+  mockMonthlyPromise,
   mockPreviousMonthComparison,
   mockReviewLookback,
   mockSpendingTransactionLineChart,
   mockTransactions,
 } from '../../mocks/data'
-import { useStatisticsStore } from '../../stores/statisticsStore'
 
 const tabs = [
   { id: 'stats', label: '통계' },
@@ -81,15 +81,26 @@ export default function TestPage() {
   const [isMonthlyPromiseModalOpen, setIsMonthlyPromiseModalOpen] = useState(false)
   const [isMonthlyPromiseBottomSheetOpen, setIsMonthlyPromiseBottomSheetOpen] = useState(false)
   const [selectedStatisticsTransaction, setSelectedStatisticsTransaction] = useState<SelectedStatisticsTransaction | null>(null)
-  const deleteMonthlyPromise = useStatisticsStore((state) => state.deleteMonthlyPromise)
-  const monthlyPromise = useStatisticsStore((state) => state.monthlyPromise)
-  const updateMonthlyPromise = useStatisticsStore((state) => state.updateMonthlyPromise)
+  const [monthlyPromise, setMonthlyPromise] = useState(mockMonthlyPromise)
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
   const selectedDateKey = selectedDate ? getDateKey(selectedDate, selectedDate.getDate()) : ''
   const selectedDateTransactions = getMockTransactions(currentDate).filter(
     (transaction) => transaction.date === selectedDateKey,
   )
   const todayTransactions = getMockTodayTransactions(currentDate)
+  const deleteMonthlyPromise = () => {
+    setMonthlyPromise((promise) => ({
+      ...promise,
+      isRegistered: false,
+    }))
+  }
+  const updateMonthlyPromise = (values: { budgetAmount: number; promise: string }) => {
+    setMonthlyPromise((promise) => ({
+      ...promise,
+      ...values,
+      isRegistered: true,
+    }))
+  }
 
   const openTransactionForm = (type: TransactionType) => {
     setTransactionType(type)
