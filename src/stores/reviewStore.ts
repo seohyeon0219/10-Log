@@ -6,8 +6,8 @@ type ReviewStore = {
   dailyReview: DailyReview | null
   error: string | null
   isLoading: boolean
-  loadDailyReview: (date: Date) => Promise<void>
-  saveDailyReview: (date: Date, values: DailyReviewValues) => Promise<void>
+  loadTodayReview: () => Promise<void>
+  saveDailyReview: (values: DailyReviewValues) => Promise<void>
   todayTransactions: Transaction[]
 }
 
@@ -15,13 +15,14 @@ export const useReviewStore = create<ReviewStore>((set) => ({
   dailyReview: null,
   error: null,
   isLoading: false,
-  loadDailyReview: async (date) => {
+  loadTodayReview: async () => {
     set({ error: null, isLoading: true })
+    const today = new Date()
 
     try {
       const [transactions, dailyReview] = await Promise.all([
-        getDailyReviewTransactions(date),
-        getDailyReview(date),
+        getDailyReviewTransactions(today),
+        getDailyReview(today),
       ])
 
       set({
@@ -31,17 +32,18 @@ export const useReviewStore = create<ReviewStore>((set) => ({
       })
     } catch (error) {
       set({
-        error: error instanceof Error ? error.message : '오늘 거래를 불러오지 못했어요.',
+        error: error instanceof Error ? error.message : '거래를 불러오지 못했어요.',
         isLoading: false,
       })
     }
   },
-  saveDailyReview: async (date, values) => {
+  saveDailyReview: async (values) => {
     set({ error: null })
+    const today = new Date()
 
     try {
-      const dailyReview = await upsertDailyReview(date, values)
-      const transactions = await getDailyReviewTransactions(date)
+      const dailyReview = await upsertDailyReview(today, values)
+      const transactions = await getDailyReviewTransactions(today)
 
       set({
         dailyReview,

@@ -46,7 +46,11 @@ type TransactionSelectFieldProps = {
 
 const formatWon = (amount: number) => `${amount.toLocaleString('ko-KR')}원`
 
-export default function DailyReviewForm({ initialReview, onSave, transactions }: DailyReviewFormProps) {
+export default function DailyReviewForm({
+  initialReview,
+  onSave,
+  transactions,
+}: DailyReviewFormProps) {
   const expenseTransactions = transactions.filter((transaction) => transaction.type === 'expense')
   const [goodSpendId, setGoodSpendId] = useState(initialReview?.goodTransactionId ?? '')
   const [regretSpendId, setRegretSpendId] = useState(initialReview?.regretTransactionId ?? '')
