@@ -22,7 +22,7 @@ export default function BottomSheet({
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/35">
+    <div className="fixed inset-0 z-60 bg-black/35">
       <section
         aria-modal="true"
         className={[
