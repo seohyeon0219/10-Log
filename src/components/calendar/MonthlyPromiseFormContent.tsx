@@ -22,13 +22,20 @@ export default function MonthlyPromiseFormContent({
 }: MonthlyPromiseFormContentProps) {
   const [budgetValue, setBudgetValue] = useState(String(budgetAmount))
   const [promiseValue, setPromiseValue] = useState(isRegistered ? promise : '')
+  const parsedBudgetAmount = Number(budgetValue.replaceAll(',', '')) || 0
+  const trimmedPromise = promiseValue.trim()
+  const canSave = Boolean(trimmedPromise) || parsedBudgetAmount > 0
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
+    if (!canSave) {
+      return
+    }
+
     onSave({
-      budgetAmount: Number(budgetValue.replaceAll(',', '')) || 0,
-      promise: promiseValue.trim(),
+      budgetAmount: parsedBudgetAmount > 0 ? parsedBudgetAmount : budgetAmount,
+      promise: trimmedPromise || promise.trim(),
     })
   }
 
@@ -36,7 +43,7 @@ export default function MonthlyPromiseFormContent({
     <form className="grid gap-5" onSubmit={handleSubmit}>
       <div className="rounded-xl bg-yellow-50 px-4 py-4 max-[380px]:px-3">
         <p className="text-base font-bold text-black">이번 달 나와의 약속</p>
-        <p className="mt-1 break-keep text-sm leading-6 font-semibold text-gray-500">
+        <p className="mt-1 break-keep text-sm leading-6 font-medium text-gray-500">
           목표 예산과 한 줄 다짐은 캘린더 화면에서 계속 보여요.
         </p>
       </div>
@@ -72,7 +79,7 @@ export default function MonthlyPromiseFormContent({
         >
           삭제
         </Button>
-        <Button disabled={!promiseValue.trim() || Number(budgetValue) <= 0} type="submit">
+        <Button disabled={!canSave} type="submit">
           저장
         </Button>
       </div>
