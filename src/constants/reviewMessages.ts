@@ -1,13 +1,7 @@
-export const MINI_SUMMARY_CATEGORY_MESSAGES: Record<string, string> = {
-  교통: '오늘은 교통비가 가장 많이 나갔어요.',
-  식비: '오늘은 식비에 가장 많이 쓰셨네요!',
-  쇼핑: '오늘은 쇼핑에 가장 많이 사용했어요.',
-  카페: '오늘은 카페 지출이 가장 컸어요.',
-}
-
-export const MINI_SUMMARY_DEFAULT_CATEGORY_MESSAGE = '오늘은 이 카테고리에 가장 많이 쓰셨어요.'
-
 export const MINI_SUMMARY_NO_SPEND_MESSAGE = '와, 대단해요! 오늘은 완벽한 무지출데이예요.'
+
+export const getMiniSummaryCategoryMessage = (categoryName: string) =>
+  `오늘은 ${categoryName}에 가장 많이 사용했어요.`
 
 export const DAILY_REVIEW_PLACEHOLDERS = {
   goodSpend: '왜 만족스러웠나요?',

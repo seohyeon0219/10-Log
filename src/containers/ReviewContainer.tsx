@@ -1,19 +1,38 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import AiMonthlyReview from '../components/review/AiMonthlyReview'
 import DailyReviewForm from '../components/review/DailyReviewForm'
 import MiniSummaryCard from '../components/review/MiniSummaryCard'
+import { useCalendarStore } from '../stores/calendarStore'
 import { useReviewStore } from '../stores/reviewStore'
 
+const getDateKey = (date: Date) => {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+
+  return `${year}-${month}-${day}`
+}
+
 export default function ReviewContainer() {
+  const selectedDate = useCalendarStore((state) => state.selectedDate)
+  const calendarTransactions = useCalendarStore((state) => state.transactions)
+  const dailyReview = useReviewStore((state) => state.dailyReview)
   const error = useReviewStore((state) => state.error)
   const isLoading = useReviewStore((state) => state.isLoading)
-  const loadTodayTransactions = useReviewStore((state) => state.loadTodayTransactions)
+  const loadDailyReview = useReviewStore((state) => state.loadDailyReview)
   const saveDailyReview = useReviewStore((state) => state.saveDailyReview)
   const todayTransactions = useReviewStore((state) => state.todayTransactions)
+  const reviewDate = useMemo(() => selectedDate ?? new Date(), [selectedDate])
+  const reviewDateKey = getDateKey(reviewDate)
+  const calendarReviewTransactions = calendarTransactions.filter(
+    (transaction) => transaction.date === reviewDateKey,
+  )
+  const reviewTransactions =
+    calendarReviewTransactions.length > 0 ? calendarReviewTransactions : todayTransactions
 
   useEffect(() => {
-    void loadTodayTransactions()
-  }, [loadTodayTransactions])
+    void loadDailyReview(reviewDate)
+  }, [loadDailyReview, reviewDate, reviewDateKey])
 
   return (
     <section className="w-full self-start md:mt-6 md:min-h-80">
@@ -29,10 +48,15 @@ export default function ReviewContainer() {
         </div>
       ) : null}
       <div className="md:mt-5">
-        <MiniSummaryCard transactions={todayTransactions} />
+        <MiniSummaryCard transactions={reviewTransactions} />
       </div>
       <div className="mt-4">
-        <DailyReviewForm onSave={saveDailyReview} transactions={todayTransactions} />
+        <DailyReviewForm
+          initialReview={dailyReview}
+          key={`${reviewDateKey}-${dailyReview?.id ?? 'new-daily-review'}`}
+          onSave={(values) => saveDailyReview(reviewDate, values)}
+          transactions={reviewTransactions}
+        />
       </div>
       <div className="mt-4">
         <AiMonthlyReview monthLabel="6월" />

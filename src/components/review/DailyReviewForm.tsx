@@ -19,6 +19,13 @@ type ReviewTransaction = {
 }
 
 type DailyReviewFormProps = {
+  initialReview?: {
+    goodComment: string
+    goodTransactionId: string | null
+    regretComment: string
+    regretTransactionId: string | null
+    satisfactionRating: number
+  } | null
   onSave?: (values: {
     goodComment: string
     goodTransactionId: string | null
@@ -39,13 +46,13 @@ type TransactionSelectFieldProps = {
 
 const formatWon = (amount: number) => `${amount.toLocaleString('ko-KR')}원`
 
-export default function DailyReviewForm({ onSave, transactions }: DailyReviewFormProps) {
+export default function DailyReviewForm({ initialReview, onSave, transactions }: DailyReviewFormProps) {
   const expenseTransactions = transactions.filter((transaction) => transaction.type === 'expense')
-  const [goodSpendId, setGoodSpendId] = useState('')
-  const [regretSpendId, setRegretSpendId] = useState('')
-  const [goodSpendComment, setGoodSpendComment] = useState('')
-  const [regretSpendComment, setRegretSpendComment] = useState('')
-  const [satisfactionRating, setSatisfactionRating] = useState(4)
+  const [goodSpendId, setGoodSpendId] = useState(initialReview?.goodTransactionId ?? '')
+  const [regretSpendId, setRegretSpendId] = useState(initialReview?.regretTransactionId ?? '')
+  const [goodSpendComment, setGoodSpendComment] = useState(initialReview?.goodComment ?? '')
+  const [regretSpendComment, setRegretSpendComment] = useState(initialReview?.regretComment ?? '')
+  const [satisfactionRating, setSatisfactionRating] = useState(initialReview?.satisfactionRating ?? 4)
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
   const [isSuccessOpen, setIsSuccessOpen] = useState(false)
@@ -122,7 +129,7 @@ export default function DailyReviewForm({ onSave, transactions }: DailyReviewFor
 
           <div className="mt-5">
             <Button disabled={isSaving} type="submit">
-              {isSaving ? '저장 중...' : '회고 제출하기'}
+              {isSaving ? '저장 중...' : initialReview ? '회고 수정하기' : '회고 제출하기'}
             </Button>
           </div>
 

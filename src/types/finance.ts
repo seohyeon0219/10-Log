@@ -60,3 +60,8 @@ export type DailyReviewValues = {
   regretTransactionId: string | null
   satisfactionRating: number
 }
+
+export type DailyReview = DailyReviewValues & {
+  id: string
+  reviewDate: string
+}

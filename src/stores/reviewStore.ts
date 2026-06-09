@@ -1,25 +1,31 @@
 import { create } from 'zustand'
-import { getDailyReviewTransactions, upsertDailyReview } from '../lib/reviewApi'
-import type { DailyReviewValues, Transaction } from '../types/finance'
+import { getDailyReview, getDailyReviewTransactions, upsertDailyReview } from '../lib/reviewApi'
+import type { DailyReview, DailyReviewValues, Transaction } from '../types/finance'
 
 type ReviewStore = {
+  dailyReview: DailyReview | null
   error: string | null
   isLoading: boolean
-  loadTodayTransactions: () => Promise<void>
-  saveDailyReview: (values: DailyReviewValues) => Promise<void>
+  loadDailyReview: (date: Date) => Promise<void>
+  saveDailyReview: (date: Date, values: DailyReviewValues) => Promise<void>
   todayTransactions: Transaction[]
 }
 
-export const useReviewStore = create<ReviewStore>((set, get) => ({
+export const useReviewStore = create<ReviewStore>((set) => ({
+  dailyReview: null,
   error: null,
   isLoading: false,
-  loadTodayTransactions: async () => {
+  loadDailyReview: async (date) => {
     set({ error: null, isLoading: true })
 
     try {
-      const transactions = await getDailyReviewTransactions(new Date())
+      const [transactions, dailyReview] = await Promise.all([
+        getDailyReviewTransactions(date),
+        getDailyReview(date),
+      ])
 
       set({
+        dailyReview,
         isLoading: false,
         todayTransactions: transactions,
       })
@@ -30,9 +36,23 @@ export const useReviewStore = create<ReviewStore>((set, get) => ({
       })
     }
   },
-  saveDailyReview: async (values) => {
-    await upsertDailyReview(new Date(), values)
-    await get().loadTodayTransactions()
+  saveDailyReview: async (date, values) => {
+    set({ error: null })
+
+    try {
+      const dailyReview = await upsertDailyReview(date, values)
+      const transactions = await getDailyReviewTransactions(date)
+
+      set({
+        dailyReview,
+        todayTransactions: transactions,
+      })
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : '회고를 저장하지 못했어요.',
+      })
+      throw error
+    }
   },
   todayTransactions: [],
 }))
