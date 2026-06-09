@@ -79,7 +79,17 @@ export default function MoreContainer() {
         <Divider />
         <MenuItem label="계정 관리" onClick={() => {}} />
         <Divider />
-        <MenuItem label="개인정보처리방침" onClick={() => {}} />
+        <MenuItem
+          label="개인정보처리방침"
+          onClick={() =>
+            window.open(
+              'https://harsh-grouse-d8c.notion.site/37abf62d32dd80ba9ca6ca08c4993c73',
+              
+              '_blank',
+              'noopener,noreferrer',
+            )
+          }
+        />
       </MenuGroup>
 
       {/* 로그아웃 */}
