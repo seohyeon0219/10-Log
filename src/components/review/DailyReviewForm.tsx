@@ -56,7 +56,7 @@ export default function DailyReviewForm({
   const [regretSpendId, setRegretSpendId] = useState(initialReview?.regretTransactionId ?? '')
   const [goodSpendComment, setGoodSpendComment] = useState(initialReview?.goodComment ?? '')
   const [regretSpendComment, setRegretSpendComment] = useState(initialReview?.regretComment ?? '')
-  const [satisfactionRating, setSatisfactionRating] = useState(initialReview?.satisfactionRating ?? 4)
+  const [satisfactionRating, setSatisfactionRating] = useState(initialReview?.satisfactionRating ?? 5)
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
   const [isSuccessOpen, setIsSuccessOpen] = useState(false)
