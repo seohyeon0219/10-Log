@@ -8,6 +8,7 @@ import TransactionFormModal from '../components/transactions/TransactionFormModa
 import type { TransactionType } from '../components/transactions/transactionFormConfig'
 import { getMonthlyTransactions } from '../lib/financeApi'
 import { useCalendarStore } from '../stores/calendarStore'
+import { useStatisticsStore } from '../stores/statisticsStore'
 import type { Transaction } from '../types/finance'
 
 type SelectedStatisticsTransaction = {
@@ -251,6 +252,12 @@ export default function StatsContainer() {
   const transactions = useCalendarStore((state) => state.transactions)
   const updateCategory = useCalendarStore((state) => state.updateCategory)
   const updateTransaction = useCalendarStore((state) => state.updateTransaction)
+  const ratioType = useStatisticsStore((state) => state.ratioType)
+  const ratioSelectedCategoryId = useStatisticsStore((state) => state.ratioSelectedCategoryId)
+  const setRatioType = useStatisticsStore((state) => state.setRatioType)
+  const setRatioSelectedCategoryId = useStatisticsStore((state) => state.setRatioSelectedCategoryId)
+  const lineChartType = useStatisticsStore((state) => state.lineChartType)
+  const setLineChartType = useStatisticsStore((state) => state.setLineChartType)
   const previousTransactions = useMemo(
     () => recentMonthTransactions[recentMonthTransactions.length - 2] ?? [],
     [recentMonthTransactions],
@@ -326,7 +333,11 @@ export default function StatsContainer() {
       <div className="mt-4">
         <CategoryTransactionRatio
           items={categoryTransactionRatio}
+          onRatioTypeChange={setRatioType}
           onSelectTransaction={setSelectedStatisticsTransaction}
+          onSelectedCategoryIdChange={setRatioSelectedCategoryId}
+          ratioType={ratioType}
+          selectedCategoryId={ratioSelectedCategoryId}
         />
       </div>
 
@@ -336,7 +347,11 @@ export default function StatsContainer() {
       </div>
 
       <div className="mt-4">
-        <SpendngTransactionLineChart data={spendingTransactionLineChart} />
+        <SpendngTransactionLineChart
+          data={spendingTransactionLineChart}
+          lineChartType={lineChartType}
+          onLineChartTypeChange={setLineChartType}
+        />
       </div>
 
       {selectedStatisticsTransaction ? (

@@ -1,4 +1,3 @@
-import { useStatisticsStore } from '../../stores/statisticsStore'
 import IncomeExpenseToggle from '../common/IncomeExpenseToggle'
 import SimpleListItem from '../common/SimpleListItem'
 import StatisticsCard from './StatisticsCard'
@@ -23,6 +22,7 @@ type CategoryRatioItem = {
 
 type CategoryTransactionRatioProps = {
   items: Record<TransactionType, CategoryRatioItem[]>
+  onRatioTypeChange: (type: TransactionType) => void
   onSelectTransaction?: (transaction: {
     amount: number
     categoryId: string
@@ -31,6 +31,9 @@ type CategoryTransactionRatioProps = {
     memo: string
     type: TransactionType
   }) => void
+  onSelectedCategoryIdChange: (id: string) => void
+  ratioType: TransactionType
+  selectedCategoryId: string
 }
 
 const getDonutGradient = (items: CategoryRatioItem[], totalAmount: number) => {
@@ -48,11 +51,14 @@ const getDonutGradient = (items: CategoryRatioItem[], totalAmount: number) => {
     .join(', ')
 }
 
-export default function CategoryTransactionRatio({ items, onSelectTransaction }: CategoryTransactionRatioProps) {
-  const ratioType = useStatisticsStore((state) => state.ratioType)
-  const selectedCategoryId = useStatisticsStore((state) => state.ratioSelectedCategoryId)
-  const setRatioType = useStatisticsStore((state) => state.setRatioType)
-  const setSelectedCategoryId = useStatisticsStore((state) => state.setRatioSelectedCategoryId)
+export default function CategoryTransactionRatio({
+  items,
+  onRatioTypeChange,
+  onSelectTransaction,
+  onSelectedCategoryIdChange,
+  ratioType,
+  selectedCategoryId,
+}: CategoryTransactionRatioProps) {
 
   const activeItems = items[ratioType]
   const totalAmount = activeItems.reduce((total, item) => total + item.amount, 0)
@@ -66,8 +72,8 @@ export default function CategoryTransactionRatio({ items, onSelectTransaction }:
         action={
           <IncomeExpenseToggle
             onChange={(type) => {
-              setRatioType(type)
-              setSelectedCategoryId(items[type][0]?.id ?? '')
+              onRatioTypeChange(type)
+              onSelectedCategoryIdChange(items[type][0]?.id ?? '')
             }}
             value={ratioType}
           />
@@ -87,8 +93,8 @@ export default function CategoryTransactionRatio({ items, onSelectTransaction }:
       action={
         <IncomeExpenseToggle
           onChange={(type) => {
-            setRatioType(type)
-            setSelectedCategoryId(items[type][0]?.id ?? '')
+            onRatioTypeChange(type)
+            onSelectedCategoryIdChange(items[type][0]?.id ?? '')
           }}
           value={ratioType}
         />
@@ -116,7 +122,7 @@ export default function CategoryTransactionRatio({ items, onSelectTransaction }:
                   isSelected ? 'border-gray-200 bg-gray-50' : 'border-transparent bg-white hover:bg-gray-50',
                 ].join(' ')}
                 key={item.id}
-                onClick={() => setSelectedCategoryId(item.id)}
+                onClick={() => onSelectedCategoryIdChange(item.id)}
                 type="button"
               >
                 <span className="h-3 w-3 rounded-full" style={{ backgroundColor: item.color }} />

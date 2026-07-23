@@ -81,6 +81,9 @@ export default function TestPage() {
   const [isMonthlyPromiseModalOpen, setIsMonthlyPromiseModalOpen] = useState(false)
   const [isMonthlyPromiseBottomSheetOpen, setIsMonthlyPromiseBottomSheetOpen] = useState(false)
   const [selectedStatisticsTransaction, setSelectedStatisticsTransaction] = useState<SelectedStatisticsTransaction | null>(null)
+  const [ratioType, setRatioType] = useState<TransactionType>('expense')
+  const [selectedCategoryId, setSelectedCategoryId] = useState('')
+  const [lineChartType, setLineChartType] = useState<TransactionType>('expense')
   const [monthlyPromise, setMonthlyPromise] = useState(mockMonthlyPromise)
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
   const selectedDateKey = selectedDate ? getDateKey(selectedDate, selectedDate.getDate()) : ''
@@ -218,9 +221,17 @@ export default function TestPage() {
           <CategoryChangeRanking items={mockCategoryChangeRanking} />
           <CategoryTransactionRatio
             items={mockCategoryTransactionRatio}
+            onRatioTypeChange={setRatioType}
             onSelectTransaction={setSelectedStatisticsTransaction}
+            onSelectedCategoryIdChange={setSelectedCategoryId}
+            ratioType={ratioType}
+            selectedCategoryId={selectedCategoryId}
           />
-          <SpendngTransactionLineChart data={mockSpendingTransactionLineChart} />
+          <SpendngTransactionLineChart
+            data={mockSpendingTransactionLineChart}
+            lineChartType={lineChartType}
+            onLineChartTypeChange={setLineChartType}
+          />
         </div>
       </section>
 

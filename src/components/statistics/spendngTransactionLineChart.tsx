@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { useStatisticsStore } from '../../stores/statisticsStore'
 import IncomeExpenseToggle from '../common/IncomeExpenseToggle'
 import StatisticsCard from './StatisticsCard'
 
@@ -12,6 +11,8 @@ type LineChartPoint = {
 
 type SpendngTransactionLineChartProps = {
   data: Record<TransactionType, LineChartPoint[]>
+  lineChartType: TransactionType
+  onLineChartTypeChange: (type: TransactionType) => void
 }
 
 const chartHeight = 220
@@ -66,14 +67,20 @@ const lineColorByType: Record<TransactionType, string> = {
   income: 'var(--color-income-blue)',
 }
 
-export default function SpendngTransactionLineChart({ data }: SpendngTransactionLineChartProps) {
+export default function SpendngTransactionLineChart({
+  data,
+  lineChartType,
+  onLineChartTypeChange,
+}: SpendngTransactionLineChartProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [chartWidth, setChartWidth] = useState(420)
   const [hoveredPointIndex, setHoveredPointIndex] = useState<number | null>(null)
-  const selectedPointIndex = useStatisticsStore((state) => state.lineChartSelectedPointIndex)
-  const lineChartType = useStatisticsStore((state) => state.lineChartType)
-  const setSelectedPointIndex = useStatisticsStore((state) => state.setLineChartSelectedPointIndex)
-  const setLineChartType = useStatisticsStore((state) => state.setLineChartType)
+  const [selectedPointIndex, setSelectedPointIndex] = useState<number | null>(null)
+
+  const handleTypeChange = (type: TransactionType) => {
+    setSelectedPointIndex(null)
+    onLineChartTypeChange(type)
+  }
 
   useEffect(() => {
     if (!containerRef.current) {
@@ -111,7 +118,7 @@ export default function SpendngTransactionLineChart({ data }: SpendngTransaction
 
   return (
     <StatisticsCard
-      action={<IncomeExpenseToggle onChange={setLineChartType} value={lineChartType} />}
+      action={<IncomeExpenseToggle onChange={handleTypeChange} value={lineChartType} />}
       eyebrow="최근 6개월 거래 추이"
       title={`${lineChartType === 'expense' ? '지출' : '수입'} 흐름을 한눈에 봐요`}
     >
