@@ -59,6 +59,7 @@ export default function TransactionFormModal({
         categoryManageOverlay={canManageCategories ? (isOpen, onClose) => (
           <CategoryManageModal
             expenseCategories={expenseCategories ?? []}
+            initialType={type}
             incomeCategories={incomeCategories ?? []}
             isOpen={isOpen}
             onCreateCategory={onCreateCategory}

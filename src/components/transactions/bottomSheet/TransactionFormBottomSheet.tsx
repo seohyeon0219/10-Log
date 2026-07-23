@@ -59,6 +59,7 @@ export default function TransactionFormBottomSheet({
         categoryManageOverlay={canManageCategories ? (isOpen, onClose) => (
           <CategoryManageBottomSheet
             expenseCategories={expenseCategories ?? []}
+            initialType={type}
             incomeCategories={incomeCategories ?? []}
             isOpen={isOpen}
             onCreateCategory={onCreateCategory}

@@ -9,6 +9,7 @@ type Category = {
 
 type CategoryManageModalProps = {
   expenseCategories: Category[]
+  initialType?: Parameters<typeof CategoryManageContent>[0]['initialType']
   incomeCategories: Category[]
   isOpen: boolean
   onCreateCategory?: Parameters<typeof CategoryManageContent>[0]['onCreateCategory']
@@ -19,6 +20,7 @@ type CategoryManageModalProps = {
 
 export default function CategoryManageModal({
   expenseCategories,
+  initialType,
   incomeCategories,
   isOpen,
   onCreateCategory,
@@ -35,7 +37,9 @@ export default function CategoryManageModal({
     >
       <CategoryManageContent
         expenseCategories={expenseCategories}
+        initialType={initialType}
         incomeCategories={incomeCategories}
+        onClose={onClose}
         onCreateCategory={onCreateCategory}
         onDeleteCategory={onDeleteCategory}
         onUpdateCategory={onUpdateCategory}

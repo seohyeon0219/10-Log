@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Button from '../common/Button'
 import Input from '../common/Input'
 import { categoryColors } from '../../constants/color'
@@ -13,7 +13,9 @@ type Category = {
 
 type CategoryManageContentProps = {
   expenseCategories: Category[]
+  initialType?: CategoryType
   incomeCategories: Category[]
+  onClose?: () => void
   onCreateCategory?: (values: { color: string; name: string; type: CategoryType }) => Promise<void> | void
   onDeleteCategory?: (categoryId: string) => Promise<void> | void
   onUpdateCategory?: (
@@ -34,12 +36,15 @@ const categoryLabelByType: Record<CategoryType, string> = {
 
 export default function CategoryManageContent({
   expenseCategories,
+  initialType = 'expense',
   incomeCategories,
+  onClose,
   onCreateCategory,
   onDeleteCategory,
   onUpdateCategory,
 }: CategoryManageContentProps) {
-  const [activeType, setActiveType] = useState<CategoryType>('expense')
+  const formSectionRef = useRef<HTMLElement>(null)
+  const [activeType, setActiveType] = useState<CategoryType>(initialType)
   const [editingCategoryId, setEditingCategoryId] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
@@ -81,6 +86,7 @@ export default function CategoryManageContent({
         type: activeType,
       })
       resetForm()
+      onClose?.()
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : '카테고리를 저장하지 못했어요.')
     } finally {
@@ -92,6 +98,16 @@ export default function CategoryManageContent({
     setEditingCategoryId(category.id)
     setName(category.name)
     setSelectedColor(category.color)
+
+    let parent = formSectionRef.current?.parentElement
+    while (parent) {
+      const { overflowY } = getComputedStyle(parent)
+      if ((overflowY === 'auto' || overflowY === 'scroll') && parent.scrollHeight > parent.clientHeight) {
+        parent.scrollTo({ top: 0, behavior: 'smooth' })
+        return
+      }
+      parent = parent.parentElement
+    }
   }
 
   const handleDelete = async (categoryId: string) => {
@@ -117,7 +133,7 @@ export default function CategoryManageContent({
 
   return (
     <>
-      <section className="rounded-2xl bg-gray-50 p-4">
+      <section className="rounded-2xl bg-gray-50 p-4" ref={formSectionRef}>
         <div className="mb-5 grid grid-cols-2 rounded-xl bg-gray-100 p-1">
           {typeOptions.map((option) => (
             <button
@@ -125,6 +141,7 @@ export default function CategoryManageContent({
                 'h-10 cursor-pointer rounded-lg text-sm font-bold transition',
                 activeType === option.id ? 'bg-white text-black shadow-sm' : 'text-gray-400',
               ].join(' ')}
+              disabled={isSaving}
               key={option.id}
               onClick={() => {
                 setActiveType(option.id)

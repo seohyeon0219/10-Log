@@ -137,7 +137,7 @@ export default function CategoryTransactionRatio({ items, onSelectTransaction }:
           <p className="text-sm font-extrabold text-(--color-dark-gray)">{selectedItem.amount.toLocaleString('ko-KR')}원</p>
         </div>
 
-        <div className="mt-2 grid gap-1 border-t border-gray-100 pt-2">
+        <div className="mt-2 grid max-h-80 gap-1 overflow-y-auto border-t border-gray-100 pt-2 pr-1">
           {selectedItem.transactions.map((transaction) => (
             <SimpleListItem
               amount={transaction.amount}
