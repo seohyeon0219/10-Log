@@ -139,8 +139,6 @@ export const deleteMonthlyPromise = async (date: Date) => {
 }
 
 export const getCategories = async () => {
-  await ensureDefaultCategories()
-
   const { data, error } = await supabase
     .from('categories')
     .select('id, name, color, type')

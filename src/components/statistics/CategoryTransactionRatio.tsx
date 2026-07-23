@@ -132,7 +132,6 @@ export default function CategoryTransactionRatio({ items, onSelectTransaction }:
         <div className="flex items-end justify-between gap-3 p-2">
           <div>
             <p className="text-sm font-bold text-black">{selectedItem.label} 내역</p>
-            {/* <p className="mt-1 text-xs font-bold text-gray-400">거래를 누르면 수정할 수 있어요</p> */}
           </div>
           <p className="text-sm font-extrabold text-(--color-dark-gray)">{selectedItem.amount.toLocaleString('ko-KR')}원</p>
         </div>

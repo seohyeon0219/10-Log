@@ -5,6 +5,7 @@ import {
   deleteCategory,
   deleteMonthlyPromise,
   deleteTransaction,
+  ensureDefaultCategories,
   getCalendarDayAmounts,
   getCategories,
   getMonthlyPromise,
@@ -60,6 +61,8 @@ const getDateKey = (date: Date) => {
 
   return `${year}-${month}-${day}`
 }
+
+let defaultCategoriesEnsured = false
 
 const initialDate = new Date()
 const emptyMonthlySummary = {
@@ -129,6 +132,11 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
     set({ error: null, isLoading: true })
 
     try {
+      if (!defaultCategoriesEnsured) {
+        await ensureDefaultCategories()
+        defaultCategoriesEnsured = true
+      }
+
       const [categories, transactions, monthlyPromise] = await Promise.all([
         getCategories(),
         getMonthlyTransactions(targetDate),
