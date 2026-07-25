@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
-import AppPage from '../pages/AppPage'
+import AppLayout from '../layouts/AppLayout'
 import CalendarPage from '../pages/CalendarPage'
 import LandingPage from '../pages/LandingPage'
 import MorePage from '../pages/MorePage'
@@ -34,7 +34,7 @@ export default function AppRouter() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/app" element={<ProtectedRoute><AppPage /></ProtectedRoute>}>
+        <Route path="/app" element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
           <Route index element={<Navigate to="calendar" replace />} />
           <Route path="calendar" element={<CalendarPage />} />
           <Route path="stats" element={<StatsPage />} />
