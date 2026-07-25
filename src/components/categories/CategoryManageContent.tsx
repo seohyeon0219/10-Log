@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import Button from '../common/Button'
 import Input from '../common/Input'
 import { categoryColors } from '../../constants/color'
+import CategoryDeleteConfirm from './CategoryDeleteConfirm'
 
 type CategoryType = 'income' | 'expense'
 
@@ -45,6 +46,7 @@ export default function CategoryManageContent({
 }: CategoryManageContentProps) {
   const formSectionRef = useRef<HTMLElement>(null)
   const [activeType, setActiveType] = useState<CategoryType>(initialType)
+  const [deleteTarget, setDeleteTarget] = useState<Category | null>(null)
   const [editingCategoryId, setEditingCategoryId] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
@@ -110,21 +112,26 @@ export default function CategoryManageContent({
     }
   }
 
-  const handleDelete = async (categoryId: string) => {
+  const handleDeleteClick = (category: Category) => {
+    setDeleteTarget(category)
+  }
+
+  const handleConfirmDelete = async () => {
+    if (!deleteTarget) return
+    const targetId = deleteTarget.id
+    setDeleteTarget(null)
     setErrorMessage('')
     setIsSaving(true)
 
     try {
-      await onDeleteCategory?.(categoryId)
+      await onDeleteCategory?.(targetId)
 
-      if (editingCategoryId === categoryId) {
+      if (editingCategoryId === targetId) {
         resetForm()
       }
     } catch (error) {
       setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : '카테고리를 삭제하지 못했어요. 연결된 내역이 있는지 확인해주세요.',
+        error instanceof Error ? error.message : '카테고리를 삭제하지 못했어요.',
       )
     } finally {
       setIsSaving(false)
@@ -133,6 +140,12 @@ export default function CategoryManageContent({
 
   return (
     <>
+      <CategoryDeleteConfirm
+        category={deleteTarget}
+        onCancel={() => setDeleteTarget(null)}
+        onConfirm={handleConfirmDelete}
+      />
+
       <section className="rounded-2xl bg-gray-50 p-4" ref={formSectionRef}>
         <div className="mb-5 grid grid-cols-2 rounded-xl bg-gray-100 p-1">
           {typeOptions.map((option) => (
@@ -231,7 +244,7 @@ export default function CategoryManageContent({
               <button
                 className="cursor-pointer rounded-lg px-2 py-1 text-sm font-medium text-gray-400 transition hover:bg-gray-100 hover:text-(--color-expense-red)"
                 disabled={isSaving}
-                onClick={() => handleDelete(category.id)}
+                onClick={() => handleDeleteClick(category)}
                 type="button"
               >
                 삭제
