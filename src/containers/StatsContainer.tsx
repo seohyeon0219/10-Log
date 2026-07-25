@@ -6,7 +6,7 @@ import PreviousMonthComparison from '../components/statistics/PreviousMonthCompa
 import SpendngTransactionLineChart from '../components/statistics/spendngTransactionLineChart'
 import TransactionFormModal from '../components/transactions/TransactionFormModal'
 import type { TransactionType } from '../components/transactions/transactionFormConfig'
-import { getMonthlyTransactions } from '../lib/financeApi'
+import { useRecentMonthsTransactions } from '../hooks/useRecentMonthsTransactions'
 import { useCalendarStore } from '../stores/calendarStore'
 import { useStatisticsStore } from '../stores/statisticsStore'
 import type { Transaction } from '../types/finance'
@@ -237,9 +237,6 @@ const getLineChartData = (currentDate: Date, monthTransactions: Transaction[][])
 export default function StatsContainer() {
   const [selectedStatisticsTransaction, setSelectedStatisticsTransaction] =
     useState<SelectedStatisticsTransaction | null>(null)
-  const [recentMonthTransactions, setRecentMonthTransactions] = useState<Transaction[][]>(
-    Array.from({ length: 6 }, () => []),
-  )
   const addCategory = useCalendarStore((state) => state.addCategory)
   const currentDate = useCalendarStore((state) => state.currentDate)
   const deleteCategory = useCalendarStore((state) => state.deleteCategory)
@@ -258,22 +255,19 @@ export default function StatsContainer() {
   const setRatioSelectedCategoryId = useStatisticsStore((state) => state.setRatioSelectedCategoryId)
   const lineChartType = useStatisticsStore((state) => state.lineChartType)
   const setLineChartType = useStatisticsStore((state) => state.setLineChartType)
-  const previousTransactions = useMemo(
-    () => recentMonthTransactions[recentMonthTransactions.length - 2] ?? [],
-    [recentMonthTransactions],
-  )
+  const { monthsData, previousMonthData } = useRecentMonthsTransactions(currentDate)
   const categoryTransactionRatio = useMemo(() => getCategoryRatio(transactions), [transactions])
   const previousMonthComparison = useMemo(
-    () => getPreviousMonthComparison(transactions, previousTransactions),
-    [previousTransactions, transactions],
+    () => getPreviousMonthComparison(transactions, previousMonthData),
+    [previousMonthData, transactions],
   )
   const categoryChangeRanking = useMemo(
-    () => getCategoryChangeRanking(transactions, previousTransactions),
-    [previousTransactions, transactions],
+    () => getCategoryChangeRanking(transactions, previousMonthData),
+    [previousMonthData, transactions],
   )
   const spendingTransactionLineChart = useMemo(
-    () => getLineChartData(currentDate, recentMonthTransactions),
-    [currentDate, recentMonthTransactions],
+    () => getLineChartData(currentDate, monthsData),
+    [currentDate, monthsData],
   )
   const monthlyMoneySummary = {
     budgetAmount: monthlyPromise.budgetAmount,
@@ -284,24 +278,6 @@ export default function StatsContainer() {
   useEffect(() => {
     void loadMonth()
   }, [loadMonth])
-
-  useEffect(() => {
-    let isMounted = true
-
-    Promise.all(
-      Array.from({ length: 6 }, (_, index) =>
-        getMonthlyTransactions(getMonthDate(currentDate, index - 5)),
-      ),
-    ).then((monthTransactions) => {
-      if (isMounted) {
-        setRecentMonthTransactions(monthTransactions)
-      }
-    })
-
-    return () => {
-      isMounted = false
-    }
-  }, [currentDate])
 
   const closeTransactionModal = () => setSelectedStatisticsTransaction(null)
 
