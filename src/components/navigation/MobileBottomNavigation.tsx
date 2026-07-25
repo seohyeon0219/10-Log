@@ -5,12 +5,14 @@ import {
   EllipsisHorizontalIcon,
   ChatBubbleLeftEllipsisIcon,
   ChartBarIcon,
+  HomeIcon,
 } from '@heroicons/react/24/outline'
 import {
   CalendarIcon as CalendarSolid,
   EllipsisHorizontalIcon as EllipsisSolid,
   ChatBubbleLeftEllipsisIcon as ChatSolid,
   ChartBarIcon as ChartSolid,
+  HomeIcon as HomeSolid,
 } from '@heroicons/react/24/solid'
 
 type NavTab = {
@@ -20,6 +22,7 @@ type NavTab = {
 
 const navIconsById: Record<string, { outline: React.ElementType; solid: React.ElementType }> = {
   calendar: { outline: CalendarIcon, solid: CalendarSolid },
+  home: { outline: HomeIcon, solid: HomeSolid },
   more: { outline: EllipsisHorizontalIcon, solid: EllipsisSolid },
   review: { outline: ChatBubbleLeftEllipsisIcon, solid: ChatSolid },
   stats: { outline: ChartBarIcon, solid: ChartSolid },
@@ -44,7 +47,7 @@ export default function MobileBottomNavigation() {
 
   return (
     <nav className="fixed right-0 bottom-0 left-0 z-40 border-t border-gray-100 bg-white/96 px-1 pb-[max(6px,env(safe-area-inset-bottom))] pt-0 shadow-[0_-4px_20px_rgba(15,23,42,0.05)] backdrop-blur-md md:hidden">
-      <div className="mx-auto grid max-w-md grid-cols-4">
+      <div className="mx-auto grid max-w-md grid-cols-5">
         {tabs.map((tab) => {
           const isActive = tab.id === activeTabId
           const icons = navIconsById[tab.id]
