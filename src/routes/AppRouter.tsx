@@ -5,6 +5,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import AppLayout from '../layouts/AppLayout'
 import CalendarPage from '../pages/CalendarPage'
+import HomePage from '../pages/HomePage'
 import LandingPage from '../pages/LandingPage'
 import MorePage from '../pages/MorePage'
 import ReviewPage from '../pages/ReviewPage'
@@ -35,12 +36,13 @@ export default function AppRouter() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/app" element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
-          <Route index element={<Navigate to="calendar" replace />} />
+          <Route index element={<Navigate to="home" replace />} />
+          <Route path="home" element={<HomePage />} />
           <Route path="calendar" element={<CalendarPage />} />
           <Route path="stats" element={<StatsPage />} />
           <Route path="review" element={<ReviewPage />} />
           <Route path="more" element={<MorePage />} />
-          <Route path="*" element={<Navigate to="calendar" replace />} />
+          <Route path="*" element={<Navigate to="home" replace />} />
         </Route>
         <Route path="/test" element={<TestPage />} />
       </Routes>
