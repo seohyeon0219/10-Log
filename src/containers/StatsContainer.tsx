@@ -5,6 +5,7 @@ import MonthlyMoneySummary from '../components/statistics/monthlymoneysummary'
 import PreviousMonthComparison from '../components/statistics/PreviousMonthComparison'
 import SpendngTransactionLineChart from '../components/statistics/spendngTransactionLineChart'
 import TransactionFormModal from '../components/transactions/TransactionFormModal'
+import TransactionFormBottomSheet from '../components/transactions/bottomSheet/TransactionFormBottomSheet'
 import type { TransactionType } from '../components/transactions/transactionFormConfig'
 import { useRecentMonthsTransactions } from '../hooks/useRecentMonthsTransactions'
 import { useCalendarStore } from '../stores/calendarStore'
@@ -331,26 +332,52 @@ export default function StatsContainer() {
       </div>
 
       {selectedStatisticsTransaction ? (
-        <TransactionFormModal
-          categories={
-            selectedStatisticsTransaction.type === 'income' ? incomeCategories : expenseCategories
-          }
-          expenseCategories={expenseCategories}
-          incomeCategories={incomeCategories}
-          initialAmount={selectedStatisticsTransaction.amount}
-          initialCategoryId={selectedStatisticsTransaction.categoryId}
-          initialMemo={selectedStatisticsTransaction.memo}
-          isOpen={Boolean(selectedStatisticsTransaction)}
-          mode="edit"
-          onClose={closeTransactionModal}
-          onCreateCategory={addCategory}
-          onDelete={removeTransaction}
-          onDeleteCategory={deleteCategory}
-          onSave={saveTransaction}
-          onUpdateCategory={updateCategory}
-          selectedDate={new Date(`${selectedStatisticsTransaction.date}T00:00:00`)}
-          type={selectedStatisticsTransaction.type}
-        />
+        <>
+          <div className="hidden md:block">
+            <TransactionFormModal
+              categories={
+                selectedStatisticsTransaction.type === 'income' ? incomeCategories : expenseCategories
+              }
+              expenseCategories={expenseCategories}
+              incomeCategories={incomeCategories}
+              initialAmount={selectedStatisticsTransaction.amount}
+              initialCategoryId={selectedStatisticsTransaction.categoryId}
+              initialMemo={selectedStatisticsTransaction.memo}
+              isOpen
+              mode="edit"
+              onClose={closeTransactionModal}
+              onCreateCategory={addCategory}
+              onDelete={removeTransaction}
+              onDeleteCategory={deleteCategory}
+              onSave={saveTransaction}
+              onUpdateCategory={updateCategory}
+              selectedDate={new Date(`${selectedStatisticsTransaction.date}T00:00:00`)}
+              type={selectedStatisticsTransaction.type}
+            />
+          </div>
+          <div className="md:hidden">
+            <TransactionFormBottomSheet
+              categories={
+                selectedStatisticsTransaction.type === 'income' ? incomeCategories : expenseCategories
+              }
+              expenseCategories={expenseCategories}
+              incomeCategories={incomeCategories}
+              initialAmount={selectedStatisticsTransaction.amount}
+              initialCategoryId={selectedStatisticsTransaction.categoryId}
+              initialMemo={selectedStatisticsTransaction.memo}
+              isOpen
+              mode="edit"
+              onClose={closeTransactionModal}
+              onCreateCategory={addCategory}
+              onDelete={removeTransaction}
+              onDeleteCategory={deleteCategory}
+              onSave={saveTransaction}
+              onUpdateCategory={updateCategory}
+              selectedDate={new Date(`${selectedStatisticsTransaction.date}T00:00:00`)}
+              type={selectedStatisticsTransaction.type}
+            />
+          </div>
+        </>
       ) : null}
     </section>
   )
