@@ -8,6 +8,12 @@
   --color-income-blue: #1863dc;
   --color-expense-red: #e01818;
 
+  --color-bg-page: #f3ecdb;
+  --color-blob-cream: #eaddb8;
+  --color-blob-blue: #a9c9ff;
+
+  --gradient-page-bg: linear-gradient(160deg, #fffdf8 0%, #faf5e9 50%, #f3ecdb 100%);
+
   --spacing-8: 8px;
   --spacing-12: 12px;
   --spacing-16: 16px;
