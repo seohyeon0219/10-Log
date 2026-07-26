@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import MonthlyPromiseBottomSheet from '../components/calendar/MonthlyPromiseBottomSheet'
 import MonthlyPromiseModal from '../components/calendar/MonthlyPromiseModal'
+import Button from '../components/common/Button'
 import { getBudgetStatus, getRandomMessage } from '../constants/budgetMessages'
 import { useCalendarStore } from '../stores/calendarStore'
 
@@ -53,21 +54,25 @@ export default function HomeContainer() {
         {/* 다짐 */}
         <div className="mt-5 flex items-center gap-3">
           <p className="flex-1 text-base font-bold text-black">
-            <span className="bg-yellow-200 px-0.5 py-px leading-relaxed">
-              {monthlyPromise.promise}
+            <span className="relative inline-block px-1">
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 translate-x-0.75 translate-y-0.75 rounded-sm bg-yellow-200"
+              />
+              <span className="relative">{monthlyPromise.promise}</span>
             </span>
           </p>
-          <button
-            className="shrink-0 rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm"
+          <Button
+            className="!min-h-0 !w-auto shrink-0 !px-4 py-2 !text-sm"
             onClick={() => setIsPromiseEditOpen(true)}
-            type="button"
+            variant="secondary"
           >
             {monthlyPromise.isRegistered ? '수정' : '등록'}
-          </button>
+          </Button>
         </div>
 
         {/* 카드 */}
-        <div className="mt-5 rounded-2xl bg-white p-5 shadow-sm">
+        <div className="mt-5 rounded-2xl bg-(--color-glass-white) p-5 shadow-sm backdrop-blur-sm">
           {/* 남은 예산 */}
           <p className="text-sm font-semibold text-gray-400">이번 달 남은 예산</p>
           <div className="mt-2 flex items-center justify-between gap-4">
