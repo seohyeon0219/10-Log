@@ -1,10 +1,20 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import AiMonthlyReview from '../components/review/AiMonthlyReview'
+import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
 import DailyReviewForm from '../components/review/DailyReviewForm'
 import MiniSummaryCard from '../components/review/MiniSummaryCard'
 import { useReviewStore } from '../stores/reviewStore'
 
 export default function ReviewContainer() {
+  const [reviewMonth, setReviewMonth] = useState(
+    () => new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1),
+  )
+
+  const goPrevReviewMonth = () =>
+    setReviewMonth((d) => new Date(d.getFullYear(), d.getMonth() - 1, 1))
+  const goNextReviewMonth = () =>
+    setReviewMonth((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1))
+
   const dailyReview = useReviewStore((state) => state.dailyReview)
   const error = useReviewStore((state) => state.error)
   const isLoading = useReviewStore((state) => state.isLoading)
@@ -19,6 +29,13 @@ export default function ReviewContainer() {
   return (
     <section className="w-full self-start md:mt-6 md:min-h-80">
       <h2 className="mb-4 hidden text-xl font-bold text-black md:mb-0 md:block">회고</h2>
+      <div className="mb-4 md:hidden">
+        <CalendarMonthHeader
+          currentDate={reviewMonth}
+          onNextMonth={goNextReviewMonth}
+          onPrevMonth={goPrevReviewMonth}
+        />
+      </div>
       {error ? (
         <div className="mb-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-semibold text-(--color-expense-red)">
           {error}

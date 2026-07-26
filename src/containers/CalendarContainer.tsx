@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import CalendarGrid from '../components/calendar/CalendarGrid'
+import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
 import CalendarMonthlySummary from '../components/calendar/CalendarMonthlySummary'
 import MonthlyPromise from '../components/calendar/MonthlyPromise'
 import MonthlyPromiseBottomSheet from '../components/calendar/MonthlyPromiseBottomSheet'
@@ -41,6 +42,8 @@ export default function CalendarContainer() {
   const expenseCategories = useCalendarStore((state) => state.expenseCategories)
   const incomeCategories = useCalendarStore((state) => state.incomeCategories)
   const isLoading = useCalendarStore((state) => state.isLoading)
+  const goNextMonth = useCalendarStore((state) => state.goNextMonth)
+  const goPrevMonth = useCalendarStore((state) => state.goPrevMonth)
   const loadMonth = useCalendarStore((state) => state.loadMonth)
   const monthlyPromise = useCalendarStore((state) => state.monthlyPromise)
   const monthlySummary = useCalendarStore((state) => state.monthlySummary)
@@ -122,6 +125,14 @@ export default function CalendarContainer() {
 
   return (
     <section className="w-full self-start">
+      <div className="mb-4 md:hidden">
+        <CalendarMonthHeader
+          currentDate={currentDate}
+          onNextMonth={goNextMonth}
+          onPrevMonth={goPrevMonth}
+        />
+      </div>
+
       {error ? (
         <div className="mb-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-semibold text-(--color-expense-red)">
           {error}

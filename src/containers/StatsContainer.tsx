@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
 import CategoryChangeRanking from '../components/statistics/CategoryChangeRanking'
 import CategoryTransactionRatio from '../components/statistics/CategoryTransactionRatio'
 import MonthlyMoneySummary from '../components/statistics/monthlymoneysummary'
@@ -240,6 +241,8 @@ export default function StatsContainer() {
     useState<SelectedStatisticsTransaction | null>(null)
   const addCategory = useCalendarStore((state) => state.addCategory)
   const currentDate = useCalendarStore((state) => state.currentDate)
+  const goNextMonth = useCalendarStore((state) => state.goNextMonth)
+  const goPrevMonth = useCalendarStore((state) => state.goPrevMonth)
   const deleteCategory = useCalendarStore((state) => state.deleteCategory)
   const deleteTransaction = useCalendarStore((state) => state.deleteTransaction)
   const expenseCategories = useCalendarStore((state) => state.expenseCategories)
@@ -303,6 +306,13 @@ export default function StatsContainer() {
   return (
     <section className="w-full self-start md:mt-6 md:min-h-80">
       <h2 className="mb-4 hidden text-xl font-bold text-black md:mb-0 md:block">통계</h2>
+      <div className="mb-4 md:hidden">
+        <CalendarMonthHeader
+          currentDate={currentDate}
+          onNextMonth={goNextMonth}
+          onPrevMonth={goPrevMonth}
+        />
+      </div>
       <div className="grid gap-4 md:mt-5">
         <MonthlyMoneySummary {...monthlyMoneySummary} />
       </div>
