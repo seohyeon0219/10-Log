@@ -41,30 +41,33 @@ export default function HomeContainer() {
 
   return (
     <section className="w-full self-start md:mt-6">
-      <h2 className="mb-4 hidden text-xl font-bold text-black md:mb-0 md:block">홈</h2>
-
       <div className="mt-4 md:mt-5">
         {/* 날짜 */}
-        <p className="text-2xl font-bold tracking-widest text-(--color-text-muted)">
-          {DAYS_EN[today.getDay()]}
-        </p>
-        <p className="leading-none text-7xl font-extrabold text-black">
-          {today.getDate()}
-        </p>
-        <p className="text-sm font-semibold text-(--color-text-sand)">
-          {today.getFullYear()}
-        </p>
+        <div className="w-fit">
+          <p className="text-[20px] font-bold tracking-[3px] text-(--color-text-muted)">
+            {DAYS_EN[today.getDay()]}
+          </p>
+          <p className="mt-1.5 text-[64px] font-extrabold leading-[0.9] tracking-[-2px] text-black">
+            {today.getDate()}
+          </p>
+          <div className="-mt-5.5">
+            <div className="my-2.5 h-px w-20 bg-white/90" />
+            <p className="text-base font-bold text-right text-(--color-text-muted)">
+              {today.getFullYear()}
+            </p>
+          </div>
+        </div>
 
         {/* 한 줄 평 */}
-        <p className="mt-6 break-keep text-base font-extrabold leading-relaxed text-black">
+        <p className="mt-6 break-keep text-base font-bold leading-relaxed text-(--color-text-dim)">
           {budgetMessage}
         </p>
 
         {/* 카드 */}
-        <div className="mt-5 rounded-[22px] bg-(--color-glass-white) p-5 shadow-sm backdrop-blur-sm">
+        <div className="mt-24 rounded-[22px] bg-(--color-glass-white) p-5 shadow-sm backdrop-blur-sm">
           {/* 다짐 */}
           <div className="flex items-center justify-between gap-3">
-            <p className="min-w-0 flex-1 break-keep text-base font-extrabold text-black">
+            <p className="min-w-0 flex-1 break-keep text-lg font-extrabold text-black">
               <span
                 style={{
                   backgroundImage: 'linear-gradient(transparent 55%, #ffe58f 55%)',
