@@ -4,6 +4,23 @@ type CalendarMonthHeaderProps = {
   onNextMonth: () => void
 }
 
+const glassButtonStyle: React.CSSProperties = {
+  width: '36px',
+  height: '36px',
+  borderRadius: '50%',
+  border: '1px solid rgba(255,255,255,0.65)',
+  background: 'linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.15) 55%)',
+  backdropFilter: 'blur(18px) saturate(180%)',
+  WebkitBackdropFilter: 'blur(18px) saturate(180%)',
+  boxShadow:
+    'inset 0 1px 1px rgba(255,255,255,0.85), inset 0 -4px 8px rgba(0,0,0,0.05), 0 6px 16px rgba(0,0,0,0.08)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  cursor: 'pointer',
+  flexShrink: 0,
+}
+
 export default function CalendarMonthHeader({
   currentDate,
   onPrevMonth,
@@ -14,25 +31,15 @@ export default function CalendarMonthHeader({
 
   return (
     <header className="flex w-full items-center justify-center gap-4">
-      <button
-        type="button"
-        className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full text-gray-500"
-        onClick={onPrevMonth}
-        aria-label="이전 달"
-      >
+      <button type="button" style={glassButtonStyle} onClick={onPrevMonth} aria-label="이전 달">
         <MonthArrowIcon className="rotate-180" />
       </button>
 
-      <h1 className="min-w-0 text-center text-lg font-bold text-black">
+      <h1 className="min-w-0 text-center text-black" style={{ fontSize: '18px', fontWeight: 800 }}>
         {year}년 {month}월
       </h1>
 
-      <button
-        type="button"
-        className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full text-gray-500"
-        onClick={onNextMonth}
-        aria-label="다음 달"
-      >
+      <button type="button" style={glassButtonStyle} onClick={onNextMonth} aria-label="다음 달">
         <MonthArrowIcon />
       </button>
     </header>

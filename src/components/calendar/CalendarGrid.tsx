@@ -18,12 +18,12 @@ type CalendarDay = {
   weekDayIndex: number
 }
 
-const weekDays = ['월', '화', '수', '목', '금', '토', '일']
-const calendarBorderClassName = 'border-gray-100'
-const saturdayIndex = 5
-const sundayIndex = 6
+const weekDays = ['일', '월', '화', '수', '목', '금', '토']
+const saturdayIndex = 6
+const sundayIndex = 0
 
-const formatAmount = (amount: number) => amount.toLocaleString('ko-KR')
+const formatAmountShort = (amount: number) => `${Math.round(amount / 1000)}k`
+
 const cn = (...classNames: string[]) => classNames.filter(Boolean).join(' ')
 
 const toDateKey = (date: Date) => {
@@ -34,14 +34,12 @@ const toDateKey = (date: Date) => {
   return `${year}-${month}-${day}`
 }
 
-const getMondayStartIndex = (date: Date) => (date.getDay() + 6) % 7
-
 const getCalendarDays = (currentDate: Date): CalendarDay[] => {
   const year = currentDate.getFullYear()
   const month = currentDate.getMonth()
   const firstDate = new Date(year, month, 1)
   const daysInMonth = new Date(year, month + 1, 0).getDate()
-  const firstDayOffset = getMondayStartIndex(firstDate)
+  const firstDayOffset = firstDate.getDay()
   const dayCellCount = Math.ceil((firstDayOffset + daysInMonth) / 7) * 7
   const firstGridDate = new Date(year, month, 1 - firstDayOffset)
 
@@ -58,24 +56,12 @@ const getCalendarDays = (currentDate: Date): CalendarDay[] => {
   })
 }
 
-const getWeekDayTextClassName = (weekDayIndex: number) => {
-  if (weekDayIndex === saturdayIndex) {
-    return 'text-(--color-income-blue)'
-  }
-
-  if (weekDayIndex === sundayIndex) {
-    return 'text-(--color-expense-red)'
-  }
-
-  return 'text-gray-700'
-}
-
 const getDateTextClassName = (day: CalendarDay) => {
-  if (!day.isCurrentMonth) {
-    return 'text-(--color-gray)'
-  }
+  if (!day.isCurrentMonth) return 'text-(--color-gray)'
+  if (day.weekDayIndex === sundayIndex) return 'text-(--color-expense-red)'
+  if (day.weekDayIndex === saturdayIndex) return 'text-(--color-income-blue)'
 
-  return getWeekDayTextClassName(day.weekDayIndex)
+  return 'text-black'
 }
 
 export default function CalendarGrid({
@@ -89,50 +75,56 @@ export default function CalendarGrid({
   const selectedDateKey = selectedDate ? toDateKey(selectedDate) : ''
 
   return (
-    <section>
-      <div className="grid grid-cols-7">
-        {weekDays.map((weekDay, index) => (
+    <section
+      className="overflow-hidden rounded-[22px]"
+      style={{
+        background: 'rgba(255,255,255,0.4)',
+        backdropFilter: 'blur(20px) saturate(170%)',
+        WebkitBackdropFilter: 'blur(20px) saturate(170%)',
+        border: '1px solid rgba(255,255,255,0.6)',
+        boxShadow: '0 10px 30px rgba(120,95,40,0.10)',
+      }}
+    >
+      <div className="grid grid-cols-7 px-2 pb-1 pt-4">
+        {weekDays.map((weekDay) => (
           <div
-            className={cn('px-3 py-2 text-center text-sm font-semibold', getWeekDayTextClassName(index))}
             key={weekDay}
+            className="text-center"
+            style={{ fontSize: '11px', fontWeight: 800, color: '#a39c8c' }}
           >
             {weekDay}
           </div>
         ))}
       </div>
 
-      <div
-        className={cn('grid grid-cols-7 overflow-hidden rounded-xl border bg-(--color-glass-white) backdrop-blur-sm', calendarBorderClassName)}
-      >
-        {calendarDays.map((day, index) => {
+      <div className="grid grid-cols-7 px-2 pb-3">
+        {calendarDays.map((day) => {
           const amount = amountByDate.get(day.dateKey)
           const isSelected = day.dateKey === selectedDateKey
 
           return (
             <button
+              key={day.dateKey}
               type="button"
               className={cn(
-                'flex min-h-18 min-w-0 cursor-pointer flex-col items-start p-1 text-left transition md:min-h-22',
-                isSelected ? 'bg-gray-100' : 'bg-white hover:bg-gray-50 active:bg-gray-100',
-                index % 7 > 0 ? 'md:border-l md:border-gray-100' : '',
-                index >= 7 ? 'md:border-t md:border-gray-100' : '',
+                'flex aspect-square min-w-0 cursor-pointer flex-col items-start rounded-xl p-1 text-left transition-all',
               )}
-              key={day.dateKey}
+              style={isSelected ? { background: 'rgba(22,21,18,0.09)' } : undefined}
               onClick={() => onDateSelect?.(day.date)}
             >
               <span className={cn('text-sm font-semibold', getDateTextClassName(day))}>
                 {day.date.getDate()}
               </span>
 
-              <span className="mt-auto grid w-full min-w-0 gap-1">
+              <span className="mt-auto grid w-full min-w-0 gap-0.5">
                 {amount?.income ? (
-                  <span className="min-w-0 break-all text-[10px] leading-3 font-semibold text-(--color-income-blue) md:truncate md:text-[13px] md:leading-4" title={`+${formatAmount(amount.income)}`}>
-                    +{formatAmount(amount.income)}
+                  <span className="min-w-0 truncate text-[10px] font-semibold leading-3 text-(--color-income-blue)">
+                    +{formatAmountShort(amount.income)}
                   </span>
                 ) : null}
                 {amount?.expense ? (
-                  <span className="min-w-0 break-all text-[10px] leading-3 font-semibold text-(--color-expense-red) md:truncate md:text-[13px] md:leading-4" title={`-${formatAmount(amount.expense)}`}>
-                    -{formatAmount(amount.expense)}
+                  <span className="min-w-0 truncate text-[10px] font-semibold leading-3 text-(--color-expense-red)">
+                    -{formatAmountShort(amount.expense)}
                   </span>
                 ) : null}
               </span>

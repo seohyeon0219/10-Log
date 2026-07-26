@@ -161,7 +161,16 @@ export default function CalendarContainer() {
           />
         </div>
 
-        <aside className="mt-9 min-h-80 rounded-xl border border-white/60 bg-(--color-glass-white) px-4 py-4 backdrop-blur-sm">
+        <aside
+          className="mt-9 min-h-80 rounded-[22px] px-5 py-5"
+          style={{
+            background: 'rgba(255,255,255,0.45)',
+            backdropFilter: 'blur(20px) saturate(170%)',
+            WebkitBackdropFilter: 'blur(20px) saturate(170%)',
+            border: '1px solid rgba(255,255,255,0.6)',
+            boxShadow: '0 10px 30px rgba(120,95,40,0.10)',
+          }}
+        >
           <TransactionDateList
             onAddExpense={() => openTransactionForm('expense')}
             onAddIncome={() => openTransactionForm('income')}

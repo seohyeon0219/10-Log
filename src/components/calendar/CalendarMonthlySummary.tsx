@@ -1,7 +1,7 @@
 import { type RefObject, useLayoutEffect, useRef, useState } from 'react'
 import ExpandButton from '../common/ExpandButton'
 
-type SummaryType = 'income' | 'expense'
+type SummaryType = 'income' | 'expense' | 'total'
 
 type CalendarMonthlySummaryProps = {
   income: number
@@ -13,6 +13,14 @@ type CalendarMonthlySummaryProps = {
 const formatAmount = (amount: number) => amount.toLocaleString('ko-KR')
 const cn = (...classNames: string[]) => classNames.filter(Boolean).join(' ')
 const amountTextClassName = 'block min-w-0 truncate whitespace-nowrap text-sm leading-5 font-bold md:text-base'
+
+const glassCardStyle: React.CSSProperties = {
+  background: 'rgba(255,255,255,0.45)',
+  backdropFilter: 'blur(20px) saturate(170%)',
+  WebkitBackdropFilter: 'blur(20px) saturate(170%)',
+  border: '1px solid rgba(255,255,255,0.6)',
+  boxShadow: '0 10px 30px rgba(120,95,40,0.10)',
+}
 
 export default function CalendarMonthlySummary({
   income,
@@ -27,35 +35,34 @@ export default function CalendarMonthlySummary({
   const totalIncome = income + fixedIncome
   const totalExpense = expense + fixedExpense
   const total = totalIncome - totalExpense
+
   const expandedSummary = expandedType
     ? {
+        label:
+          expandedType === 'income'
+            ? '수입 상세'
+            : expandedType === 'expense'
+              ? '지출 상세'
+              : '합계 상세',
         details:
           expandedType === 'income'
             ? [
-                { label: '수입', value: income, valueClassName: 'text-(--color-income-blue)' },
+                { label: '변동수입', value: income, valueClassName: 'text-(--color-income-blue)' },
                 { label: '고정수입', value: fixedIncome, valueClassName: 'text-(--color-income-blue)' },
-                {
-                  isEmphasized: true,
-                  label: '합계',
-                  value: totalIncome,
-                  valueClassName: 'text-(--color-income-blue)',
-                },
+                { isEmphasized: true, label: '합계', value: totalIncome, valueClassName: 'text-(--color-income-blue)' },
               ]
-            : [
-                { label: '지출', value: expense, valueClassName: 'text-(--color-expense-red)' },
-                {
-                  label: '고정지출',
-                  value: fixedExpense,
-                  valueClassName: 'text-(--color-expense-red)',
-                },
-                {
-                  isEmphasized: true,
-                  label: '합계',
-                  value: totalExpense,
-                  valueClassName: 'text-(--color-expense-red)',
-                },
-              ],
-        label: expandedType === 'income' ? '수입 상세' : '지출 상세',
+            : expandedType === 'expense'
+              ? [
+                  { label: '변동지출', value: expense, valueClassName: 'text-(--color-expense-red)' },
+                  { label: '고정지출', value: fixedExpense, valueClassName: 'text-(--color-expense-red)' },
+                  { isEmphasized: true, label: '합계', value: totalExpense, valueClassName: 'text-(--color-expense-red)' },
+                ]
+              : [
+                  { label: '변동수입', value: income, valueClassName: 'text-(--color-income-blue)' },
+                  { label: '고정수입', value: fixedIncome, valueClassName: 'text-(--color-income-blue)' },
+                  { label: '변동지출', value: expense, valueClassName: 'text-(--color-expense-red)' },
+                  { label: '고정지출', value: fixedExpense, valueClassName: 'text-(--color-expense-red)' },
+                ],
       }
     : null
 
@@ -99,7 +106,7 @@ export default function CalendarMonthlySummary({
   }, [totalExpense, totalIncome, total])
 
   return (
-    <section className="relative w-full border-b border-gray-100 px-2 py-4">
+    <section className="relative w-full rounded-[22px] p-4.5" style={glassCardStyle}>
       <MeasurementGrid
         refCallback={(element, index) => {
           measureAmountRefs.current[index] = element
@@ -142,7 +149,12 @@ export default function CalendarMonthlySummary({
           />
         </div>
 
-        <div className={shouldStackTotal ? 'col-span-2 min-w-0 md:col-span-1' : 'min-w-0'}>
+        <div
+          className={cn(
+            'relative min-w-0 pr-8 md:pr-10',
+            shouldStackTotal ? 'col-span-2 md:col-span-1' : '',
+          )}
+        >
           <p className="mb-1 text-xs font-semibold text-gray-400">합계</p>
           <strong
             className={[
@@ -153,11 +165,17 @@ export default function CalendarMonthlySummary({
             {total >= 0 ? '+' : '-'}
             {formatAmount(Math.abs(total))}
           </strong>
+          <ExpandButton
+            ariaLabel={expandedType === 'total' ? '합계 상세 닫기' : '합계 상세 보기'}
+            className="absolute right-0 bottom-0"
+            isExpanded={expandedType === 'total'}
+            onClick={() => toggleSummary('total')}
+          />
         </div>
       </div>
 
       {expandedSummary ? (
-        <div className="mt-4 rounded-xl p-4 max-[380px]:p-3">
+        <div className="mt-4 rounded-xl bg-black/4 p-4 max-[380px]:p-3">
           <p className="text-sm font-extrabold text-black">{expandedSummary.label}</p>
           <div className="mt-3 grid gap-2">
             {expandedSummary.details.map((detail) => (
@@ -194,33 +212,24 @@ function MeasurementGrid({
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-x-2 top-4 -z-10 grid grid-cols-3 gap-2 opacity-0 md:gap-6"
+      className="pointer-events-none absolute inset-x-4.5 top-4.5 -z-10 grid grid-cols-3 gap-2 opacity-0 md:gap-6"
       ref={rootRef}
     >
       <div className="min-w-0 pr-8 md:pr-10">
         <p className="mb-1 text-xs font-semibold">수입</p>
-        <strong
-          className={amountTextClassName}
-          ref={(element) => refCallback(element, 0)}
-        >
+        <strong className={amountTextClassName} ref={(element) => refCallback(element, 0)}>
           {formatAmount(totalIncome)}
         </strong>
       </div>
       <div className="min-w-0 pr-8 md:pr-10">
         <p className="mb-1 text-xs font-semibold">지출</p>
-        <strong
-          className={amountTextClassName}
-          ref={(element) => refCallback(element, 1)}
-        >
+        <strong className={amountTextClassName} ref={(element) => refCallback(element, 1)}>
           {formatAmount(totalExpense)}
         </strong>
       </div>
-      <div className="min-w-0">
+      <div className="min-w-0 pr-8 md:pr-10">
         <p className="mb-1 text-xs font-semibold">합계</p>
-        <strong
-          className={amountTextClassName}
-          ref={(element) => refCallback(element, 2)}
-        >
+        <strong className={amountTextClassName} ref={(element) => refCallback(element, 2)}>
           {total >= 0 ? '+' : '-'}
           {formatAmount(Math.abs(total))}
         </strong>
@@ -245,7 +254,12 @@ function SummaryDetailRow({
   const weightClassName = isEmphasized ? 'font-bold' : 'font-medium'
 
   return (
-    <div className={cn('flex min-w-0 items-center justify-between gap-2 text-sm md:gap-3', isEmphasized ? 'mt-1' : '')}>
+    <div
+      className={cn(
+        'flex min-w-0 items-center justify-between gap-2 text-sm md:gap-3',
+        isEmphasized ? 'mt-1' : '',
+      )}
+    >
       <span className={cn('truncate text-gray-400', weightClassName)}>{label}</span>
       <strong className={cn('whitespace-nowrap text-right', weightClassName, valueClassName)}>
         {formatAmount(value)}
