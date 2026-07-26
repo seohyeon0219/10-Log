@@ -10,7 +10,6 @@ import Tabs from '../../components/common/Tabs'
 import Textarea from '../../components/common/Textarea'
 import UnderInput from '../../components/common/UnderInput'
 import Header from '../../components/navigation/DesktopHeader'
-import MonthlyPromise from '../../components/calendar/MonthlyPromise'
 import MonthlyPromiseBottomSheet from '../../components/calendar/MonthlyPromiseBottomSheet'
 import MonthlyPromiseModal from '../../components/calendar/MonthlyPromiseModal'
 import CategoryChangeRanking from '../../components/statistics/CategoryChangeRanking'
@@ -19,9 +18,6 @@ import PreviousMonthComparison from '../../components/statistics/PreviousMonthCo
 import MonthlyMoneySummary from '../../components/statistics/monthlymoneysummary'
 import SpendngTransactionLineChart from '../../components/statistics/spendngTransactionLineChart'
 import AiMonthlyReview from '../../components/review/AiMonthlyReview'
-import DailyReviewForm from '../../components/review/DailyReviewForm'
-import MiniSummaryCard from '../../components/review/MiniSummaryCard'
-import ReviewLookback from '../../components/review/ReviewLookback'
 import AmountInput from '../../components/transactions/AmountInput'
 import TransactionFormModal from '../../components/transactions/TransactionFormModal'
 import TransactionDateActions from '../../components/transactions/TransactionDateActions'
@@ -30,7 +26,6 @@ import TransactionListBottomSheet from '../../components/transactions/bottomShee
 import {
   getMockCalendarDayAmounts,
   getMockTransactions,
-  getMockTodayTransactions,
   mockCategoryChangeRanking,
   mockCategoryTransactionRatio,
   mockExpenseCategories,
@@ -38,7 +33,6 @@ import {
   mockMonthlyMoneySummary,
   mockMonthlyPromise,
   mockPreviousMonthComparison,
-  mockReviewLookback,
   mockSpendingTransactionLineChart,
   mockTransactions,
 } from '../../mocks/data'
@@ -90,7 +84,6 @@ export default function TestPage() {
   const selectedDateTransactions = getMockTransactions(currentDate).filter(
     (transaction) => transaction.date === selectedDateKey,
   )
-  const todayTransactions = getMockTodayTransactions(currentDate)
   const deleteMonthlyPromise = () => {
     setMonthlyPromise((promise) => ({
       ...promise,
@@ -210,12 +203,6 @@ export default function TestPage() {
       <section className="mb-6 rounded-xl border border-(--color-gray) bg-gray-50 p-6 max-sm:p-4">
         <h2 className="mb-4 text-base font-bold">Statistics</h2>
         <div className="grid gap-4">
-          <MonthlyPromise
-            budgetAmount={monthlyPromise.budgetAmount}
-            isRegistered={monthlyPromise.isRegistered}
-            onEdit={() => setIsMonthlyPromiseModalOpen(true)}
-            promise={monthlyPromise.promise}
-          />
           <MonthlyMoneySummary {...mockMonthlyMoneySummary} budgetAmount={monthlyPromise.budgetAmount} />
           <PreviousMonthComparison items={mockPreviousMonthComparison} />
           <CategoryChangeRanking items={mockCategoryChangeRanking} />
@@ -237,16 +224,7 @@ export default function TestPage() {
 
       <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
         <h2 className="mb-4 text-base font-bold">Review</h2>
-        <MiniSummaryCard transactions={todayTransactions} />
-        <div className="mt-4">
-          <DailyReviewForm transactions={todayTransactions} />
-        </div>
-        <div className="mt-4">
-          <ReviewLookback {...mockReviewLookback} />
-        </div>
-        <div className="mt-4">
-          <AiMonthlyReview monthLabel="6월" />
-        </div>
+        <AiMonthlyReview monthLabel="6월" />
       </section>
 
       <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">

@@ -158,71 +158,6 @@ export const mockSpendingTransactionLineChart = {
   ],
 }
 
-export const mockReviewLookback = {
-  goodSpends: [
-    {
-      id: 'good-food',
-      category: '식비',
-      memo: '친구와의 약속',
-    },
-    {
-      id: 'good-learning',
-      category: '자기계발',
-      memo: '강의 결제',
-    },
-    {
-      id: 'good-living',
-      category: '생활용품',
-      memo: '꼭 필요했던 구매',
-    },
-    {
-      id: 'good-culture',
-      category: '문화',
-      memo: '전시를 보며 기분 전환',
-    },
-    {
-      id: 'good-health',
-      category: '건강',
-      memo: '미뤄둔 운동 등록',
-    },
-  ],
-  regretSpends: [
-    {
-      id: 'regret-coffee',
-      category: '카페',
-      memo: '습관처럼 산 커피',
-    },
-    {
-      id: 'regret-delivery',
-      category: '배달',
-      memo: '늦은 저녁 주문',
-    },
-    {
-      id: 'regret-shopping',
-      category: '쇼핑',
-      memo: '계획에 없던 구매',
-    },
-    {
-      id: 'regret-snack',
-      category: '간식',
-      memo: '배고프지 않았는데 산 간식',
-    },
-    {
-      id: 'regret-taxi',
-      category: '교통',
-      memo: '조금만 일찍 나왔으면 줄였을 택시비',
-    },
-  ],
-  weeklyNote: '이번 주는 식비를 줄이는 대신\n취미에 투자하며 만족도가 높아졌어요.\n\n꽤나 전략적인 일주일이었네요.',
-}
-
-export const mockNavTabs = [
-  { id: 'calendar', label: '캘린더' },
-  { id: 'stats', label: '통계' },
-  { id: 'review', label: '회고' },
-  { id: 'more', label: '더보기' },
-]
-
 const getDateKey = (date: Date, day: number) => {
   const year = date.getFullYear()
   const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -375,12 +310,6 @@ export const getMockTransactions = (currentDate: Date) =>
     ...transaction,
     date: getDateKey(currentDate, transaction.day),
   }))
-
-export const getMockTodayTransactions = (currentDate: Date) => {
-  const todayKey = getDateKey(currentDate, currentDate.getDate())
-
-  return getMockTransactions(currentDate).filter((transaction) => transaction.date === todayKey)
-}
 
 export const getMockCalendarDayAmounts = (currentDate: Date) =>
   getMockTransactions(currentDate).reduce<
