@@ -102,7 +102,7 @@ export default function CalendarGrid({
       </div>
 
       <div
-        className={cn('grid grid-cols-7 overflow-hidden rounded-xl border bg-white', calendarBorderClassName)}
+        className={cn('grid grid-cols-7 overflow-hidden rounded-xl border bg-(--color-glass-white) backdrop-blur-sm', calendarBorderClassName)}
       >
         {calendarDays.map((day, index) => {
           const amount = amountByDate.get(day.dateKey)
