@@ -54,18 +54,14 @@ export default function HomeContainer() {
         {/* 다짐 */}
         <div className="mt-5 flex items-center gap-3">
           <p className="flex-1 text-base font-bold text-black">
-            <span className="relative inline-block px-1">
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 translate-x-0.75 translate-y-0.75 rounded-sm bg-yellow-200"
-              />
-              <span className="relative">{monthlyPromise.promise}</span>
+            <span style={{ backgroundImage: 'linear-gradient(transparent 55%, #ffe58f 55%)', boxDecorationBreak: 'clone', WebkitBoxDecorationBreak: 'clone' }}>
+              {monthlyPromise.promise}
             </span>
           </p>
           <Button
-            className="!min-h-0 !w-auto shrink-0 !px-4 py-2 !text-sm"
+            className="min-h-0! w-auto! shrink-0 px-4! py-2 text-sm!"
             onClick={() => setIsPromiseEditOpen(true)}
-            variant="secondary"
+            variant="ghost"
           >
             {monthlyPromise.isRegistered ? '수정' : '등록'}
           </Button>
