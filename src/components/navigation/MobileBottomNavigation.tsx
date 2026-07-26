@@ -46,8 +46,17 @@ export default function MobileBottomNavigation() {
   const activeTabId = getActiveTabId(location.pathname, tabs)
 
   return (
-    <nav className="fixed right-0 bottom-0 left-0 z-40 border-t border-gray-100 bg-white/96 px-1 pb-[max(6px,env(safe-area-inset-bottom))] pt-0 shadow-[0_-4px_20px_rgba(15,23,42,0.05)] backdrop-blur-md md:hidden">
-      <div className="mx-auto grid max-w-md grid-cols-5">
+    <nav className="fixed right-0 bottom-0 left-0 z-40 md:hidden">
+      <div
+        className="grid grid-cols-5 rounded-full border border-white/55 px-1.5 py-2.5"
+        style={{
+          margin: '0 14px calc(14px + env(safe-area-inset-bottom))',
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.18) 60%)',
+          backdropFilter: 'blur(26px) saturate(190%)',
+          WebkitBackdropFilter: 'blur(26px) saturate(190%)',
+          boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.7), inset 0 -6px 12px rgba(0,0,0,0.05), 0 12px 30px rgba(120,95,40,0.16)',
+        }}
+      >
         {tabs.map((tab) => {
           const isActive = tab.id === activeTabId
           const icons = navIconsById[tab.id]
@@ -56,39 +65,24 @@ export default function MobileBottomNavigation() {
           return (
             <button
               aria-current={isActive ? 'page' : undefined}
-              className="group relative flex flex-col items-center justify-center gap-0.5 px-1 pt-2 pb-1.5"
+              className="flex flex-col items-center justify-center gap-0.5 py-1"
               key={tab.id}
               onClick={() => navigate(`/app/${tab.id}`)}
               type="button"
             >
-              <span
-                className={[
-                  'absolute top-0 left-1/2 -translate-x-1/2 h-[2.5px] rounded-full transition-all duration-300 ease-out',
-                  isActive ? 'w-6 bg-black' : 'w-0 bg-transparent',
-                ].join(' ')}
-              />
-
-              <span
-                className={[
-                  'flex items-center justify-center w-10 h-9 rounded-2xl transition-all duration-200',
-                  isActive ? 'bg-gray-100' : 'group-active:bg-gray-100',
-                ].join(' ')}
-              >
-                {Icon ? (
-                  <Icon
-                    className={[
-                      'w-5.5 h-5.5 transition-all duration-200',
-                      isActive ? 'text-black' : 'text-gray-400',
-                    ].join(' ')}
-                    aria-hidden="true"
-                  />
-                ) : null}
-              </span>
-
+              {Icon ? (
+                <Icon
+                  aria-hidden="true"
+                  className={[
+                    'h-5.5 w-5.5 transition-colors duration-200',
+                    isActive ? 'text-[#161512]' : 'text-[#b5ac98]',
+                  ].join(' ')}
+                />
+              ) : null}
               <span
                 className={[
                   'text-[10px] leading-none tracking-tight transition-all duration-200',
-                  isActive ? 'font-bold text-black' : 'font-medium text-gray-400',
+                  isActive ? 'font-extrabold text-[#161512]' : 'font-medium text-[#b5ac98]',
                 ].join(' ')}
               >
                 {tab.label}
