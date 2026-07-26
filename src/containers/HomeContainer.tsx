@@ -5,7 +5,7 @@ import Button from '../components/common/Button'
 import { getBudgetStatus, getRandomMessage } from '../constants/budgetMessages'
 import { useCalendarStore } from '../stores/calendarStore'
 
-const DAYS_KO = ['일', '월', '화', '수', '목', '금', '토']
+const DAYS_EN = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
 
 export default function HomeContainer() {
   const [isPromiseEditOpen, setIsPromiseEditOpen] = useState(false)
@@ -29,9 +29,6 @@ export default function HomeContainer() {
   const budgetStatus = getBudgetStatus(spent, monthlyPromise.budgetAmount)
   const budgetMessage = useMemo(() => getRandomMessage(budgetStatus), [budgetStatus])
 
-  const yearLabel = `${today.getFullYear()}년`
-  const dateLabel = `${today.getMonth() + 1}월 ${today.getDate()}일 ${DAYS_KO[today.getDay()]}요일`
-
   const handleSavePromise = async (values: { budgetAmount: number; promise: string }) => {
     await updateMonthlyPromise(values)
     setIsPromiseEditOpen(false)
@@ -48,73 +45,92 @@ export default function HomeContainer() {
 
       <div className="mt-4 md:mt-5">
         {/* 날짜 */}
-        <p className="text-sm font-semibold text-gray-400">{yearLabel}</p>
-        <p className="mt-0.5 text-3xl font-extrabold text-black">{dateLabel}</p>
+        <p className="text-2xl font-bold tracking-widest text-(--color-text-muted)">
+          {DAYS_EN[today.getDay()]}
+        </p>
+        <p className="leading-none text-7xl font-extrabold text-black">
+          {today.getDate()}
+        </p>
+        <p className="text-sm font-semibold text-(--color-text-sand)">
+          {today.getFullYear()}
+        </p>
 
-        {/* 다짐 */}
-        <div className="mt-5 flex items-center gap-3">
-          <p className="flex-1 text-base font-bold text-black">
-            <span style={{ backgroundImage: 'linear-gradient(transparent 55%, #ffe58f 55%)', boxDecorationBreak: 'clone', WebkitBoxDecorationBreak: 'clone' }}>
-              {monthlyPromise.promise}
-            </span>
-          </p>
-          <Button
-            className="min-h-0! w-auto! shrink-0 px-4! py-2 text-sm!"
-            onClick={() => setIsPromiseEditOpen(true)}
-            variant="ghost"
-          >
-            {monthlyPromise.isRegistered ? '수정' : '등록'}
-          </Button>
-        </div>
+        {/* 한 줄 평 */}
+        <p className="mt-6 break-keep text-base font-extrabold leading-relaxed text-black">
+          {budgetMessage}
+        </p>
 
         {/* 카드 */}
-        <div className="mt-5 rounded-2xl bg-(--color-glass-white) p-5 shadow-sm backdrop-blur-sm">
-          {/* 남은 예산 */}
-          <p className="text-sm font-semibold text-gray-400">이번 달 남은 예산</p>
-          <div className="mt-2 flex items-center justify-between gap-4">
-            <p
-              className={[
-                'text-4xl font-extrabold',
-                remaining !== null && remaining < 0
-                  ? 'text-(--color-expense-red)'
-                  : 'text-black',
-              ].join(' ')}
-            >
-              {remaining !== null
-                ? `${remaining < 0 ? '−' : ''}${Math.abs(remaining).toLocaleString('ko-KR')}원`
-                : '—'}
-            </p>
-            {monthlyPromise.budgetAmount > 0 && (
-              <span className="shrink-0 rounded-full bg-gray-100 px-3 py-1.5 text-sm font-semibold text-gray-500">
-                {spentPercentage}% 사용
+        <div className="mt-5 rounded-[22px] bg-(--color-glass-white) p-5 shadow-sm backdrop-blur-sm">
+          {/* 다짐 */}
+          <div className="flex items-center justify-between gap-3">
+            <p className="min-w-0 flex-1 break-keep text-base font-extrabold text-black">
+              <span
+                style={{
+                  backgroundImage: 'linear-gradient(transparent 55%, #ffe58f 55%)',
+                  boxDecorationBreak: 'clone',
+                  WebkitBoxDecorationBreak: 'clone',
+                }}
+              >
+                {monthlyPromise.promise}
               </span>
-            )}
+            </p>
+            <Button
+              className="min-h-0! w-auto! shrink-0 px-3! py-1.5 text-sm!"
+              onClick={() => setIsPromiseEditOpen(true)}
+              variant="ghost"
+            >
+              {monthlyPromise.isRegistered ? '수정' : '등록'}
+            </Button>
           </div>
 
-          {monthlyPromise.budgetAmount > 0 && (
-            <>
-              <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-gray-100">
-                <div
-                  className={[
-                    'h-full rounded-full transition-all duration-500',
-                    remaining !== null && remaining < 0
-                      ? 'bg-(--color-expense-red)'
-                      : 'bg-(--color-income-blue)',
-                  ].join(' ')}
-                  style={{ width: `${Math.min(spentPercentage, 100)}%` }}
-                />
-              </div>
-              <p className="mt-2 text-sm text-gray-400">
-                {spent.toLocaleString('ko-KR')}원 / {monthlyPromise.budgetAmount.toLocaleString('ko-KR')}원 사용했어요
+          {/* 남은 예산 */}
+          <div className="mt-5">
+            <p className="text-xs font-bold text-(--color-text-muted)">
+              이번 달 남은 예산
+            </p>
+            <div className="mt-2 flex items-center justify-between gap-4">
+              <p
+                className={[
+                  'text-[28px] font-extrabold leading-none',
+                  remaining !== null && remaining < 0
+                    ? 'text-(--color-expense-red)'
+                    : 'text-black',
+                ].join(' ')}
+              >
+                {remaining !== null
+                  ? `${remaining < 0 ? '−' : ''}${Math.abs(remaining).toLocaleString('ko-KR')}원`
+                  : '—'}
               </p>
-            </>
-          )}
+              {monthlyPromise.budgetAmount > 0 && (
+                <span
+                  className="shrink-0 rounded-full px-3 py-1.5 text-sm font-semibold"
+                  style={{ background: 'rgba(24,99,220,0.12)', color: '#1863dc' }}
+                >
+                  {spentPercentage}% 사용
+                </span>
+              )}
+            </div>
 
-          <hr className="my-4 border-gray-100" />
-
-          {/* 한 줄 평 */}
-          <p className="text-sm font-semibold text-gray-400">이번 달 한 줄 평</p>
-          <p className="mt-2 text-base font-bold leading-relaxed text-black">{budgetMessage}</p>
+            {monthlyPromise.budgetAmount > 0 && (
+              <>
+                <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-black/6">
+                  <div
+                    className={[
+                      'h-full rounded-full transition-all duration-500',
+                      remaining !== null && remaining < 0
+                        ? 'bg-(--color-expense-red)'
+                        : 'bg-(--color-income-blue)',
+                    ].join(' ')}
+                    style={{ width: `${Math.min(spentPercentage, 100)}%` }}
+                  />
+                </div>
+                <p className="mt-2 text-xs font-semibold text-(--color-text-muted)">
+                  {spent.toLocaleString('ko-KR')}원 / {monthlyPromise.budgetAmount.toLocaleString('ko-KR')}원 사용했어요
+                </p>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
