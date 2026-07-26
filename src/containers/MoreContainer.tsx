@@ -17,7 +17,7 @@ function MenuGroup({ children, title }: MenuGroupProps) {
   return (
     <div className="mb-4">
       <p className="mb-1 px-1 text-xs font-medium text-gray-400">{title}</p>
-      <div className="overflow-hidden rounded-2xl bg-white">{children}</div>
+      <div className="overflow-hidden rounded-2xl border border-white/60 bg-(--color-glass-white) backdrop-blur-sm">{children}</div>
     </div>
   )
 }
@@ -56,7 +56,7 @@ export default function MoreContainer() {
       <h2 className="mb-4 hidden text-xl font-bold text-black md:mb-5 md:block">더보기</h2>
 
       {/* 프로필 */}
-      <div className="mb-2 flex items-center gap-4 rounded-2xl bg-white px-5 py-5">
+      <div className="mb-2 flex items-center gap-4 rounded-2xl border border-white/60 bg-(--color-glass-white) px-5 py-5 backdrop-blur-sm">
         {avatarUrl ? (
           <img alt="프로필" className="h-12 w-12 flex-none rounded-full object-cover" src={avatarUrl} />
         ) : (

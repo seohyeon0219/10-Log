@@ -129,7 +129,7 @@ export default function CalendarContainer() {
       ) : null}
 
       {isLoading ? (
-        <div className="mb-4 rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-sm font-semibold text-gray-500">
+        <div className="mb-4 rounded-xl border border-white/60 bg-(--color-glass-white) px-4 py-3 text-sm font-semibold text-gray-500 backdrop-blur-sm">
           데이터를 불러오는 중이에요.
         </div>
       ) : null}
@@ -175,7 +175,7 @@ export default function CalendarContainer() {
           />
         </div>
 
-        <aside className="mt-9 min-h-80 rounded-xl border border-gray-100 bg-white px-4 py-4">
+        <aside className="mt-9 min-h-80 rounded-xl border border-white/60 bg-(--color-glass-white) px-4 py-4 backdrop-blur-sm">
           <TransactionDateList
             onAddExpense={() => openTransactionForm('expense')}
             onAddIncome={() => openTransactionForm('income')}
