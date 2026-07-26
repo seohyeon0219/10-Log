@@ -62,7 +62,7 @@ export default function CalendarMonthlySummary({
           className="min-w-0 text-center"
           onClick={() => toggleSummary('income')}
         >
-          <p className="mb-1.5 text-xs font-semibold text-gray-500">수입</p>
+          <p className="mb-1 text-xs font-semibold text-gray-500">수입</p>
           <strong className="block min-w-0 truncate whitespace-nowrap text-base font-bold text-(--color-income-blue)">
             {formatAmount(totalIncome)}원
           </strong>
@@ -73,7 +73,7 @@ export default function CalendarMonthlySummary({
           className="min-w-0 text-center"
           onClick={() => toggleSummary('expense')}
         >
-          <p className="mb-1.5 text-xs font-semibold text-gray-500">지출</p>
+          <p className="mb-1 text-xs font-semibold text-gray-500">지출</p>
           <strong className="block min-w-0 truncate whitespace-nowrap text-base font-bold text-(--color-expense-red)">
             {formatAmount(totalExpense)}원
           </strong>
@@ -84,7 +84,7 @@ export default function CalendarMonthlySummary({
           className="min-w-0 text-center"
           onClick={() => toggleSummary('total')}
         >
-          <p className="mb-1.5 text-xs font-semibold text-gray-500">합계</p>
+          <p className="mb-1 text-xs font-semibold text-gray-500">합계</p>
           <strong
             className={[
               'block min-w-0 truncate whitespace-nowrap text-base font-bold',
@@ -100,7 +100,7 @@ export default function CalendarMonthlySummary({
       {detailRows.length > 0 && (
         <>
           <div className="my-4 border-t border-gray-200" />
-          <div className="grid gap-3">
+          <div className="grid gap-2">
             {detailRows.map((row) => (
               <div key={row.label} className="flex items-center justify-between">
                 <span className="text-xs font-medium text-gray-500">{row.label}</span>
