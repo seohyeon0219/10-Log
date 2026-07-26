@@ -51,7 +51,7 @@ export default function MobileBottomNavigation() {
         className="grid grid-cols-5 rounded-full border border-white/55 px-1.5 py-2.5"
         style={{
           margin: '0 14px calc(14px + env(safe-area-inset-bottom))',
-          background: 'linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.18) 60%)',
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.78), rgba(255,255,255,0.55) 60%)',
           backdropFilter: 'blur(26px) saturate(190%)',
           WebkitBackdropFilter: 'blur(26px) saturate(190%)',
           boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.7), inset 0 -6px 12px rgba(0,0,0,0.05), 0 12px 30px rgba(120,95,40,0.16)',

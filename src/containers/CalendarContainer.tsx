@@ -2,9 +2,6 @@ import { useEffect, useState } from 'react'
 import CalendarGrid from '../components/calendar/CalendarGrid'
 import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
 import CalendarMonthlySummary from '../components/calendar/CalendarMonthlySummary'
-import MonthlyPromise from '../components/calendar/MonthlyPromise'
-import MonthlyPromiseBottomSheet from '../components/calendar/MonthlyPromiseBottomSheet'
-import MonthlyPromiseModal from '../components/calendar/MonthlyPromiseModal'
 import TransactionDateList, {
   type TransactionDateListItem,
 } from '../components/transactions/TransactionDateList'
@@ -25,7 +22,6 @@ const getDateKey = (date: Date) => {
 }
 
 export default function CalendarContainer() {
-  const [isMonthlyPromiseOpen, setIsMonthlyPromiseOpen] = useState(false)
   const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
   const [isTransactionListBottomSheetOpen, setIsTransactionListBottomSheetOpen] = useState(false)
   const [editingTransaction, setEditingTransaction] = useState<TransactionDateListItem | null>(null)
@@ -36,7 +32,6 @@ export default function CalendarContainer() {
   const addCategory = useCalendarStore((state) => state.addCategory)
   const addTransaction = useCalendarStore((state) => state.addTransaction)
   const deleteCategory = useCalendarStore((state) => state.deleteCategory)
-  const deleteMonthlyPromise = useCalendarStore((state) => state.deleteMonthlyPromise)
   const deleteTransaction = useCalendarStore((state) => state.deleteTransaction)
   const error = useCalendarStore((state) => state.error)
   const expenseCategories = useCalendarStore((state) => state.expenseCategories)
@@ -45,14 +40,12 @@ export default function CalendarContainer() {
   const goNextMonth = useCalendarStore((state) => state.goNextMonth)
   const goPrevMonth = useCalendarStore((state) => state.goPrevMonth)
   const loadMonth = useCalendarStore((state) => state.loadMonth)
-  const monthlyPromise = useCalendarStore((state) => state.monthlyPromise)
   const monthlySummary = useCalendarStore((state) => state.monthlySummary)
   const selectedDate = useCalendarStore((state) => state.selectedDate)
   const selectDate = useCalendarStore((state) => state.selectDate)
   const setSelectedDate = useCalendarStore((state) => state.setSelectedDate)
   const transactions = useCalendarStore((state) => state.transactions)
   const updateCategory = useCalendarStore((state) => state.updateCategory)
-  const updateMonthlyPromise = useCalendarStore((state) => state.updateMonthlyPromise)
   const updateTransaction = useCalendarStore((state) => state.updateTransaction)
   const selectedDateKey = selectedDate ? getDateKey(selectedDate) : ''
   const selectedDateTransactions = transactions.filter(
@@ -149,24 +142,6 @@ export default function CalendarContainer() {
         <CalendarMonthlySummary {...monthlySummary} />
       </div>
 
-      <div className="md:hidden">
-        <MonthlyPromise
-          budgetAmount={monthlyPromise.budgetAmount}
-          isRegistered={monthlyPromise.isRegistered}
-          onEdit={() => setIsMonthlyPromiseOpen(true)}
-          promise={monthlyPromise.promise}
-        />
-      </div>
-
-      <div className="hidden md:mt-5 md:block">
-        <MonthlyPromise
-          budgetAmount={monthlyPromise.budgetAmount}
-          isRegistered={monthlyPromise.isRegistered}
-          onEdit={() => setIsMonthlyPromiseOpen(true)}
-          promise={monthlyPromise.promise}
-        />
-      </div>
-
       <div className="mt-4 md:hidden">
         <CalendarGrid
           currentDate={currentDate}
@@ -195,42 +170,6 @@ export default function CalendarContainer() {
             transactions={selectedDateTransactions}
           />
         </aside>
-      </div>
-
-      <div className="hidden md:block">
-        <MonthlyPromiseModal
-          budgetAmount={monthlyPromise.budgetAmount}
-          isRegistered={monthlyPromise.isRegistered}
-          isOpen={isMonthlyPromiseOpen}
-          onClose={() => setIsMonthlyPromiseOpen(false)}
-          onDelete={() => {
-            void deleteMonthlyPromise()
-            setIsMonthlyPromiseOpen(false)
-          }}
-          onSave={(values) => {
-            void updateMonthlyPromise(values)
-            setIsMonthlyPromiseOpen(false)
-          }}
-          promise={monthlyPromise.promise}
-        />
-      </div>
-
-      <div className="md:hidden">
-        <MonthlyPromiseBottomSheet
-          budgetAmount={monthlyPromise.budgetAmount}
-          isRegistered={monthlyPromise.isRegistered}
-          isOpen={isMonthlyPromiseOpen}
-          onClose={() => setIsMonthlyPromiseOpen(false)}
-          onDelete={() => {
-            void deleteMonthlyPromise()
-            setIsMonthlyPromiseOpen(false)
-          }}
-          onSave={(values) => {
-            void updateMonthlyPromise(values)
-            setIsMonthlyPromiseOpen(false)
-          }}
-          promise={monthlyPromise.promise}
-        />
       </div>
 
       <div className="hidden md:block">
