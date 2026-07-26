@@ -22,7 +22,7 @@ export default function MobileAppBar() {
   const isCalendar = activeTabId === 'calendar'
 
   return (
-    <header className="fixed top-0 right-0 left-0 z-50 flex h-14 items-center bg-white px-4 shadow-[0_1px_0_rgba(0,0,0,0.06)] md:hidden">
+    <header className="fixed top-0 right-0 left-0 z-50 flex h-14 items-center border-b border-white/60 bg-(--color-glass-white) px-4 backdrop-blur-md md:hidden">
       {isCalendar ? (
         <CalendarMonthHeader
           currentDate={currentDate}
