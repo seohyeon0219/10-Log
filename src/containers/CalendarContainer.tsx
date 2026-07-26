@@ -117,7 +117,7 @@ export default function CalendarContainer() {
   }
 
   return (
-    <section className="w-full self-start">
+    <section className="w-full self-start animate-fade-up">
       <div className="mb-4 md:hidden">
         <CalendarMonthHeader
           currentDate={currentDate}

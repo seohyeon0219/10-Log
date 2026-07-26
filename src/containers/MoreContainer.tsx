@@ -52,7 +52,7 @@ export default function MoreContainer() {
   const initial = displayName[0]?.toUpperCase() ?? '?'
 
   return (
-    <section className="w-full self-start md:mt-6 md:min-h-80">
+    <section className="w-full self-start animate-fade-up md:mt-6 md:min-h-80">
       <h2 className="mb-4 hidden text-xl font-bold text-black md:mb-5 md:block">더보기</h2>
 
       {/* 프로필 */}

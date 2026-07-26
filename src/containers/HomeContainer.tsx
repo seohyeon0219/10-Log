@@ -40,7 +40,7 @@ export default function HomeContainer() {
   }
 
   return (
-    <section className="w-full self-start md:mt-6">
+    <section className="w-full self-start animate-fade-up md:mt-6">
       <div className="mt-4 md:mt-5">
         {/* 날짜 */}
         <div className="w-fit">
