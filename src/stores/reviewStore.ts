@@ -51,7 +51,7 @@ export const useReviewStore = create<ReviewStore>((set) => ({
       })
     } catch (error) {
       set({
-        error: error instanceof Error ? error.message : '회고를 저장하지 못했어요.',
+        error: error instanceof Error ? error.message : '로그를 저장하지 못했어요.',
       })
       throw error
     }
