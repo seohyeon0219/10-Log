@@ -7,7 +7,6 @@ import TransactionDateList, {
 } from '../components/transactions/TransactionDateList'
 import TransactionFormModal from '../components/transactions/TransactionFormModal'
 import TransactionFormBottomSheet from '../components/transactions/bottomSheet/TransactionFormBottomSheet'
-import TransactionListBottomSheet from '../components/transactions/bottomSheet/TransactionListBottomSheet'
 import { useCalendarStore } from '../stores/calendarStore'
 
 type TransactionType = 'income' | 'expense'
@@ -23,7 +22,6 @@ const getDateKey = (date: Date) => {
 
 export default function CalendarContainer() {
   const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
-  const [isTransactionListBottomSheetOpen, setIsTransactionListBottomSheetOpen] = useState(false)
   const [editingTransaction, setEditingTransaction] = useState<TransactionDateListItem | null>(null)
   const [transactionFormMode, setTransactionFormMode] = useState<TransactionFormMode>('create')
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
@@ -76,13 +74,7 @@ export default function CalendarContainer() {
     }
 
     prepareTransactionForm(transaction.type, 'edit', { ...transaction, type: transaction.type })
-    setIsTransactionListBottomSheetOpen(false)
     setIsTransactionFormOpen(true)
-  }
-
-  const selectMobileDate = (date: Date) => {
-    selectDate(date)
-    setIsTransactionListBottomSheetOpen(true)
   }
 
   const activeCategories = transactionType === 'income' ? incomeCategories : expenseCategories
@@ -146,10 +138,31 @@ export default function CalendarContainer() {
         <CalendarGrid
           currentDate={currentDate}
           dayAmounts={calendarDayAmounts}
-          onDateSelect={selectMobileDate}
+          onDateSelect={selectDate}
           selectedDate={selectedDate}
         />
       </div>
+
+      {selectedDate && (
+        <div
+          className="mt-4 rounded-[22px] px-5 py-5 md:hidden"
+          style={{
+            background: 'rgba(255,255,255,0.45)',
+            backdropFilter: 'blur(20px) saturate(170%)',
+            WebkitBackdropFilter: 'blur(20px) saturate(170%)',
+            border: '1px solid rgba(255,255,255,0.6)',
+            boxShadow: '0 10px 30px rgba(120,95,40,0.10)',
+          }}
+        >
+          <TransactionDateList
+            onAddExpense={() => openTransactionForm('expense')}
+            onAddIncome={() => openTransactionForm('income')}
+            onSelectTransaction={openTransactionEditor}
+            selectedDate={selectedDate}
+            transactions={selectedDateTransactions}
+          />
+        </div>
+      )}
 
       <div className="mt-2 hidden min-h-0 flex-1 grid-cols-[minmax(0,1fr)_300px] gap-6 md:grid lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-8">
         <div>
@@ -202,19 +215,6 @@ export default function CalendarContainer() {
           type={transactionType}
         />
       </div>
-
-      <div className="md:hidden">
-        <TransactionListBottomSheet
-            isOpen={isTransactionListBottomSheetOpen}
-            onAddExpense={() => openTransactionForm('expense')}
-            onAddIncome={() => openTransactionForm('income')}
-            onClose={() => setIsTransactionListBottomSheetOpen(false)}
-            onSelectTransaction={openTransactionEditor}
-            selectedDate={selectedDate}
-            transactions={selectedDateTransactions}
-          />
-      </div>
-      
 
       <div className="md:hidden">
         <TransactionFormBottomSheet
