@@ -168,7 +168,7 @@ export default function SpendngTransactionLineChart({
                 r={activePointIndex === index ? '7' : '5'}
                 stroke={lineColor}
                 strokeWidth="3"
-                style={{ cursor: 'pointer' }}
+                className="cursor-pointer"
               />
             ))}
             {chartPoints.map((point) => (

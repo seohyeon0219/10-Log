@@ -145,14 +145,7 @@ export default function CalendarContainer() {
 
       {selectedDate && (
         <div
-          className="mt-4 rounded-[22px] px-5 py-5 md:hidden"
-          style={{
-            background: 'rgba(255,255,255,0.45)',
-            backdropFilter: 'blur(20px) saturate(170%)',
-            WebkitBackdropFilter: 'blur(20px) saturate(170%)',
-            border: '1px solid rgba(255,255,255,0.6)',
-            boxShadow: '0 10px 30px rgba(120,95,40,0.10)',
-          }}
+          className="mt-4 rounded-[22px] border border-white/60 bg-white/45 p-4.5 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(120,95,40,0.10)] md:hidden"
         >
           <TransactionDateList
             onAddExpense={() => openTransactionForm('expense')}
@@ -175,14 +168,7 @@ export default function CalendarContainer() {
         </div>
 
         <aside
-          className="mt-9 min-h-80 rounded-[22px] px-5 py-5"
-          style={{
-            background: 'rgba(255,255,255,0.45)',
-            backdropFilter: 'blur(20px) saturate(170%)',
-            WebkitBackdropFilter: 'blur(20px) saturate(170%)',
-            border: '1px solid rgba(255,255,255,0.6)',
-            boxShadow: '0 10px 30px rgba(120,95,40,0.10)',
-          }}
+          className="mt-9 min-h-80 rounded-[22px] border border-white/60 bg-white/45 px-5 py-5 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(120,95,40,0.10)]"
         >
           <TransactionDateList
             onAddExpense={() => openTransactionForm('expense')}

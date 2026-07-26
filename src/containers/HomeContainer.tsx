@@ -68,13 +68,7 @@ export default function HomeContainer() {
           {/* 다짐 */}
           <div className="flex items-center justify-between gap-3">
             <p className="min-w-0 flex-1 break-keep text-lg font-extrabold text-black">
-              <span
-                style={{
-                  backgroundImage: 'linear-gradient(transparent 55%, #ffe58f 55%)',
-                  boxDecorationBreak: 'clone',
-                  WebkitBoxDecorationBreak: 'clone',
-                }}
-              >
+              <span className="box-decoration-clone bg-[linear-gradient(transparent_55%,#ffe58f_55%)]">
                 {monthlyPromise.promise}
               </span>
             </p>
@@ -107,8 +101,7 @@ export default function HomeContainer() {
               </p>
               {monthlyPromise.budgetAmount > 0 && (
                 <span
-                  className="shrink-0 rounded-full px-3 py-1.5 text-sm font-semibold"
-                  style={{ background: 'rgba(24,99,220,0.12)', color: '#1863dc' }}
+                  className="shrink-0 rounded-full bg-[rgba(24,99,220,0.12)] px-3 py-1.5 text-sm font-semibold text-[#1863dc]"
                 >
                   {spentPercentage}% 사용
                 </span>

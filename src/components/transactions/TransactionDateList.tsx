@@ -1,6 +1,3 @@
-import ListItem from '../common/ListItem'
-import TransactionDateActions from './TransactionDateActions'
-
 export type TransactionDateListItem = {
   amount: number
   categoryId?: string
@@ -14,7 +11,6 @@ export type TransactionDateListItem = {
 }
 
 type TransactionDateListProps = {
-  emptyText?: string
   onAddExpense?: () => void
   onAddIncome?: () => void
   onSelectTransaction?: (transaction: TransactionDateListItem) => void
@@ -23,7 +19,6 @@ type TransactionDateListProps = {
 }
 
 export default function TransactionDateList({
-  emptyText = '날짜를 선택하면 내역이 보여요',
   onAddExpense,
   onAddIncome,
   onSelectTransaction,
@@ -33,33 +28,74 @@ export default function TransactionDateList({
   if (!selectedDate) {
     return (
       <div className="flex min-h-60 items-center justify-center text-center">
-        <p className="m-0 text-sm font-medium text-gray-400">{emptyText}</p>
+        <p className="m-0 text-sm font-medium text-gray-400">날짜를 선택하면 내역이 보여요</p>
       </div>
     )
   }
 
   return (
     <>
-      <TransactionDateActions
-        onAddExpense={onAddExpense}
-        onAddIncome={onAddIncome}
-        selectedDate={selectedDate}
-      />
-      <div className="mt-4 grid gap-1 border-t border-gray-100 pt-3">
-        {transactions.map((transaction) => (
-          <ListItem
-            amount={transaction.amount}
-            color={transaction.categoryColor}
-            key={transaction.id}
-            memo={transaction.memo}
-            onClick={
-              onSelectTransaction ? () => onSelectTransaction(transaction) : undefined
-            }
-            title={transaction.categoryName}
-            type={transaction.type}
-          />
-        ))}
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-[14px] font-extrabold text-black">
+          {selectedDate.getMonth() + 1}월 {selectedDate.getDate()}일 내역
+        </p>
+        {(onAddIncome ?? onAddExpense) && (
+          <div className="flex shrink-0 gap-1.5">
+            {onAddIncome && (
+              <button
+                className="rounded-xl bg-blue-50 px-3 py-1.5 text-xs font-bold text-(--color-income-blue) active:bg-blue-100"
+                onClick={onAddIncome}
+                type="button"
+              >
+                수입
+              </button>
+            )}
+            {onAddExpense && (
+              <button
+                className="rounded-xl bg-red-50 px-3 py-1.5 text-xs font-bold text-(--color-expense-red) active:bg-red-100"
+                onClick={onAddExpense}
+                type="button"
+              >
+                지출
+              </button>
+            )}
+          </div>
+        )}
       </div>
+
+      {transactions.length === 0 ? (
+        <p className="mt-3 text-[13px] text-[#b0a89c]">이 날의 기록이 아직 없어요.</p>
+      ) : (
+        <div className="mt-2.5 grid gap-1.5">
+          {transactions.map((tx) => (
+            <button
+              key={tx.id}
+              className="flex w-full items-center gap-2 rounded-[14px] bg-white/50 px-3 py-2.5 text-left"
+              onClick={onSelectTransaction ? () => onSelectTransaction(tx) : undefined}
+              type="button"
+            >
+              <span
+                className="h-2 w-2 shrink-0 rounded-full"
+                style={{ background: tx.categoryColor }}
+              />
+              <span className="min-w-0 flex-1">
+                <span className="block text-[13px] font-bold text-black">{tx.categoryName}</span>
+                {tx.memo ? (
+                  <span className="block truncate text-[11.5px] text-[#a39c8c]">{tx.memo}</span>
+                ) : null}
+              </span>
+              <span
+                className={[
+                  'shrink-0 text-[13.5px] font-extrabold',
+                  tx.type === 'income' ? 'text-[#1863dc]' : 'text-[#e01818]',
+                ].join(' ')}
+              >
+                {tx.type === 'income' ? '+' : '-'}{tx.amount.toLocaleString('ko-KR')}원
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
     </>
   )
 }

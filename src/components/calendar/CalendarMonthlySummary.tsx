@@ -11,14 +11,6 @@ type CalendarMonthlySummaryProps = {
 
 const formatAmount = (amount: number) => amount.toLocaleString('ko-KR')
 
-const glassCardStyle: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.45)',
-  backdropFilter: 'blur(20px) saturate(170%)',
-  WebkitBackdropFilter: 'blur(20px) saturate(170%)',
-  border: '1px solid rgba(255,255,255,0.6)',
-  boxShadow: '0 10px 30px rgba(120,95,40,0.10)',
-}
-
 export default function CalendarMonthlySummary({
   income,
   fixedIncome,
@@ -55,7 +47,7 @@ export default function CalendarMonthlySummary({
           : []
 
   return (
-    <section className="w-full rounded-[22px] p-4.5" style={glassCardStyle}>
+    <section className="w-full rounded-[22px] border border-white/60 bg-white/45 p-4.5 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(120,95,40,0.10)]">
       <div className="grid grid-cols-3">
         <button
           type="button"

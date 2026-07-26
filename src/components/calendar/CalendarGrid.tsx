@@ -75,22 +75,12 @@ export default function CalendarGrid({
   const selectedDateKey = selectedDate ? toDateKey(selectedDate) : ''
 
   return (
-    <section
-      className="overflow-hidden rounded-[22px]"
-      style={{
-        background: 'rgba(255,255,255,0.4)',
-        backdropFilter: 'blur(20px) saturate(170%)',
-        WebkitBackdropFilter: 'blur(20px) saturate(170%)',
-        border: '1px solid rgba(255,255,255,0.6)',
-        boxShadow: '0 10px 30px rgba(120,95,40,0.10)',
-      }}
-    >
+    <section className="overflow-hidden rounded-[22px] border border-white/60 bg-white/40 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(120,95,40,0.10)]">
       <div className="grid grid-cols-7 px-2 pb-1 pt-4">
         {weekDays.map((weekDay) => (
           <div
             key={weekDay}
-            className="text-center"
-            style={{ fontSize: '11px', fontWeight: 800, color: '#a39c8c' }}
+            className="text-center text-[11px] font-extrabold text-[#a39c8c]"
           >
             {weekDay}
           </div>
@@ -108,8 +98,8 @@ export default function CalendarGrid({
               type="button"
               className={cn(
                 'flex aspect-square min-w-0 cursor-pointer flex-col items-start rounded-xl p-1 text-left transition-all',
+                isSelected ? 'bg-[rgba(22,21,18,0.09)]' : '',
               )}
-              style={isSelected ? { background: 'rgba(22,21,18,0.09)' } : undefined}
               onClick={() => onDateSelect?.(day.date)}
             >
               <span className={cn('text-sm font-semibold', getDateTextClassName(day))}>
