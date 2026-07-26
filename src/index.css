@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @import "./styles/tokens.css";
 
+@utility pt-safe-top {
+  padding-top: calc(env(safe-area-inset-top) + 1.25rem);
+}
+
+@utility pb-safe-bottom {
+  padding-bottom: calc(env(safe-area-inset-bottom) + 1rem);
+}
+
 *,
 *::before,
 *::after {
