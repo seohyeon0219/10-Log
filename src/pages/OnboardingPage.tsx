@@ -9,10 +9,11 @@ import StepReportContent from '../components/onboarding/steps/StepReportContent'
 import StepReportStyle from '../components/onboarding/steps/StepReportStyle'
 import StepSaveAreas from '../components/onboarding/steps/StepSaveAreas'
 import StepSpendingValue from '../components/onboarding/steps/StepSpendingValue'
+import StepFeatureIntro from '../components/onboarding/steps/StepFeatureIntro'
 import { INITIAL_ANSWERS } from '../types/onboarding'
 import type { OnboardingAnswers } from '../types/onboarding'
 
-const TOTAL_STEPS = 6
+const TOTAL_STEPS = 7
 
 const STEP_META: { title: string; subtitle?: string }[] = [
   { title: '기본 정보를\n알려주세요' },
@@ -21,6 +22,7 @@ const STEP_META: { title: string; subtitle?: string }[] = [
   { title: '소비할 때 가장\n중요하게 생각하는 건?' },
   { title: 'AI 리포트에서\n가장 보고 싶은 내용은?', subtitle: '최대 5개 선택' },
   { title: 'AI 리포트를\n어떤 스타일로 받고 싶으세요?' },
+  { title: '이제 시작해볼까요?' },
 ]
 
 function isStepValid(step: number, answers: OnboardingAnswers): boolean {
@@ -31,6 +33,7 @@ function isStepValid(step: number, answers: OnboardingAnswers): boolean {
     case 3: return !!answers.spendingValue
     case 4: return answers.reportContents.length > 0
     case 5: return !!answers.reportStyle
+    case 6: return true
     default: return true
   }
 }
@@ -46,9 +49,8 @@ export default function OnboardingPage() {
   }
 
   const goNext = async () => {
-    if (step < TOTAL_STEPS - 1) {
-      setStep((prev) => prev + 1)
-    } else {
+    if (step === TOTAL_STEPS - 2) {
+      // 마지막 질문 단계 → 저장 후 기능 안내로
       setIsSaving(true)
       try {
         await saveOnboardingAnswers(answers)
@@ -57,6 +59,10 @@ export default function OnboardingPage() {
       } finally {
         setIsSaving(false)
       }
+      setStep((prev) => prev + 1)
+    } else if (step < TOTAL_STEPS - 1) {
+      setStep((prev) => prev + 1)
+    } else {
       void navigate('/app/home')
     }
   }
@@ -73,19 +79,30 @@ export default function OnboardingPage() {
     )
   }
 
+  if (step === TOTAL_STEPS - 1) {
+    return (
+      <div className="h-dvh w-full [background:var(--gradient-page-bg)]">
+        <StepFeatureIntro
+          name={answers.name}
+          onComplete={() => void navigate('/app/home')}
+        />
+      </div>
+    )
+  }
+
   const meta = STEP_META[step]
 
   return (
     <div className="h-dvh w-full [background:var(--gradient-page-bg)]">
       <OnboardingStepLayout
         nextDisabled={!isStepValid(step, answers) || isSaving}
-        nextLabel={isSaving ? '저장 중...' : step === TOTAL_STEPS - 1 ? '완료' : '다음'}
+        nextLabel={isSaving ? '저장 중...' : step === TOTAL_STEPS - 2 ? '완료' : '다음'}
         onBack={goBack}
         onNext={() => void goNext()}
         step={step}
         subtitle={meta.subtitle}
         title={meta.title}
-        totalSteps={TOTAL_STEPS}
+        totalSteps={TOTAL_STEPS - 1}
       >
         {step === 0 && <StepProfile answers={answers} onChange={setAnswer} />}
         {step === 1 && <StepGoal answers={answers} onChange={setAnswer} />}
