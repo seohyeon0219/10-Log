@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import logoImage from '../assets/logo.png'
 import { getOnboardingCompleted } from '../lib/onboardingApi'
 import { supabase } from '../lib/supabase'
 
