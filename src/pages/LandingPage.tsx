@@ -7,8 +7,11 @@ export default function LandingPage() {
   const navigate = useNavigate()
   const [errorMessage, setErrorMessage] = useState('')
   const [isSigningIn, setIsSigningIn] = useState(false)
+  const isPreview = new URLSearchParams(window.location.search).has('preview')
 
   useEffect(() => {
+    if (isPreview) return
+
     let isMounted = true
 
     const moveAfterLogin = async () => {
@@ -40,7 +43,7 @@ export default function LandingPage() {
       isMounted = false
       subscription.unsubscribe()
     }
-  }, [navigate])
+  }, [navigate, isPreview])
 
   const handleGoogleSignIn = async () => {
     setErrorMessage('')

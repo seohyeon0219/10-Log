@@ -73,7 +73,7 @@ export default function OnboardingPage() {
 
   if (step === -1) {
     return (
-      <div className="h-dvh w-full [background:var(--gradient-page-bg)]">
+      <div className="h-dvh w-full [background:linear-gradient(160deg,#faf3e2_0%,#fdf9ef_35%,#e4eeff_68%,#c8dcff_100%)]">
         <StepIntro onNext={() => void goNext()} />
       </div>
     )
@@ -81,7 +81,7 @@ export default function OnboardingPage() {
 
   if (step === TOTAL_STEPS - 1) {
     return (
-      <div className="h-dvh w-full [background:var(--gradient-page-bg)]">
+      <div className="h-dvh w-full [background:linear-gradient(160deg,#faf3e2_0%,#fdf9ef_35%,#e4eeff_68%,#c8dcff_100%)]">
         <StepFeatureIntro
           name={answers.name}
           onComplete={() => void navigate('/app/home')}
@@ -93,7 +93,7 @@ export default function OnboardingPage() {
   const meta = STEP_META[step]
 
   return (
-    <div className="h-dvh w-full [background:var(--gradient-page-bg)]">
+    <div className="h-dvh w-full [background:linear-gradient(160deg,#faf3e2_0%,#fdf9ef_35%,#e4eeff_68%,#c8dcff_100%)]">
       <OnboardingStepLayout
         nextDisabled={!isStepValid(step, answers) || isSaving}
         nextLabel={isSaving ? '저장 중...' : step === TOTAL_STEPS - 2 ? '완료' : '다음'}

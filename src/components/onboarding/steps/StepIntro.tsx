@@ -1,15 +1,8 @@
-import { useEffect } from 'react'
-
 type Props = {
   onNext: () => void
 }
 
 export default function StepIntro({ onNext }: Props) {
-  useEffect(() => {
-    const timer = setTimeout(onNext, 3500)
-    return () => clearTimeout(timer)
-  }, [onNext])
-
   return (
     <button
       className="flex h-full w-full flex-col items-start justify-center px-8 pb-[env(safe-area-inset-bottom)] text-left"
