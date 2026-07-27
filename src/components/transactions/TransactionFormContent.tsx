@@ -5,6 +5,7 @@ import Button from '../common/Button'
 import Checkbox from '../common/Checkbox'
 import Input from '../common/Input'
 import UnderInput from '../common/UnderInput'
+import { toDateKey } from '../../utils/dateUtils'
 import type { TransactionFormValues } from '../../types/finance'
 import type { TransactionCategory, TransactionType } from './transactionFormConfig'
 
@@ -21,14 +22,6 @@ type TransactionFormContentProps = {
   selectedDate?: Date | null
   submitText?: string
   type: TransactionType
-}
-
-const toInputDateValue = (date: Date) => {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-
-  return `${year}-${month}-${day}`
 }
 
 export default function TransactionFormContent({
@@ -49,7 +42,7 @@ export default function TransactionFormContent({
   const [selectedCategoryId, setSelectedCategoryId] = useState(initialSelectedCategoryId)
   const [isCategoryManageOpen, setIsCategoryManageOpen] = useState(false)
   const [amount, setAmount] = useState(initialAmount ? String(initialAmount) : '')
-  const [date, setDate] = useState(selectedDate ? toInputDateValue(selectedDate) : '')
+  const [date, setDate] = useState(selectedDate ? toDateKey(selectedDate) : '')
   const [memo, setMemo] = useState(initialMemo ?? '')
   const [isFixed, setIsFixed] = useState(initialIsFixed)
   const resolvedSelectedCategoryId = categories.some((category) => category.id === selectedCategoryId)

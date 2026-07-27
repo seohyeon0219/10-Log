@@ -9,15 +9,8 @@ import FloatingAddButton from '../components/common/FloatingAddButton'
 import TransactionFormModal from '../components/transactions/TransactionFormModal'
 import TransactionFormBottomSheet from '../components/transactions/bottomSheet/TransactionFormBottomSheet'
 import type { TransactionFormMode, TransactionType } from '../components/transactions/transactionFormConfig'
+import { toDateKey } from '../utils/dateUtils'
 import { useCalendarStore } from '../stores/calendarStore'
-
-const getDateKey = (date: Date) => {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-
-  return `${year}-${month}-${day}`
-}
 
 export default function CalendarContainer() {
   const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
@@ -44,7 +37,7 @@ export default function CalendarContainer() {
   const transactions = useCalendarStore((state) => state.transactions)
   const updateCategory = useCalendarStore((state) => state.updateCategory)
   const updateTransaction = useCalendarStore((state) => state.updateTransaction)
-  const selectedDateKey = selectedDate ? getDateKey(selectedDate) : ''
+  const selectedDateKey = selectedDate ? toDateKey(selectedDate) : ''
   const selectedDateTransactions = transactions.filter(
     (transaction) => transaction.date === selectedDateKey,
   )

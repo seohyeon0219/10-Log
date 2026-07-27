@@ -1,8 +1,4 @@
-type CalendarDayAmount = {
-  date: string
-  income?: number
-  expense?: number
-}
+import type { CalendarDayAmount } from '../../types/finance'
 
 type CalendarGridProps = {
   currentDate: Date
@@ -24,15 +20,9 @@ const sundayIndex = 0
 
 const formatAmountShort = (amount: number) => `${Math.round(amount / 1000)}k`
 
+import { toDateKey } from '../../utils/dateUtils'
+
 const cn = (...classNames: string[]) => classNames.filter(Boolean).join(' ')
-
-const toDateKey = (date: Date) => {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-
-  return `${year}-${month}-${day}`
-}
 
 const getCalendarDays = (currentDate: Date): CalendarDay[] => {
   const year = currentDate.getFullYear()
