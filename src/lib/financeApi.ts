@@ -1,4 +1,5 @@
 import { supabase } from './supabase'
+import { toDateKey } from '../utils/dateUtils'
 import type {
   CalendarDayAmount,
   Category,
@@ -10,7 +11,7 @@ import type {
   TransactionType,
 } from '../types/finance'
 
-type CategoryRow = {
+export type CategoryRow = {
   color: string
   id: string
   name: string
@@ -23,7 +24,7 @@ type CategoryFormValues = {
   type: TransactionType
 }
 
-type TransactionRow = {
+export type TransactionRow = {
   amount: number
   categories: CategoryRow | null
   category_id: string
@@ -52,14 +53,6 @@ const getMonthRange = (date: Date) => {
   }
 }
 
-const toDateKey = (date: Date) => {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-
-  return `${year}-${month}-${day}`
-}
-
 const toMonthKey = (date: Date) => {
   const year = date.getFullYear()
   const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -67,7 +60,7 @@ const toMonthKey = (date: Date) => {
   return `${year}-${month}-01`
 }
 
-const mapTransaction = (row: TransactionRow): Transaction => {
+export const mapTransaction = (row: TransactionRow): Transaction => {
   const category = row.categories
 
   return {

@@ -1,23 +1,7 @@
 import { supabase } from './supabase'
-import type { DailyReview, DailyReviewValues, Transaction } from '../types/finance'
-
-type CategoryRow = {
-  color: string
-  id: string
-  name: string
-  type: 'expense' | 'income'
-}
-
-type TransactionRow = {
-  amount: number
-  categories: CategoryRow | null
-  category_id: string
-  date: string
-  id: string
-  is_fixed: boolean
-  memo: string | null
-  type: 'expense' | 'income'
-}
+import { mapTransaction, type TransactionRow } from './financeApi'
+import { toDateKey } from '../utils/dateUtils'
+import type { DailyReview, DailyReviewValues } from '../types/finance'
 
 type DailyReviewRow = {
   good_comment: string
@@ -27,31 +11,6 @@ type DailyReviewRow = {
   regret_transaction_id: string | null
   review_date: string
   satisfaction_rating: number
-}
-
-const toDateKey = (date: Date) => {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-
-  return `${year}-${month}-${day}`
-}
-
-const mapTransaction = (row: TransactionRow): Transaction => {
-  const category = row.categories
-
-  return {
-    amount: row.amount,
-    categoryColor: category?.color ?? '#898989',
-    categoryId: row.category_id,
-    categoryName: category?.name ?? '미분류',
-    date: row.date,
-    day: Number(row.date.slice(8, 10)),
-    id: row.id,
-    isFixed: row.is_fixed,
-    memo: row.memo ?? '',
-    type: row.type,
-  }
 }
 
 const mapDailyReview = (row: DailyReviewRow): DailyReview => ({
