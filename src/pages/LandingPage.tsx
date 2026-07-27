@@ -108,7 +108,7 @@ export default function LandingPage() {
             <p className="text-[26px] font-semibold leading-snug tracking-tight text-black">
               기록할수록<br />똑똑해지는<br />나만의 소비관리
             </p>
-            <p className="absolute bottom-[calc(28px+env(safe-area-inset-bottom))] text-[13px] text-(--color-text-sand)">
+            <p className="absolute bottom-[calc(28px+env(safe-area-inset-bottom))] text-[13px] text-gray-200">
               화면을 터치하면 시작해요
             </p>
           </motion.button>

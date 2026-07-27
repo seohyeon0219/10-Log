@@ -5,7 +5,6 @@ const TEXTS = [
   '안녕하세요! 👋',
   '더 나은 자산관리를\n위한 첫걸음,',
   '몇 가지 질문을\n준비했어요',
-  '화면을 터치하면 시작해요',
 ]
 
 type Props = {
@@ -14,6 +13,7 @@ type Props = {
 
 export default function StepIntro({ onNext }: Props) {
   const [textIndex, setTextIndex] = useState(0)
+  const [showButton, setShowButton] = useState(false)
 
   useEffect(() => {
     if (textIndex >= TEXTS.length - 1) return
@@ -21,12 +21,14 @@ export default function StepIntro({ onNext }: Props) {
     return () => clearTimeout(timer)
   }, [textIndex])
 
+  useEffect(() => {
+    if (textIndex < TEXTS.length - 1) return
+    const timer = setTimeout(() => setShowButton(true), 1500)
+    return () => clearTimeout(timer)
+  }, [textIndex])
+
   return (
-    <button
-      className="relative h-full w-full overflow-hidden bg-white text-left"
-      onClick={onNext}
-      type="button"
-    >
+    <div className="relative h-full w-full overflow-hidden bg-white">
       {/* 컬러 블롭 배경 */}
       <div className="pointer-events-none absolute inset-0">
         {/* 노란 블롭 — 왼쪽 상단 */}
@@ -71,18 +73,13 @@ export default function StepIntro({ onNext }: Props) {
         /> */}
       </div>
 
-      {/* 텍스트 시퀀스 */}
-      <div className="relative z-10 flex h-full flex-col justify-center px-10">
+      {/* 텍스트 — 항상 화면 중앙 고정 */}
+      <div className="relative z-10 flex h-full items-center px-10">
         <AnimatePresence mode="wait">
           <motion.p
             key={textIndex}
             animate={{ opacity: 1, y: 0 }}
-            className={[
-              'whitespace-pre-line leading-snug tracking-tight',
-              textIndex === TEXTS.length - 1
-                ? 'text-[18px] font-semibold text-(--color-text-muted)'
-                : 'text-[32px] font-extrabold text-black',
-            ].join(' ')}
+            className="whitespace-pre-line text-[32px] font-extrabold leading-snug tracking-tight text-black"
             exit={{ opacity: 0, y: -12, transition: { duration: 0.25 } }}
             initial={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.45, ease: 'easeOut' }}
@@ -91,6 +88,25 @@ export default function StepIntro({ onNext }: Props) {
           </motion.p>
         </AnimatePresence>
       </div>
-    </button>
+
+      {/* 버튼 — 하단 고정 (텍스트 위치에 영향 없음) */}
+      <div className="absolute bottom-[calc(48px+env(safe-area-inset-bottom))] left-0 right-0 z-10 px-10">
+        <AnimatePresence>
+          {showButton && (
+            <motion.button
+              animate={{ opacity: 1, y: 0 }}
+              className="w-full rounded-full bg-black py-4 text-[16px] font-bold text-white shadow-[0_4px_20px_rgba(0,0,0,0.18)]"
+              exit={{ opacity: 0 }}
+              initial={{ opacity: 0, y: 16 }}
+              onClick={onNext}
+              transition={{ duration: 0.45, ease: 'easeOut' }}
+              type="button"
+            >
+              답하러 가기
+            </motion.button>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
   )
 }
