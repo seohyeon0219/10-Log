@@ -1,10 +1,6 @@
 import { create } from 'zustand'
 import { navTabs } from '../constants/navigation'
-
-type NavTab = {
-  id: string
-  label: string
-}
+import type { NavTab } from '../utils/navigation'
 
 type NavigationStore = {
   tabs: NavTab[]

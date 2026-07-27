@@ -1,11 +1,11 @@
-export type IncomeExpenseType = 'income' | 'expense'
+import type { TransactionType } from '../../types/finance'
 
 type IncomeExpenseToggleProps = {
-  onChange: (type: IncomeExpenseType) => void
-  value: IncomeExpenseType
+  onChange: (type: TransactionType) => void
+  value: TransactionType
 }
 
-const options: Array<{ id: IncomeExpenseType; label: string }> = [
+const options: Array<{ id: TransactionType; label: string }> = [
   { id: 'expense', label: '지출' },
   { id: 'income', label: '수입' },
 ]

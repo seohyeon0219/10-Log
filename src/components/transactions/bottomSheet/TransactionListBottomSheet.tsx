@@ -1,23 +1,14 @@
 import BottomSheet from '../../common/BottomSheet'
-import TransactionDateList from '../TransactionDateList'
-
-type TransactionItem = {
-  id: string
-  amount: number
-  categoryColor: string
-  categoryName: string
-  memo?: string
-  type: string
-}
+import TransactionDateList, { type TransactionDateListItem } from '../TransactionDateList'
 
 type TransactionListBottomSheetProps = {
   isOpen: boolean
   onAddExpense?: () => void
   onAddIncome?: () => void
   onClose: () => void
-  onSelectTransaction?: (transaction: TransactionItem) => void
+  onSelectTransaction?: (transaction: TransactionDateListItem) => void
   selectedDate: Date | null
-  transactions: TransactionItem[]
+  transactions: TransactionDateListItem[]
 }
 
 export default function TransactionListBottomSheet({

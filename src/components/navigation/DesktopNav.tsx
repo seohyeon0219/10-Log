@@ -1,22 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import Tabs from '../common/Tabs'
 import { useNavigationStore } from '../../stores/navigationStore'
-
-type NavTab = {
-  id: string
-  label: string
-}
-
-const getActiveTabId = (pathname: string, tabs: NavTab[]) => {
-  const fallbackTabId = tabs[0].id
-  const [, appPath, tabId] = pathname.split('/')
-
-  if (appPath !== 'app') {
-    return fallbackTabId
-  }
-
-  return tabs.some((tab) => tab.id === tabId) ? tabId : fallbackTabId
-}
+import { getActiveTabId } from '../../utils/navigation'
 
 export default function Nav() {
   const location = useLocation()

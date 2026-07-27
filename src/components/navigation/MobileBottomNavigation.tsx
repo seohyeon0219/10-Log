@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useNavigationStore } from '../../stores/navigationStore'
+import { getActiveTabId } from '../../utils/navigation'
 import {
   CalendarIcon,
   EllipsisHorizontalIcon,
@@ -15,28 +16,12 @@ import {
   HomeIcon as HomeSolid,
 } from '@heroicons/react/24/solid'
 
-type NavTab = {
-  id: string
-  label: string
-}
-
 const navIconsById: Record<string, { outline: React.ElementType; solid: React.ElementType }> = {
   calendar: { outline: CalendarIcon, solid: CalendarSolid },
   home: { outline: HomeIcon, solid: HomeSolid },
   more: { outline: EllipsisHorizontalIcon, solid: EllipsisSolid },
   review: { outline: ChatBubbleLeftEllipsisIcon, solid: ChatSolid },
   stats: { outline: ChartBarIcon, solid: ChartSolid },
-}
-
-const getActiveTabId = (pathname: string, tabs: NavTab[]) => {
-  const fallbackTabId = tabs[0]?.id ?? ''
-  const [, appPath, tabId] = pathname.split('/')
-
-  if (appPath !== 'app') {
-    return fallbackTabId
-  }
-
-  return tabs.some((tab) => tab.id === tabId) ? tabId : fallbackTabId
 }
 
 export default function MobileBottomNavigation() {

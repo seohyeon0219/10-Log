@@ -1,3 +1,5 @@
+import type { TransactionType } from '../../types/finance'
+
 export type TransactionDateListItem = {
   amount: number
   categoryId?: string
@@ -7,7 +9,7 @@ export type TransactionDateListItem = {
   id: string
   isFixed?: boolean
   memo?: string
-  type: string
+  type: TransactionType
 }
 
 type TransactionDateListProps = {
