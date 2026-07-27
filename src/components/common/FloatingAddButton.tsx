@@ -66,7 +66,7 @@ export default function FloatingAddButton({ onAddExpense, onAddIncome }: Floatin
             tabIndex={isOpen ? 0 : -1}
             type="button"
           >
-            <span className="text-[14px] font-bold text-white [text-shadow:0_1px_6px_rgba(0,0,0,0.6)]">
+            <span className="text-[14px] font-bold text-white">
               수입
             </span>
             <span className="flex h-12 w-12 items-center justify-center rounded-full bg-(--color-income-blue) shadow-[0_6px_20px_rgba(24,99,220,0.45)]">
@@ -82,7 +82,7 @@ export default function FloatingAddButton({ onAddExpense, onAddIncome }: Floatin
             tabIndex={isOpen ? 0 : -1}
             type="button"
           >
-            <span className="text-[14px] font-bold text-white [text-shadow:0_1px_6px_rgba(0,0,0,0.6)]">
+            <span className="text-[14px] font-bold text-white">
               지출
             </span>
             <span className="flex h-12 w-12 items-center justify-center rounded-full bg-(--color-expense-red) shadow-[0_6px_20px_rgba(224,24,24,0.40)]">
@@ -96,7 +96,7 @@ export default function FloatingAddButton({ onAddExpense, onAddIncome }: Floatin
         {/* 메인 FAB */}
         <button
           aria-label={isOpen ? '닫기' : '거래 추가'}
-          className="flex h-14 w-14 items-center justify-center rounded-full border border-white/20 bg-black/70 shadow-[0_8px_28px_rgba(0,0,0,0.30)] backdrop-blur-[20px] transition-all duration-200"
+          className="flex h-14 w-14 items-center justify-center rounded-full bg-black transition-all duration-200"
           onClick={() => setIsOpen((v) => !v)}
           type="button"
         >
