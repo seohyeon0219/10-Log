@@ -2,11 +2,18 @@ import { Outlet } from 'react-router-dom'
 import DesktopHeader from '../components/navigation/DesktopHeader'
 import DesktopNav from '../components/navigation/DesktopNav'
 import MobileBottomNavigation from '../components/navigation/MobileBottomNavigation'
+import { useBudgetTheme } from '../hooks/useBudgetTheme'
+import { useCalendarStore } from '../stores/calendarStore'
 
 export default function AppLayout() {
+  const monthlyPromise = useCalendarStore((state) => state.monthlyPromise)
+  const monthlySummary = useCalendarStore((state) => state.monthlySummary)
+  const spent = monthlySummary.expense + monthlySummary.fixedExpense
+
+  useBudgetTheme(monthlyPromise.budgetAmount, spent)
   return (
     <>
-      <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 bg-(--gradient-page-bg)" />
+      <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 [background:var(--gradient-page-bg)]" />
       <div aria-hidden="true" className="pointer-events-none fixed -top-16 -left-16 -z-10 h-[280px] w-[280px] rounded-full bg-(--color-blob-cream) opacity-55 blur-[80px]" />
       <div aria-hidden="true" className="pointer-events-none fixed -right-20 -bottom-20 -z-10 h-[320px] w-[320px] rounded-full bg-(--color-blob-apricot) opacity-40 blur-[85px]" />
       <div aria-hidden="true" className="pointer-events-none fixed top-[40%] -right-10 -z-10 h-55 w-55 rounded-full bg-(--color-blob-blue) opacity-[0.22] blur-[85px]" />
