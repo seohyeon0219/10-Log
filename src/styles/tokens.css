@@ -12,12 +12,14 @@
   --color-text-sand: #A49D8C;
   --color-blob-apricot: #f0c9a8;
 
-  --color-bg-page: #f3ecdb;
+  --color-bg-page: #f7f1e3;
   --color-blob-cream: #eaddb8;
   --color-blob-blue: #a9c9ff;
   --color-glass-white: #ffffff6b;
 
-  --gradient-page-bg: linear-gradient(160deg, #fffdf8 0%, #faf5e9 50%, #f3ecdb 100%);
+  /* --gradient-page-bg: linear-gradient(160deg, #fffdf8 0%, #fdf8ef 50%, #f7f1e3 100%); */
+  /* --gradient-page-bg: linear-gradient(160deg, #fffefb 0%, #fefbf3 55%, #faf4e6 100%); */
+  --gradient-page-bg: linear-gradient(160deg, #fffefc 0%, #fdf9ef 50%, #faf3e2 100%);
 
   --spacing-8: 8px;
   --spacing-12: 12px;
