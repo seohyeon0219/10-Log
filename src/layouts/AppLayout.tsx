@@ -1,16 +1,17 @@
+import { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import DesktopHeader from '../components/navigation/DesktopHeader'
 import DesktopNav from '../components/navigation/DesktopNav'
 import MobileBottomNavigation from '../components/navigation/MobileBottomNavigation'
-import { useBudgetTheme } from '../hooks/useBudgetTheme'
-import { useCalendarStore } from '../stores/calendarStore'
+import { THEME_GRADIENTS, useThemeStore } from '../stores/themeStore'
 
 export default function AppLayout() {
-  const monthlyPromise = useCalendarStore((state) => state.monthlyPromise)
-  const monthlySummary = useCalendarStore((state) => state.monthlySummary)
-  const spent = monthlySummary.expense + monthlySummary.fixedExpense
+  const theme = useThemeStore((state) => state.theme)
 
-  useBudgetTheme(monthlyPromise.budgetAmount, spent)
+  useEffect(() => {
+    document.documentElement.style.setProperty('--gradient-page-bg', THEME_GRADIENTS[theme])
+  }, [theme])
+
   return (
     <>
       <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 [background:var(--gradient-page-bg)]" />

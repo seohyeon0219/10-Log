@@ -7,12 +7,17 @@ import MenuGroup, { MenuGroupDivider } from '../components/common/MenuGroup'
 import MenuItem from '../components/common/MenuItem'
 import { supabase } from '../lib/supabase'
 import { useCalendarStore } from '../stores/calendarStore'
+import { THEME_LABELS, useThemeStore, type AppTheme } from '../stores/themeStore'
 
+
+const THEME_OPTIONS: AppTheme[] = ['yellow', 'blue']
 
 export default function MoreContainer() {
   const [user, setUser] = useState<User | null>(null)
   const [isCategoryOpen, setIsCategoryOpen] = useState(false)
   const [isLogoutOpen, setIsLogoutOpen] = useState(false)
+  const theme = useThemeStore((state) => state.theme)
+  const setTheme = useThemeStore((state) => state.setTheme)
   const addCategory = useCalendarStore((state) => state.addCategory)
   const deleteCategory = useCalendarStore((state) => state.deleteCategory)
   const expenseCategories = useCalendarStore((state) => state.expenseCategories)
@@ -55,6 +60,26 @@ export default function MoreContainer() {
 
       <MenuGroup title="소비 관리">
         <MenuItem label="카테고리 관리" onClick={() => setIsCategoryOpen(true)} />
+      </MenuGroup>
+
+      <MenuGroup title="화면 테마">
+        <div className="flex gap-2 px-4 py-3">
+          {THEME_OPTIONS.map((option) => (
+            <button
+              className={[
+                'flex-1 rounded-xl border py-2.5 text-sm font-semibold transition',
+                theme === option
+                  ? 'border-black bg-black text-white'
+                  : 'border-white/50 bg-white/50 text-black backdrop-blur-md',
+              ].join(' ')}
+              key={option}
+              onClick={() => setTheme(option)}
+              type="button"
+            >
+              {THEME_LABELS[option]}
+            </button>
+          ))}
+        </div>
       </MenuGroup>
 
       <MenuGroup title="설정">
