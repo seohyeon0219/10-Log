@@ -5,3 +5,6 @@ export const toDateKey = (date: Date): string => {
 
   return `${year}-${month}-${day}`
 }
+
+export const getMonthDate = (baseDate: Date, offset: number): Date =>
+  new Date(baseDate.getFullYear(), baseDate.getMonth() + offset, 1)

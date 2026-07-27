@@ -2,16 +2,16 @@ import { useEffect, useMemo, useState } from 'react'
 import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
 import CategoryChangeRanking from '../components/statistics/CategoryChangeRanking'
 import CategoryTransactionRatio from '../components/statistics/CategoryTransactionRatio'
-import MonthlyMoneySummary from '../components/statistics/monthlymoneysummary'
+import MonthlyMoneySummary from '../components/statistics/MonthlyMoneySummary'
 import PreviousMonthComparison from '../components/statistics/PreviousMonthComparison'
-import SpendngTransactionLineChart from '../components/statistics/spendngTransactionLineChart'
+import SpendingTransactionLineChart from '../components/statistics/SpendingTransactionLineChart'
 import TransactionFormModal from '../components/transactions/TransactionFormModal'
 import TransactionFormBottomSheet from '../components/transactions/bottomSheet/TransactionFormBottomSheet'
-import type { TransactionType } from '../components/transactions/transactionFormConfig'
 import { useRecentMonthsTransactions } from '../hooks/useRecentMonthsTransactions'
 import { useCalendarStore } from '../stores/calendarStore'
 import { useStatisticsStore } from '../stores/statisticsStore'
-import type { Transaction } from '../types/finance'
+import { getMonthDate } from '../utils/dateUtils'
+import type { Transaction, TransactionType } from '../types/finance'
 
 type SelectedStatisticsTransaction = {
   amount: number
@@ -35,9 +35,6 @@ type CategoryRatioItem = {
     memo: string
   }>
 }
-
-const getMonthDate = (baseDate: Date, offset: number) =>
-  new Date(baseDate.getFullYear(), baseDate.getMonth() + offset, 1)
 
 const getRemainingDays = (date: Date) => {
   const today = new Date()
@@ -281,6 +278,8 @@ export default function StatsContainer() {
     void loadMonth()
   }, [loadMonth])
 
+  const activeCategories = selectedStatisticsTransaction?.type === 'income' ? incomeCategories : expenseCategories
+
   const closeTransactionModal = () => setSelectedStatisticsTransaction(null)
 
   const saveTransaction = async (values: Parameters<typeof updateTransaction>[1]) => {
@@ -332,16 +331,14 @@ export default function StatsContainer() {
       </div>
 
       <div className="mt-4">
-        <SpendngTransactionLineChart data={spendingTransactionLineChart} />
+        <SpendingTransactionLineChart data={spendingTransactionLineChart} />
       </div>
 
       {selectedStatisticsTransaction ? (
         <>
           <div className="hidden md:block">
             <TransactionFormModal
-              categories={
-                selectedStatisticsTransaction.type === 'income' ? incomeCategories : expenseCategories
-              }
+              categories={activeCategories}
               expenseCategories={expenseCategories}
               incomeCategories={incomeCategories}
               initialAmount={selectedStatisticsTransaction.amount}
@@ -361,9 +358,7 @@ export default function StatsContainer() {
           </div>
           <div className="md:hidden">
             <TransactionFormBottomSheet
-              categories={
-                selectedStatisticsTransaction.type === 'income' ? incomeCategories : expenseCategories
-              }
+              categories={activeCategories}
               expenseCategories={expenseCategories}
               incomeCategories={incomeCategories}
               initialAmount={selectedStatisticsTransaction.amount}

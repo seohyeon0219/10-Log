@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getMonthlyTransactions } from '../lib/financeApi'
+import { getMonthDate } from '../utils/dateUtils'
 import type { Transaction } from '../types/finance'
-
-const getMonthDate = (baseDate: Date, offset: number) =>
-  new Date(baseDate.getFullYear(), baseDate.getMonth() + offset, 1)
 
 export function useRecentMonthsTransactions(currentDate: Date, monthCount = 6) {
   const [monthsData, setMonthsData] = useState<Transaction[][]>(

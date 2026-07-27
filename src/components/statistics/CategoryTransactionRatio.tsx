@@ -1,7 +1,6 @@
 import IncomeExpenseToggle from '../common/IncomeExpenseToggle'
 import StatisticsCard from './StatisticsCard'
-
-type TransactionType = 'income' | 'expense'
+import type { TransactionType } from '../../types/finance'
 
 type CategoryTransaction = {
   amount: number

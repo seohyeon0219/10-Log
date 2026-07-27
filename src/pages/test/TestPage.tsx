@@ -16,8 +16,8 @@ import MonthlyPromiseModal from '../../components/calendar/MonthlyPromiseModal'
 import CategoryChangeRanking from '../../components/statistics/CategoryChangeRanking'
 import CategoryTransactionRatio from '../../components/statistics/CategoryTransactionRatio'
 import PreviousMonthComparison from '../../components/statistics/PreviousMonthComparison'
-import MonthlyMoneySummary from '../../components/statistics/monthlymoneysummary'
-import SpendngTransactionLineChart from '../../components/statistics/spendngTransactionLineChart'
+import MonthlyMoneySummary from '../../components/statistics/MonthlyMoneySummary'
+import SpendingTransactionLineChart from '../../components/statistics/SpendingTransactionLineChart'
 import AiMonthlyReview from '../../components/review/AiMonthlyReview'
 import AmountInput from '../../components/transactions/AmountInput'
 import TransactionFormModal from '../../components/transactions/TransactionFormModal'
@@ -222,7 +222,7 @@ export default function TestPage() {
             ratioType={ratioType}
             selectedCategoryId={selectedCategoryId}
           />
-          <SpendngTransactionLineChart data={mockSpendingTransactionLineChart} />
+          <SpendingTransactionLineChart data={mockSpendingTransactionLineChart} />
         </div>
       </section>
 

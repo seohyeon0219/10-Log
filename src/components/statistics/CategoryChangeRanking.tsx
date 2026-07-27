@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import IncomeExpenseToggle from '../common/IncomeExpenseToggle'
 import StatisticsCard from './StatisticsCard'
-
-type TransactionType = 'income' | 'expense'
+import type { TransactionType } from '../../types/finance'
 
 type CategoryChangeItem = {
   id: string

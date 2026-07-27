@@ -1,6 +1,5 @@
 import { create } from 'zustand'
-
-type TransactionType = 'income' | 'expense'
+import type { TransactionType } from '../types/finance'
 
 type StatisticsStore = {
   ratioSelectedCategoryId: string

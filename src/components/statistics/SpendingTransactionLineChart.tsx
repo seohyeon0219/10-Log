@@ -1,14 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import StatisticsCard from './StatisticsCard'
-
-type TransactionType = 'income' | 'expense'
+import type { TransactionType } from '../../types/finance'
 
 type BarChartPoint = {
   amount: number
   month: string
 }
 
-type SpendngTransactionLineChartProps = {
+type SpendingTransactionLineChartProps = {
   data: Record<TransactionType, BarChartPoint[]>
 }
 
@@ -31,7 +30,7 @@ const getAxisLabel = (amount: number) => {
   return amount.toLocaleString('ko-KR')
 }
 
-export default function SpendngTransactionLineChart({ data }: SpendngTransactionLineChartProps) {
+export default function SpendingTransactionLineChart({ data }: SpendingTransactionLineChartProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [chartWidth, setChartWidth] = useState(360)
 
