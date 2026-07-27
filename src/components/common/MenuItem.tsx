@@ -6,7 +6,7 @@ type MenuItemProps = {
 export default function MenuItem({ label, onClick }: MenuItemProps) {
   return (
     <button
-      className="flex w-full items-center justify-between px-5 py-4 text-left transition active:bg-gray-50"
+      className="flex w-full items-center justify-between rounded-2xl px-5 py-4 text-left transition active:bg-gray-50"
       onClick={onClick}
       type="button"
     >
