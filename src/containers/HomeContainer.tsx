@@ -44,22 +44,22 @@ export default function HomeContainer() {
       <div className="mt-4 flex flex-col gap-7 md:mt-5">
         {/* 날짜 블록 */}
         <div>
-          <p className="text-[13px] font-bold tracking-[3px] text-[#a89a72]">
+          <p className="text-[13px] font-bold tracking-[3px] text-(--color-text-sand)">
             {DAYS_EN[today.getDay()]}
           </p>
           <div className="mt-1 flex items-baseline gap-2.5">
-            <span className="text-[58px] font-bold leading-[0.9] tracking-[-2px] text-[#161512]">
+            <span className="text-[58px] font-bold leading-[0.9] tracking-[-2px] text-black">
               {today.getDate()}
             </span>
-            <span className="text-[14px] font-semibold text-[#a89a72]">
+            <span className="text-[14px] font-semibold text-(--color-text-sand)">
               {today.getFullYear()}
             </span>
           </div>
         </div>
 
         {/* 한 줄 평 */}
-        <div className="border-l-2 border-l-[rgba(166,138,58,0.35)] pl-3.5">
-          <p className="break-keep text-[15.5px] font-semibold leading-[1.55] text-[#4a4640]">
+        <div className="border-l-2 border-l-black/10 pl-3.5">
+          <p className="break-keep text-[15.5px] font-semibold leading-[1.55] text-(--color-text-dim)">
             {budgetMessage}
           </p>
         </div>
@@ -102,7 +102,7 @@ export default function HomeContainer() {
               </p>
               {monthlyPromise.budgetAmount > 0 && (
                 <span
-                  className="shrink-0 rounded-full bg-[rgba(24,99,220,0.12)] px-3 py-1.5 text-sm font-semibold text-[#1863dc]"
+                  className="shrink-0 rounded-full bg-[rgba(24,99,220,0.12)] px-3 py-1.5 text-sm font-semibold text-(--color-income-blue)"
                 >
                   {spentPercentage}% 사용
                 </span>

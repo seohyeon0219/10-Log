@@ -24,7 +24,7 @@ export default function MonthlyMoneySummary({
       <div className="mt-2 flex items-center justify-between gap-4">
         <p className="text-[28px] font-extrabold text-black">{formatWon(spentAmount)}</p>
         {budgetAmount > 0 && (
-          <span className="shrink-0 rounded-full bg-[rgba(24,99,220,0.12)] px-3 py-1.5 text-sm font-semibold text-[#1863dc]">
+          <span className="shrink-0 rounded-full bg-[rgba(24,99,220,0.12)] px-3 py-1.5 text-sm font-semibold text-(--color-income-blue)">
             {usagePercent}% 사용
           </span>
         )}

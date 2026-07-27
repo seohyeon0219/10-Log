@@ -64,7 +64,7 @@ export default function TransactionDateList({
       </div>
 
       {transactions.length === 0 ? (
-        <p className="mt-3 text-[13px] text-[#b0a89c]">이 날의 기록이 아직 없어요.</p>
+        <p className="mt-3 text-[13px] text-(--color-text-sand)">이 날의 기록이 아직 없어요.</p>
       ) : (
         <div className="mt-2.5 grid gap-1.5">
           {transactions.map((tx) => (
@@ -81,13 +81,13 @@ export default function TransactionDateList({
               <span className="min-w-0 flex-1">
                 <span className="block text-[13px] font-bold text-black">{tx.categoryName}</span>
                 {tx.memo ? (
-                  <span className="block truncate text-[11.5px] text-[#a39c8c]">{tx.memo}</span>
+                  <span className="block truncate text-[11.5px] text-(--color-text-sand)">{tx.memo}</span>
                 ) : null}
               </span>
               <span
                 className={[
                   'shrink-0 text-[13.5px] font-extrabold',
-                  tx.type === 'income' ? 'text-[#1863dc]' : 'text-[#e01818]',
+                  tx.type === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
                 ].join(' ')}
               >
                 {tx.type === 'income' ? '+' : '-'}{tx.amount.toLocaleString('ko-KR')}원

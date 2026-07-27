@@ -138,7 +138,7 @@ export default function CategoryTransactionRatio({
         <div className="mt-4">
           <p className="text-[14px] font-extrabold text-black">{selectedItem.label} 내역</p>
           {selectedItem.transactions.length === 0 ? (
-            <p className="mt-3 text-[13px] text-[#b0a89c]">이 카테고리의 내역이 없어요.</p>
+            <p className="mt-3 text-[13px] text-(--color-text-sand)">이 카테고리의 내역이 없어요.</p>
           ) : (
             <div className="mt-2.5 grid gap-1.5">
               {selectedItem.transactions.map((tx) => (
@@ -163,7 +163,7 @@ export default function CategoryTransactionRatio({
                       {formatDate(tx.date)}
                     </span>
                     {tx.memo ? (
-                      <span className="block truncate text-[11.5px] text-[#a39c8c]">
+                      <span className="block truncate text-[11.5px] text-(--color-text-sand)">
                         {tx.memo}
                       </span>
                     ) : null}
@@ -171,7 +171,7 @@ export default function CategoryTransactionRatio({
                   <span
                     className={[
                       'shrink-0 text-[13.5px] font-extrabold',
-                      ratioType === 'income' ? 'text-[#1863dc]' : 'text-[#e01818]',
+                      ratioType === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
                     ].join(' ')}
                   >
                     {ratioType === 'income' ? '+' : '-'}
