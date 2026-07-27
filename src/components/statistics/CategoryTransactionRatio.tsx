@@ -63,20 +63,20 @@ export default function CategoryTransactionRatio({
 }: CategoryTransactionRatioProps) {
   const activeItems = items[ratioType]
   const totalAmount = activeItems.reduce((total, item) => total + item.amount, 0)
-  const selectedItem = activeItems.find((item) => item.id === selectedCategoryId) ?? activeItems[0]
+  const selectedItem = activeItems.find((item) => item.id === selectedCategoryId) ?? null
   const donutGradient = getDonutGradient(activeItems, totalAmount)
 
   const toggle = (
     <IncomeExpenseToggle
       onChange={(type) => {
         onRatioTypeChange(type)
-        onSelectedCategoryIdChange(items[type][0]?.id ?? '')
+        onSelectedCategoryIdChange('')
       }}
       value={ratioType}
     />
   )
 
-  if (activeItems.length === 0 || !selectedItem) {
+  if (activeItems.length === 0) {
     return (
       <StatisticsCard action={toggle} title="카테고리 거래 비율">
         <div className="mt-5 rounded-xl bg-gray-50 px-4 py-8 text-center text-sm font-semibold text-gray-400">
@@ -107,7 +107,7 @@ export default function CategoryTransactionRatio({
         <div className="grid gap-0.5">
           {activeItems.map((item) => {
             const percent = totalAmount > 0 ? Math.round((item.amount / totalAmount) * 100) : 0
-            const isSelected = item.id === selectedItem.id
+            const isSelected = selectedItem !== null && item.id === selectedItem.id
 
             return (
               <button
