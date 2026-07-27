@@ -8,10 +8,8 @@ import TransactionDateList, {
 import FloatingAddButton from '../components/common/FloatingAddButton'
 import TransactionFormModal from '../components/transactions/TransactionFormModal'
 import TransactionFormBottomSheet from '../components/transactions/bottomSheet/TransactionFormBottomSheet'
+import type { TransactionFormMode, TransactionType } from '../components/transactions/transactionFormConfig'
 import { useCalendarStore } from '../stores/calendarStore'
-
-type TransactionType = 'income' | 'expense'
-type TransactionFormMode = 'create' | 'edit'
 
 const getDateKey = (date: Date) => {
   const year = date.getFullYear()

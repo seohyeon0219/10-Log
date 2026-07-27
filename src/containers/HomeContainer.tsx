@@ -5,9 +5,9 @@ import Button from '../components/common/Button'
 import FloatingAddButton from '../components/common/FloatingAddButton'
 import TransactionFormModal from '../components/transactions/TransactionFormModal'
 import TransactionFormBottomSheet from '../components/transactions/bottomSheet/TransactionFormBottomSheet'
-import type { TransactionType } from '../components/transactions/transactionFormConfig'
 import { getBudgetStatus, getRandomMessage } from '../constants/budgetMessages'
 import { useCalendarStore } from '../stores/calendarStore'
+import type { TransactionFormValues, TransactionType } from '../types/finance'
 
 const DAYS_EN = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
 
@@ -45,6 +45,12 @@ export default function HomeContainer() {
       : 0
   const budgetStatus = getBudgetStatus(spent, monthlyPromise.budgetAmount)
   const budgetMessage = useMemo(() => getRandomMessage(budgetStatus), [budgetStatus])
+  const activeCategories = transactionType === 'income' ? incomeCategories : expenseCategories
+
+  const handleSaveTransaction = async (values: TransactionFormValues) => {
+    await addTransaction(transactionType, values)
+    setIsTransactionFormOpen(false)
+  }
 
   const handleSavePromise = async (values: { budgetAmount: number; promise: string }) => {
     await updateMonthlyPromise(values)
@@ -155,7 +161,7 @@ export default function HomeContainer() {
 
       <div className="hidden md:block">
         <TransactionFormModal
-          categories={transactionType === 'income' ? incomeCategories : expenseCategories}
+          categories={activeCategories}
           expenseCategories={expenseCategories}
           incomeCategories={incomeCategories}
           isOpen={isTransactionFormOpen}
@@ -163,7 +169,7 @@ export default function HomeContainer() {
           onCreateCategory={addCategory}
           onDelete={() => setIsTransactionFormOpen(false)}
           onDeleteCategory={deleteCategory}
-          onSave={async (values) => { await addTransaction(transactionType, values); setIsTransactionFormOpen(false) }}
+          onSave={handleSaveTransaction}
           onUpdateCategory={updateCategory}
           selectedDate={new Date()}
           type={transactionType}
@@ -171,7 +177,7 @@ export default function HomeContainer() {
       </div>
       <div className="md:hidden">
         <TransactionFormBottomSheet
-          categories={transactionType === 'income' ? incomeCategories : expenseCategories}
+          categories={activeCategories}
           expenseCategories={expenseCategories}
           incomeCategories={incomeCategories}
           isOpen={isTransactionFormOpen}
@@ -179,7 +185,7 @@ export default function HomeContainer() {
           onCreateCategory={addCategory}
           onDelete={() => setIsTransactionFormOpen(false)}
           onDeleteCategory={deleteCategory}
-          onSave={async (values) => { await addTransaction(transactionType, values); setIsTransactionFormOpen(false) }}
+          onSave={handleSaveTransaction}
           onUpdateCategory={updateCategory}
           selectedDate={new Date()}
           type={transactionType}

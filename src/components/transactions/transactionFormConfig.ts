@@ -1,4 +1,5 @@
-export type TransactionType = 'income' | 'expense'
+import type { TransactionType } from '../../types/finance'
+export type { TransactionType }
 
 export type TransactionCategory = {
   color: string
