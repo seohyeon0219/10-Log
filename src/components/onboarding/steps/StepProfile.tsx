@@ -52,6 +52,7 @@ export default function StepProfile({ answers, onChange }: Props) {
               className="w-auto! min-h-0! px-5! py-2.5! text-sm!"
               key={value}
               onClick={() => onChange('gender', value)}
+              shape="pill"
               variant={answers.gender === value ? 'primary' : 'secondary'}
             >
               {label}
@@ -68,6 +69,7 @@ export default function StepProfile({ answers, onChange }: Props) {
               className="w-auto! min-h-0! px-5! py-2.5! text-sm!"
               key={value}
               onClick={() => onChange('ageRange', value)}
+              shape="pill"
               variant={answers.ageRange === value ? 'primary' : 'secondary'}
             >
               {label}
