@@ -5,6 +5,7 @@ import CalendarMonthlySummary from '../components/calendar/CalendarMonthlySummar
 import TransactionDateList, {
   type TransactionDateListItem,
 } from '../components/transactions/TransactionDateList'
+import FloatingAddButton from '../components/common/FloatingAddButton'
 import TransactionFormModal from '../components/transactions/TransactionFormModal'
 import TransactionFormBottomSheet from '../components/transactions/bottomSheet/TransactionFormBottomSheet'
 import { useCalendarStore } from '../stores/calendarStore'
@@ -223,6 +224,11 @@ export default function CalendarContainer() {
           type={transactionType}
         />
       </div>
+
+      <FloatingAddButton
+        onAddExpense={() => openTransactionForm('expense')}
+        onAddIncome={() => openTransactionForm('income')}
+      />
     </section>
   )
 }

@@ -2,6 +2,10 @@ import { useEffect, useMemo, useState } from 'react'
 import MonthlyPromiseBottomSheet from '../components/calendar/MonthlyPromiseBottomSheet'
 import MonthlyPromiseModal from '../components/calendar/MonthlyPromiseModal'
 import Button from '../components/common/Button'
+import FloatingAddButton from '../components/common/FloatingAddButton'
+import TransactionFormModal from '../components/transactions/TransactionFormModal'
+import TransactionFormBottomSheet from '../components/transactions/bottomSheet/TransactionFormBottomSheet'
+import type { TransactionType } from '../components/transactions/transactionFormConfig'
 import { getBudgetStatus, getRandomMessage } from '../constants/budgetMessages'
 import { useCalendarStore } from '../stores/calendarStore'
 
@@ -9,11 +13,24 @@ const DAYS_EN = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
 
 export default function HomeContainer() {
   const [isPromiseEditOpen, setIsPromiseEditOpen] = useState(false)
+  const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
+  const [transactionType, setTransactionType] = useState<TransactionType>('expense')
+  const addTransaction = useCalendarStore((state) => state.addTransaction)
+  const addCategory = useCalendarStore((state) => state.addCategory)
+  const deleteCategory = useCalendarStore((state) => state.deleteCategory)
+  const expenseCategories = useCalendarStore((state) => state.expenseCategories)
+  const incomeCategories = useCalendarStore((state) => state.incomeCategories)
   const loadMonth = useCalendarStore((state) => state.loadMonth)
   const monthlyPromise = useCalendarStore((state) => state.monthlyPromise)
   const monthlySummary = useCalendarStore((state) => state.monthlySummary)
+  const updateCategory = useCalendarStore((state) => state.updateCategory)
   const updateMonthlyPromise = useCalendarStore((state) => state.updateMonthlyPromise)
   const deleteMonthlyPromise = useCalendarStore((state) => state.deleteMonthlyPromise)
+
+  const openTransactionForm = (type: TransactionType) => {
+    setTransactionType(type)
+    setIsTransactionFormOpen(true)
+  }
 
   useEffect(() => {
     void loadMonth()
@@ -129,6 +146,44 @@ export default function HomeContainer() {
             )}
           </div>
         </div>
+      </div>
+
+      <FloatingAddButton
+        onAddExpense={() => openTransactionForm('expense')}
+        onAddIncome={() => openTransactionForm('income')}
+      />
+
+      <div className="hidden md:block">
+        <TransactionFormModal
+          categories={transactionType === 'income' ? incomeCategories : expenseCategories}
+          expenseCategories={expenseCategories}
+          incomeCategories={incomeCategories}
+          isOpen={isTransactionFormOpen}
+          onClose={() => setIsTransactionFormOpen(false)}
+          onCreateCategory={addCategory}
+          onDelete={() => setIsTransactionFormOpen(false)}
+          onDeleteCategory={deleteCategory}
+          onSave={async (values) => { await addTransaction(transactionType, values); setIsTransactionFormOpen(false) }}
+          onUpdateCategory={updateCategory}
+          selectedDate={new Date()}
+          type={transactionType}
+        />
+      </div>
+      <div className="md:hidden">
+        <TransactionFormBottomSheet
+          categories={transactionType === 'income' ? incomeCategories : expenseCategories}
+          expenseCategories={expenseCategories}
+          incomeCategories={incomeCategories}
+          isOpen={isTransactionFormOpen}
+          onClose={() => setIsTransactionFormOpen(false)}
+          onCreateCategory={addCategory}
+          onDelete={() => setIsTransactionFormOpen(false)}
+          onDeleteCategory={deleteCategory}
+          onSave={async (values) => { await addTransaction(transactionType, values); setIsTransactionFormOpen(false) }}
+          onUpdateCategory={updateCategory}
+          selectedDate={new Date()}
+          type={transactionType}
+        />
       </div>
 
       <div className="hidden md:block">
