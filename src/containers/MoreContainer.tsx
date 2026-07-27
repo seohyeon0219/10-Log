@@ -1,30 +1,13 @@
 import type { User } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
-import type { ReactNode } from 'react'
 import CategoryManageBottomSheet from '../components/categories/CategoryManageBottomSheet'
 import CategoryManageModal from '../components/categories/CategoryManageModal'
 import ConfirmModal from '../components/common/ConfirmModal'
+import MenuGroup, { MenuGroupDivider } from '../components/common/MenuGroup'
 import MenuItem from '../components/common/MenuItem'
 import { supabase } from '../lib/supabase'
 import { useCalendarStore } from '../stores/calendarStore'
 
-type MenuGroupProps = {
-  children: ReactNode
-  title: string
-}
-
-function MenuGroup({ children, title }: MenuGroupProps) {
-  return (
-    <div className="mb-4">
-      <p className="mb-1 px-1 text-xs font-medium text-gray-400">{title}</p>
-      <div className="overflow-hidden rounded-2xl border border-white/60 bg-(--color-glass-white) backdrop-blur-sm">{children}</div>
-    </div>
-  )
-}
-
-function Divider() {
-  return <div className="mx-5 h-px bg-gray-100" />
-}
 
 export default function MoreContainer() {
   const [user, setUser] = useState<User | null>(null)
@@ -76,9 +59,9 @@ export default function MoreContainer() {
 
       <MenuGroup title="설정">
         <MenuItem label="알림 설정" onClick={() => {}} />
-        <Divider />
+        <MenuGroupDivider />
         <MenuItem label="계정 관리" onClick={() => {}} />
-        <Divider />
+        <MenuGroupDivider />
         <MenuItem
           label="개인정보처리방침"
           onClick={() =>
