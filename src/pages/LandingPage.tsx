@@ -12,7 +12,7 @@ const blobStyle = {
   backdropFilter: 'blur(28px) saturate(180%)',
   WebkitBackdropFilter: 'blur(28px) saturate(180%)',
   boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.75), 0 8px 40px rgba(24,99,220,0.35)',
-  border: '1.5px solid rgba(255,255,255,0.6)',
+  border: '0px solid rgba(255,255,255,0.6)',
 } as const
 
 export default function LandingPage() {
@@ -80,17 +80,6 @@ export default function LandingPage() {
       className="relative flex min-h-dvh flex-col"
       style={{ background: 'linear-gradient(160deg, #faf3e2 0%, #fdf9ef 35%, #e4eeff 68%, #c8dcff 100%)' }}
     >
-      {/* 흰 배경 — 블롭 모핑 완료 후 페이드인 */}
-      <AnimatePresence>
-        {phase === 'revealed' && (
-          <motion.div
-            animate={{ opacity: 1 }}
-            className="absolute inset-0 z-10 bg-white"
-            initial={{ opacity: 0 }}
-            transition={{ duration: 0.4, delay: 0.6 }}
-          />
-        )}
-      </AnimatePresence>
 
       {/* 인트로 블롭: 납작한 타원형 */}
       <AnimatePresence>
@@ -189,9 +178,16 @@ export default function LandingPage() {
               transition={{ duration: 0.65, delay: 2.25, ease: 'easeOut' }}
             >
               <button
-                className="inline-flex h-14 w-full cursor-pointer items-center justify-center gap-4 rounded-2xl border border-gray-200 bg-white px-6 text-[15px] font-semibold text-gray-700 transition disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex h-14 w-full cursor-pointer items-center justify-center gap-4 rounded-2xl px-6 text-[15px] font-semibold text-gray-800 transition disabled:cursor-not-allowed disabled:opacity-60"
                 disabled={isSigningIn}
                 onClick={handleGoogleSignIn}
+                style={{
+                  background: 'rgba(255,255,255,0.55)',
+                  backdropFilter: 'blur(20px) saturate(160%)',
+                  WebkitBackdropFilter: 'blur(20px) saturate(160%)',
+                  border: '1px solid rgba(255,255,255,0.75)',
+                  boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.85), 0 4px 20px rgba(0,0,0,0.08)',
+                }}
                 type="button"
               >
                 <svg aria-hidden="true" className="h-6 w-6 flex-none" viewBox="0 0 48 48">
