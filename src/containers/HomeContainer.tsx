@@ -41,30 +41,31 @@ export default function HomeContainer() {
 
   return (
     <section className="w-full self-start animate-fade-up md:mt-6">
-      <div className="mt-4 md:mt-5">
-        {/* 날짜 */}
-        <div className="w-fit">
-          <p className="text-[20px] font-bold tracking-[3px] text-(--color-text-muted)">
+      <div className="mt-4 flex flex-col gap-7 md:mt-5">
+        {/* 날짜 블록 */}
+        <div>
+          <p className="text-[13px] font-bold tracking-[3px] text-[#a89a72]">
             {DAYS_EN[today.getDay()]}
           </p>
-          <p className="mt-1.5 text-[64px] font-extrabold leading-[0.9] tracking-[-2px] text-black">
-            {today.getDate()}
-          </p>
-          <div className="-mt-5.5">
-            <div className="my-2.5 h-px w-20 bg-white/90" />
-            <p className="text-base font-bold text-right text-(--color-text-muted)">
+          <div className="mt-1 flex items-baseline gap-2.5">
+            <span className="text-[58px] font-bold leading-[0.9] tracking-[-2px] text-[#161512]">
+              {today.getDate()}
+            </span>
+            <span className="text-[14px] font-semibold text-[#a89a72]">
               {today.getFullYear()}
-            </p>
+            </span>
           </div>
         </div>
 
         {/* 한 줄 평 */}
-        <p className="mt-6 break-keep text-base font-bold leading-relaxed text-(--color-text-dim)">
-          {budgetMessage}
-        </p>
+        <div className="border-l-2 border-l-[rgba(166,138,58,0.35)] pl-3.5">
+          <p className="break-keep text-[15.5px] font-semibold leading-[1.55] text-[#4a4640]">
+            {budgetMessage}
+          </p>
+        </div>
 
         {/* 카드 */}
-        <div className="mt-24 rounded-[22px] bg-(--color-glass-white) p-5 shadow-sm backdrop-blur-sm">
+        <div className="rounded-[22px] bg-(--color-glass-white) p-5 shadow-sm backdrop-blur-sm">
           {/* 다짐 */}
           <div className="flex items-center justify-between gap-3">
             <p className="min-w-0 flex-1 break-keep text-lg font-extrabold text-black">
