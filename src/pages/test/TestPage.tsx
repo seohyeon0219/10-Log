@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import CalendarGrid from '../../components/calendar/CalendarGrid'
 import CategoryManageBottomSheet from '../../components/categories/CategoryManageBottomSheet'
 import CategoryManageModal from '../../components/categories/CategoryManageModal'
@@ -63,6 +64,7 @@ const getDateKey = (date: Date, day: number) => {
 }
 
 export default function TestPage() {
+  const navigate = useNavigate()
   const [activeTabId, setActiveTabId] = useState(tabs[0].id)
   const [currentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
@@ -126,6 +128,13 @@ export default function TestPage() {
       <section className="mb-6">
         <p className="text-(--color-gray)">일공로그 공통 컴포넌트</p>
         <h1 className="mt-2 text-3xl font-extrabold">Component Test Page</h1>
+      </section>
+
+      <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">
+        <h2 className="mb-4 text-base font-bold">Navigation</h2>
+        <div className="flex flex-wrap gap-3">
+          <Button onClick={() => void navigate('/onboarding')}>온보딩 시작하기</Button>
+        </div>
       </section>
 
       <section className="mb-6 rounded-xl border border-(--color-gray) bg-white p-6 max-sm:p-4">

@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import logoImage from '../assets/logo.png'
+import { getOnboardingCompleted } from '../lib/onboardingApi'
 import { supabase } from '../lib/supabase'
-
-const appPath = '/app/calendar'
 
 export default function LandingPage() {
   const navigate = useNavigate()
@@ -13,13 +12,20 @@ export default function LandingPage() {
   useEffect(() => {
     let isMounted = true
 
-    const moveToMainPage = () => {
-      navigate(appPath, { replace: true })
+    const moveAfterLogin = async () => {
+      try {
+        const completed = await getOnboardingCompleted()
+        if (isMounted) {
+          navigate(completed ? '/app/home' : '/onboarding', { replace: true })
+        }
+      } catch {
+        if (isMounted) navigate('/app/home', { replace: true })
+      }
     }
 
     supabase.auth.getSession().then(({ data }) => {
       if (isMounted && data.session) {
-        moveToMainPage()
+        void moveAfterLogin()
       }
     })
 
@@ -27,7 +33,7 @@ export default function LandingPage() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
-        moveToMainPage()
+        void moveAfterLogin()
       }
     })
 
@@ -44,7 +50,7 @@ export default function LandingPage() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}${appPath}`,
+        redirectTo: window.location.origin,
       },
     })
 
