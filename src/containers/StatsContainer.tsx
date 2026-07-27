@@ -257,8 +257,6 @@ export default function StatsContainer() {
   const ratioSelectedCategoryId = useStatisticsStore((state) => state.ratioSelectedCategoryId)
   const setRatioType = useStatisticsStore((state) => state.setRatioType)
   const setRatioSelectedCategoryId = useStatisticsStore((state) => state.setRatioSelectedCategoryId)
-  const lineChartType = useStatisticsStore((state) => state.lineChartType)
-  const setLineChartType = useStatisticsStore((state) => state.setLineChartType)
   const { monthsData, previousMonthData } = useRecentMonthsTransactions(currentDate)
   const categoryTransactionRatio = useMemo(() => getCategoryRatio(transactions), [transactions])
   const previousMonthComparison = useMemo(
@@ -334,11 +332,7 @@ export default function StatsContainer() {
       </div>
 
       <div className="mt-4">
-        <SpendngTransactionLineChart
-          data={spendingTransactionLineChart}
-          lineChartType={lineChartType}
-          onLineChartTypeChange={setLineChartType}
-        />
+        <SpendngTransactionLineChart data={spendingTransactionLineChart} />
       </div>
 
       {selectedStatisticsTransaction ? (

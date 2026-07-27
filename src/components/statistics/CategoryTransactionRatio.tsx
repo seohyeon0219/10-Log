@@ -1,5 +1,4 @@
 import IncomeExpenseToggle from '../common/IncomeExpenseToggle'
-import SimpleListItem from '../common/SimpleListItem'
 import StatisticsCard from './StatisticsCard'
 
 type TransactionType = 'income' | 'expense'
@@ -43,12 +42,15 @@ const getDonutGradient = (items: CategoryRatioItem[], totalAmount: number) => {
     .map((item) => {
       const start = cursor
       const end = totalAmount > 0 ? cursor + (item.amount / totalAmount) * 100 : cursor
-
       cursor = end
-
       return `${item.color} ${start}% ${end}%`
     })
     .join(', ')
+}
+
+const formatDate = (dateStr: string) => {
+  const parts = dateStr.split('-')
+  return `${parseInt(parts[1])}월 ${parseInt(parts[2])}일`
 }
 
 export default function CategoryTransactionRatio({
@@ -59,28 +61,24 @@ export default function CategoryTransactionRatio({
   ratioType,
   selectedCategoryId,
 }: CategoryTransactionRatioProps) {
-
   const activeItems = items[ratioType]
   const totalAmount = activeItems.reduce((total, item) => total + item.amount, 0)
   const selectedItem = activeItems.find((item) => item.id === selectedCategoryId) ?? activeItems[0]
   const donutGradient = getDonutGradient(activeItems, totalAmount)
-  const selectedPercent = selectedItem && totalAmount > 0 ? Math.round((selectedItem.amount / totalAmount) * 100) : 0
+
+  const toggle = (
+    <IncomeExpenseToggle
+      onChange={(type) => {
+        onRatioTypeChange(type)
+        onSelectedCategoryIdChange(items[type][0]?.id ?? '')
+      }}
+      value={ratioType}
+    />
+  )
 
   if (activeItems.length === 0 || !selectedItem) {
     return (
-      <StatisticsCard
-        action={
-          <IncomeExpenseToggle
-            onChange={(type) => {
-              onRatioTypeChange(type)
-              onSelectedCategoryIdChange(items[type][0]?.id ?? '')
-            }}
-            value={ratioType}
-          />
-        }
-        eyebrow="카테고리 거래 비율"
-        title={`이번 달 ${ratioType === 'expense' ? '지출이' : '수입이'} 어디에 모였는지 봐요`}
-      >
+      <StatisticsCard action={toggle} title="카테고리 거래 비율">
         <div className="mt-5 rounded-xl bg-gray-50 px-4 py-8 text-center text-sm font-semibold text-gray-400">
           아직 기록된 내역이 없어요.
         </div>
@@ -89,28 +87,24 @@ export default function CategoryTransactionRatio({
   }
 
   return (
-    <StatisticsCard
-      action={
-        <IncomeExpenseToggle
-          onChange={(type) => {
-            onRatioTypeChange(type)
-            onSelectedCategoryIdChange(items[type][0]?.id ?? '')
-          }}
-          value={ratioType}
-        />
-      }
-      eyebrow="카테고리 거래 비율"
-      title={`이번 달 ${ratioType === 'expense' ? '지출이' : '수입이'} 어디에 모였는지 봐요`}
-    >
-      <div className="mt-5 grid gap-5 md:grid-cols-[180px_minmax(0,1fr)] md:items-center">
-        <div className="relative mx-auto h-44 w-44 rounded-full" style={{ background: `conic-gradient(${donutGradient})` }}>
+    <StatisticsCard action={toggle} title="카테고리 거래 비율">
+      <div className="mt-5 grid gap-5 md:grid-cols-[160px_minmax(0,1fr)] md:items-start">
+        {/* 도넛 차트 */}
+        <div
+          className="relative mx-auto h-40 w-40 shrink-0 rounded-full"
+          style={{ background: `conic-gradient(${donutGradient})` }}
+        >
           <div className="absolute inset-6 grid place-items-center rounded-full bg-white text-center">
-            <p className="mt-4 text-base font-bold text-(--color-dark-gray)">{selectedItem.label}</p>
-            <p className="mb-4 text-2xl font-extrabold text-black">{selectedPercent}%</p>
+            <p className="text-base font-extrabold text-black">
+              {totalAmount > 0 && selectedItem
+                ? Math.round((selectedItem.amount / totalAmount) * 100)
+                : 0}k
+            </p>
           </div>
         </div>
 
-        <div className="grid gap-2">
+        {/* 범례 */}
+        <div className="grid gap-0.5">
           {activeItems.map((item) => {
             const percent = totalAmount > 0 ? Math.round((item.amount / totalAmount) * 100) : 0
             const isSelected = item.id === selectedItem.id
@@ -118,51 +112,77 @@ export default function CategoryTransactionRatio({
             return (
               <button
                 className={[
-                  'grid min-h-12 cursor-pointer grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border px-4 text-left transition',
-                  isSelected ? 'border-gray-200 bg-gray-50' : 'border-transparent bg-white hover:bg-gray-50',
+                  'flex items-center gap-2 rounded-xl px-3 py-2 text-left transition',
+                  isSelected ? 'bg-black/5' : '',
                 ].join(' ')}
                 key={item.id}
                 onClick={() => onSelectedCategoryIdChange(item.id)}
                 type="button"
               >
-                <span className="h-3 w-3 rounded-full" style={{ backgroundColor: item.color }} />
-                <span className="min-w-0 truncate text-sm font-extrabold text-black">{item.label}</span>
-                <span className="text-sm font-bold text-(--color-dark-gray)">{percent}%</span>
+                <span
+                  className="h-2 w-2 shrink-0 rounded-full"
+                  style={{ backgroundColor: item.color }}
+                />
+                <span className="min-w-0 flex-1 truncate text-sm font-bold text-black">
+                  {item.label}
+                </span>
+                <span className="shrink-0 text-sm font-bold text-gray-400">{percent}%</span>
               </button>
             )
           })}
         </div>
       </div>
 
-      <div className="mt-5 rounded-xl border border-gray-200 bg-white p-4 shadow-[0_4px_14px_rgba(0,0,0,0.03)]">
-        <div className="flex items-end justify-between gap-3 p-2">
-          <div>
-            <p className="text-sm font-bold text-black">{selectedItem.label} 내역</p>
-          </div>
-          <p className="text-sm font-extrabold text-(--color-dark-gray)">{selectedItem.amount.toLocaleString('ko-KR')}원</p>
+      {/* 선택된 카테고리 거래 내역 */}
+      {selectedItem && (
+        <div className="mt-4">
+          <p className="text-[14px] font-extrabold text-black">{selectedItem.label} 내역</p>
+          {selectedItem.transactions.length === 0 ? (
+            <p className="mt-3 text-[13px] text-[#b0a89c]">이 카테고리의 내역이 없어요.</p>
+          ) : (
+            <div className="mt-2.5 grid gap-1.5">
+              {selectedItem.transactions.map((tx) => (
+                <button
+                  key={tx.id}
+                  className="flex w-full items-center gap-2 rounded-[14px] bg-white/50 px-3 py-2.5 text-left"
+                  onClick={() =>
+                    onSelectTransaction?.({
+                      ...tx,
+                      categoryId: tx.categoryId ?? selectedItem.id,
+                      type: ratioType,
+                    })
+                  }
+                  type="button"
+                >
+                  <span
+                    className="h-2 w-2 shrink-0 rounded-full"
+                    style={{ background: selectedItem.color }}
+                  />
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-[13px] font-bold text-black">
+                      {formatDate(tx.date)}
+                    </span>
+                    {tx.memo ? (
+                      <span className="block truncate text-[11.5px] text-[#a39c8c]">
+                        {tx.memo}
+                      </span>
+                    ) : null}
+                  </span>
+                  <span
+                    className={[
+                      'shrink-0 text-[13.5px] font-extrabold',
+                      ratioType === 'income' ? 'text-[#1863dc]' : 'text-[#e01818]',
+                    ].join(' ')}
+                  >
+                    {ratioType === 'income' ? '+' : '-'}
+                    {tx.amount.toLocaleString('ko-KR')}원
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
-
-        <div className="mt-2 grid max-h-80 gap-1 overflow-y-auto border-t border-gray-100 pt-2 pr-1">
-          {selectedItem.transactions.map((transaction) => (
-            <SimpleListItem
-              amount={transaction.amount}
-              categoryColor={selectedItem.color}
-              categoryName={selectedItem.label}
-              date={transaction.date}
-              key={transaction.id}
-              memo={transaction.memo}
-              onClick={() =>
-                onSelectTransaction?.({
-                  ...transaction,
-                  categoryId: transaction.categoryId ?? selectedItem.id,
-                  type: ratioType,
-                })
-              }
-              type={ratioType}
-            />
-          ))}
-        </div>
-      </div>
+      )}
     </StatisticsCard>
   )
 }

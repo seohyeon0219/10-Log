@@ -5,9 +5,7 @@ type StatisticsCardProps = {
   children: ReactNode
   className?: string
   eyebrow?: string
-  eyebrowClassName?: string
   title?: string
-  titleClassName?: string
 }
 
 export default function StatisticsCard({
@@ -15,19 +13,17 @@ export default function StatisticsCard({
   children,
   className = '',
   eyebrow,
-  eyebrowClassName = 'text-(--color-dark-gray)',
   title,
-  titleClassName = 'text-xl font-extrabold text-black',
 }: StatisticsCardProps) {
   return (
-    <section className={['rounded-xl bg-(--color-glass-white) p-5 shadow-[0_6px_20px_rgba(0,0,0,0.05)] backdrop-blur-sm max-[380px]:p-4', className].join(' ').trim()}>
+    <section className={['rounded-[22px] bg-(--color-glass-white) p-5 shadow-[0_6px_20px_rgba(0,0,0,0.05)] backdrop-blur-sm max-[380px]:p-4', className].join(' ').trim()}>
       {eyebrow || title || action ? (
         <div className="flex items-start justify-between gap-3 max-[380px]:grid max-[380px]:grid-cols-1">
           <div className="min-w-0">
             {eyebrow ? (
-              <p className={['text-sm font-semibold', eyebrowClassName].join(' ').trim()}>{eyebrow}</p>
+              <p className="text-sm font-semibold text-(--color-dark-gray)">{eyebrow}</p>
             ) : null}
-            {title ? <h3 className={['mt-1 break-keep', titleClassName].join(' ').trim()}>{title}</h3> : null}
+            {title ? <h3 className="mt-1 break-keep text-xl font-extrabold text-sm font-semibold text-black">{title}</h3> : null}
           </div>
           {action ? <div className="shrink-0 max-[380px]:mt-2 max-[380px]:justify-self-start">{action}</div> : null}
         </div>

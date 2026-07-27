@@ -77,7 +77,6 @@ export default function TestPage() {
   const [selectedStatisticsTransaction, setSelectedStatisticsTransaction] = useState<SelectedStatisticsTransaction | null>(null)
   const [ratioType, setRatioType] = useState<TransactionType>('expense')
   const [selectedCategoryId, setSelectedCategoryId] = useState('')
-  const [lineChartType, setLineChartType] = useState<TransactionType>('expense')
   const [monthlyPromise, setMonthlyPromise] = useState(mockMonthlyPromise)
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
   const selectedDateKey = selectedDate ? getDateKey(selectedDate, selectedDate.getDate()) : ''
@@ -214,11 +213,7 @@ export default function TestPage() {
             ratioType={ratioType}
             selectedCategoryId={selectedCategoryId}
           />
-          <SpendngTransactionLineChart
-            data={mockSpendingTransactionLineChart}
-            lineChartType={lineChartType}
-            onLineChartTypeChange={setLineChartType}
-          />
+          <SpendngTransactionLineChart data={mockSpendingTransactionLineChart} />
         </div>
       </section>
 
