@@ -19,8 +19,8 @@ const STEP_META: { title: string; subtitle?: string }[] = [
   { title: '기본 정보를\n알려주세요' },
   { title: '가장 이루고 싶은\n소비 목표는 무엇인가요?' },
   { title: '특히 절약하고 싶은\n소비 분야가 있나요?', subtitle: '복수 선택 가능' },
-  { title: '소비할 때 가장\n중요하게 생각하는 건?' },
-  { title: 'AI 리포트에서\n가장 보고 싶은 내용은?', subtitle: '최대 5개 선택' },
+  { title: '소비할 때 가장\n중요하게 생각하는 건 무엇인가요?' },
+  { title: 'AI 리포트에서\n가장 보고 싶은 내용을 골라주세요?', subtitle: '최대 5개 선택' },
   { title: 'AI 리포트를\n어떤 스타일로 받고 싶으세요?' },
   { title: '이제 시작해볼까요?' },
 ]
