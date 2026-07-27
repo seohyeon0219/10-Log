@@ -9,7 +9,7 @@ type Props = {
 export default function OnboardingCardOption({ label, description, selected, onClick, disabled = false }: Props) {
   return (
     <button
-      className="flex w-full items-center justify-between rounded-2xl border border-black/10 bg-white/80 px-5 py-4 text-left transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-30"
+      className="flex w-full items-center justify-between rounded-2xl border border-white/50 bg-white/50 px-5 py-4 text-left backdrop-blur-md transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-30"
       disabled={disabled}
       onClick={onClick}
       type="button"

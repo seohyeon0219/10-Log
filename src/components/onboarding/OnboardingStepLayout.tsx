@@ -43,7 +43,7 @@ export default function OnboardingStepLayout({
       <div className="flex items-center gap-3 px-6 pb-[calc(36px+env(safe-area-inset-bottom))] pt-4">
         {step > 0 && (
           <button
-            className="flex h-12 shrink-0 items-center justify-center rounded-full border border-black/12 bg-white/60 px-6 text-sm font-semibold text-black"
+            className="flex h-12 shrink-0 items-center justify-center rounded-full border border-white/50 bg-white/50 px-6 text-sm font-semibold text-black backdrop-blur-md"
             onClick={onBack}
             type="button"
           >

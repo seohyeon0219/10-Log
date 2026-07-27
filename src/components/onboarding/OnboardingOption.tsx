@@ -25,7 +25,7 @@ export default function OnboardingOption({
           'w-full rounded-2xl border px-5 py-4 text-left',
           selected
             ? 'border-black bg-black text-white'
-            : 'border-black/10 bg-white/60 text-black',
+            : 'border-white/50 bg-white/50 text-black backdrop-blur-md',
         ].join(' ')}
         disabled={disabled}
         onClick={onClick}
@@ -48,7 +48,7 @@ export default function OnboardingOption({
         'rounded-full border px-4 py-2 text-sm font-semibold',
         selected
           ? 'border-black bg-black text-white'
-          : 'border-black/12 bg-white/60 text-black',
+          : 'border-white/50 bg-white/50 text-black backdrop-blur-md',
       ].join(' ')}
       disabled={disabled}
       onClick={onClick}
