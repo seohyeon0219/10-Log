@@ -109,7 +109,7 @@ export default function LandingPage() {
             <p className="text-[26px] font-semibold leading-snug tracking-tight text-black">
               기록할수록<br />똑똑해지는<br />나만의 소비관리
             </p>
-            <p className="absolute bottom-[calc(28px+env(safe-area-inset-bottom))] text-[13px] text-gray-400">
+            <p className="absolute bottom-[calc(28px+env(safe-area-inset-bottom))] text-[13px] text-(--color-text-sand)">
               화면을 터치하면 시작해요
             </p>
           </motion.button>
@@ -163,7 +163,7 @@ export default function LandingPage() {
             {/* 서비스 설명 — blur → 선명 페이드인 (10log 완료 후 0.5s 대기) */}
             <motion.p
               animate={{ opacity: 1, filter: 'blur(0px)' }}
-              className="mt-2 text-center text-[15px] font-medium leading-relaxed text-gray-500"
+              className="mt-2 text-center text-[15px] font-medium leading-relaxed text-(--color-text-muted)"
               initial={{ opacity: 0, filter: 'blur(8px)' }}
               transition={{ duration: 0.7, delay: 2.1, ease: 'easeOut' }}
             >
@@ -199,7 +199,7 @@ export default function LandingPage() {
                 <span>{isSigningIn ? '로그인 연결 중...' : 'Google로 시작하기'}</span>
               </button>
               {errorMessage ? (
-                <p className="mt-3 text-center text-sm font-bold text-red-500">{errorMessage}</p>
+                <p className="mt-3 text-center text-sm font-bold text-(--color-expense-red)">{errorMessage}</p>
               ) : null}
             </motion.div>
           </div>
