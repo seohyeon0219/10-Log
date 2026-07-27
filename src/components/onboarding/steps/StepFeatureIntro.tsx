@@ -25,35 +25,6 @@ const GLASS_CARD = [
   'shadow-[0_8px_32px_rgba(0,0,0,0.07),inset_0_1px_0_rgba(255,255,255,0.6)]',
 ].join(' ')
 
-function ReportIcon() {
-  return (
-    <svg fill="none" height="20" viewBox="0 0 20 20" width="20">
-      <path
-        d="M10 2.5L11.545 7.045L16.18 7.045L12.318 9.82L13.863 14.365L10 11.59L6.137 14.365L7.682 9.82L3.82 7.045L8.455 7.045L10 2.5Z"
-        fill="currentColor"
-        opacity="0.9"
-      />
-    </svg>
-  )
-}
-
-function PaletteIcon() {
-  return (
-    <svg fill="none" height="20" viewBox="0 0 20 20" width="20">
-      <circle cx="7" cy="8" fill="currentColor" opacity="0.5" r="1.5" />
-      <circle cx="13" cy="8" fill="currentColor" opacity="0.5" r="1.5" />
-      <circle cx="10" cy="12" fill="currentColor" r="1.5" />
-      <path
-        d="M10 2a8 8 0 100 16 4 4 0 000-8 8 8 0 000-8z"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeWidth="1.5"
-        opacity="0.8"
-      />
-    </svg>
-  )
-}
-
 export default function StepFeatureIntro({ name, onComplete }: Props) {
   const [barStarted, setBarStarted] = useState(false)
   const [visibleCount, setVisibleCount] = useState(0)
