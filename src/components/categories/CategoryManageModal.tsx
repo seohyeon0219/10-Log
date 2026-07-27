@@ -1,16 +1,10 @@
 import CategoryManageContent from './CategoryManageContent'
 import FormModal from '../common/FormModal'
 
-type Category = {
-  color: string
-  id: string
-  name: string
-}
-
 type CategoryManageModalProps = {
-  expenseCategories: Category[]
+  expenseCategories: Parameters<typeof CategoryManageContent>[0]['expenseCategories']
   initialType?: Parameters<typeof CategoryManageContent>[0]['initialType']
-  incomeCategories: Category[]
+  incomeCategories: Parameters<typeof CategoryManageContent>[0]['incomeCategories']
   isOpen: boolean
   onCreateCategory?: Parameters<typeof CategoryManageContent>[0]['onCreateCategory']
   onDeleteCategory?: Parameters<typeof CategoryManageContent>[0]['onDeleteCategory']
