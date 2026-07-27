@@ -134,6 +134,7 @@ export default function TestPage() {
         <h2 className="mb-4 text-base font-bold">Navigation</h2>
         <div className="flex flex-wrap gap-3">
           <Button onClick={() => void navigate('/onboarding')}>온보딩 시작하기</Button>
+          <Button onClick={() => void navigate('/')} variant="secondary">랜딩 페이지</Button>
         </div>
       </section>
 
