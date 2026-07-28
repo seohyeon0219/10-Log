@@ -31,7 +31,7 @@ export default function FormModal({
         </div>
         <button
           aria-label={`${title} 닫기`}
-          className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full bg-transparent text-3xl leading-none text-gray-300 transition hover:bg-gray-50 hover:text-gray-500 active:bg-gray-100"
+          className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full bg-transparent text-3xl leading-none text-gray-100 transition hover:bg-gray-50 hover:text-gray-500 active:bg-gray-100"
           onClick={onClose}
           type="button"
         >

@@ -135,7 +135,7 @@ export default function CategoryManageContent({
         {typeOptions.map((option) => (
           <button
             className={[
-              'h-11 rounded-xl text-sm font-bold transition-all duration-200',
+              'h-11 rounded-xl text-[15px] font-bold transition-all duration-200',
               activeType === option.id
                 ? 'bg-white text-black shadow-[0_2px_8px_rgba(0,0,0,0.10)]'
                 : 'text-(--color-text-muted) hover:text-black',
@@ -151,9 +151,9 @@ export default function CategoryManageContent({
       </div>
 
       {/* 이름 + 색상 폼 */}
-      <section className="mb-5 grid gap-5 rounded-2xl bg-white/25 px-4 py-5" ref={formSectionRef}>
+      <section className="mb-6 grid gap-5" ref={formSectionRef}>
         <Input
-          label={`${categoryLabelByType[activeType]} 카테고리 이름`}
+          label="카테고리 이름"
           onChange={(e) => setName(e.target.value)}
           placeholder="예: 식비"
           value={name}
@@ -161,13 +161,13 @@ export default function CategoryManageContent({
 
         <fieldset className="m-0 border-0 p-0">
           <legend className="mb-3 p-0 text-sm font-semibold text-(--color-text-muted)">색상</legend>
-          <div className="grid grid-cols-5 gap-3">
+          <div className="flex flex-wrap gap-3">
             {categoryColors.map((color) => (
               <button
                 aria-label={`색상 ${color}`}
                 aria-pressed={selectedColor === color}
                 className={[
-                  'aspect-square w-full cursor-pointer rounded-full transition-all duration-150',
+                  'h-9 w-9 cursor-pointer rounded-full transition-all duration-150',
                   selectedColor === color
                     ? 'scale-110 shadow-[0_0_0_2.5px_white,0_0_0_4.5px_black]'
                     : 'hover:scale-105 active:scale-95',
@@ -183,7 +183,7 @@ export default function CategoryManageContent({
       </section>
 
       {/* 액션 버튼 */}
-      <div className="mb-2 flex gap-2.5">
+      <div className="flex gap-3">
         <button
           className="flex h-12 shrink-0 items-center justify-center rounded-full glass-button px-5 text-sm font-bold text-(--color-text-muted) transition disabled:opacity-30"
           disabled={!isEditing && !name}
@@ -203,13 +203,15 @@ export default function CategoryManageContent({
       </div>
 
       {errorMessage && (
-        <p className="mb-2 text-sm font-semibold text-(--color-expense-red)" role="alert">
+        <p className="mt-3 text-sm font-semibold text-(--color-expense-red)" role="alert">
           {errorMessage}
         </p>
       )}
 
+      <div className="my-7 h-px bg-black/8" />
+
       {/* 카테고리 목록 */}
-      <section className="mt-6">
+      <section>
         <div className="mb-3 flex items-center gap-2">
           <span className="text-sm font-bold text-black">
             {categoryLabelByType[activeType]} 카테고리
@@ -219,19 +221,19 @@ export default function CategoryManageContent({
           </span>
         </div>
 
-        <div className="grid gap-2">
+        <div className="grid gap-2.5">
           {activeItems.map((category) => (
             <div
               className={[
-                'flex items-center gap-3 rounded-2xl px-4 py-3.5 transition-all duration-150',
+                'flex items-center gap-3 rounded-2xl px-4 transition-all duration-150',
                 editingCategoryId === category.id
                   ? 'bg-black/6 ring-1 ring-black/10'
-                  : 'bg-white/25 hover:bg-white/40',
+                  : 'hover:bg-white/30 active:bg-white/40',
               ].join(' ')}
               key={category.id}
             >
               <span
-                className="h-2.5 w-2.5 shrink-0 rounded-full"
+                className="h-3 w-3 shrink-0 rounded-full"
                 style={{ backgroundColor: category.color }}
               />
               <span className="min-w-0 flex-1 truncate text-[15px] font-bold text-black">
@@ -239,23 +241,23 @@ export default function CategoryManageContent({
               </span>
               <button
                 aria-label={`${category.name} 수정`}
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-(--color-text-muted) transition hover:bg-white/60 hover:text-black disabled:opacity-30"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-(--color-text-muted) transition hover:bg-white/60 hover:text-black disabled:opacity-30"
                 disabled={isSaving}
                 onClick={() => handleEdit(category)}
                 type="button"
               >
-                <svg fill="none" height="15" viewBox="0 0 15 15" width="15">
+                <svg fill="none" height="16" viewBox="0 0 15 15" width="16">
                   <path d="M11 1.5a1.5 1.5 0 012 2l-8.5 8.5-3 .75.75-3L11 1.5z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.4" />
                 </svg>
               </button>
               <button
                 aria-label={`${category.name} 삭제`}
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-(--color-text-muted) transition hover:bg-red-50/70 hover:text-(--color-expense-red) disabled:opacity-30"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-(--color-text-muted) transition hover:bg-red-50/70 hover:text-(--color-expense-red) disabled:opacity-30"
                 disabled={isSaving}
                 onClick={() => handleDeleteClick(category)}
                 type="button"
               >
-                <svg fill="none" height="15" viewBox="0 0 15 15" width="15">
+                <svg fill="none" height="16" viewBox="0 0 15 15" width="16">
                   <path d="M2 4h11M5.5 4V2.5A.5.5 0 016 2h3a.5.5 0 01.5.5V4M6 7v4.5M9 7v4.5M3 4l.8 8.5A.5.5 0 004.3 13h6.4a.5.5 0 00.5-.5L12 4" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.4" />
                 </svg>
               </button>
