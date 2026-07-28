@@ -41,28 +41,6 @@ export default function TransactionDateList({
         <p className="text-[14px] font-extrabold text-black">
           {selectedDate.getMonth() + 1}월 {selectedDate.getDate()}일 내역
         </p>
-        {(onAddIncome ?? onAddExpense) && (
-          <div className="flex shrink-0 gap-1.5">
-            {onAddIncome && (
-              <button
-                className="rounded-xl border border-blue-100/60 bg-blue-50/80 px-3 py-1.5 text-xs font-bold text-(--color-income-blue) transition hover:bg-blue-100/70 active:bg-blue-100"
-                onClick={onAddIncome}
-                type="button"
-              >
-                수입
-              </button>
-            )}
-            {onAddExpense && (
-              <button
-                className="rounded-xl border border-red-100/60 bg-red-50/80 px-3 py-1.5 text-xs font-bold text-(--color-expense-red) transition hover:bg-red-100/70 active:bg-red-100"
-                onClick={onAddExpense}
-                type="button"
-              >
-                지출
-              </button>
-            )}
-          </div>
-        )}
       </div>
 
       {transactions.length === 0 ? (
