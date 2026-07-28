@@ -49,7 +49,7 @@ export default function HomeContainer() {
   }
 
   const handleSavePromise = async (values: { budgetAmount: number }) => {
-    await updateMonthlyPromise({ ...values, promise: '' })
+    await updateMonthlyPromise(values)
     setIsPromiseEditOpen(false)
   }
 

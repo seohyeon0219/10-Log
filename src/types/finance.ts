@@ -42,7 +42,7 @@ export type MonthlyPromise = {
 
 export type MonthlyPromiseValues = {
   budgetAmount: number
-  promise: string
+  promise?: string
 }
 
 export type TransactionFormValues = {

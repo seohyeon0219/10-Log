@@ -110,7 +110,7 @@ export const upsertMonthlyPromise = async (date: Date, values: MonthlyPromiseVal
     {
       budget_amount: values.budgetAmount,
       month: toMonthKey(date),
-      promise: values.promise,
+      promise: values.promise ?? '',
       user_id: userData.user.id,
     },
     {
