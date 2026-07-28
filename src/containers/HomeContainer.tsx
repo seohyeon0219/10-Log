@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import MonthlyPromiseBottomSheet from '../components/calendar/MonthlyPromiseBottomSheet'
 import MonthlyPromiseModal from '../components/calendar/MonthlyPromiseModal'
 import FloatingAddButton from '../components/common/FloatingAddButton'
 import MonthlyMoneySummary from '../components/statistics/MonthlyMoneySummary'
 import TransactionFormModal from '../components/transactions/TransactionFormModal'
 import TransactionFormBottomSheet from '../components/transactions/bottomSheet/TransactionFormBottomSheet'
+import { getBudgetStatus, getRandomMessage } from '../constants/budgetMessages'
 import { useCalendarStore } from '../stores/calendarStore'
 import type { TransactionFormValues, TransactionType } from '../types/finance'
 
@@ -47,6 +48,11 @@ export default function HomeContainer() {
     ? monthlyPromise.budgetAmount
     : useIncomeAsBudget ? totalIncome : 0
 
+  const budgetMessage = useMemo(
+    () => getRandomMessage(getBudgetStatus(spent, effectiveBudget)),
+    [spent, effectiveBudget],
+  )
+
   const handleSaveTransaction = async (values: TransactionFormValues) => {
     await addTransaction(transactionType, values)
     setIsTransactionFormOpen(false)
@@ -87,6 +93,9 @@ export default function HomeContainer() {
             {today.getFullYear()}
           </span>
         </div>
+        <p className="mt-4 break-keep text-base font-semibold leading-7 text-(--color-text-muted)">
+          {budgetMessage}
+        </p>
       </div>
 
       {/* 카드 */}
