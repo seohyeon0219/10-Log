@@ -91,7 +91,7 @@ export default function TestPage() {
       isRegistered: false,
     }))
   }
-  const updateMonthlyPromise = (values: { budgetAmount: number; promise: string }) => {
+  const updateMonthlyPromise = (values: { budgetAmount: number }) => {
     setMonthlyPromise((promise) => ({
       ...promise,
       ...values,
@@ -304,7 +304,6 @@ export default function TestPage() {
             updateMonthlyPromise(values)
             setIsMonthlyPromiseModalOpen(false)
           }}
-          promise={monthlyPromise.promise}
         />
       ) : null}
 
@@ -318,7 +317,6 @@ export default function TestPage() {
           updateMonthlyPromise(values)
           setIsMonthlyPromiseBottomSheetOpen(false)
         }}
-        promise={monthlyPromise.promise}
       />
 
       <TransactionListBottomSheet
