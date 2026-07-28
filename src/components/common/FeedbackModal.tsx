@@ -24,7 +24,7 @@ export default function FeedbackModal({
   }
 
   return (
-    <ModalSurface className="w-full max-w-90 rounded-2xl bg-white px-6 pt-7 pb-5 text-center shadow-xl">
+    <ModalSurface className="w-full max-w-90 rounded-2xl glass-card px-6 pt-7 pb-5 text-center shadow-xl">
       {icon ? (
         <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-amber-100 text-xl font-black text-amber-700">
           {icon}

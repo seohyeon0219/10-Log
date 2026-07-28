@@ -10,7 +10,7 @@ export default function InfoChip({ children, className = '', dotColor = 'current
   return (
     <div
       className={[
-        'inline-flex w-fit max-w-full items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-500 shadow-sm',
+        'inline-flex w-fit max-w-full items-center gap-2 rounded-full glass-button px-3 py-1 text-xs font-semibold text-gray-500',
         className,
       ].join(' ').trim()}
     >

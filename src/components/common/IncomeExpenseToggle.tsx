@@ -12,13 +12,13 @@ const options: Array<{ id: TransactionType; label: string }> = [
 
 export default function IncomeExpenseToggle({ onChange, value }: IncomeExpenseToggleProps) {
   return (
-    <div className="inline-flex w-auto shrink-0 rounded-lg bg-gray-100 p-1">
+    <div className="inline-flex w-auto shrink-0 rounded-lg glass-panel p-1">
       {options.map((option) => (
         <button
           aria-pressed={option.id === value}
           className={[
             'min-h-8 cursor-pointer rounded-md border-0 px-3 text-sm font-extrabold transition max-[380px]:px-2.5',
-            option.id === value ? 'bg-white text-black shadow-sm' : 'bg-transparent text-gray-400',
+            option.id === value ? 'bg-white/90 text-black shadow-sm' : 'bg-transparent text-gray-400',
           ].join(' ')}
           key={option.id}
           onClick={() => onChange(option.id)}

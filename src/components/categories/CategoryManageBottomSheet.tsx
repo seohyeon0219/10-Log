@@ -26,6 +26,7 @@ export default function CategoryManageBottomSheet({
     <BottomSheet
       description="기록할 때 분류할 카테고리를 정리해요"
       isOpen={isOpen}
+      maxHeightClassName="max-h-[96dvh]"
       onClose={onClose}
       title="카테고리 관리"
     >

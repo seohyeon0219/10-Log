@@ -16,6 +16,14 @@ export default function MoreContainer() {
   const [user, setUser] = useState<User | null>(null)
   const [isCategoryOpen, setIsCategoryOpen] = useState(false)
   const [isLogoutOpen, setIsLogoutOpen] = useState(false)
+  const [isDesktop, setIsDesktop] = useState(() => window.matchMedia('(min-width: 768px)').matches)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)')
+    const onChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
   const theme = useThemeStore((state) => state.theme)
   const setTheme = useThemeStore((state) => state.setTheme)
   const addCategory = useCalendarStore((state) => state.addCategory)
@@ -121,29 +129,24 @@ export default function MoreContainer() {
         title="로그아웃할까요?"
       />
 
-      {/* 카테고리 관리 오버레이 */}
-      <div className="hidden md:block">
-        <CategoryManageModal
-          expenseCategories={expenseCategories}
-          incomeCategories={incomeCategories}
-          isOpen={isCategoryOpen}
-          onCreateCategory={addCategory}
-          onClose={() => setIsCategoryOpen(false)}
-          onDeleteCategory={deleteCategory}
-          onUpdateCategory={updateCategory}
-        />
-      </div>
-      <div className="md:hidden">
-        <CategoryManageBottomSheet
-          expenseCategories={expenseCategories}
-          incomeCategories={incomeCategories}
-          isOpen={isCategoryOpen}
-          onCreateCategory={addCategory}
-          onClose={() => setIsCategoryOpen(false)}
-          onDeleteCategory={deleteCategory}
-          onUpdateCategory={updateCategory}
-        />
-      </div>
+      <CategoryManageModal
+        expenseCategories={expenseCategories}
+        incomeCategories={incomeCategories}
+        isOpen={isDesktop && isCategoryOpen}
+        onCreateCategory={addCategory}
+        onClose={() => setIsCategoryOpen(false)}
+        onDeleteCategory={deleteCategory}
+        onUpdateCategory={updateCategory}
+      />
+      <CategoryManageBottomSheet
+        expenseCategories={expenseCategories}
+        incomeCategories={incomeCategories}
+        isOpen={!isDesktop && isCategoryOpen}
+        onCreateCategory={addCategory}
+        onClose={() => setIsCategoryOpen(false)}
+        onDeleteCategory={deleteCategory}
+        onUpdateCategory={updateCategory}
+      />
     </section>
   )
 }

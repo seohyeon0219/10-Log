@@ -25,7 +25,7 @@ export default function ConfirmModal({
   }
 
   return (
-    <ModalSurface className="max-h-dvh w-full max-w-90 overflow-y-auto rounded-2xl bg-white px-6 pt-7 pb-5 shadow-xl">
+    <ModalSurface className="max-h-dvh w-full max-w-90 overflow-y-auto rounded-2xl glass-card px-6 pt-7 pb-5 shadow-xl">
       <div className="mb-7 grid gap-2">
         <h2 className="m-0 text-lg font-bold text-black">{title}</h2>
         <p className="m-0 text-sm leading-6 font-semibold text-gray-500">{description}</p>
