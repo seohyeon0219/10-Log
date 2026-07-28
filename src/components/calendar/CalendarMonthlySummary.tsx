@@ -51,7 +51,7 @@ export default function CalendarMonthlySummary({
       <div className="grid grid-cols-3">
         <button
           type="button"
-          className="min-w-0 rounded-xl py-2 text-center transition interactive-chip"
+          className="min-w-0 rounded-xl text-center transition interactive-chip"
           onClick={() => toggleSummary('income')}
         >
           <p className="mb-1 text-xs font-semibold text-gray-500">수입</p>
@@ -62,7 +62,7 @@ export default function CalendarMonthlySummary({
 
         <button
           type="button"
-          className="min-w-0 rounded-xl py-2 text-center transition interactive-chip"
+          className="min-w-0 rounded-xl text-center transition interactive-chip"
           onClick={() => toggleSummary('expense')}
         >
           <p className="mb-1 text-xs font-semibold text-gray-500">지출</p>
@@ -73,7 +73,7 @@ export default function CalendarMonthlySummary({
 
         <button
           type="button"
-          className="min-w-0 rounded-xl py-2 text-center transition interactive-chip"
+          className="min-w-0 rounded-xl text-center transition interactive-chip"
           onClick={() => toggleSummary('total')}
         >
           <p className="mb-1 text-xs font-semibold text-gray-500">합계</p>
