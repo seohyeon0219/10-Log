@@ -35,6 +35,15 @@ button:active {
   animation: fadeUp 0.3s ease;
 }
 
+@keyframes cardBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.018); }
+}
+
+@utility animate-card-breathe {
+  animation: cardBreathe 2.8s ease-in-out infinite;
+}
+
 /* ─── Interactive hover utilities ────────────────────────── */
 
 @utility interactive-row {

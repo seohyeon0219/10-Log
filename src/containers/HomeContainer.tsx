@@ -93,21 +93,11 @@ export default function HomeContainer() {
       <div className="mt-[max(1.75rem,calc(50dvh-10rem))] md:mt-10">
         <MonthlyMoneySummary
           action={
-            effectiveBudget === 0 ? undefined :
             useIncomeAsBudget && !monthlyPromise.isRegistered ? (
-              <div className="flex items-center gap-2">
-                <span className="rounded-full bg-black/6 px-2 py-0.5 text-[11px] font-bold text-(--color-text-muted)">
-                  수입 기준
-                </span>
-                <button
-                  className="rounded-lg px-2 py-1 text-xs font-medium text-(--color-text-muted) transition interactive-icon"
-                  onClick={() => setIsPromiseEditOpen(true)}
-                  type="button"
-                >
-                  등록
-                </button>
-              </div>
-            ) : (
+              <span className="rounded-full bg-black/6 px-2 py-0.5 text-[11px] font-bold text-(--color-text-muted)">
+                수입 기준
+              </span>
+            ) : monthlyPromise.isRegistered ? (
               <button
                 className="rounded-lg px-2 py-1 text-xs font-medium text-(--color-text-muted) transition interactive-icon"
                 onClick={() => setIsPromiseEditOpen(true)}
@@ -115,19 +105,14 @@ export default function HomeContainer() {
               >
                 수정
               </button>
-            )
+            ) : undefined
           }
           budgetAmount={effectiveBudget}
-          budgetEmptySlot={
-            <button
-              className="text-[28px] font-extrabold text-black/25 transition interactive-icon"
-              onClick={() => setIsPromiseEditOpen(true)}
-              type="button"
-            >
-              —
-            </button>
+          onTopClick={
+            effectiveBudget === 0 || (useIncomeAsBudget && !monthlyPromise.isRegistered)
+              ? () => setIsPromiseEditOpen(true)
+              : undefined
           }
-
           remainingDays={remainingDays}
           showRemainingBudget
           spentAmount={spent}

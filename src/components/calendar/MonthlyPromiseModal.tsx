@@ -26,10 +26,10 @@ export default function MonthlyPromiseModal({
 }: MonthlyPromiseModalProps) {
   return (
     <FormModal
-      description="이번 달 목표 예산을 설정해보세요."
+      description={isRegistered ? '이번 달 목표 예산을 수정할 수 있어요.' : '예산을 설정하면 남은 예산과 하루 권장 금액을 확인할 수 있어요.'}
       isOpen={isOpen}
       onClose={onClose}
-      title={isRegistered ? '소비 목표 수정' : '소비 목표 등록'}
+      title={isRegistered ? '소비 목표 수정' : '이번 달 목표 예산을 등록해요'}
     >
       <MonthlyPromiseFormContent
         budgetAmount={budgetAmount}

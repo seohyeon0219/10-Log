@@ -4,8 +4,8 @@ import StatisticsCard from './StatisticsCard'
 type MonthlyMoneySummaryProps = {
   action?: ReactNode
   budgetAmount: number
-  budgetEmptySlot?: ReactNode
   eyebrow?: string
+  onTopClick?: () => void
   remainingDays: number
   showRemainingBudget?: boolean
   spentAmount: number
@@ -16,8 +16,8 @@ const formatWon = (amount: number) => `${amount.toLocaleString('ko-KR')}원`
 export default function MonthlyMoneySummary({
   action,
   budgetAmount,
-  budgetEmptySlot,
   eyebrow,
+  onTopClick,
   remainingDays,
   showRemainingBudget = false,
   spentAmount,
@@ -31,25 +31,35 @@ export default function MonthlyMoneySummary({
     : 0
   const progressWidth = `${Math.min(usagePercent, 100)}%`
 
+  const isEmpty = showRemainingBudget && budgetAmount === 0
+
+  const amountRow = showRemainingBudget && (
+    budgetAmount === 0 ? (
+      <p className="mt-2 text-[28px] font-extrabold text-black/25">—</p>
+    ) : (
+      <div className="mt-2 flex items-center justify-between gap-3">
+        <p className={['text-[28px] font-extrabold', isOverBudget ? 'text-(--color-expense-red)' : 'text-black'].join(' ')}>
+          {isOverBudget ? '−' : ''}{formatWon(Math.abs(netRemaining))}
+        </p>
+        {action && <div className="shrink-0">{action}</div>}
+      </div>
+    )
+  )
+
   return (
-    <StatisticsCard action={showRemainingBudget ? undefined : action} eyebrow={eyebrow}>
+    <StatisticsCard action={showRemainingBudget ? undefined : action} className={isEmpty ? 'animate-card-breathe' : ''} eyebrow={eyebrow}>
       {showRemainingBudget ? (
         <>
-          <p className="text-sm font-semibold text-gray-400">남은 예산</p>
-          {budgetAmount === 0 && budgetEmptySlot ? (
-            <div className="mt-2">{budgetEmptySlot}</div>
+          {onTopClick ? (
+            <button className="w-full text-left transition active:opacity-60" onClick={onTopClick} type="button">
+              <p className="text-sm font-semibold text-gray-400">남은 예산</p>
+              {amountRow}
+            </button>
           ) : (
-            <div className="mt-2 flex items-center justify-between gap-3">
-              <p
-                className={[
-                  'text-[28px] font-extrabold',
-                  isOverBudget ? 'text-(--color-expense-red)' : 'text-black',
-                ].join(' ')}
-              >
-                {isOverBudget ? '−' : ''}{formatWon(Math.abs(netRemaining))}
-              </p>
-              {action && <div className="shrink-0">{action}</div>}
-            </div>
+            <>
+              <p className="text-sm font-semibold text-gray-400">남은 예산</p>
+              {amountRow}
+            </>
           )}
         </>
       ) : (
@@ -68,10 +78,7 @@ export default function MonthlyMoneySummary({
 
       <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-black/6">
         <div
-          className={[
-            'h-full rounded-full transition-all duration-500',
-            isOverBudget ? 'bg-(--color-expense-red)' : 'bg-(--color-income-blue)',
-          ].join(' ')}
+          className={['h-full rounded-full transition-all duration-500', isOverBudget ? 'bg-(--color-expense-red)' : 'bg-(--color-income-blue)'].join(' ')}
           style={{ width: progressWidth }}
         />
       </div>
