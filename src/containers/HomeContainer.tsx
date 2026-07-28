@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import MonthlyPromiseBottomSheet from '../components/calendar/MonthlyPromiseBottomSheet'
 import MonthlyPromiseModal from '../components/calendar/MonthlyPromiseModal'
 import FloatingAddButton from '../components/common/FloatingAddButton'
+import MonthlyMoneySummary from '../components/statistics/MonthlyMoneySummary'
 import TransactionFormModal from '../components/transactions/TransactionFormModal'
 import TransactionFormBottomSheet from '../components/transactions/bottomSheet/TransactionFormBottomSheet'
 import { useCalendarStore } from '../stores/calendarStore'
@@ -13,6 +14,7 @@ export default function HomeContainer() {
   const [isPromiseEditOpen, setIsPromiseEditOpen] = useState(false)
   const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
+  const [useIncomeAsBudget, setUseIncomeAsBudget] = useState(false)
   const addTransaction = useCalendarStore((state) => state.addTransaction)
   const addCategory = useCalendarStore((state) => state.addCategory)
   const deleteCategory = useCalendarStore((state) => state.deleteCategory)
@@ -36,12 +38,14 @@ export default function HomeContainer() {
 
   const today = new Date()
   const spent = monthlySummary.expense + monthlySummary.fixedExpense
-  const remaining = monthlyPromise.budgetAmount > 0 ? monthlyPromise.budgetAmount - spent : null
-  const spentPercentage =
-    monthlyPromise.budgetAmount > 0
-      ? Math.round((spent / monthlyPromise.budgetAmount) * 100)
-      : 0
+  const totalIncome = monthlySummary.income + monthlySummary.fixedIncome
+  const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate()
+  const remainingDays = daysInMonth - today.getDate() + 1
   const activeCategories = transactionType === 'income' ? incomeCategories : expenseCategories
+
+  const effectiveBudget = monthlyPromise.budgetAmount > 0
+    ? monthlyPromise.budgetAmount
+    : useIncomeAsBudget ? totalIncome : 0
 
   const handleSaveTransaction = async (values: TransactionFormValues) => {
     await addTransaction(transactionType, values)
@@ -50,6 +54,7 @@ export default function HomeContainer() {
 
   const handleSavePromise = async (values: { budgetAmount: number }) => {
     await updateMonthlyPromise(values)
+    setUseIncomeAsBudget(false)
     setIsPromiseEditOpen(false)
   }
 
@@ -57,6 +62,16 @@ export default function HomeContainer() {
     await deleteMonthlyPromise()
     setIsPromiseEditOpen(false)
   }
+
+  const handleUseIncomeBudget = async () => {
+    if (monthlyPromise.isRegistered) {
+      await deleteMonthlyPromise()
+    }
+    setUseIncomeAsBudget(true)
+    setIsPromiseEditOpen(false)
+  }
+
+  const promiseInitialMode = useIncomeAsBudget && !monthlyPromise.isRegistered ? 'income' : 'direct'
 
   return (
     <section className="w-full self-start animate-fade-up md:mt-6">
@@ -75,54 +90,48 @@ export default function HomeContainer() {
       </div>
 
       {/* 카드 */}
-      <div className="mt-[max(1.75rem,calc(50dvh-10rem))] rounded-[22px] glass-card p-5 shadow-sm md:mt-10">
-        <div className="flex items-center justify-between gap-3">
-          <p className="text-xs font-semibold text-(--color-text-muted)">이번 달 소비 목표</p>
-          <button
-            className="rounded-lg px-2 py-1 text-xs font-medium text-(--color-text-muted) transition interactive-icon"
-            onClick={() => setIsPromiseEditOpen(true)}
-            type="button"
-          >
-            {monthlyPromise.isRegistered ? '수정' : '등록'}
-          </button>
-        </div>
-        <p className="mt-2 text-[26px] font-extrabold leading-none text-black">
-          {monthlyPromise.budgetAmount > 0
-            ? `${monthlyPromise.budgetAmount.toLocaleString('ko-KR')}원`
-            : '—'}
-        </p>
-
-        {monthlyPromise.budgetAmount > 0 && (
-          <div className="mt-4 border-t border-black/6 pt-4">
-            <p className="text-xs font-semibold text-(--color-text-muted)">남은 금액</p>
-            <p
-              className={[
-                'mt-1 text-xl font-extrabold leading-none',
-                remaining !== null && remaining < 0
-                  ? 'text-(--color-expense-red)'
-                  : 'text-black',
-              ].join(' ')}
+      <div className="mt-[max(1.75rem,calc(50dvh-10rem))] md:mt-10">
+        <MonthlyMoneySummary
+          action={
+            effectiveBudget === 0 ? undefined :
+            useIncomeAsBudget && !monthlyPromise.isRegistered ? (
+              <div className="flex items-center gap-2">
+                <span className="rounded-full bg-black/6 px-2 py-0.5 text-[11px] font-bold text-(--color-text-muted)">
+                  수입 기준
+                </span>
+                <button
+                  className="rounded-lg px-2 py-1 text-xs font-medium text-(--color-text-muted) transition interactive-icon"
+                  onClick={() => setIsPromiseEditOpen(true)}
+                  type="button"
+                >
+                  등록
+                </button>
+              </div>
+            ) : (
+              <button
+                className="rounded-lg px-2 py-1 text-xs font-medium text-(--color-text-muted) transition interactive-icon"
+                onClick={() => setIsPromiseEditOpen(true)}
+                type="button"
+              >
+                수정
+              </button>
+            )
+          }
+          budgetAmount={effectiveBudget}
+          budgetEmptySlot={
+            <button
+              className="text-[28px] font-extrabold text-black/25 transition interactive-icon"
+              onClick={() => setIsPromiseEditOpen(true)}
+              type="button"
             >
-              {remaining !== null
-                ? `${remaining < 0 ? '−' : ''}${Math.abs(remaining).toLocaleString('ko-KR')}원`
-                : '—'}
-            </p>
-            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-black/6">
-              <div
-                className={[
-                  'h-full rounded-full transition-all duration-500',
-                  remaining !== null && remaining < 0
-                    ? 'bg-(--color-expense-red)'
-                    : 'bg-(--color-income-blue)',
-                ].join(' ')}
-                style={{ width: `${Math.min(spentPercentage, 100)}%` }}
-              />
-            </div>
-            <p className="mt-2 text-xs font-semibold text-(--color-text-muted)">
-              {spent.toLocaleString('ko-KR')}원 사용 · {spentPercentage}%
-            </p>
-          </div>
-        )}
+              —
+            </button>
+          }
+
+          remainingDays={remainingDays}
+          showRemainingBudget
+          spentAmount={spent}
+        />
       </div>
 
       <FloatingAddButton
@@ -166,21 +175,27 @@ export default function HomeContainer() {
       <div className="hidden md:block">
         <MonthlyPromiseModal
           budgetAmount={monthlyPromise.budgetAmount}
+          initialMode={promiseInitialMode}
           isOpen={isPromiseEditOpen}
           isRegistered={monthlyPromise.isRegistered}
           onClose={() => setIsPromiseEditOpen(false)}
           onDelete={handleDeletePromise}
           onSave={handleSavePromise}
+          onUseIncomeBudget={handleUseIncomeBudget}
+          totalIncome={totalIncome}
         />
       </div>
       <div className="md:hidden">
         <MonthlyPromiseBottomSheet
           budgetAmount={monthlyPromise.budgetAmount}
+          initialMode={promiseInitialMode}
           isOpen={isPromiseEditOpen}
           isRegistered={monthlyPromise.isRegistered}
           onClose={() => setIsPromiseEditOpen(false)}
           onDelete={handleDeletePromise}
           onSave={handleSavePromise}
+          onUseIncomeBudget={handleUseIncomeBudget}
+          totalIncome={totalIncome}
         />
       </div>
     </section>
