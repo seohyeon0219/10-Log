@@ -87,7 +87,7 @@ export default function CalendarGrid({
               key={day.dateKey}
               type="button"
               className={cn(
-                'flex aspect-square min-w-0 cursor-pointer flex-col items-start rounded-xl p-1 text-left transition-all',
+                'flex aspect-square min-w-0 cursor-pointer flex-col items-start rounded-xl p-1 text-left transition-all interactive-row',
                 isSelected ? 'bg-[rgba(22,21,18,0.09)]' : '',
               )}
               onClick={() => onDateSelect?.(day.date)}

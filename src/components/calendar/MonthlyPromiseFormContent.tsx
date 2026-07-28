@@ -41,14 +41,14 @@ export default function MonthlyPromiseFormContent({
 
   return (
     <form className="grid gap-5" onSubmit={handleSubmit}>
-      <div className="rounded-xl bg-yellow-50 px-4 py-4 max-[380px]:px-3">
+      <div className="rounded-xl border border-amber-100/70 bg-amber-50/70 px-4 py-4 max-[380px]:px-3">
         <p className="text-base font-bold text-black">이번 달 나와의 약속</p>
         <p className="mt-1 break-keep text-sm leading-6 font-medium text-gray-500">
           목표 예산과 한 줄 다짐은 캘린더 화면에서 계속 보여요.
         </p>
       </div>
 
-      <div className="grid gap-5 rounded-xl border border-gray-100 bg-white p-4 max-[380px]:p-3">
+      <div className="grid gap-5 rounded-xl border border-white/70 bg-white/60 p-4 max-[380px]:p-3">
         <UnderInput
           inputMode="numeric"
           label="이번 달 목표 예산"

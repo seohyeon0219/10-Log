@@ -6,7 +6,7 @@ type MenuGroupProps = {
 }
 
 export function MenuGroupDivider() {
-  return <div className="mx-5 h-px bg-gray-100" />
+  return <div className="mx-5 h-px bg-black/6" />
 }
 
 export default function MenuGroup({ children, title }: MenuGroupProps) {

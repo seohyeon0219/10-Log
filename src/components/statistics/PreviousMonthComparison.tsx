@@ -26,7 +26,7 @@ const formatAmount = (amount: number) => amount.toLocaleString('ko-KR')
 export default function PreviousMonthComparison({ items }: PreviousMonthComparisonProps) {
   return (
     <StatisticsCard className="h-full" title="전월 비교 분석">
-      <div className="mt-4 divide-y divide-gray-100">
+      <div className="mt-4 divide-y divide-black/6">
         {items.map((item) => {
           const amount = item.details?.find((d) => d.isEmphasized)?.value ?? 0
           return (

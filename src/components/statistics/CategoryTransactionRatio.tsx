@@ -78,7 +78,7 @@ export default function CategoryTransactionRatio({
   if (activeItems.length === 0) {
     return (
       <StatisticsCard action={toggle} title="카테고리 거래 비율">
-        <div className="mt-5 rounded-xl bg-gray-50 px-4 py-8 text-center text-sm font-semibold text-gray-400">
+        <div className="mt-5 rounded-xl bg-black/4 px-4 py-8 text-center text-sm font-semibold text-gray-400">
           아직 기록된 내역이 없어요.
         </div>
       </StatisticsCard>
@@ -93,7 +93,7 @@ export default function CategoryTransactionRatio({
           className="relative mx-auto h-40 w-40 shrink-0 rounded-full"
           style={{ background: `conic-gradient(${donutGradient})` }}
         >
-          <div className="absolute inset-6 grid place-items-center rounded-full bg-white text-center">
+          <div className="absolute inset-6 grid place-items-center rounded-full bg-white/90 text-center">
             <p className="text-base font-extrabold text-black">
               {totalAmount > 0 && selectedItem
                 ? Math.round((selectedItem.amount / totalAmount) * 100)
@@ -111,7 +111,7 @@ export default function CategoryTransactionRatio({
             return (
               <button
                 className={[
-                  'flex items-center gap-2 rounded-xl px-3 py-2 text-left transition',
+                  'flex items-center gap-2 rounded-xl px-3 py-2 text-left transition interactive-row',
                   isSelected ? 'bg-black/5' : '',
                 ].join(' ')}
                 key={item.id}

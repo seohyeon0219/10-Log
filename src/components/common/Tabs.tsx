@@ -11,7 +11,7 @@ type TabsProps = {
 
 export default function Tabs({ activeTabId, onChange, tabs }: TabsProps) {
   return (
-    <div className="flex gap-7 overflow-x-auto border-b border-gray-100 max-sm:gap-6" role="tablist">
+    <div className="flex gap-7 overflow-x-auto border-b border-black/8 max-sm:gap-6" role="tablist">
       {tabs.map((tab) => (
         <button
           aria-selected={tab.id === activeTabId}

@@ -47,7 +47,7 @@ export default function BottomSheet({
               )}
               <button
                 aria-label={`${title ?? '바텀시트'} 닫기`}
-                className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-3xl leading-none text-gray-100 transition hover:bg-black/6 active:bg-black/10"
+                className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-3xl leading-none text-gray-500 transition interactive-icon"
                 onClick={onClose}
                 type="button"
               >

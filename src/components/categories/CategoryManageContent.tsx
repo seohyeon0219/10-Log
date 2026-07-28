@@ -228,7 +228,7 @@ export default function CategoryManageContent({
                 'flex items-center gap-3 rounded-2xl px-4 transition-all duration-150',
                 editingCategoryId === category.id
                   ? 'bg-black/6 ring-1 ring-black/10'
-                  : 'hover:bg-white/30 active:bg-white/40',
+                  : 'interactive-row',
               ].join(' ')}
               key={category.id}
             >
@@ -241,7 +241,7 @@ export default function CategoryManageContent({
               </span>
               <button
                 aria-label={`${category.name} 수정`}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-(--color-text-muted) transition hover:bg-white/60 hover:text-black disabled:opacity-30"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-(--color-text-muted) transition interactive-icon hover:text-black disabled:opacity-30"
                 disabled={isSaving}
                 onClick={() => handleEdit(category)}
                 type="button"
@@ -252,7 +252,7 @@ export default function CategoryManageContent({
               </button>
               <button
                 aria-label={`${category.name} 삭제`}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-(--color-text-muted) transition hover:bg-red-50/70 hover:text-(--color-expense-red) disabled:opacity-30"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-(--color-text-muted) transition interactive-icon hover:text-(--color-expense-red) disabled:opacity-30"
                 disabled={isSaving}
                 onClick={() => handleDeleteClick(category)}
                 type="button"

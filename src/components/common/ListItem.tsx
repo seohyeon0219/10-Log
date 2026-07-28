@@ -15,7 +15,7 @@ export default function ListItem({ amount, color, memo, onClick, title, type }: 
 
   return (
     <Component
-      className="flex min-h-14 w-full items-center justify-between gap-4 rounded-xl border-0 bg-transparent px-2 py-2 text-left transition hover:bg-white/40 active:bg-white/60"
+      className="flex min-h-14 w-full items-center justify-between gap-4 rounded-xl border-0 bg-transparent px-2 py-2 text-left transition interactive-row"
       onClick={onClick}
       type={onClick ? 'button' : undefined}
     >

@@ -30,11 +30,11 @@ export default function CategoryChangeRanking({ items }: CategoryChangeRankingPr
       title="카테고리 변화 랭킹"
     >
       {activeItems.length === 0 ? (
-        <div className="mt-5 rounded-xl bg-gray-50 px-4 py-8 text-center text-sm font-semibold text-gray-400">
+        <div className="mt-5 rounded-xl bg-black/4 px-4 py-8 text-center text-sm font-semibold text-gray-400">
           아직 기록된 내역이 없어요.
         </div>
       ) : (
-        <div className="mt-4 divide-y divide-gray-100">
+        <div className="mt-4 divide-y divide-black/6">
           {activeItems.map((item, index) => (
             <div key={item.id} className="flex items-center gap-3 py-3">
               <span className="w-7 shrink-0 text-sm font-bold text-gray-400">{index + 1}위</span>

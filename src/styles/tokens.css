@@ -35,5 +35,16 @@
   --glass-border:    rgba(255, 255, 255, 0.50);
   --glass-blur-base: blur(12px);
   --glass-blur-card: blur(16px) saturate(160%);
+
+  /* interactive hover tokens — 3 tiers
+     row:  list rows with no own background (subtle)
+     chip: chips / small buttons with no own background (moderate)
+     icon: icon buttons embedded in glass panels (dark)       */
+  --interact-row-hover:    rgba(255, 255, 255, 0.30);
+  --interact-row-active:   rgba(255, 255, 255, 0.48);
+  --interact-chip-hover:   rgba(255, 255, 255, 0.58);
+  --interact-chip-active:  rgba(255, 255, 255, 0.78);
+  --interact-icon-hover:   rgba(0, 0, 0, 0.05);
+  --interact-icon-active:  rgba(0, 0, 0, 0.09);
 }
 

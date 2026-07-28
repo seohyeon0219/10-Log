@@ -25,7 +25,7 @@ export default function CategorySelect({
         <legend className="p-0 text-sm font-semibold text-gray-500">{label}</legend>
         {onManageCategories ? (
           <button
-            className="cursor-pointer rounded-lg border-0 bg-transparent px-2 py-1 text-sm font-medium text-gray-400 transition hover:bg-gray-50 hover:text-black"
+            className="cursor-pointer rounded-lg border-0 bg-transparent px-2 py-1 text-sm font-medium text-gray-400 transition hover:bg-white/50 hover:text-black"
             onClick={onManageCategories}
             type="button"
           >
@@ -40,8 +40,8 @@ export default function CategorySelect({
             className={[
               'inline-flex min-h-11 min-w-0 cursor-pointer items-center gap-2 rounded-xl border px-3 text-left text-sm text-black transition',
               category.id === selectedCategoryId
-                ? 'border-transparent bg-gray-100 font-bold'
-                : 'border-gray-100 bg-white font-semibold text-gray-600 hover:bg-gray-50',
+                ? 'border-black/10 bg-black/6 font-bold'
+                : 'border-white/70 bg-white/55 font-semibold text-gray-600 hover:bg-white/75',
             ].join(' ').trim()}
             key={category.id}
             onClick={() => onChange(category.id)}

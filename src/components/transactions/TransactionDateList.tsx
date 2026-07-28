@@ -45,7 +45,7 @@ export default function TransactionDateList({
           <div className="flex shrink-0 gap-1.5">
             {onAddIncome && (
               <button
-                className="rounded-xl bg-blue-50 px-3 py-1.5 text-xs font-bold text-(--color-income-blue) active:bg-blue-100"
+                className="rounded-xl border border-blue-100/60 bg-blue-50/80 px-3 py-1.5 text-xs font-bold text-(--color-income-blue) transition hover:bg-blue-100/70 active:bg-blue-100"
                 onClick={onAddIncome}
                 type="button"
               >
@@ -54,7 +54,7 @@ export default function TransactionDateList({
             )}
             {onAddExpense && (
               <button
-                className="rounded-xl bg-red-50 px-3 py-1.5 text-xs font-bold text-(--color-expense-red) active:bg-red-100"
+                className="rounded-xl border border-red-100/60 bg-red-50/80 px-3 py-1.5 text-xs font-bold text-(--color-expense-red) transition hover:bg-red-100/70 active:bg-red-100"
                 onClick={onAddExpense}
                 type="button"
               >
@@ -72,7 +72,7 @@ export default function TransactionDateList({
           {transactions.map((tx) => (
             <button
               key={tx.id}
-              className="flex w-full items-center gap-2 rounded-[14px] bg-white/50 px-3 py-2.5 text-left"
+              className="flex w-full items-center gap-2 rounded-[14px] bg-white/50 px-3 py-2.5 text-left transition hover:bg-white/70"
               onClick={onSelectTransaction ? () => onSelectTransaction(tx) : undefined}
               type="button"
             >

@@ -35,6 +35,23 @@ button:active {
   animation: fadeUp 0.3s ease;
 }
 
+/* ─── Interactive hover utilities ────────────────────────── */
+
+@utility interactive-row {
+  &:hover  { background-color: var(--interact-row-hover); }
+  &:active { background-color: var(--interact-row-active); }
+}
+
+@utility interactive-chip {
+  &:hover  { background-color: var(--interact-chip-hover); }
+  &:active { background-color: var(--interact-chip-active); }
+}
+
+@utility interactive-icon {
+  &:hover  { background-color: var(--interact-icon-hover); }
+  &:active { background-color: var(--interact-icon-active); }
+}
+
 /* ─── Glass surface utilities ─────────────────────────────── */
 
 @utility glass-card {
