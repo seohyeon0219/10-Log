@@ -1,11 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import MonthlyPromiseBottomSheet from '../components/calendar/MonthlyPromiseBottomSheet'
 import MonthlyPromiseModal from '../components/calendar/MonthlyPromiseModal'
-import Button from '../components/common/Button'
 import FloatingAddButton from '../components/common/FloatingAddButton'
 import TransactionFormModal from '../components/transactions/TransactionFormModal'
 import TransactionFormBottomSheet from '../components/transactions/bottomSheet/TransactionFormBottomSheet'
-import { getBudgetStatus, getRandomMessage } from '../constants/budgetMessages'
 import { useCalendarStore } from '../stores/calendarStore'
 import type { TransactionFormValues, TransactionType } from '../types/finance'
 
@@ -43,8 +41,6 @@ export default function HomeContainer() {
     monthlyPromise.budgetAmount > 0
       ? Math.round((spent / monthlyPromise.budgetAmount) * 100)
       : 0
-  const budgetStatus = getBudgetStatus(spent, monthlyPromise.budgetAmount)
-  const budgetMessage = useMemo(() => getRandomMessage(budgetStatus), [budgetStatus])
   const activeCategories = transactionType === 'income' ? incomeCategories : expenseCategories
 
   const handleSaveTransaction = async (values: TransactionFormValues) => {
@@ -64,94 +60,69 @@ export default function HomeContainer() {
 
   return (
     <section className="w-full self-start animate-fade-up md:mt-6">
-      <div className="mt-4 flex flex-col gap-7 md:mt-5">
-        {/* 날짜 블록 */}
-        <div>
-          <p className="text-[13px] font-bold tracking-[3px] text-(--color-text-sand)">
-            {DAYS_EN[today.getDay()]}
-          </p>
-          <div className="mt-1 flex items-baseline gap-2.5">
-            <span className="text-[58px] font-bold leading-[0.9] tracking-[-2px] text-black">
-              {today.getDate()}
-            </span>
-            <span className="text-[14px] font-semibold text-(--color-text-sand)">
-              {today.getFullYear()}
-            </span>
-          </div>
+      <div className="mt-4">
+        <p className="text-[13px] font-bold tracking-[3px] text-(--color-text-sand)">
+          {DAYS_EN[today.getDay()]}
+        </p>
+        <div className="mt-1 flex items-baseline gap-2.5">
+          <span className="text-[58px] font-bold leading-[0.9] tracking-[-2px] text-black">
+            {today.getDate()}
+          </span>
+          <span className="text-[14px] font-semibold text-(--color-text-sand)">
+            {today.getFullYear()}
+          </span>
         </div>
+      </div>
 
-        {/* 한 줄 평 */}
-        <div className="border-l-2 border-l-black/10 pl-3.5">
-          <p className="break-keep text-[15.5px] font-semibold leading-[1.55] text-(--color-text-dim)">
-            {budgetMessage}
-          </p>
+      {/* 카드 */}
+      <div className="mt-[max(1.75rem,calc(50dvh-10rem))] rounded-[22px] glass-card p-5 shadow-sm md:mt-10">
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-xs font-semibold text-(--color-text-muted)">이번 달 소비 목표</p>
+          <button
+            className="rounded-lg px-2 py-1 text-xs font-medium text-(--color-text-muted) transition interactive-icon"
+            onClick={() => setIsPromiseEditOpen(true)}
+            type="button"
+          >
+            {monthlyPromise.isRegistered ? '수정' : '등록'}
+          </button>
         </div>
+        <p className="mt-2 text-[26px] font-extrabold leading-none text-black">
+          {monthlyPromise.budgetAmount > 0
+            ? `${monthlyPromise.budgetAmount.toLocaleString('ko-KR')}원`
+            : '—'}
+        </p>
 
-        {/* 카드 */}
-        <div className="rounded-[22px] bg-(--color-glass-white) p-5 shadow-sm backdrop-blur-sm">
-          {/* 다짐 */}
-          <div className="flex items-center justify-between gap-3">
-            <p className="min-w-0 flex-1 break-keep text-lg font-extrabold text-black">
-              <span className="box-decoration-clone bg-[linear-gradient(transparent_55%,#ffe58f_55%)]">
-                {monthlyPromise.promise}
-              </span>
-            </p>
-            <Button
-              className="min-h-0! w-auto! shrink-0 px-3! py-1.5 text-sm!"
-              onClick={() => setIsPromiseEditOpen(true)}
-              variant="ghost"
+        {monthlyPromise.budgetAmount > 0 && (
+          <div className="mt-4 border-t border-black/6 pt-4">
+            <p className="text-xs font-semibold text-(--color-text-muted)">남은 금액</p>
+            <p
+              className={[
+                'mt-1 text-xl font-extrabold leading-none',
+                remaining !== null && remaining < 0
+                  ? 'text-(--color-expense-red)'
+                  : 'text-black',
+              ].join(' ')}
             >
-              {monthlyPromise.isRegistered ? '수정' : '등록'}
-            </Button>
-          </div>
-
-          {/* 남은 예산 */}
-          <div className="mt-5">
-            <p className="text-xs font-bold text-(--color-text-muted)">
-              이번 달 남은 예산
+              {remaining !== null
+                ? `${remaining < 0 ? '−' : ''}${Math.abs(remaining).toLocaleString('ko-KR')}원`
+                : '—'}
             </p>
-            <div className="mt-2 flex items-center justify-between gap-4">
-              <p
+            <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-black/6">
+              <div
                 className={[
-                  'text-[28px] font-extrabold leading-none',
+                  'h-full rounded-full transition-all duration-500',
                   remaining !== null && remaining < 0
-                    ? 'text-(--color-expense-red)'
-                    : 'text-black',
+                    ? 'bg-(--color-expense-red)'
+                    : 'bg-(--color-income-blue)',
                 ].join(' ')}
-              >
-                {remaining !== null
-                  ? `${remaining < 0 ? '−' : ''}${Math.abs(remaining).toLocaleString('ko-KR')}원`
-                  : '—'}
-              </p>
-              {monthlyPromise.budgetAmount > 0 && (
-                <span
-                  className="shrink-0 rounded-full bg-[rgba(24,99,220,0.12)] px-3 py-1.5 text-sm font-semibold text-(--color-income-blue)"
-                >
-                  {spentPercentage}% 사용
-                </span>
-              )}
+                style={{ width: `${Math.min(spentPercentage, 100)}%` }}
+              />
             </div>
-
-            {monthlyPromise.budgetAmount > 0 && (
-              <>
-                <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-black/6">
-                  <div
-                    className={[
-                      'h-full rounded-full transition-all duration-500',
-                      remaining !== null && remaining < 0
-                        ? 'bg-(--color-expense-red)'
-                        : 'bg-(--color-income-blue)',
-                    ].join(' ')}
-                    style={{ width: `${Math.min(spentPercentage, 100)}%` }}
-                  />
-                </div>
-                <p className="mt-2 text-xs font-semibold text-(--color-text-muted)">
-                  {spent.toLocaleString('ko-KR')}원 / {monthlyPromise.budgetAmount.toLocaleString('ko-KR')}원 사용했어요
-                </p>
-              </>
-            )}
+            <p className="mt-2 text-xs font-semibold text-(--color-text-muted)">
+              {spent.toLocaleString('ko-KR')}원 사용 · {spentPercentage}%
+            </p>
           </div>
-        </div>
+        )}
       </div>
 
       <FloatingAddButton
