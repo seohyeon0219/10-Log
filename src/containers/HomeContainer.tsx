@@ -48,8 +48,8 @@ export default function HomeContainer() {
     setIsTransactionFormOpen(false)
   }
 
-  const handleSavePromise = async (values: { budgetAmount: number; promise: string }) => {
-    await updateMonthlyPromise(values)
+  const handleSavePromise = async (values: { budgetAmount: number }) => {
+    await updateMonthlyPromise({ ...values, promise: '' })
     setIsPromiseEditOpen(false)
   }
 
@@ -171,7 +171,6 @@ export default function HomeContainer() {
           onClose={() => setIsPromiseEditOpen(false)}
           onDelete={handleDeletePromise}
           onSave={handleSavePromise}
-          promise={monthlyPromise.promise}
         />
       </div>
       <div className="md:hidden">
@@ -182,7 +181,6 @@ export default function HomeContainer() {
           onClose={() => setIsPromiseEditOpen(false)}
           onDelete={handleDeletePromise}
           onSave={handleSavePromise}
-          promise={monthlyPromise.promise}
         />
       </div>
     </section>

@@ -7,8 +7,7 @@ type MonthlyPromiseBottomSheetProps = {
   isOpen: boolean
   onClose: () => void
   onDelete: () => void
-  onSave: (values: { budgetAmount: number; promise: string }) => void
-  promise: string
+  onSave: (values: { budgetAmount: number }) => void
 }
 
 export default function MonthlyPromiseBottomSheet({
@@ -18,14 +17,13 @@ export default function MonthlyPromiseBottomSheet({
   onClose,
   onDelete,
   onSave,
-  promise,
 }: MonthlyPromiseBottomSheetProps) {
   return (
     <BottomSheet
-      description="이번 달 돈 관리의 기준을 정해보세요."
+      description="이번 달 목표 예산을 설정해보세요."
       isOpen={isOpen}
       onClose={onClose}
-      title={isRegistered ? '월간 다짐 수정' : '월간 다짐 등록'}
+      title={isRegistered ? '소비 목표 수정' : '소비 목표 등록'}
     >
       <MonthlyPromiseFormContent
         budgetAmount={budgetAmount}
@@ -33,7 +31,6 @@ export default function MonthlyPromiseBottomSheet({
         onClose={onClose}
         onDelete={onDelete}
         onSave={onSave}
-        promise={promise}
       />
     </BottomSheet>
   )
