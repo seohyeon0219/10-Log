@@ -10,7 +10,7 @@ export default function Nav() {
   const activeTabId = getActiveTabId(location.pathname, tabs)
 
   return (
-    <section className="mt-2">
+    <section>
       <Tabs
         activeTabId={activeTabId}
         onChange={(tabId: string) => navigate(`/app/${tabId}`)}
