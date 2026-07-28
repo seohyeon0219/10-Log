@@ -45,8 +45,8 @@ export default function MonthlyPromiseFormContent({
     <form className="grid gap-5" onSubmit={(e) => { void handleSubmit(e) }}>
       <div className="grid gap-2">
         <label className={[
-          'flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition',
-          mode === 'direct' ? 'border-black/20 bg-white/80' : 'border-white/70 bg-white/40',
+          'flex cursor-pointer items-center gap-3 rounded-xl p-4 transition',
+          mode === 'direct' ? 'glass-button' : 'glass-panel',
         ].join(' ')}>
           <input
             checked={mode === 'direct'}
@@ -60,9 +60,9 @@ export default function MonthlyPromiseFormContent({
         </label>
 
         <label className={[
-          'flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition',
+          'flex cursor-pointer items-center gap-3 rounded-xl p-4 transition',
           totalIncome === 0 ? 'opacity-40 cursor-not-allowed' : '',
-          mode === 'income' ? 'border-black/20 bg-white/80' : 'border-white/70 bg-white/40',
+          mode === 'income' ? 'glass-button' : 'glass-panel',
         ].join(' ')}>
           <input
             checked={mode === 'income'}
@@ -75,11 +75,6 @@ export default function MonthlyPromiseFormContent({
           />
           <span className="text-sm font-semibold text-black">
             이번 달 수입으로 자동 설정
-            {totalIncome > 0 && (
-              <span className="ml-1.5 text-xs font-medium text-(--color-text-muted)">
-                {totalIncome.toLocaleString('ko-KR')}원
-              </span>
-            )}
             {totalIncome === 0 && (
               <span className="ml-1.5 text-xs font-medium text-(--color-text-muted)">수입 없음</span>
             )}
@@ -87,7 +82,7 @@ export default function MonthlyPromiseFormContent({
         </label>
 
         {mode === 'direct' && (
-          <div className="rounded-xl border border-white/70 bg-white/60 p-4 max-[380px]:p-3">
+          <div className="glass-panel rounded-xl p-4 max-[380px]:p-3">
             <UnderInput
               inputMode="numeric"
               label="이번 달 목표 예산"
