@@ -34,3 +34,33 @@ button:active {
 @utility animate-fade-up {
   animation: fadeUp 0.3s ease;
 }
+
+/* ─── Glass surface utilities ─────────────────────────────── */
+
+@utility glass-card {
+  background: var(--glass-bg-card);
+  backdrop-filter: var(--glass-blur-card);
+  -webkit-backdrop-filter: var(--glass-blur-card);
+  border: 1px solid var(--glass-border);
+}
+
+@utility glass-panel {
+  background: var(--glass-bg-panel);
+  backdrop-filter: var(--glass-blur-base);
+  -webkit-backdrop-filter: var(--glass-blur-base);
+  border: 1px solid var(--glass-border);
+}
+
+@utility glass-button {
+  background: var(--glass-bg-button);
+  backdrop-filter: var(--glass-blur-base);
+  -webkit-backdrop-filter: var(--glass-blur-base);
+  border: 1px solid var(--glass-border);
+}
+
+@utility glass-input {
+  background: var(--glass-bg-input);
+  backdrop-filter: var(--glass-blur-base);
+  -webkit-backdrop-filter: var(--glass-blur-base);
+  border: 1px solid var(--glass-border);
+}

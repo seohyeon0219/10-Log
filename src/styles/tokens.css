@@ -26,4 +26,14 @@
 
   --radius-8: 8px;
   --radius-12: 12px;
+
+  /* glass primitives — consumed by @utility below */
+  --glass-bg-card:   rgba(255, 255, 255, 0.55);
+  --glass-bg-panel:  rgba(255, 255, 255, 0.50);
+  --glass-bg-button: rgba(255, 255, 255, 0.50);
+  --glass-bg-input:  rgba(255, 255, 255, 0.60);
+  --glass-border:    rgba(255, 255, 255, 0.50);
+  --glass-blur-base: blur(12px);
+  --glass-blur-card: blur(16px) saturate(160%);
 }
+
