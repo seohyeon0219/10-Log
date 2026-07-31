@@ -71,7 +71,7 @@ export default function TransactionFormContent({
 
   return (
     <>
-      <div className="grid gap-6">
+      <div className="grid gap-5">
         <UnderInput
           inputMode="numeric"
           label="금액"
@@ -82,12 +82,16 @@ export default function TransactionFormContent({
           variant="amount"
         />
 
+        <div className="h-px bg-black/8" />
+
         <CategorySelect
           categories={categories}
           onChange={setSelectedCategoryId}
           onManageCategories={categoryManageOverlay ? () => setIsCategoryManageOpen(true) : undefined}
           selectedCategoryId={resolvedSelectedCategoryId}
         />
+
+        <div className="h-px bg-black/8" />
 
         <UnderInput
           label="날짜"
@@ -96,6 +100,8 @@ export default function TransactionFormContent({
           type="date"
           value={date}
         />
+
+        <div className="h-px bg-black/8" />
 
         <Input
           label="메모"
@@ -114,7 +120,7 @@ export default function TransactionFormContent({
         </Checkbox>
       </div>
 
-      <div className="mt-8 grid grid-cols-[96px_minmax(0,1fr)] gap-3">
+      <div className="mt-5 grid grid-cols-[96px_minmax(0,1fr)] gap-3 pt-1">
         <Button onClick={onDelete} variant="soft">
           삭제
         </Button>
