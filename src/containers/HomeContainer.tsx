@@ -15,7 +15,6 @@ export default function HomeContainer() {
   const [isPromiseEditOpen, setIsPromiseEditOpen] = useState(false)
   const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
-  const [useIncomeAsBudget, setUseIncomeAsBudget] = useState(false)
   const addTransaction = useCalendarStore((state) => state.addTransaction)
   const addCategory = useCalendarStore((state) => state.addCategory)
   const deleteCategory = useCalendarStore((state) => state.deleteCategory)
@@ -27,6 +26,8 @@ export default function HomeContainer() {
   const updateCategory = useCalendarStore((state) => state.updateCategory)
   const updateMonthlyPromise = useCalendarStore((state) => state.updateMonthlyPromise)
   const deleteMonthlyPromise = useCalendarStore((state) => state.deleteMonthlyPromise)
+  const useIncomeAsBudget = useCalendarStore((state) => state.useIncomeAsBudget)
+  const setUseIncomeAsBudget = useCalendarStore((state) => state.setUseIncomeAsBudget)
 
   const openTransactionForm = (type: TransactionType) => {
     setTransactionType(type)
@@ -34,7 +35,7 @@ export default function HomeContainer() {
   }
 
   useEffect(() => {
-    void loadMonth()
+    void loadMonth(new Date())
   }, [loadMonth])
 
   const today = new Date()
@@ -60,12 +61,12 @@ export default function HomeContainer() {
 
   const handleSavePromise = async (values: { budgetAmount: number }) => {
     await updateMonthlyPromise(values)
-    setUseIncomeAsBudget(false)
     setIsPromiseEditOpen(false)
   }
 
   const handleDeletePromise = async () => {
     await deleteMonthlyPromise()
+    setUseIncomeAsBudget(false)
     setIsPromiseEditOpen(false)
   }
 

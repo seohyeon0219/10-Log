@@ -49,13 +49,31 @@ type CalendarStore = {
   selectedDate: Date | null
   selectDate: (date: Date) => void
   setSelectedDate: (date: Date | null) => void
+  setUseIncomeAsBudget: (value: boolean) => void
   transactions: Transaction[]
   updateCategory: (categoryId: string, values: Pick<Category, 'color' | 'name'>) => Promise<void>
   updateMonthlyPromise: (values: MonthlyPromiseValues) => Promise<void>
   updateTransaction: (transactionId: string, values: TransactionFormValues) => Promise<void>
+  useIncomeAsBudget: boolean
 }
 
 let defaultCategoriesEnsured = false
+
+const getCurrentMonthKey = () => {
+  const now = new Date()
+  return `${now.getFullYear()}-${now.getMonth()}`
+}
+
+const getInitialUseIncomeAsBudget = () => {
+  try {
+    return (
+      localStorage.getItem('useIncomeAsBudgetMonth') === getCurrentMonthKey() &&
+      localStorage.getItem('useIncomeAsBudget') === 'true'
+    )
+  } catch {
+    return false
+  }
+}
 
 const initialDate = new Date()
 const emptyMonthlySummary = {
@@ -157,6 +175,7 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
   },
   monthlyPromise: emptyMonthlyPromise,
   monthlySummary: emptyMonthlySummary,
+  useIncomeAsBudget: getInitialUseIncomeAsBudget(),
   selectedDate: null,
   selectDate: (date) =>
     set((state) => {
@@ -167,6 +186,18 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
       return { selectedDate: date }
     }),
   setSelectedDate: (date) => set({ selectedDate: date }),
+  setUseIncomeAsBudget: (value) => {
+    try {
+      if (value) {
+        localStorage.setItem('useIncomeAsBudget', 'true')
+        localStorage.setItem('useIncomeAsBudgetMonth', getCurrentMonthKey())
+      } else {
+        localStorage.removeItem('useIncomeAsBudget')
+        localStorage.removeItem('useIncomeAsBudgetMonth')
+      }
+    } catch { /* ignore */ }
+    set({ useIncomeAsBudget: value })
+  },
   transactions: [],
   updateCategory: async (categoryId, values) => {
     await updateCategory(categoryId, values)
@@ -174,6 +205,7 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
   },
   updateMonthlyPromise: async (values) => {
     await upsertMonthlyPromise(get().currentDate, values)
+    set({ useIncomeAsBudget: false })
     await get().loadMonth()
   },
   updateTransaction: async (transactionId, values) => {

@@ -59,13 +59,19 @@ const getSummary = (transactions: Transaction[]) =>
   transactions.reduce(
     (summary, transaction) => {
       if (transaction.type === 'income') {
-        summary.income += transaction.amount
-        summary.fixedIncome += transaction.isFixed ? transaction.amount : 0
+        if (transaction.isFixed) {
+          summary.fixedIncome += transaction.amount
+        } else {
+          summary.income += transaction.amount
+        }
       }
 
       if (transaction.type === 'expense') {
-        summary.expense += transaction.amount
-        summary.fixedExpense += transaction.isFixed ? transaction.amount : 0
+        if (transaction.isFixed) {
+          summary.fixedExpense += transaction.amount
+        } else {
+          summary.expense += transaction.amount
+        }
       }
 
       return summary
@@ -250,6 +256,7 @@ export default function StatsContainer() {
   const transactions = useCalendarStore((state) => state.transactions)
   const updateCategory = useCalendarStore((state) => state.updateCategory)
   const updateTransaction = useCalendarStore((state) => state.updateTransaction)
+  const useIncomeAsBudget = useCalendarStore((state) => state.useIncomeAsBudget)
   const ratioType = useStatisticsStore((state) => state.ratioType)
   const ratioSelectedCategoryId = useStatisticsStore((state) => state.ratioSelectedCategoryId)
   const setRatioType = useStatisticsStore((state) => state.setRatioType)
@@ -268,10 +275,19 @@ export default function StatsContainer() {
     () => getLineChartData(currentDate, monthsData),
     [currentDate, monthsData],
   )
+  const spentAmount = monthlySummary.expense + monthlySummary.fixedExpense
+  const totalIncome = monthlySummary.income + monthlySummary.fixedIncome
+  const isCurrentMonth =
+    currentDate.getFullYear() === new Date().getFullYear() &&
+    currentDate.getMonth() === new Date().getMonth()
+  const effectiveBudget =
+    monthlyPromise.budgetAmount > 0
+      ? monthlyPromise.budgetAmount
+      : useIncomeAsBudget && isCurrentMonth ? totalIncome : 0
   const monthlyMoneySummary = {
-    budgetAmount: monthlyPromise.budgetAmount,
+    budgetAmount: effectiveBudget,
     remainingDays: getRemainingDays(currentDate),
-    spentAmount: monthlySummary.expense + monthlySummary.fixedExpense,
+    spentAmount,
   }
 
   useEffect(() => {
