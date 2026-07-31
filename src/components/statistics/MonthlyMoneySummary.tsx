@@ -83,7 +83,7 @@ export default function MonthlyMoneySummary({
         />
       </div>
 
-      {showRemainingBudget ? (
+      {showRemainingBudget && (
         <>
           <p className="mt-2 text-xs font-semibold text-gray-400">
             {formatWon(spentAmount)} 사용 · {usagePercent}%
@@ -101,19 +101,6 @@ export default function MonthlyMoneySummary({
             </div>
           </div>
         </>
-      ) : (
-        budgetAmount > 0 && (
-          <div className="mt-4 grid grid-cols-2 gap-4 border-t border-black/6 pt-4">
-            <div>
-              <p className="text-xs font-semibold text-gray-400">남은 기간</p>
-              <p className="mt-1 text-xl font-extrabold text-black">{remainingDays}일</p>
-            </div>
-            <div>
-              <p className="text-xs font-semibold text-gray-400">하루 권장 사용 금액</p>
-              <p className="mt-1 text-xl font-extrabold text-black">{formatWon(dailyRecommendedAmount)}</p>
-            </div>
-          </div>
-        )
       )}
     </StatisticsCard>
   )
