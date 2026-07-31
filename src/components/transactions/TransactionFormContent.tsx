@@ -3,7 +3,6 @@ import type { ChangeEvent, ReactNode } from 'react'
 import CategorySelect from '../categories/CategorySelect'
 import Button from '../common/Button'
 import Checkbox from '../common/Checkbox'
-import Input from '../common/Input'
 import UnderInput from '../common/UnderInput'
 import { toDateKey } from '../../utils/dateUtils'
 import type { TransactionFormValues } from '../../types/finance'
@@ -103,10 +102,11 @@ export default function TransactionFormContent({
 
         <div className="h-px bg-black/8" />
 
-        <Input
+        <UnderInput
           label="메모"
           onChange={(event) => setMemo(event.currentTarget.value)}
           placeholder="기록해두고 싶은 내용을 남겨보세요."
+          suffix=""
           value={memo}
         />
 
