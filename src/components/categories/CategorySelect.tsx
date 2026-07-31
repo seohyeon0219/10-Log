@@ -45,7 +45,10 @@ export default function CategorySelect({
             ].join(' ').trim()}
             key={category.id}
             onClick={() => onChange(category.id)}
-            style={category.id === selectedCategoryId ? { boxShadow: `inset 0 0 0 2px ${category.color}` } : undefined}
+            style={category.id === selectedCategoryId ? {
+              backgroundColor: `${category.color}18`,
+              boxShadow: `inset 0 0 0 1.5px ${category.color}55`,
+            } : undefined}
             type="button"
           >
             <span className="h-2 w-2 rounded-full" style={{ backgroundColor: category.color }} />
