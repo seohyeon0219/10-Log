@@ -36,7 +36,7 @@ export default function StepFeatureIntro({ name, onComplete }: Props) {
     return () => { clearTimeout(t1); clearTimeout(t2) }
   }, [])
 
-  const particle = getNameParticle(name)
+  const particle = name ? '이' : getNameParticle('나')
 
   return (
     <div className="relative flex h-full flex-col overflow-hidden px-6 pt-safe-top pb-[calc(36px+env(safe-area-inset-bottom))]">
@@ -77,7 +77,7 @@ export default function StepFeatureIntro({ name, onComplete }: Props) {
             </div>
             <p className="text-[15px] leading-[1.7] text-black">
               한 달에 한 번,{' '}
-              <span className="font-extrabold">{name || '나'}</span>
+              <span className="font-extrabold">{name ? `${name}님` : '나'}</span>
               {particle} 작성한 소비내역을 바탕으로 맞춤 리포트를 보내드릴게요!
             </p>
           </div>
