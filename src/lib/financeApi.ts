@@ -83,7 +83,7 @@ export const getMonthlyPromise = async (
 ): Promise<MonthlyPromise> => {
   const { data, error } = await supabase
     .from('monthly_promises')
-    .select('budget_amount, promise')
+    .select('budget_amount, promise, use_income_as_budget')
     .eq('month', toMonthKey(date))
     .maybeSingle()
 
@@ -93,9 +93,10 @@ export const getMonthlyPromise = async (
 
   return {
     budgetAmount: data?.budget_amount ?? 0,
-    isRegistered: Boolean(data),
+    isRegistered: Boolean(data?.budget_amount && data.budget_amount > 0),
     monthLabel: '이번 달',
     promise: data?.promise ?? fallbackPromise,
+    useIncomeAsBudget: data?.use_income_as_budget ?? false,
   }
 }
 
@@ -111,6 +112,7 @@ export const upsertMonthlyPromise = async (date: Date, values: MonthlyPromiseVal
       budget_amount: values.budgetAmount,
       month: toMonthKey(date),
       promise: values.promise ?? '',
+      use_income_as_budget: values.useIncomeAsBudget ?? false,
       user_id: userData.user.id,
     },
     {

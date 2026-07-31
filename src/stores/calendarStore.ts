@@ -49,7 +49,7 @@ type CalendarStore = {
   selectedDate: Date | null
   selectDate: (date: Date) => void
   setSelectedDate: (date: Date | null) => void
-  setUseIncomeAsBudget: (value: boolean) => void
+  setUseIncomeAsBudget: (value: boolean) => Promise<void>
   transactions: Transaction[]
   updateCategory: (categoryId: string, values: Pick<Category, 'color' | 'name'>) => Promise<void>
   updateMonthlyPromise: (values: MonthlyPromiseValues) => Promise<void>
@@ -58,22 +58,6 @@ type CalendarStore = {
 }
 
 let defaultCategoriesEnsured = false
-
-const getCurrentMonthKey = () => {
-  const now = new Date()
-  return `${now.getFullYear()}-${now.getMonth()}`
-}
-
-const getInitialUseIncomeAsBudget = () => {
-  try {
-    return (
-      localStorage.getItem('useIncomeAsBudgetMonth') === getCurrentMonthKey() &&
-      localStorage.getItem('useIncomeAsBudget') === 'true'
-    )
-  } catch {
-    return false
-  }
-}
 
 const initialDate = new Date()
 const emptyMonthlySummary = {
@@ -87,6 +71,7 @@ const emptyMonthlyPromise = {
   isRegistered: false,
   monthLabel: '이번 달',
   promise: DEFAULT_MONTHLY_PROMISE,
+  useIncomeAsBudget: false,
 }
 
 export const useCalendarStore = create<CalendarStore>((set, get) => ({
@@ -163,6 +148,7 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
         monthlyPromise,
         monthlySummary: getMonthlySummary(transactions),
         transactions,
+        useIncomeAsBudget: monthlyPromise.useIncomeAsBudget,
       })
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Supabase 데이터를 불러오지 못했어요.'
@@ -175,7 +161,7 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
   },
   monthlyPromise: emptyMonthlyPromise,
   monthlySummary: emptyMonthlySummary,
-  useIncomeAsBudget: getInitialUseIncomeAsBudget(),
+  useIncomeAsBudget: false,
   selectedDate: null,
   selectDate: (date) =>
     set((state) => {
@@ -186,17 +172,9 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
       return { selectedDate: date }
     }),
   setSelectedDate: (date) => set({ selectedDate: date }),
-  setUseIncomeAsBudget: (value) => {
-    try {
-      if (value) {
-        localStorage.setItem('useIncomeAsBudget', 'true')
-        localStorage.setItem('useIncomeAsBudgetMonth', getCurrentMonthKey())
-      } else {
-        localStorage.removeItem('useIncomeAsBudget')
-        localStorage.removeItem('useIncomeAsBudgetMonth')
-      }
-    } catch { /* ignore */ }
-    set({ useIncomeAsBudget: value })
+  setUseIncomeAsBudget: async (value) => {
+    await upsertMonthlyPromise(get().currentDate, { budgetAmount: 0, useIncomeAsBudget: value })
+    await get().loadMonth()
   },
   transactions: [],
   updateCategory: async (categoryId, values) => {
@@ -204,8 +182,7 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
     await get().loadMonth()
   },
   updateMonthlyPromise: async (values) => {
-    await upsertMonthlyPromise(get().currentDate, values)
-    set({ useIncomeAsBudget: false })
+    await upsertMonthlyPromise(get().currentDate, { ...values, useIncomeAsBudget: false })
     await get().loadMonth()
   },
   updateTransaction: async (transactionId, values) => {

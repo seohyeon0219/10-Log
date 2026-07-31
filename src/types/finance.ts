@@ -38,11 +38,13 @@ export type MonthlyPromise = {
   isRegistered: boolean
   monthLabel: string
   promise: string
+  useIncomeAsBudget: boolean
 }
 
 export type MonthlyPromiseValues = {
   budgetAmount: number
   promise?: string
+  useIncomeAsBudget?: boolean
 }
 
 export type TransactionFormValues = {

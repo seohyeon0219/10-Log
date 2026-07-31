@@ -66,15 +66,11 @@ export default function HomeContainer() {
 
   const handleDeletePromise = async () => {
     await deleteMonthlyPromise()
-    setUseIncomeAsBudget(false)
     setIsPromiseEditOpen(false)
   }
 
   const handleUseIncomeBudget = async () => {
-    if (monthlyPromise.isRegistered) {
-      await deleteMonthlyPromise()
-    }
-    setUseIncomeAsBudget(true)
+    await setUseIncomeAsBudget(true)
     setIsPromiseEditOpen(false)
   }
 
