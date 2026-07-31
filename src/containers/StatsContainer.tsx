@@ -36,17 +36,6 @@ type CategoryRatioItem = {
   }>
 }
 
-const getRemainingDays = (date: Date) => {
-  const today = new Date()
-  const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
-
-  if (today.getFullYear() === date.getFullYear() && today.getMonth() === date.getMonth()) {
-    return Math.max(daysInMonth - today.getDate() + 1, 0)
-  }
-
-  return daysInMonth
-}
-
 const getRate = (current: number, previous: number) => {
   if (previous === 0) {
     return current > 0 ? 100 : 0
@@ -286,7 +275,6 @@ export default function StatsContainer() {
       : useIncomeAsBudget && isCurrentMonth ? totalIncome : 0
   const monthlyMoneySummary = {
     budgetAmount: effectiveBudget,
-    remainingDays: getRemainingDays(currentDate),
     spentAmount,
   }
 

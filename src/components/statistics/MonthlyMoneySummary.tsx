@@ -6,7 +6,7 @@ type MonthlyMoneySummaryProps = {
   budgetAmount: number
   eyebrow?: string
   onTopClick?: () => void
-  remainingDays: number
+  remainingDays?: number
   showRemainingBudget?: boolean
   spentAmount: number
 }
@@ -18,7 +18,7 @@ export default function MonthlyMoneySummary({
   budgetAmount,
   eyebrow,
   onTopClick,
-  remainingDays,
+  remainingDays = 0,
   showRemainingBudget = false,
   spentAmount,
 }: MonthlyMoneySummaryProps) {
