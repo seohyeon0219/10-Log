@@ -85,7 +85,7 @@ export default function MonthlyPromiseFormContent({
           <div className="glass-panel rounded-xl p-4 max-[380px]:p-3">
             <UnderInput
               inputMode="numeric"
-              label="이번 달 목표 예산"
+              label="이번 달 소비 목표"
               name="monthly-budget"
               onChange={(event) => setBudgetValue(event.target.value.replace(/\D/g, ''))}
               placeholder="200000"
