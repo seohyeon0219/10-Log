@@ -282,13 +282,19 @@ export const getMonthlySummary = (transactions: Transaction[]): MonthlySummary =
   transactions.reduce(
     (summary, transaction) => {
       if (transaction.type === 'income') {
-        summary.income += transaction.amount
-        summary.fixedIncome += transaction.isFixed ? transaction.amount : 0
+        if (transaction.isFixed) {
+          summary.fixedIncome += transaction.amount
+        } else {
+          summary.income += transaction.amount
+        }
       }
 
       if (transaction.type === 'expense') {
-        summary.expense += transaction.amount
-        summary.fixedExpense += transaction.isFixed ? transaction.amount : 0
+        if (transaction.isFixed) {
+          summary.fixedExpense += transaction.amount
+        } else {
+          summary.expense += transaction.amount
+        }
       }
 
       return summary
