@@ -166,7 +166,7 @@ export default function LandingPage() {
               initial={{ opacity: 0, filter: 'blur(8px)' }}
               transition={{ duration: 0.7, delay: 2.1, ease: 'easeOut' }}
             >
-              기록할수록 똑똑해지는<br />나만의 소비관리
+              나의 소비 기록을 AI가 분석해, <br/>더 나은 소비 습관을 위한 인사이트를 제공해요.
             </motion.p>
 
             {/* 구글 로그인 버튼 — blur → 선명 페이드인 */}
