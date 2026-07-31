@@ -94,6 +94,12 @@ export default function MonthlyPromiseFormContent({
             />
           </div>
         )}
+
+        <p className="mt-1 px-1 text-xs font-medium leading-relaxed text-(--color-text-muted)">
+          {mode === 'direct'
+            ? '설정한 금액 기준으로 사용 비율과 하루 권장 사용 금액을 보여드려요.'
+            : '이번 달 총 수입 기준으로 사용 비율과 하루 권장 사용 금액을 보여드려요.'}
+        </p>
       </div>
 
       <div className="grid grid-cols-[96px_minmax(0,1fr)] gap-3 pt-1">
