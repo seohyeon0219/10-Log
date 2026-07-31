@@ -16,7 +16,7 @@ export default function CalendarMonthHeader({
   const month = currentDate.getMonth() + 1
 
   return (
-    <header className="flex w-full items-center justify-center gap-4">
+    <header className="flex w-full items-center justify-between">
       <button type="button" className={glassButtonClassName} onClick={onPrevMonth} aria-label="이전 달">
         <MonthArrowIcon className="rotate-180" />
       </button>
