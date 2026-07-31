@@ -39,7 +39,7 @@ export default function FormModal({
         </button>
       </header>
 
-      <div className="min-h-0 overflow-y-auto px-6 pb-6">{children}</div>
+      <div className="min-h-0 overflow-y-auto overscroll-contain px-6 pb-6">{children}</div>
     </ModalSurface>
   )
 }

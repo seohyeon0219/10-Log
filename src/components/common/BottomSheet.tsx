@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useBodyScrollLock } from '../../hooks/useBodyScrollLock'
 
 type BottomSheetProps = {
   children: ReactNode
@@ -17,6 +18,8 @@ export default function BottomSheet({
   onClose,
   title,
 }: BottomSheetProps) {
+  useBodyScrollLock(isOpen)
+
   if (!isOpen) {
     return null
   }
@@ -26,7 +29,7 @@ export default function BottomSheet({
       <section
         aria-modal="true"
         className={[
-          'fixed right-0 bottom-0 left-0 overflow-y-auto rounded-t-3xl glass-card px-5 pt-3 pb-[calc(20px+env(safe-area-inset-bottom))] shadow-xl md:px-6',
+          'fixed right-0 bottom-0 left-0 overflow-y-auto overscroll-contain rounded-t-3xl glass-card px-5 pt-3 pb-[calc(20px+env(safe-area-inset-bottom))] shadow-xl md:px-6',
           maxHeightClassName,
         ].join(' ')}
         role="dialog"
