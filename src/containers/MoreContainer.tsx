@@ -3,19 +3,66 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import CategoryManageBottomSheet from '../components/categories/CategoryManageBottomSheet'
 import CategoryManageModal from '../components/categories/CategoryManageModal'
+import BottomSheet from '../components/common/BottomSheet'
 import ConfirmModal from '../components/common/ConfirmModal'
+import FormModal from '../components/common/FormModal'
 import MenuGroup, { MenuGroupDivider } from '../components/common/MenuGroup'
 import MenuItem from '../components/common/MenuItem'
 import { supabase } from '../lib/supabase'
 import { useCalendarStore } from '../stores/calendarStore'
-import { THEME_LABELS, useThemeStore, type AppTheme } from '../stores/themeStore'
+import { THEME_GRADIENTS, THEME_LABELS, useThemeStore, type AppTheme } from '../stores/themeStore'
 
 const THEME_OPTIONS: AppTheme[] = ['yellow', 'blue']
+
+function ThemeSelectContent({ onClose }: { onClose: () => void }) {
+  const theme = useThemeStore((state) => state.theme)
+  const setTheme = useThemeStore((state) => state.setTheme)
+
+  const handleSelect = (option: AppTheme) => {
+    setTheme(option)
+    onClose()
+  }
+
+  return (
+    <div className="grid grid-cols-2 gap-3 pb-2">
+      {THEME_OPTIONS.map((option) => {
+        const isSelected = theme === option
+        return (
+          <button
+            key={option}
+            className={[
+              'flex flex-col gap-3 rounded-2xl border p-4 text-left transition',
+              isSelected
+                ? 'border-black/20 bg-black/5'
+                : 'border-white/60 bg-white/40 hover:bg-white/60',
+            ].join(' ')}
+            onClick={() => handleSelect(option)}
+            type="button"
+          >
+            <div
+              className="h-16 w-full rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.08)]"
+              style={{ background: THEME_GRADIENTS[option] }}
+            />
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold text-black">{THEME_LABELS[option]}</span>
+              {isSelected && (
+                <svg fill="none" height="16" viewBox="0 0 16 16" width="16">
+                  <path d="M3 8l3.5 3.5L13 4" stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                </svg>
+              )}
+            </div>
+          </button>
+        )
+      })}
+    </div>
+  )
+}
 
 export default function MoreContainer() {
   const navigate = useNavigate()
   const [user, setUser] = useState<User | null>(null)
   const [isCategoryOpen, setIsCategoryOpen] = useState(false)
+  const [isThemeOpen, setIsThemeOpen] = useState(false)
   const [isLogoutOpen, setIsLogoutOpen] = useState(false)
   const [isDesktop, setIsDesktop] = useState(() => window.matchMedia('(min-width: 768px)').matches)
 
@@ -26,8 +73,6 @@ export default function MoreContainer() {
     return () => mq.removeEventListener('change', onChange)
   }, [])
 
-  const theme = useThemeStore((state) => state.theme)
-  const setTheme = useThemeStore((state) => state.setTheme)
   const addCategory = useCalendarStore((state) => state.addCategory)
   const deleteCategory = useCalendarStore((state) => state.deleteCategory)
   const expenseCategories = useCalendarStore((state) => state.expenseCategories)
@@ -72,28 +117,10 @@ export default function MoreContainer() {
         <MenuItem label="카테고리 관리" onClick={() => setIsCategoryOpen(true)} />
       </MenuGroup>
 
-      <MenuGroup title="화면 테마">
-        <div className="flex gap-2 px-4 py-3">
-          {THEME_OPTIONS.map((option) => (
-            <button
-              className={[
-                'flex-1 rounded-xl border py-2.5 text-sm font-semibold transition',
-                theme === option
-                  ? 'border-black bg-black text-white'
-                  : 'border-white/50 bg-white/50 text-black backdrop-blur-md',
-              ].join(' ')}
-              key={option}
-              onClick={() => setTheme(option)}
-              type="button"
-            >
-              {THEME_LABELS[option]}
-            </button>
-          ))}
-        </div>
-      </MenuGroup>
-
       <MenuGroup title="설정">
         <MenuItem label="나의 정보" onClick={() => void navigate('/app/profile')} />
+        <MenuGroupDivider />
+        <MenuItem label="화면 테마" onClick={() => setIsThemeOpen(true)} />
         <MenuGroupDivider />
         <MenuItem label="알림 설정" onClick={() => {}} />
         <MenuGroupDivider />
@@ -131,6 +158,21 @@ export default function MoreContainer() {
         onConfirm={handleLogout}
         title="로그아웃할까요?"
       />
+
+      <FormModal
+        isOpen={isDesktop && isThemeOpen}
+        onClose={() => setIsThemeOpen(false)}
+        title="화면 테마"
+      >
+        <ThemeSelectContent onClose={() => setIsThemeOpen(false)} />
+      </FormModal>
+      <BottomSheet
+        isOpen={!isDesktop && isThemeOpen}
+        onClose={() => setIsThemeOpen(false)}
+        title="화면 테마"
+      >
+        <ThemeSelectContent onClose={() => setIsThemeOpen(false)} />
+      </BottomSheet>
 
       <CategoryManageModal
         expenseCategories={expenseCategories}
