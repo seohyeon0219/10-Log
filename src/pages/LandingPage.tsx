@@ -33,7 +33,7 @@ export default function LandingPage() {
           navigate(completed ? '/app/home' : '/onboarding', { replace: true })
         }
       } catch {
-        if (isMounted) navigate('/app/home', { replace: true })
+        if (isMounted) navigate('/onboarding', { replace: true })
       }
     }
 
