@@ -103,22 +103,10 @@ export default function HomeContainer() {
               <span className="rounded-full bg-black/6 px-2 py-0.5 text-[11px] font-bold text-(--color-text-muted)">
                 수입 기준
               </span>
-            ) : monthlyPromise.isRegistered ? (
-              <button
-                className="rounded-lg px-2 py-1 text-xs font-medium text-(--color-text-muted) transition interactive-icon"
-                onClick={() => setIsPromiseEditOpen(true)}
-                type="button"
-              >
-                수정
-              </button>
             ) : undefined
           }
           budgetAmount={effectiveBudget}
-          onTopClick={
-            effectiveBudget === 0 || (useIncomeAsBudget && !monthlyPromise.isRegistered)
-              ? () => setIsPromiseEditOpen(true)
-              : undefined
-          }
+          onTopClick={() => setIsPromiseEditOpen(true)}
           remainingDays={remainingDays}
           showRemainingBudget
           spentAmount={spent}

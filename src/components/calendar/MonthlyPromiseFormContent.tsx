@@ -88,7 +88,6 @@ export default function MonthlyPromiseFormContent({
               label="이번 달 소비 목표"
               name="monthly-budget"
               onChange={(event) => setBudgetValue(event.target.value.replace(/\D/g, ''))}
-              placeholder="200000"
               value={budgetValue}
               variant="amount"
             />
