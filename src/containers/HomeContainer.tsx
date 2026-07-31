@@ -81,8 +81,8 @@ export default function HomeContainer() {
   const promiseInitialMode = useIncomeAsBudget && !monthlyPromise.isRegistered ? 'income' : 'direct'
 
   return (
-    <section className="w-full self-start animate-fade-up md:mt-6">
-      <div className="mt-4">
+    <section className="flex w-full flex-1 flex-col self-start animate-fade-up md:flex-none md:mt-6">
+      <div className="mt-4 shrink-0">
         <p className="text-[13px] font-bold tracking-[3px] text-(--color-text-sand)">
           {DAYS_EN[today.getDay()]}
         </p>
@@ -100,7 +100,7 @@ export default function HomeContainer() {
       </div>
 
       {/* 카드 */}
-      <div className="mt-[max(1.75rem,calc(50dvh-10rem))] md:mt-10">
+      <div className="flex flex-col flex-1 justify-center md:mt-10 md:flex-none md:block">
         <MonthlyMoneySummary
           action={
             useIncomeAsBudget && !monthlyPromise.isRegistered ? (
