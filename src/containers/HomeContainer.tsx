@@ -78,11 +78,11 @@ export default function HomeContainer() {
 
   return (
     <section className="flex w-full flex-1 flex-col self-start animate-fade-up md:flex-none md:mt-6">
-      <div className="mt-4 shrink-0">
-        <p className="text-[13px] font-bold tracking-[3px] text-(--color-text-sand)">
+      <div className="mt-4 shrink-0 text-center">
+        <p className="text-[20px] font-bold tracking-[3px] text-(--color-text-sand)">
           {DAYS_EN[today.getDay()]}
         </p>
-        <div className="mt-1 flex items-baseline gap-2.5">
+        <div className="mt-1 flex items-baseline justify-center gap-2.5">
           <span className="text-[58px] font-bold leading-[0.9] tracking-[-2px] text-black">
             {today.getDate()}
           </span>

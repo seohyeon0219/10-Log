@@ -80,9 +80,11 @@ export default function MonthlyMoneySummary({
 
       {showRemainingBudget && (
         <>
-          <p className="mt-2 text-xs font-semibold text-gray-400">
-            {formatWon(spentAmount)} 사용 · {usagePercent}%
-          </p>
+          {budgetAmount > 0 && (
+            <p className="mt-2 text-xs font-semibold text-gray-400">
+              총 {formatWon(budgetAmount)}
+            </p>
+          )}
           <div className="mt-4 grid grid-cols-2 gap-4 border-t border-black/6 pt-4">
             <div>
               <p className="text-xs font-semibold text-gray-400">남은 기간</p>
