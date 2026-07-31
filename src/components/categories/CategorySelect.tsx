@@ -38,13 +38,14 @@ export default function CategorySelect({
           <button
             aria-pressed={category.id === selectedCategoryId}
             className={[
-              'inline-flex min-h-11 min-w-0 cursor-pointer items-center gap-2 rounded-xl border px-3 text-left text-sm text-black transition',
+              'inline-flex min-h-11 min-w-0 cursor-pointer items-center gap-2 rounded-xl border border-white/60 bg-white/55 px-3 text-left text-sm text-black transition',
               category.id === selectedCategoryId
-                ? 'border-black/10 bg-black/6 font-bold'
-                : 'border-white/70 bg-white/55 font-semibold text-gray-600 hover:bg-white/75',
+                ? 'font-bold'
+                : 'font-semibold text-gray-500 hover:bg-white/70',
             ].join(' ').trim()}
             key={category.id}
             onClick={() => onChange(category.id)}
+            style={category.id === selectedCategoryId ? { boxShadow: `inset 0 0 0 2px ${category.color}` } : undefined}
             type="button"
           >
             <span className="h-2 w-2 rounded-full" style={{ backgroundColor: category.color }} />
