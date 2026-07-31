@@ -98,13 +98,6 @@ export default function HomeContainer() {
       {/* 카드 */}
       <div className="flex flex-col flex-1 justify-center md:mt-10 md:flex-none md:block">
         <MonthlyMoneySummary
-          action={
-            useIncomeAsBudget && !monthlyPromise.isRegistered ? (
-              <span className="rounded-full bg-black/6 px-2 py-0.5 text-[11px] font-bold text-(--color-text-muted)">
-                수입 기준
-              </span>
-            ) : undefined
-          }
           budgetAmount={effectiveBudget}
           onTopClick={() => setIsPromiseEditOpen(true)}
           remainingDays={remainingDays}
