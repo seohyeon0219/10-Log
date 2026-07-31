@@ -90,7 +90,7 @@ export default function HomeContainer() {
             {today.getFullYear()}
           </span>
         </div>
-        <p className="mt-4 break-keep text-base font-semibold leading-7 text-(--color-text-muted)">
+        <p className="mt-4 whitespace-pre-line text-base font-semibold leading-7 text-(--color-text-muted)">
           {budgetMessage}
         </p>
       </div>
