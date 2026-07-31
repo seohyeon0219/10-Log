@@ -321,8 +321,6 @@ export default function TestPage() {
 
       <TransactionListBottomSheet
         isOpen={isTransactionListOpen}
-        onAddExpense={() => openTransactionForm('expense')}
-        onAddIncome={() => openTransactionForm('income')}
         onClose={() => setIsTransactionListOpen(false)}
         selectedDate={selectedDate}
         transactions={selectedDateTransactions}

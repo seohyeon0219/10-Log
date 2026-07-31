@@ -140,8 +140,6 @@ export default function CalendarContainer() {
           className="mt-4 rounded-[22px] border border-white/60 bg-white/45 p-4.5 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)] md:hidden"
         >
           <TransactionDateList
-            onAddExpense={() => openTransactionForm('expense')}
-            onAddIncome={() => openTransactionForm('income')}
             onSelectTransaction={openTransactionEditor}
             selectedDate={selectedDate}
             transactions={selectedDateTransactions}
@@ -163,8 +161,6 @@ export default function CalendarContainer() {
           className="mt-9 min-h-80 rounded-[22px] border border-white/60 bg-white/45 px-5 py-5 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
         >
           <TransactionDateList
-            onAddExpense={() => openTransactionForm('expense')}
-            onAddIncome={() => openTransactionForm('income')}
             onSelectTransaction={openTransactionEditor}
             selectedDate={selectedDate}
             transactions={selectedDateTransactions}

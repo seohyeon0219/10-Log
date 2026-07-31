@@ -3,8 +3,6 @@ import TransactionDateList, { type TransactionDateListItem } from '../Transactio
 
 type TransactionListBottomSheetProps = {
   isOpen: boolean
-  onAddExpense?: () => void
-  onAddIncome?: () => void
   onClose: () => void
   onSelectTransaction?: (transaction: TransactionDateListItem) => void
   selectedDate: Date | null
@@ -13,8 +11,6 @@ type TransactionListBottomSheetProps = {
 
 export default function TransactionListBottomSheet({
   isOpen,
-  onAddExpense,
-  onAddIncome,
   onClose,
   onSelectTransaction,
   selectedDate,
@@ -23,8 +19,6 @@ export default function TransactionListBottomSheet({
   return (
     <BottomSheet isOpen={isOpen} maxHeightClassName="max-h-[82dvh]" onClose={onClose}>
       <TransactionDateList
-        onAddExpense={onAddExpense}
-        onAddIncome={onAddIncome}
         onSelectTransaction={onSelectTransaction}
         selectedDate={selectedDate}
         transactions={transactions}

@@ -13,16 +13,12 @@ export type TransactionDateListItem = {
 }
 
 type TransactionDateListProps = {
-  onAddExpense?: () => void
-  onAddIncome?: () => void
   onSelectTransaction?: (transaction: TransactionDateListItem) => void
   selectedDate: Date | null
   transactions: TransactionDateListItem[]
 }
 
 export default function TransactionDateList({
-  onAddExpense,
-  onAddIncome,
   onSelectTransaction,
   selectedDate,
   transactions,
