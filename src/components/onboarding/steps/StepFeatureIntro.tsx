@@ -108,9 +108,14 @@ export default function StepFeatureIntro({ name, onComplete }: Props) {
         )}
       </div>
 
+      {/* 설정 안내 */}
+      <p className="mt-5 text-center text-xs font-medium text-(--color-text-muted) leading-relaxed">
+        입력한 정보는 더보기 탭 &gt; 나의 온보딩 정보에서 언제든 수정할 수 있어요.
+      </p>
+
       {/* 시작하기 버튼 */}
       <button
-        className="mt-5 h-13 w-full rounded-full border border-white/20 bg-black/80 text-sm font-bold text-white backdrop-blur-xl shadow-[0_6px_24px_rgba(0,0,0,0.22)] transition-all duration-200 active:scale-[0.98]"
+        className="mt-3 h-13 w-full rounded-full border border-white/20 bg-black/80 text-sm font-bold text-white backdrop-blur-xl shadow-[0_6px_24px_rgba(0,0,0,0.22)] transition-all duration-200 active:scale-[0.98]"
         onClick={onComplete}
         type="button"
       >

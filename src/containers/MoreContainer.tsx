@@ -1,5 +1,6 @@
 import type { User } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import CategoryManageBottomSheet from '../components/categories/CategoryManageBottomSheet'
 import CategoryManageModal from '../components/categories/CategoryManageModal'
 import ConfirmModal from '../components/common/ConfirmModal'
@@ -9,10 +10,10 @@ import { supabase } from '../lib/supabase'
 import { useCalendarStore } from '../stores/calendarStore'
 import { THEME_LABELS, useThemeStore, type AppTheme } from '../stores/themeStore'
 
-
 const THEME_OPTIONS: AppTheme[] = ['yellow', 'blue']
 
 export default function MoreContainer() {
+  const navigate = useNavigate()
   const [user, setUser] = useState<User | null>(null)
   const [isCategoryOpen, setIsCategoryOpen] = useState(false)
   const [isLogoutOpen, setIsLogoutOpen] = useState(false)
@@ -24,6 +25,7 @@ export default function MoreContainer() {
     mq.addEventListener('change', onChange)
     return () => mq.removeEventListener('change', onChange)
   }, [])
+
   const theme = useThemeStore((state) => state.theme)
   const setTheme = useThemeStore((state) => state.setTheme)
   const addCategory = useCalendarStore((state) => state.addCategory)
@@ -91,6 +93,8 @@ export default function MoreContainer() {
       </MenuGroup>
 
       <MenuGroup title="설정">
+        <MenuItem label="나의 정보" onClick={() => void navigate('/app/profile')} />
+        <MenuGroupDivider />
         <MenuItem label="알림 설정" onClick={() => {}} />
         <MenuGroupDivider />
         <MenuItem label="계정 관리" onClick={() => {}} />
@@ -100,7 +104,6 @@ export default function MoreContainer() {
           onClick={() =>
             window.open(
               'https://harsh-grouse-d8c.notion.site/37abf62d32dd80ba9ca6ca08c4993c73',
-              
               '_blank',
               'noopener,noreferrer',
             )

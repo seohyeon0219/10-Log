@@ -9,6 +9,7 @@ import HomePage from '../pages/HomePage'
 import LandingPage from '../pages/LandingPage'
 import MorePage from '../pages/MorePage'
 import OnboardingPage from '../pages/OnboardingPage'
+import ProfileEditPage from '../pages/ProfileEditPage'
 import ReviewPage from '../pages/ReviewPage'
 import StatsPage from '../pages/StatsPage'
 import TestPage from '../pages/test/TestPage'
@@ -43,6 +44,7 @@ export default function AppRouter() {
           <Route path="stats" element={<StatsPage />} />
           <Route path="review" element={<ReviewPage />} />
           <Route path="more" element={<MorePage />} />
+          <Route path="profile" element={<ProfileEditPage />} />
           <Route path="*" element={<Navigate to="home" replace />} />
         </Route>
         <Route path="/onboarding" element={<ProtectedRoute><OnboardingPage /></ProtectedRoute>} />
