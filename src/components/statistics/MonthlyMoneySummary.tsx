@@ -65,23 +65,18 @@ export default function MonthlyMoneySummary({
       ) : (
         <>
           <p className="text-sm font-semibold text-gray-400">사용 금액</p>
-          <div className="mt-2 flex items-center justify-between gap-4">
-            <p className="text-[28px] font-extrabold text-black">{formatWon(spentAmount)}</p>
-            {budgetAmount > 0 && (
-              <span className="shrink-0 rounded-full bg-[rgba(24,99,220,0.12)] px-3 py-1.5 text-sm font-semibold text-(--color-income-blue)">
-                {usagePercent}% 사용
-              </span>
-            )}
-          </div>
+          <p className="mt-2 text-[28px] font-extrabold text-black">{formatWon(spentAmount)}</p>
         </>
       )}
 
-      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-black/6">
-        <div
-          className={['h-full rounded-full transition-all duration-500', isOverBudget ? 'bg-(--color-expense-red)' : 'bg-(--color-income-blue)'].join(' ')}
-          style={{ width: progressWidth }}
-        />
-      </div>
+      {showRemainingBudget && (
+        <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-black/6">
+          <div
+            className={['h-full rounded-full transition-all duration-500', isOverBudget ? 'bg-(--color-expense-red)' : 'bg-(--color-income-blue)'].join(' ')}
+            style={{ width: progressWidth }}
+          />
+        </div>
+      )}
 
       {showRemainingBudget && (
         <>

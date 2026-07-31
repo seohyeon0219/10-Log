@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react'
 import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
 import CategoryChangeRanking from '../components/statistics/CategoryChangeRanking'
 import CategoryTransactionRatio from '../components/statistics/CategoryTransactionRatio'
-import MonthlyMoneySummary from '../components/statistics/MonthlyMoneySummary'
 import PreviousMonthComparison from '../components/statistics/PreviousMonthComparison'
 import SpendingTransactionLineChart from '../components/statistics/SpendingTransactionLineChart'
 import TransactionFormModal from '../components/transactions/TransactionFormModal'
@@ -240,12 +239,9 @@ export default function StatsContainer() {
   const expenseCategories = useCalendarStore((state) => state.expenseCategories)
   const incomeCategories = useCalendarStore((state) => state.incomeCategories)
   const loadMonth = useCalendarStore((state) => state.loadMonth)
-  const monthlyPromise = useCalendarStore((state) => state.monthlyPromise)
-  const monthlySummary = useCalendarStore((state) => state.monthlySummary)
   const transactions = useCalendarStore((state) => state.transactions)
   const updateCategory = useCalendarStore((state) => state.updateCategory)
   const updateTransaction = useCalendarStore((state) => state.updateTransaction)
-  const useIncomeAsBudget = useCalendarStore((state) => state.useIncomeAsBudget)
   const ratioType = useStatisticsStore((state) => state.ratioType)
   const ratioSelectedCategoryId = useStatisticsStore((state) => state.ratioSelectedCategoryId)
   const setRatioType = useStatisticsStore((state) => state.setRatioType)
@@ -264,20 +260,6 @@ export default function StatsContainer() {
     () => getLineChartData(currentDate, monthsData),
     [currentDate, monthsData],
   )
-  const spentAmount = monthlySummary.expense + monthlySummary.fixedExpense
-  const totalIncome = monthlySummary.income + monthlySummary.fixedIncome
-  const isCurrentMonth =
-    currentDate.getFullYear() === new Date().getFullYear() &&
-    currentDate.getMonth() === new Date().getMonth()
-  const effectiveBudget =
-    monthlyPromise.budgetAmount > 0
-      ? monthlyPromise.budgetAmount
-      : useIncomeAsBudget && isCurrentMonth ? totalIncome : 0
-  const monthlyMoneySummary = {
-    budgetAmount: effectiveBudget,
-    spentAmount,
-  }
-
   useEffect(() => {
     void loadMonth()
   }, [loadMonth])
@@ -314,11 +296,7 @@ export default function StatsContainer() {
           onPrevMonth={goPrevMonth}
         />
       </div>
-      <div className="grid gap-4 md:mt-5">
-        <MonthlyMoneySummary {...monthlyMoneySummary} />
-      </div>
-
-      <div className="mt-4">
+      <div className="md:mt-5">
         <CategoryTransactionRatio
           items={categoryTransactionRatio}
           onRatioTypeChange={setRatioType}
