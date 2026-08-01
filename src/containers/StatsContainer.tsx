@@ -5,6 +5,7 @@ import CategoryTransactionRatio from '../components/statistics/CategoryTransacti
 import PreviousMonthComparison from '../components/statistics/PreviousMonthComparison'
 import SpendingTransactionLineChart from '../components/statistics/SpendingTransactionLineChart'
 import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
+import { getMonthlySummary } from '../lib/financeApi'
 import { useRecentMonthsTransactions } from '../hooks/useRecentMonthsTransactions'
 import { useCalendarStore } from '../stores/calendarStore'
 import { useStatisticsStore } from '../stores/statisticsStore'
@@ -42,34 +43,6 @@ const getRate = (current: number, previous: number) => {
   return Math.round(((current - previous) / previous) * 100)
 }
 
-const getSummary = (transactions: Transaction[]) =>
-  transactions.reduce(
-    (summary, transaction) => {
-      if (transaction.type === 'income') {
-        if (transaction.isFixed) {
-          summary.fixedIncome += transaction.amount
-        } else {
-          summary.income += transaction.amount
-        }
-      }
-
-      if (transaction.type === 'expense') {
-        if (transaction.isFixed) {
-          summary.fixedExpense += transaction.amount
-        } else {
-          summary.expense += transaction.amount
-        }
-      }
-
-      return summary
-    },
-    {
-      expense: 0,
-      fixedExpense: 0,
-      fixedIncome: 0,
-      income: 0,
-    },
-  )
 
 const getCategoryRatio = (transactions: Transaction[]) => {
   const result: Record<TransactionType, CategoryRatioItem[]> = {
@@ -121,8 +94,8 @@ const getPreviousMonthComparison = (
   currentTransactions: Transaction[],
   previousTransactions: Transaction[],
 ) => {
-  const current = getSummary(currentTransactions)
-  const previous = getSummary(previousTransactions)
+  const current = getMonthlySummary(currentTransactions)
+  const previous = getMonthlySummary(previousTransactions)
   const currentIncome = current.income + current.fixedIncome
   const previousIncome = previous.income + previous.fixedIncome
   const currentExpense = current.expense + current.fixedExpense
