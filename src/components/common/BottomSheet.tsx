@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom'
 import type { ReactNode } from 'react'
 import { useBodyScrollLock } from '../../hooks/useBodyScrollLock'
 
@@ -5,6 +6,7 @@ type BottomSheetProps = {
   children: ReactNode
   description?: string
   isOpen: boolean
+  layer?: 1 | 2
   maxHeightClassName?: string
   onClose: () => void
   title?: string
@@ -14,6 +16,7 @@ export default function BottomSheet({
   children,
   description,
   isOpen,
+  layer = 1,
   maxHeightClassName = 'max-h-[90dvh]',
   onClose,
   title,
@@ -24,8 +27,10 @@ export default function BottomSheet({
     return null
   }
 
-  return (
-    <div className="fixed inset-0 z-60 bg-black/35">
+  const backdropClass = `fixed inset-0 z-60 ${layer === 2 ? 'bg-black/15' : 'bg-black/35'}`
+
+  const content = (
+    <div className={backdropClass}>
       <section
         aria-modal="true"
         className={[
@@ -64,4 +69,6 @@ export default function BottomSheet({
       </section>
     </div>
   )
+
+  return layer === 2 ? createPortal(content, document.body) : content
 }

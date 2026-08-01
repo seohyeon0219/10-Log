@@ -5,6 +5,7 @@ type FormModalProps = {
   children: ReactNode
   description?: string
   isOpen: boolean
+  layer?: 1 | 2
   onClose: () => void
   title: string
 }
@@ -13,6 +14,7 @@ export default function FormModal({
   children,
   description,
   isOpen,
+  layer = 1,
   onClose,
   title,
 }: FormModalProps) {
@@ -21,7 +23,7 @@ export default function FormModal({
   }
 
   return (
-    <ModalSurface className="flex max-h-[88dvh] w-full max-w-125 flex-col rounded-2xl glass-card shadow-xl">
+    <ModalSurface className="flex max-h-[88dvh] w-full max-w-125 flex-col rounded-2xl glass-card shadow-xl" layer={layer}>
       <header className="flex shrink-0 items-start justify-between gap-4 px-6 pt-6 pb-4">
         <div>
           <h2 className="m-0 text-xl font-bold text-black">{title}</h2>

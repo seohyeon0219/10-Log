@@ -26,6 +26,7 @@ export default function CategoryManageModal({
     <FormModal
       description="기록할 때 분류할 카테고리를 정리해요"
       isOpen={isOpen}
+      layer={2}
       onClose={onClose}
       title="카테고리 관리"
     >
