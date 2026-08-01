@@ -56,12 +56,8 @@ export default function HomeContainer() {
   )
 
   const handleSaveTransaction = async (values: TransactionFormValues) => {
-    try {
-      await addTransaction(transactionType, values)
-      setIsTransactionFormOpen(false)
-    } catch {
-      // 에러는 store.error 상태를 통해 표시됨
-    }
+    await addTransaction(transactionType, values)
+    setIsTransactionFormOpen(false)
   }
 
   const handleSavePromise = async (values: { budgetAmount: number }) => {

@@ -16,8 +16,8 @@ type TransactionFormContentProps = {
   initialCategoryId?: string
   initialIsFixed?: boolean
   initialMemo?: string
-  onDelete?: () => void
-  onSave?: (values: TransactionFormValues) => void
+  onDelete?: () => Promise<void> | void
+  onSave?: (values: TransactionFormValues) => Promise<void> | void
   selectedDate?: Date | null
   submitText?: string
   type: TransactionType
@@ -44,6 +44,8 @@ export default function TransactionFormContent({
   const [date, setDate] = useState(selectedDate ? toDateKey(selectedDate) : '')
   const [memo, setMemo] = useState(initialMemo ?? '')
   const [isFixed, setIsFixed] = useState(initialIsFixed)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [isSaving, setIsSaving] = useState(false)
   const resolvedSelectedCategoryId = categories.some((category) => category.id === selectedCategoryId)
     ? selectedCategoryId
     : initialSelectedCategoryId
@@ -52,20 +54,41 @@ export default function TransactionFormContent({
     setAmount(event.currentTarget.value.replace(/\D/g, ''))
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const numericAmount = Number(amount)
 
     if (!numericAmount || !resolvedSelectedCategoryId || !date) {
       return
     }
 
-    onSave?.({
-      amount: numericAmount,
-      categoryId: resolvedSelectedCategoryId,
-      date,
-      isFixed,
-      memo,
-    })
+    setErrorMessage('')
+    setIsSaving(true)
+
+    try {
+      await onSave?.({
+        amount: numericAmount,
+        categoryId: resolvedSelectedCategoryId,
+        date,
+        isFixed,
+        memo,
+      })
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : '저장하지 못했어요.')
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  const handleDelete = async () => {
+    setErrorMessage('')
+    setIsSaving(true)
+    try {
+      await onDelete?.()
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : '삭제하지 못했어요.')
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   return (
@@ -120,11 +143,17 @@ export default function TransactionFormContent({
         </Checkbox>
       </div>
 
+      {errorMessage && (
+        <p className="mt-4 text-sm font-semibold text-(--color-expense-red)" role="alert">
+          {errorMessage}
+        </p>
+      )}
+
       <div className="mt-5 grid grid-cols-[96px_minmax(0,1fr)] gap-3 pt-1">
-        <Button onClick={onDelete} variant="soft">
+        <Button disabled={isSaving} onClick={handleDelete} variant="soft">
           삭제
         </Button>
-        <Button onClick={handleSave}>{submitText}</Button>
+        <Button disabled={isSaving} onClick={handleSave}>{isSaving ? '저장 중...' : submitText}</Button>
       </div>
 
       {categoryManageOverlay?.(isCategoryManageOpen, () => setIsCategoryManageOpen(false))}

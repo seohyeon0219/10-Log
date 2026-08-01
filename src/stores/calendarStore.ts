@@ -76,57 +76,27 @@ const emptyMonthlyPromise = {
 
 export const useCalendarStore = create<CalendarStore>((set, get) => ({
   addCategory: async (values) => {
-    set({ error: null })
-    try {
-      await createCategory(values)
-      await get().loadMonth()
-    } catch (error) {
-      set({ error: error instanceof Error ? error.message : '카테고리를 저장하지 못했어요.' })
-      throw error
-    }
+    await createCategory(values)
+    await get().loadMonth()
   },
   addTransaction: async (type, values) => {
-    set({ error: null })
-    try {
-      await createTransaction(type, values)
-      await get().loadMonth()
-    } catch (error) {
-      set({ error: error instanceof Error ? error.message : '거래를 저장하지 못했어요.' })
-      throw error
-    }
+    await createTransaction(type, values)
+    await get().loadMonth()
   },
   calendarDayAmounts: [],
   clearSelectedDate: () => set({ selectedDate: null }),
   currentDate: initialDate,
   deleteCategory: async (categoryId) => {
-    set({ error: null })
-    try {
-      await deleteCategory(categoryId)
-      await get().loadMonth()
-    } catch (error) {
-      set({ error: error instanceof Error ? error.message : '카테고리를 삭제하지 못했어요.' })
-      throw error
-    }
+    await deleteCategory(categoryId)
+    await get().loadMonth()
   },
   deleteMonthlyPromise: async () => {
-    set({ error: null })
-    try {
-      await deleteMonthlyPromise(get().currentDate)
-      await get().loadMonth()
-    } catch (error) {
-      set({ error: error instanceof Error ? error.message : '예산을 삭제하지 못했어요.' })
-      throw error
-    }
+    await deleteMonthlyPromise(get().currentDate)
+    await get().loadMonth()
   },
   deleteTransaction: async (transactionId) => {
-    set({ error: null })
-    try {
-      await deleteTransaction(transactionId)
-      await get().loadMonth()
-    } catch (error) {
-      set({ error: error instanceof Error ? error.message : '거래를 삭제하지 못했어요.' })
-      throw error
-    }
+    await deleteTransaction(transactionId)
+    await get().loadMonth()
   },
   error: null,
   expenseCategories: [],
@@ -203,44 +173,20 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
     }),
   setSelectedDate: (date) => set({ selectedDate: date }),
   setUseIncomeAsBudget: async (value) => {
-    set({ error: null })
-    try {
-      await upsertMonthlyPromise(get().currentDate, { budgetAmount: 0, useIncomeAsBudget: value })
-      await get().loadMonth()
-    } catch (error) {
-      set({ error: error instanceof Error ? error.message : '예산 설정을 저장하지 못했어요.' })
-      throw error
-    }
+    await upsertMonthlyPromise(get().currentDate, { budgetAmount: 0, useIncomeAsBudget: value })
+    await get().loadMonth()
   },
   transactions: [],
   updateCategory: async (categoryId, values) => {
-    set({ error: null })
-    try {
-      await updateCategory(categoryId, values)
-      await get().loadMonth()
-    } catch (error) {
-      set({ error: error instanceof Error ? error.message : '카테고리를 수정하지 못했어요.' })
-      throw error
-    }
+    await updateCategory(categoryId, values)
+    await get().loadMonth()
   },
   updateMonthlyPromise: async (values) => {
-    set({ error: null })
-    try {
-      await upsertMonthlyPromise(get().currentDate, { ...values, useIncomeAsBudget: false })
-      await get().loadMonth()
-    } catch (error) {
-      set({ error: error instanceof Error ? error.message : '예산을 저장하지 못했어요.' })
-      throw error
-    }
+    await upsertMonthlyPromise(get().currentDate, { ...values, useIncomeAsBudget: false })
+    await get().loadMonth()
   },
   updateTransaction: async (transactionId, values) => {
-    set({ error: null })
-    try {
-      await updateTransaction(transactionId, values)
-      await get().loadMonth(new Date(`${values.date}T00:00:00`))
-    } catch (error) {
-      set({ error: error instanceof Error ? error.message : '거래를 수정하지 못했어요.' })
-      throw error
-    }
+    await updateTransaction(transactionId, values)
+    await get().loadMonth(new Date(`${values.date}T00:00:00`))
   },
 }))
