@@ -3,8 +3,7 @@ import MonthlyPromiseBottomSheet from '../components/calendar/MonthlyPromiseBott
 import MonthlyPromiseModal from '../components/calendar/MonthlyPromiseModal'
 import FloatingAddButton from '../components/common/FloatingAddButton'
 import MonthlyMoneySummary from '../components/statistics/MonthlyMoneySummary'
-import TransactionFormModal from '../components/transactions/TransactionFormModal'
-import TransactionFormBottomSheet from '../components/transactions/bottomSheet/TransactionFormBottomSheet'
+import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
 import { getBudgetStatus, getRandomMessage } from '../constants/budgetMessages'
 import { useCalendarStore } from '../stores/calendarStore'
 import type { TransactionFormValues, TransactionType } from '../types/finance'
@@ -130,38 +129,20 @@ export default function HomeContainer() {
         onAddIncome={() => openTransactionForm('income')}
       />
 
-      <div className="hidden md:block">
-        <TransactionFormModal
-          categories={activeCategories}
-          expenseCategories={expenseCategories}
-          incomeCategories={incomeCategories}
-          isOpen={isTransactionFormOpen}
-          onClose={() => setIsTransactionFormOpen(false)}
-          onCreateCategory={addCategory}
-          onDelete={() => setIsTransactionFormOpen(false)}
-          onDeleteCategory={deleteCategory}
-          onSave={handleSaveTransaction}
-          onUpdateCategory={updateCategory}
-          selectedDate={new Date()}
-          type={transactionType}
-        />
-      </div>
-      <div className="md:hidden">
-        <TransactionFormBottomSheet
-          categories={activeCategories}
-          expenseCategories={expenseCategories}
-          incomeCategories={incomeCategories}
-          isOpen={isTransactionFormOpen}
-          onClose={() => setIsTransactionFormOpen(false)}
-          onCreateCategory={addCategory}
-          onDelete={() => setIsTransactionFormOpen(false)}
-          onDeleteCategory={deleteCategory}
-          onSave={handleSaveTransaction}
-          onUpdateCategory={updateCategory}
-          selectedDate={new Date()}
-          type={transactionType}
-        />
-      </div>
+      <ResponsiveTransactionForm
+        categories={activeCategories}
+        expenseCategories={expenseCategories}
+        incomeCategories={incomeCategories}
+        isOpen={isTransactionFormOpen}
+        onClose={() => setIsTransactionFormOpen(false)}
+        onCreateCategory={addCategory}
+        onDelete={() => setIsTransactionFormOpen(false)}
+        onDeleteCategory={deleteCategory}
+        onSave={handleSaveTransaction}
+        onUpdateCategory={updateCategory}
+        selectedDate={new Date()}
+        type={transactionType}
+      />
 
       <div className="hidden md:block">
         <MonthlyPromiseModal

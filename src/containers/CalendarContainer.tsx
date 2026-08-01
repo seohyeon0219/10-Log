@@ -6,8 +6,7 @@ import TransactionDateList, {
   type TransactionDateListItem,
 } from '../components/transactions/TransactionDateList'
 import FloatingAddButton from '../components/common/FloatingAddButton'
-import TransactionFormModal from '../components/transactions/TransactionFormModal'
-import TransactionFormBottomSheet from '../components/transactions/bottomSheet/TransactionFormBottomSheet'
+import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
 import type { TransactionFormMode, TransactionType } from '../components/transactions/transactionFormConfig'
 import { toDateKey } from '../utils/dateUtils'
 import { useCalendarStore } from '../stores/calendarStore'
@@ -167,49 +166,25 @@ export default function CalendarContainer() {
         </aside>
       </div>
 
-      <div className="hidden md:block">
-        <TransactionFormModal
-          categories={activeCategories}
-          expenseCategories={expenseCategories}
-          incomeCategories={incomeCategories}
-          initialAmount={editingTransaction?.amount}
-          initialCategoryId={initialCategoryId}
-          initialIsFixed={editingTransaction?.isFixed}
-          initialMemo={editingTransaction?.memo}
-          isOpen={isTransactionFormOpen}
-          mode={transactionFormMode}
-          onClose={closeTransactionForm}
-          onCreateCategory={addCategory}
-          onDelete={removeTransaction}
-          onDeleteCategory={deleteCategory}
-          onSave={saveTransaction}
-          onUpdateCategory={updateCategory}
-          selectedDate={selectedDate}
-          type={transactionType}
-        />
-      </div>
-
-      <div className="md:hidden">
-        <TransactionFormBottomSheet
-          categories={activeCategories}
-          expenseCategories={expenseCategories}
-          incomeCategories={incomeCategories}
-          initialAmount={editingTransaction?.amount}
-          initialCategoryId={initialCategoryId}
-          initialIsFixed={editingTransaction?.isFixed}
-          initialMemo={editingTransaction?.memo}
-          isOpen={isTransactionFormOpen}
-          mode={transactionFormMode}
-          onClose={closeTransactionForm}
-          onCreateCategory={addCategory}
-          onDelete={removeTransaction}
-          onDeleteCategory={deleteCategory}
-          onSave={saveTransaction}
-          onUpdateCategory={updateCategory}
-          selectedDate={selectedDate}
-          type={transactionType}
-        />
-      </div>
+      <ResponsiveTransactionForm
+        categories={activeCategories}
+        expenseCategories={expenseCategories}
+        incomeCategories={incomeCategories}
+        initialAmount={editingTransaction?.amount}
+        initialCategoryId={initialCategoryId}
+        initialIsFixed={editingTransaction?.isFixed}
+        initialMemo={editingTransaction?.memo}
+        isOpen={isTransactionFormOpen}
+        mode={transactionFormMode}
+        onClose={closeTransactionForm}
+        onCreateCategory={addCategory}
+        onDelete={removeTransaction}
+        onDeleteCategory={deleteCategory}
+        onSave={saveTransaction}
+        onUpdateCategory={updateCategory}
+        selectedDate={selectedDate}
+        type={transactionType}
+      />
 
       <FloatingAddButton
         onAddExpense={() => openTransactionForm('expense')}

@@ -4,8 +4,7 @@ import CategoryChangeRanking from '../components/statistics/CategoryChangeRankin
 import CategoryTransactionRatio from '../components/statistics/CategoryTransactionRatio'
 import PreviousMonthComparison from '../components/statistics/PreviousMonthComparison'
 import SpendingTransactionLineChart from '../components/statistics/SpendingTransactionLineChart'
-import TransactionFormModal from '../components/transactions/TransactionFormModal'
-import TransactionFormBottomSheet from '../components/transactions/bottomSheet/TransactionFormBottomSheet'
+import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
 import { useRecentMonthsTransactions } from '../hooks/useRecentMonthsTransactions'
 import { useCalendarStore } from '../stores/calendarStore'
 import { useStatisticsStore } from '../stores/statisticsStore'
@@ -317,48 +316,24 @@ export default function StatsContainer() {
       </div>
 
       {selectedStatisticsTransaction ? (
-        <>
-          <div className="hidden md:block">
-            <TransactionFormModal
-              categories={activeCategories}
-              expenseCategories={expenseCategories}
-              incomeCategories={incomeCategories}
-              initialAmount={selectedStatisticsTransaction.amount}
-              initialCategoryId={selectedStatisticsTransaction.categoryId}
-              initialMemo={selectedStatisticsTransaction.memo}
-              isOpen
-              mode="edit"
-              onClose={closeTransactionModal}
-              onCreateCategory={addCategory}
-              onDelete={removeTransaction}
-              onDeleteCategory={deleteCategory}
-              onSave={saveTransaction}
-              onUpdateCategory={updateCategory}
-              selectedDate={new Date(`${selectedStatisticsTransaction.date}T00:00:00`)}
-              type={selectedStatisticsTransaction.type}
-            />
-          </div>
-          <div className="md:hidden">
-            <TransactionFormBottomSheet
-              categories={activeCategories}
-              expenseCategories={expenseCategories}
-              incomeCategories={incomeCategories}
-              initialAmount={selectedStatisticsTransaction.amount}
-              initialCategoryId={selectedStatisticsTransaction.categoryId}
-              initialMemo={selectedStatisticsTransaction.memo}
-              isOpen
-              mode="edit"
-              onClose={closeTransactionModal}
-              onCreateCategory={addCategory}
-              onDelete={removeTransaction}
-              onDeleteCategory={deleteCategory}
-              onSave={saveTransaction}
-              onUpdateCategory={updateCategory}
-              selectedDate={new Date(`${selectedStatisticsTransaction.date}T00:00:00`)}
-              type={selectedStatisticsTransaction.type}
-            />
-          </div>
-        </>
+        <ResponsiveTransactionForm
+          categories={activeCategories}
+          expenseCategories={expenseCategories}
+          incomeCategories={incomeCategories}
+          initialAmount={selectedStatisticsTransaction.amount}
+          initialCategoryId={selectedStatisticsTransaction.categoryId}
+          initialMemo={selectedStatisticsTransaction.memo}
+          isOpen
+          mode="edit"
+          onClose={closeTransactionModal}
+          onCreateCategory={addCategory}
+          onDelete={removeTransaction}
+          onDeleteCategory={deleteCategory}
+          onSave={saveTransaction}
+          onUpdateCategory={updateCategory}
+          selectedDate={new Date(`${selectedStatisticsTransaction.date}T00:00:00`)}
+          type={selectedStatisticsTransaction.type}
+        />
       ) : null}
     </section>
   )
