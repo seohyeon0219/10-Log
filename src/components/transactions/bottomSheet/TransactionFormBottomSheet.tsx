@@ -1,18 +1,13 @@
 import CategoryManageBottomSheet from '../../categories/CategoryManageBottomSheet'
 import BottomSheet from '../../common/BottomSheet'
-import type { TransactionFormValues } from '../../../types/finance'
+import type { Category, TransactionFormValues, TransactionType } from '../../../types/finance'
 import TransactionFormContent from '../TransactionFormContent'
-import {
-  transactionFormTextByType,
-  type TransactionCategory,
-  type TransactionFormMode,
-  type TransactionType,
-} from '../transactionFormConfig'
+import { transactionFormTextByType, type TransactionFormMode } from '../transactionFormConfig'
 
 type TransactionFormBottomSheetProps = {
-  categories: TransactionCategory[]
-  expenseCategories?: TransactionCategory[]
-  incomeCategories?: TransactionCategory[]
+  categories: Category[]
+  expenseCategories?: Category[]
+  incomeCategories?: Category[]
   initialAmount?: number
   initialCategoryId?: string
   initialIsFixed?: boolean

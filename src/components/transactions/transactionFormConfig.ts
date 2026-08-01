@@ -1,12 +1,3 @@
-import type { TransactionType } from '../../types/finance'
-export type { TransactionType }
-
-export type TransactionCategory = {
-  color: string
-  id: string
-  name: string
-}
-
 export type TransactionFormMode = 'create' | 'edit'
 
 export const transactionFormTextByType: Record<

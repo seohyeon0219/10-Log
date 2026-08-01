@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useCalendarStore } from '../stores/calendarStore'
-import type { TransactionFormMode, TransactionType } from '../components/transactions/transactionFormConfig'
+import type { TransactionType } from '../types/finance'
+import type { TransactionFormMode } from '../components/transactions/transactionFormConfig'
 import type { TransactionDateListItem } from '../components/transactions/TransactionDateList'
 
 export function useCalendarTransactionForm() {

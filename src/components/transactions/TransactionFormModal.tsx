@@ -1,18 +1,13 @@
 import CategoryManageModal from '../categories/CategoryManageModal'
 import FormModal from '../common/FormModal'
-import type { TransactionFormValues } from '../../types/finance'
+import type { Category, TransactionFormValues, TransactionType } from '../../types/finance'
 import TransactionFormContent from './TransactionFormContent'
-import {
-  transactionFormTextByType,
-  type TransactionCategory,
-  type TransactionFormMode,
-  type TransactionType,
-} from './transactionFormConfig'
+import { transactionFormTextByType, type TransactionFormMode } from './transactionFormConfig'
 
 type TransactionFormModalProps = {
-  categories: TransactionCategory[]
-  expenseCategories?: TransactionCategory[]
-  incomeCategories?: TransactionCategory[]
+  categories: Category[]
+  expenseCategories?: Category[]
+  incomeCategories?: Category[]
   initialAmount?: number
   initialCategoryId?: string
   initialIsFixed?: boolean

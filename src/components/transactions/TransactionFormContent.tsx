@@ -5,11 +5,10 @@ import Button from '../common/Button'
 import Checkbox from '../common/Checkbox'
 import UnderInput from '../common/UnderInput'
 import { toDateKey } from '../../utils/dateUtils'
-import type { TransactionFormValues } from '../../types/finance'
-import type { TransactionCategory, TransactionType } from './transactionFormConfig'
+import type { Category, TransactionFormValues, TransactionType } from '../../types/finance'
 
 type TransactionFormContentProps = {
-  categories: TransactionCategory[]
+  categories: Category[]
   categoryManageOverlay?: (isOpen: boolean, onClose: () => void) => ReactNode
   fixedLabel: string
   initialAmount?: number
