@@ -81,13 +81,16 @@ export default function CalendarContainer() {
   }
 
   const saveTransaction = async (values: Parameters<typeof addTransaction>[1]) => {
-    if (transactionFormMode === 'edit' && editingTransaction) {
-      await updateTransaction(editingTransaction.id, values)
-    } else {
-      await addTransaction(transactionType, values)
+    try {
+      if (transactionFormMode === 'edit' && editingTransaction) {
+        await updateTransaction(editingTransaction.id, values)
+      } else {
+        await addTransaction(transactionType, values)
+      }
+      closeTransactionForm()
+    } catch {
+      // 에러는 store.error 상태를 통해 표시됨
     }
-
-    closeTransactionForm()
   }
 
   const removeTransaction = async () => {
@@ -96,8 +99,12 @@ export default function CalendarContainer() {
       return
     }
 
-    await deleteTransaction(editingTransaction.id)
-    closeTransactionForm()
+    try {
+      await deleteTransaction(editingTransaction.id)
+      closeTransactionForm()
+    } catch {
+      // 에러는 store.error 상태를 통해 표시됨
+    }
   }
 
   return (

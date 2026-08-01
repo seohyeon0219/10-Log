@@ -15,6 +15,7 @@ export default function HomeContainer() {
   const [isPromiseEditOpen, setIsPromiseEditOpen] = useState(false)
   const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
   const [transactionType, setTransactionType] = useState<TransactionType>('expense')
+  const error = useCalendarStore((state) => state.error)
   const addTransaction = useCalendarStore((state) => state.addTransaction)
   const addCategory = useCalendarStore((state) => state.addCategory)
   const deleteCategory = useCalendarStore((state) => state.deleteCategory)
@@ -55,23 +56,39 @@ export default function HomeContainer() {
   )
 
   const handleSaveTransaction = async (values: TransactionFormValues) => {
-    await addTransaction(transactionType, values)
-    setIsTransactionFormOpen(false)
+    try {
+      await addTransaction(transactionType, values)
+      setIsTransactionFormOpen(false)
+    } catch {
+      // 에러는 store.error 상태를 통해 표시됨
+    }
   }
 
   const handleSavePromise = async (values: { budgetAmount: number }) => {
-    await updateMonthlyPromise(values)
-    setIsPromiseEditOpen(false)
+    try {
+      await updateMonthlyPromise(values)
+      setIsPromiseEditOpen(false)
+    } catch {
+      // 에러는 store.error 상태를 통해 표시됨
+    }
   }
 
   const handleDeletePromise = async () => {
-    await deleteMonthlyPromise()
-    setIsPromiseEditOpen(false)
+    try {
+      await deleteMonthlyPromise()
+      setIsPromiseEditOpen(false)
+    } catch {
+      // 에러는 store.error 상태를 통해 표시됨
+    }
   }
 
   const handleUseIncomeBudget = async () => {
-    await setUseIncomeAsBudget(true)
-    setIsPromiseEditOpen(false)
+    try {
+      await setUseIncomeAsBudget(true)
+      setIsPromiseEditOpen(false)
+    } catch {
+      // 에러는 store.error 상태를 통해 표시됨
+    }
   }
 
   const promiseInitialMode = useIncomeAsBudget && !monthlyPromise.isRegistered ? 'income' : 'direct'
@@ -94,6 +111,12 @@ export default function HomeContainer() {
           {budgetMessage}
         </p>
       </div>
+
+      {error ? (
+        <div className="mt-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-semibold text-(--color-expense-red)">
+          {error}
+        </div>
+      ) : null}
 
       {/* 카드 */}
       <div className="flex flex-col flex-1 justify-center md:mt-10 md:flex-none md:block">
