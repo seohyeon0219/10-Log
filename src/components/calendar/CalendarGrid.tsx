@@ -1,4 +1,6 @@
 import type { CalendarDayAmount } from '../../types/finance'
+import { toDateKey } from '../../utils/dateUtils'
+import { formatAmountShort } from '../../utils/formatters'
 
 type CalendarGridProps = {
   currentDate: Date
@@ -17,10 +19,6 @@ type CalendarDay = {
 const weekDays = ['일', '월', '화', '수', '목', '금', '토']
 const saturdayIndex = 6
 const sundayIndex = 0
-
-const formatAmountShort = (amount: number) => `${Math.round(amount / 1000)}k`
-
-import { toDateKey } from '../../utils/dateUtils'
 
 const cn = (...classNames: string[]) => classNames.filter(Boolean).join(' ')
 

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { formatAmount } from '../../utils/formatters'
 
 type SummaryType = 'income' | 'expense' | 'total'
 
@@ -8,8 +9,6 @@ type CalendarMonthlySummaryProps = {
   expense: number
   fixedExpense: number
 }
-
-const formatAmount = (amount: number) => amount.toLocaleString('ko-KR')
 
 export default function CalendarMonthlySummary({
   income,

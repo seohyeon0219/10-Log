@@ -1,6 +1,7 @@
 import IncomeExpenseToggle from '../common/IncomeExpenseToggle'
 import StatisticsCard from './StatisticsCard'
 import type { TransactionType } from '../../types/finance'
+import { formatWon } from '../../utils/formatters'
 
 type CategoryTransaction = {
   amount: number
@@ -174,7 +175,7 @@ export default function CategoryTransactionRatio({
                     ].join(' ')}
                   >
                     {ratioType === 'income' ? '+' : '-'}
-                    {tx.amount.toLocaleString('ko-KR')}원
+                    {formatWon(tx.amount)}
                   </span>
                 </button>
               ))}

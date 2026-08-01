@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import StatisticsCard from './StatisticsCard'
+import { formatWon } from '../../utils/formatters'
 
 type MonthlyMoneySummaryProps = {
   action?: ReactNode
@@ -10,8 +11,6 @@ type MonthlyMoneySummaryProps = {
   showRemainingBudget?: boolean
   spentAmount: number
 }
-
-const formatWon = (amount: number) => `${amount.toLocaleString('ko-KR')}원`
 
 export default function MonthlyMoneySummary({
   action,

@@ -1,4 +1,5 @@
 import type { TransactionType } from '../../types/finance'
+import { formatWon } from '../../utils/formatters'
 
 export type TransactionDateListItem = {
   amount: number
@@ -66,7 +67,7 @@ export default function TransactionDateList({
                   tx.type === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
                 ].join(' ')}
               >
-                {tx.type === 'income' ? '+' : '-'}{tx.amount.toLocaleString('ko-KR')}원
+                {tx.type === 'income' ? '+' : '-'}{formatWon(tx.amount)}
               </span>
             </button>
           ))}

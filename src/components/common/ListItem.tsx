@@ -1,3 +1,5 @@
+import { formatAmount } from '../../utils/formatters'
+
 type ListItemProps = {
   amount: number
   color: string
@@ -6,8 +8,6 @@ type ListItemProps = {
   title: string
   type: string
 }
-
-const formatAmount = (amount: number) => amount.toLocaleString('ko-KR')
 
 export default function ListItem({ amount, color, memo, onClick, title, type }: ListItemProps) {
   const isIncome = type === 'income'

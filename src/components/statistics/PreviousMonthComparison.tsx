@@ -1,4 +1,5 @@
 import StatisticsCard from './StatisticsCard'
+import { formatAmount } from '../../utils/formatters'
 
 type PreviousMonthComparisonItem = {
   details?: Array<{
@@ -20,8 +21,6 @@ const getRateClassName = (rate: number) => {
   if (rate < 0) return 'text-(--color-expense-red)'
   return 'text-gray-400'
 }
-
-const formatAmount = (amount: number) => amount.toLocaleString('ko-KR')
 
 export default function PreviousMonthComparison({ items }: PreviousMonthComparisonProps) {
   return (
