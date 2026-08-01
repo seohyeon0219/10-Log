@@ -1,4 +1,5 @@
 import { supabase } from './supabase'
+import { getCurrentUserId } from './auth'
 import { toDateKey } from '../utils/dateUtils'
 import type {
   CalendarDayAmount,
@@ -101,11 +102,7 @@ export const getMonthlyPromise = async (
 }
 
 export const upsertMonthlyPromise = async (date: Date, values: MonthlyPromiseValues) => {
-  const { data: userData, error: userError } = await supabase.auth.getUser()
-
-  if (userError) {
-    throw userError
-  }
+  const userId = await getCurrentUserId()
 
   const { error } = await supabase.from('monthly_promises').upsert(
     {
@@ -113,7 +110,7 @@ export const upsertMonthlyPromise = async (date: Date, values: MonthlyPromiseVal
       month: toMonthKey(date),
       promise: values.promise ?? '',
       use_income_as_budget: values.useIncomeAsBudget ?? false,
-      user_id: userData.user.id,
+      user_id: userId,
     },
     {
       onConflict: 'user_id,month',
@@ -148,17 +145,13 @@ export const getCategories = async () => {
 }
 
 export const createCategory = async (values: CategoryFormValues) => {
-  const { data: userData, error: userError } = await supabase.auth.getUser()
-
-  if (userError) {
-    throw userError
-  }
+  const userId = await getCurrentUserId()
 
   const { error } = await supabase.from('categories').insert({
     color: values.color,
     name: values.name,
     type: values.type,
-    user_id: userData.user.id,
+    user_id: userId,
   })
 
   if (error) {
@@ -210,11 +203,7 @@ export const getMonthlyTransactions = async (date: Date) => {
 }
 
 export const createTransaction = async (type: TransactionType, values: TransactionFormValues) => {
-  const { data: userData, error: userError } = await supabase.auth.getUser()
-
-  if (userError) {
-    throw userError
-  }
+  const userId = await getCurrentUserId()
 
   const { error } = await supabase.from('transactions').insert({
     amount: values.amount,
@@ -223,7 +212,7 @@ export const createTransaction = async (type: TransactionType, values: Transacti
     is_fixed: values.isFixed,
     memo: values.memo,
     type,
-    user_id: userData.user.id,
+    user_id: userId,
   })
 
   if (error) {

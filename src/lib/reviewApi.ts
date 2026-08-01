@@ -1,4 +1,5 @@
 import { supabase } from './supabase'
+import { getCurrentUserId } from './auth'
 import { mapTransaction, type TransactionRow } from './financeApi'
 import { toDateKey } from '../utils/dateUtils'
 import type { DailyReview, DailyReviewValues } from '../types/finance'
@@ -60,11 +61,7 @@ export const getDailyReview = async (date: Date): Promise<DailyReview | null> =>
 }
 
 export const upsertDailyReview = async (date: Date, values: DailyReviewValues) => {
-  const { data: userData, error: userError } = await supabase.auth.getUser()
-
-  if (userError) {
-    throw userError
-  }
+  const userId = await getCurrentUserId()
 
   const { data, error } = await supabase
     .from('daily_reviews')
@@ -76,7 +73,7 @@ export const upsertDailyReview = async (date: Date, values: DailyReviewValues) =
         regret_transaction_id: values.regretTransactionId,
         review_date: toDateKey(date),
         satisfaction_rating: values.satisfactionRating,
-        user_id: userData.user.id,
+        user_id: userId,
       },
       {
         onConflict: 'user_id,review_date',

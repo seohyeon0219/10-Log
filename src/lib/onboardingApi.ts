@@ -1,4 +1,5 @@
 import { supabase } from './supabase'
+import { getCurrentUserId } from './auth'
 import type { OnboardingAnswers } from '../types/onboarding'
 
 type ProfileRow = {
@@ -25,8 +26,7 @@ export const getOnboardingCompleted = async (): Promise<boolean> => {
 }
 
 export const saveOnboardingAnswers = async (answers: OnboardingAnswers): Promise<void> => {
-  const { data: userData, error: userError } = await supabase.auth.getUser()
-  if (userError) throw userError
+  const userId = await getCurrentUserId()
 
   const { error } = await supabase.from('user_profiles').upsert(
     {
@@ -40,7 +40,7 @@ export const saveOnboardingAnswers = async (answers: OnboardingAnswers): Promise
       save_areas: answers.saveAreas,
       spending_goal: answers.spendingGoal,
       spending_value: answers.spendingValue,
-      user_id: userData.user.id,
+      user_id: userId,
     },
     { onConflict: 'user_id' },
   )
