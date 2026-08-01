@@ -1,9 +1,9 @@
-import { useRef, useState } from 'react'
-import Input from '../common/Input'
+import { useState } from 'react'
 import { categoryColors } from '../../constants/color'
+import { useCategoryForm } from '../../hooks/useCategoryForm'
+import type { TransactionType } from '../../types/finance'
+import Input from '../common/Input'
 import CategoryDeleteConfirm from './CategoryDeleteConfirm'
-
-type CategoryType = 'income' | 'expense'
 
 type Category = {
   color: string
@@ -13,10 +13,10 @@ type Category = {
 
 type CategoryManageContentProps = {
   expenseCategories: Category[]
-  initialType?: CategoryType
+  initialType?: TransactionType
   incomeCategories: Category[]
   onClose?: () => void
-  onCreateCategory?: (values: { color: string; name: string; type: CategoryType }) => Promise<void> | void
+  onCreateCategory?: (values: { color: string; name: string; type: TransactionType }) => Promise<void> | void
   onDeleteCategory?: (categoryId: string) => Promise<void> | void
   onUpdateCategory?: (
     categoryId: string,
@@ -24,12 +24,12 @@ type CategoryManageContentProps = {
   ) => Promise<void> | void
 }
 
-const typeOptions: Array<{ id: CategoryType; label: string }> = [
+const typeOptions: Array<{ id: TransactionType; label: string }> = [
   { id: 'expense', label: '지출' },
   { id: 'income', label: '수입' },
 ]
 
-const categoryLabelByType: Record<CategoryType, string> = {
+const categoryLabelByType: Record<TransactionType, string> = {
   expense: '지출',
   income: '수입',
 }
@@ -43,84 +43,28 @@ export default function CategoryManageContent({
   onDeleteCategory,
   onUpdateCategory,
 }: CategoryManageContentProps) {
-  const formSectionRef = useRef<HTMLElement>(null)
-  const [activeType, setActiveType] = useState<CategoryType>(initialType)
-  const [deleteTarget, setDeleteTarget] = useState<Category | null>(null)
-  const [editingCategoryId, setEditingCategoryId] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
-  const [isSaving, setIsSaving] = useState(false)
-  const [name, setName] = useState('')
-  const [selectedColor, setSelectedColor] = useState(categoryColors[0])
+  const [activeType, setActiveType] = useState<TransactionType>(initialType)
+  const {
+    canSave,
+    deleteTarget,
+    editingCategoryId,
+    errorMessage,
+    formSectionRef,
+    handleConfirmDelete,
+    handleDeleteClick,
+    handleEdit,
+    handleSave,
+    isEditing,
+    isSaving,
+    name,
+    resetForm,
+    selectedColor,
+    setDeleteTarget,
+    setName,
+    setSelectedColor,
+  } = useCategoryForm({ activeType, onClose, onCreateCategory, onDeleteCategory, onUpdateCategory })
+
   const activeItems = activeType === 'expense' ? expenseCategories : incomeCategories
-  const isEditing = editingCategoryId.length > 0
-  const trimmedName = name.trim()
-  const canSave = trimmedName.length > 0 && !isSaving
-
-  const resetForm = () => {
-    setEditingCategoryId('')
-    setErrorMessage('')
-    setName('')
-    setSelectedColor(categoryColors[0])
-  }
-
-  const handleSave = async () => {
-    if (!canSave) return
-
-    setErrorMessage('')
-    setIsSaving(true)
-
-    try {
-      if (isEditing) {
-        await onUpdateCategory?.(editingCategoryId, { color: selectedColor, name: trimmedName })
-        resetForm()
-        return
-      }
-      await onCreateCategory?.({ color: selectedColor, name: trimmedName, type: activeType })
-      resetForm()
-      onClose?.()
-    } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : '카테고리를 저장하지 못했어요.')
-    } finally {
-      setIsSaving(false)
-    }
-  }
-
-  const handleEdit = (category: Category) => {
-    setEditingCategoryId(category.id)
-    setName(category.name)
-    setSelectedColor(category.color)
-
-    let parent = formSectionRef.current?.parentElement
-    while (parent) {
-      const { overflowY } = getComputedStyle(parent)
-      if ((overflowY === 'auto' || overflowY === 'scroll') && parent.scrollHeight > parent.clientHeight) {
-        parent.scrollTo({ top: 0, behavior: 'smooth' })
-        return
-      }
-      parent = parent.parentElement
-    }
-  }
-
-  const handleDeleteClick = (category: Category) => {
-    setDeleteTarget(category)
-  }
-
-  const handleConfirmDelete = async () => {
-    if (!deleteTarget) return
-    const targetId = deleteTarget.id
-    setDeleteTarget(null)
-    setErrorMessage('')
-    setIsSaving(true)
-
-    try {
-      await onDeleteCategory?.(targetId)
-      if (editingCategoryId === targetId) resetForm()
-    } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : '카테고리를 삭제하지 못했어요.')
-    } finally {
-      setIsSaving(false)
-    }
-  }
 
   return (
     <>
