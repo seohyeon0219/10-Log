@@ -1,6 +1,7 @@
 import { supabase } from './supabase'
 import { getCurrentUserId } from './auth'
 import { toDateKey } from '../utils/dateUtils'
+import { mapTransaction, type TransactionRow } from '../utils/mappers'
 import type {
   CalendarDayAmount,
   Category,
@@ -12,27 +13,9 @@ import type {
   TransactionType,
 } from '../types/finance'
 
-export type CategoryRow = {
-  color: string
-  id: string
-  name: string
-  type: TransactionType
-}
-
 type CategoryFormValues = {
   color: string
   name: string
-  type: TransactionType
-}
-
-export type TransactionRow = {
-  amount: number
-  categories: CategoryRow | null
-  category_id: string
-  date: string
-  id: string
-  is_fixed: boolean
-  memo: string | null
   type: TransactionType
 }
 
@@ -61,22 +44,6 @@ const toMonthKey = (date: Date) => {
   return `${year}-${month}-01`
 }
 
-export const mapTransaction = (row: TransactionRow): Transaction => {
-  const category = row.categories
-
-  return {
-    amount: row.amount,
-    categoryColor: category?.color ?? '#898989',
-    categoryId: row.category_id,
-    categoryName: category?.name ?? '미분류',
-    date: row.date,
-    day: Number(row.date.slice(8, 10)),
-    id: row.id,
-    isFixed: row.is_fixed,
-    memo: row.memo ?? '',
-    type: row.type,
-  }
-}
 
 export const getMonthlyPromise = async (
   date: Date,

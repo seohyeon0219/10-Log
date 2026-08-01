@@ -1,28 +1,8 @@
 import { supabase } from './supabase'
 import { getCurrentUserId } from './auth'
-import { mapTransaction, type TransactionRow } from './financeApi'
 import { toDateKey } from '../utils/dateUtils'
+import { mapDailyReview, mapTransaction, type DailyReviewRow, type TransactionRow } from '../utils/mappers'
 import type { DailyReview, DailyReviewValues } from '../types/finance'
-
-type DailyReviewRow = {
-  good_comment: string
-  good_transaction_id: string | null
-  id: string
-  regret_comment: string
-  regret_transaction_id: string | null
-  review_date: string
-  satisfaction_rating: number
-}
-
-const mapDailyReview = (row: DailyReviewRow): DailyReview => ({
-  goodComment: row.good_comment,
-  goodTransactionId: row.good_transaction_id,
-  id: row.id,
-  regretComment: row.regret_comment,
-  regretTransactionId: row.regret_transaction_id,
-  reviewDate: row.review_date,
-  satisfactionRating: row.satisfaction_rating,
-})
 
 export const getDailyReviewTransactions = async (date: Date) => {
   const dateKey = toDateKey(date)
