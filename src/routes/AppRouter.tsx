@@ -13,7 +13,6 @@ import OnboardingPage from '../pages/OnboardingPage'
 import ProfileEditPage from '../pages/ProfileEditPage'
 import ReviewPage from '../pages/ReviewPage'
 import StatsPage from '../pages/StatsPage'
-import TestPage from '../pages/test/TestPage'
 
 function useAuthGuard() {
   const [session, setSession] = useState<Session | null | undefined>(undefined)
@@ -97,7 +96,6 @@ export default function AppRouter() {
           <Route path="profile" element={<ProfileEditPage />} />
           <Route path="*" element={<Navigate to="home" replace />} />
         </Route>
-        <Route path="/test" element={<TestPage />} />
       </Routes>
     </BrowserRouter>
   )
