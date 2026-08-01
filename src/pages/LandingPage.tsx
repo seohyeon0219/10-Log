@@ -162,9 +162,9 @@ export default function LandingPage() {
             {/* 서비스 설명 — blur → 선명 페이드인 (10log 완료 후 0.5s 대기) */}
             <motion.p
               animate={{ opacity: 1, filter: 'blur(0px)' }}
-              className="mt-2 text-center text-[15px] font-medium leading-relaxed text-(--color-text-muted)"
+              className="mt-2 text-center text-[15px] font-medium leading-relaxed text-(--color-text-dim)"
               initial={{ opacity: 0, filter: 'blur(8px)' }}
-              transition={{ duration: 0.7, delay: 2.1, ease: 'easeOut' }}
+              transition={{ duration: 0.7, delay: 1.5, ease: 'easeOut' }}
             >
               나의 소비 기록을 AI가 분석해, <br/>더 나은 소비 습관을 위한 인사이트를 제공해요.
             </motion.p>
@@ -174,7 +174,7 @@ export default function LandingPage() {
               animate={{ opacity: 1, filter: 'blur(0px)' }}
               className="mt-10 w-full max-w-sm"
               initial={{ opacity: 0, filter: 'blur(8px)' }}
-              transition={{ duration: 0.65, delay: 2.25, ease: 'easeOut' }}
+              transition={{ duration: 0.65, delay: 1.65, ease: 'easeOut' }}
             >
               <button
                 className="inline-flex h-14 w-full cursor-pointer items-center justify-center gap-4 rounded-2xl px-6 text-[15px] font-semibold text-gray-800 transition disabled:cursor-not-allowed disabled:opacity-60"
