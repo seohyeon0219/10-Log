@@ -20,7 +20,7 @@ export default function HomeContainer() {
   const loadMonth = useCalendarStore((state) => state.loadMonth)
   const monthlySummary = useCalendarStore((state) => state.monthlySummary)
   const updateCategory = useCalendarStore((state) => state.updateCategory)
-  const useIncomeAsBudget = useCalendarStore((state) => state.useIncomeAsBudget)
+  const useIncomeAsBudget = useCalendarStore((state) => state.monthlyPromise.useIncomeAsBudget)
 
   const txForm = useTransactionForm()
   const promise = useMonthlyPromise()

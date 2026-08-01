@@ -4,7 +4,7 @@ import { useCalendarStore } from '../stores/calendarStore'
 export function useMonthlyPromise() {
   const [isEditOpen, setIsEditOpen] = useState(false)
   const monthlyPromise = useCalendarStore((state) => state.monthlyPromise)
-  const useIncomeAsBudget = useCalendarStore((state) => state.useIncomeAsBudget)
+  const useIncomeAsBudget = useCalendarStore((state) => state.monthlyPromise.useIncomeAsBudget)
   const updateMonthlyPromise = useCalendarStore((state) => state.updateMonthlyPromise)
   const deleteMonthlyPromise = useCalendarStore((state) => state.deleteMonthlyPromise)
   const setUseIncomeAsBudget = useCalendarStore((state) => state.setUseIncomeAsBudget)

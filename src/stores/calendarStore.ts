@@ -54,7 +54,6 @@ type CalendarStore = {
   updateCategory: (categoryId: string, values: Pick<Category, 'color' | 'name'>) => Promise<void>
   updateMonthlyPromise: (values: MonthlyPromiseValues) => Promise<void>
   updateTransaction: (transactionId: string, values: TransactionFormValues) => Promise<void>
-  useIncomeAsBudget: boolean
 }
 
 let defaultCategoriesEnsured = false
@@ -148,7 +147,6 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
         monthlyPromise,
         monthlySummary: getMonthlySummary(transactions),
         transactions,
-        useIncomeAsBudget: monthlyPromise.useIncomeAsBudget,
       })
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Supabase 데이터를 불러오지 못했어요.'
@@ -161,7 +159,6 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
   },
   monthlyPromise: emptyMonthlyPromise,
   monthlySummary: emptyMonthlySummary,
-  useIncomeAsBudget: false,
   selectedDate: null,
   selectDate: (date) =>
     set((state) => {
