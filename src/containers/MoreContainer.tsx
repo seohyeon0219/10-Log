@@ -1,6 +1,7 @@
 import type { User } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useIsDesktop } from '../hooks/useIsDesktop'
 import CategoryManageBottomSheet from '../components/categories/CategoryManageBottomSheet'
 import CategoryManageModal from '../components/categories/CategoryManageModal'
 import BottomSheet from '../components/common/BottomSheet'
@@ -79,14 +80,7 @@ export default function MoreContainer() {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false)
   const [isThemeOpen, setIsThemeOpen] = useState(false)
   const [isLogoutOpen, setIsLogoutOpen] = useState(false)
-  const [isDesktop, setIsDesktop] = useState(() => window.matchMedia('(min-width: 768px)').matches)
-
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 768px)')
-    const onChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
-    mq.addEventListener('change', onChange)
-    return () => mq.removeEventListener('change', onChange)
-  }, [])
+  const isDesktop = useIsDesktop()
 
   const addCategory = useCalendarStore((state) => state.addCategory)
   const deleteCategory = useCalendarStore((state) => state.deleteCategory)
