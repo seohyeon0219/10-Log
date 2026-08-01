@@ -1,3 +1,4 @@
+import { DEFAULT_CATEGORY_COLOR } from '../constants/color'
 import type { DailyReview, Transaction, TransactionType } from '../types/finance'
 
 export type CategoryRow = {
@@ -33,7 +34,7 @@ export const mapTransaction = (row: TransactionRow): Transaction => {
 
   return {
     amount: row.amount,
-    categoryColor: category?.color ?? '#898989',
+    categoryColor: category?.color ?? DEFAULT_CATEGORY_COLOR,
     categoryId: row.category_id,
     categoryName: category?.name ?? '미분류',
     date: row.date,

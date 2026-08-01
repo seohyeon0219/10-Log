@@ -1,3 +1,5 @@
+export const DEFAULT_CATEGORY_COLOR = '#898989'
+
 export const categoryColors = [
   '#f05650',
   '#ff7a59',

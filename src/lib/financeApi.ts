@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
 import { getCurrentUserId } from './auth'
-import { toDateKey } from '../utils/dateUtils'
+import { getMonthRange, toMonthKey } from '../utils/dateUtils'
 import { mapTransaction, type TransactionRow } from '../utils/mappers'
 import type {
   CalendarDayAmount,
@@ -25,23 +25,6 @@ export const ensureDefaultCategories = async () => {
   if (error) {
     throw error
   }
-}
-
-const getMonthRange = (date: Date) => {
-  const start = new Date(date.getFullYear(), date.getMonth(), 1)
-  const end = new Date(date.getFullYear(), date.getMonth() + 1, 1)
-
-  return {
-    end: toDateKey(end),
-    start: toDateKey(start),
-  }
-}
-
-const toMonthKey = (date: Date) => {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-
-  return `${year}-${month}-01`
 }
 
 
