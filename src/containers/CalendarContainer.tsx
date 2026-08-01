@@ -1,30 +1,22 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import CalendarGrid from '../components/calendar/CalendarGrid'
 import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
 import CalendarMonthlySummary from '../components/calendar/CalendarMonthlySummary'
-import TransactionDateList, {
-  type TransactionDateListItem,
-} from '../components/transactions/TransactionDateList'
+import TransactionDateList from '../components/transactions/TransactionDateList'
 import FloatingAddButton from '../components/common/FloatingAddButton'
 import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
-import type { TransactionFormMode, TransactionType } from '../components/transactions/transactionFormConfig'
+import { useCalendarTransactionForm } from '../hooks/useCalendarTransactionForm'
 import { toDateKey } from '../utils/dateUtils'
 import { useCalendarStore } from '../stores/calendarStore'
 
 export default function CalendarContainer() {
-  const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false)
-  const [editingTransaction, setEditingTransaction] = useState<TransactionDateListItem | null>(null)
-  const [transactionFormMode, setTransactionFormMode] = useState<TransactionFormMode>('create')
-  const [transactionType, setTransactionType] = useState<TransactionType>('expense')
+  const txForm = useCalendarTransactionForm()
+
   const calendarDayAmounts = useCalendarStore((state) => state.calendarDayAmounts)
   const currentDate = useCalendarStore((state) => state.currentDate)
   const addCategory = useCalendarStore((state) => state.addCategory)
-  const addTransaction = useCalendarStore((state) => state.addTransaction)
   const deleteCategory = useCalendarStore((state) => state.deleteCategory)
-  const deleteTransaction = useCalendarStore((state) => state.deleteTransaction)
   const error = useCalendarStore((state) => state.error)
-  const expenseCategories = useCalendarStore((state) => state.expenseCategories)
-  const incomeCategories = useCalendarStore((state) => state.incomeCategories)
   const isLoading = useCalendarStore((state) => state.isLoading)
   const goNextMonth = useCalendarStore((state) => state.goNextMonth)
   const goPrevMonth = useCalendarStore((state) => state.goPrevMonth)
@@ -32,71 +24,15 @@ export default function CalendarContainer() {
   const monthlySummary = useCalendarStore((state) => state.monthlySummary)
   const selectedDate = useCalendarStore((state) => state.selectedDate)
   const selectDate = useCalendarStore((state) => state.selectDate)
-  const setSelectedDate = useCalendarStore((state) => state.setSelectedDate)
   const transactions = useCalendarStore((state) => state.transactions)
   const updateCategory = useCalendarStore((state) => state.updateCategory)
-  const updateTransaction = useCalendarStore((state) => state.updateTransaction)
+
   const selectedDateKey = selectedDate ? toDateKey(selectedDate) : ''
-  const selectedDateTransactions = transactions.filter(
-    (transaction) => transaction.date === selectedDateKey,
-  )
+  const selectedDateTransactions = transactions.filter((tx) => tx.date === selectedDateKey)
 
   useEffect(() => {
     void loadMonth()
   }, [loadMonth])
-
-  const prepareTransactionForm = (type: TransactionType, mode: TransactionFormMode, transaction?: TransactionDateListItem) => {
-    setTransactionType(type)
-    setTransactionFormMode(mode)
-    setEditingTransaction(transaction ?? null)
-    if (!selectedDate) {
-      setSelectedDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), 1))
-    }
-  }
-
-  const openTransactionForm = (type: TransactionType) => {
-    prepareTransactionForm(type, 'create')
-    setIsTransactionFormOpen(true)
-  }
-
-  const openTransactionEditor = (transaction: TransactionDateListItem) => {
-    if (transaction.type !== 'income' && transaction.type !== 'expense') {
-      return
-    }
-
-    prepareTransactionForm(transaction.type, 'edit', { ...transaction, type: transaction.type })
-    setIsTransactionFormOpen(true)
-  }
-
-  const activeCategories = transactionType === 'income' ? incomeCategories : expenseCategories
-  const initialCategoryId = editingTransaction
-    ? editingTransaction.categoryId ??
-      activeCategories.find((category) => category.name === editingTransaction.categoryName)?.id
-    : undefined
-
-  const closeTransactionForm = () => {
-    setIsTransactionFormOpen(false)
-    setEditingTransaction(null)
-  }
-
-  const saveTransaction = async (values: Parameters<typeof addTransaction>[1]) => {
-    if (transactionFormMode === 'edit' && editingTransaction) {
-      await updateTransaction(editingTransaction.id, values)
-    } else {
-      await addTransaction(transactionType, values)
-    }
-    closeTransactionForm()
-  }
-
-  const removeTransaction = async () => {
-    if (!editingTransaction) {
-      closeTransactionForm()
-      return
-    }
-
-    await deleteTransaction(editingTransaction.id)
-    closeTransactionForm()
-  }
 
   return (
     <section className="w-full self-start animate-fade-up">
@@ -134,11 +70,9 @@ export default function CalendarContainer() {
       </div>
 
       {selectedDate && (
-        <div
-          className="mt-4 rounded-[22px] border border-white/60 bg-white/45 p-4.5 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)] md:hidden"
-        >
+        <div className="mt-4 rounded-[22px] border border-white/60 bg-white/45 p-4.5 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)] md:hidden">
           <TransactionDateList
-            onSelectTransaction={openTransactionEditor}
+            onSelectTransaction={txForm.openEdit}
             selectedDate={selectedDate}
             transactions={selectedDateTransactions}
           />
@@ -155,11 +89,9 @@ export default function CalendarContainer() {
           />
         </div>
 
-        <aside
-          className="mt-9 min-h-80 rounded-[22px] border border-white/60 bg-white/45 px-5 py-5 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
-        >
+        <aside className="mt-9 min-h-80 rounded-[22px] border border-white/60 bg-white/45 px-5 py-5 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
           <TransactionDateList
-            onSelectTransaction={openTransactionEditor}
+            onSelectTransaction={txForm.openEdit}
             selectedDate={selectedDate}
             transactions={selectedDateTransactions}
           />
@@ -167,28 +99,28 @@ export default function CalendarContainer() {
       </div>
 
       <ResponsiveTransactionForm
-        categories={activeCategories}
-        expenseCategories={expenseCategories}
-        incomeCategories={incomeCategories}
-        initialAmount={editingTransaction?.amount}
-        initialCategoryId={initialCategoryId}
-        initialIsFixed={editingTransaction?.isFixed}
-        initialMemo={editingTransaction?.memo}
-        isOpen={isTransactionFormOpen}
-        mode={transactionFormMode}
-        onClose={closeTransactionForm}
+        categories={txForm.activeCategories}
+        expenseCategories={txForm.expenseCategories}
+        incomeCategories={txForm.incomeCategories}
+        initialAmount={txForm.editingTransaction?.amount}
+        initialCategoryId={txForm.initialCategoryId}
+        initialIsFixed={txForm.editingTransaction?.isFixed}
+        initialMemo={txForm.editingTransaction?.memo}
+        isOpen={txForm.isOpen}
+        mode={txForm.mode}
+        onClose={txForm.close}
         onCreateCategory={addCategory}
-        onDelete={removeTransaction}
+        onDelete={txForm.handleDelete}
         onDeleteCategory={deleteCategory}
-        onSave={saveTransaction}
+        onSave={txForm.handleSave}
         onUpdateCategory={updateCategory}
         selectedDate={selectedDate}
-        type={transactionType}
+        type={txForm.type}
       />
 
       <FloatingAddButton
-        onAddExpense={() => openTransactionForm('expense')}
-        onAddIncome={() => openTransactionForm('income')}
+        onAddExpense={() => txForm.openCreate('expense')}
+        onAddIncome={() => txForm.openCreate('income')}
       />
     </section>
   )
