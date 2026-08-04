@@ -2,8 +2,7 @@ import type { User } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useIsDesktop } from '../hooks/useIsDesktop'
-import CategoryManageBottomSheet from '../components/categories/CategoryManageBottomSheet'
-import CategoryManageModal from '../components/categories/CategoryManageModal'
+import ResponsiveCategoryManage from '../components/categories/ResponsiveCategoryManage'
 import BottomSheet from '../components/common/BottomSheet'
 import ConfirmModal from '../components/common/ConfirmModal'
 import FormModal from '../components/common/FormModal'
@@ -183,19 +182,10 @@ export default function MoreContainer() {
         <ThemeSelectContent onClose={() => setIsThemeOpen(false)} />
       </BottomSheet>
 
-      <CategoryManageModal
+      <ResponsiveCategoryManage
         expenseCategories={expenseCategories}
         incomeCategories={incomeCategories}
-        isOpen={isDesktop && isCategoryOpen}
-        onCreateCategory={addCategory}
-        onClose={() => setIsCategoryOpen(false)}
-        onDeleteCategory={deleteCategory}
-        onUpdateCategory={updateCategory}
-      />
-      <CategoryManageBottomSheet
-        expenseCategories={expenseCategories}
-        incomeCategories={incomeCategories}
-        isOpen={!isDesktop && isCategoryOpen}
+        isOpen={isCategoryOpen}
         onCreateCategory={addCategory}
         onClose={() => setIsCategoryOpen(false)}
         onDeleteCategory={deleteCategory}

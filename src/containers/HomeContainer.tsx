@@ -1,6 +1,5 @@
 import { useEffect, useMemo } from 'react'
-import MonthlyPromiseBottomSheet from '../components/calendar/MonthlyPromiseBottomSheet'
-import MonthlyPromiseModal from '../components/calendar/MonthlyPromiseModal'
+import ResponsiveMonthlyPromise from '../components/calendar/ResponsiveMonthlyPromise'
 import FloatingAddButton from '../components/common/FloatingAddButton'
 import MonthlyMoneySummary from '../components/statistics/MonthlyMoneySummary'
 import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
@@ -100,32 +99,17 @@ export default function HomeContainer() {
         type={txForm.type}
       />
 
-      <div className="hidden md:block">
-        <MonthlyPromiseModal
-          budgetAmount={promise.budgetAmount}
-          initialMode={promise.initialMode}
-          isOpen={promise.isEditOpen}
-          isRegistered={promise.isRegistered}
-          onClose={promise.closeEdit}
-          onDelete={promise.handleDelete}
-          onSave={promise.handleSave}
-          onUseIncomeBudget={promise.handleUseIncomeBudget}
-          totalIncome={totalIncome}
-        />
-      </div>
-      <div className="md:hidden">
-        <MonthlyPromiseBottomSheet
-          budgetAmount={promise.budgetAmount}
-          initialMode={promise.initialMode}
-          isOpen={promise.isEditOpen}
-          isRegistered={promise.isRegistered}
-          onClose={promise.closeEdit}
-          onDelete={promise.handleDelete}
-          onSave={promise.handleSave}
-          onUseIncomeBudget={promise.handleUseIncomeBudget}
-          totalIncome={totalIncome}
-        />
-      </div>
+      <ResponsiveMonthlyPromise
+        budgetAmount={promise.budgetAmount}
+        initialMode={promise.initialMode}
+        isOpen={promise.isEditOpen}
+        isRegistered={promise.isRegistered}
+        onClose={promise.closeEdit}
+        onDelete={promise.handleDelete}
+        onSave={promise.handleSave}
+        onUseIncomeBudget={promise.handleUseIncomeBudget}
+        totalIncome={totalIncome}
+      />
     </section>
   )
 }
