@@ -1,0 +1,99 @@
+import { useEffect, useMemo, useState } from 'react'
+import { useRecentMonthsTransactions } from './useRecentMonthsTransactions'
+import { useCalendarStore } from '../stores/calendarStore'
+import type { TransactionType } from '../types/finance'
+import {
+  getCategoryChangeRanking,
+  getCategoryRatio,
+  getLineChartData,
+  getPreviousMonthComparison,
+} from '../utils/statisticsCalculators'
+
+export type SelectedStatisticsTransaction = {
+  amount: number
+  categoryId: string
+  date: string
+  id: string
+  memo: string
+  type: TransactionType
+}
+
+export function useStatsPage() {
+  const [ratioType, setRatioType] = useState<TransactionType>('expense')
+  const [ratioSelectedCategoryId, setRatioSelectedCategoryId] = useState('')
+  const [selectedTransaction, setSelectedTransaction] = useState<SelectedStatisticsTransaction | null>(null)
+
+  const addCategory = useCalendarStore((state) => state.addCategory)
+  const currentDate = useCalendarStore((state) => state.currentDate)
+  const deleteCategory = useCalendarStore((state) => state.deleteCategory)
+  const deleteTransaction = useCalendarStore((state) => state.deleteTransaction)
+  const expenseCategories = useCalendarStore((state) => state.expenseCategories)
+  const goNextMonth = useCalendarStore((state) => state.goNextMonth)
+  const goPrevMonth = useCalendarStore((state) => state.goPrevMonth)
+  const incomeCategories = useCalendarStore((state) => state.incomeCategories)
+  const loadMonth = useCalendarStore((state) => state.loadMonth)
+  const transactions = useCalendarStore((state) => state.transactions)
+  const updateCategory = useCalendarStore((state) => state.updateCategory)
+  const updateTransaction = useCalendarStore((state) => state.updateTransaction)
+
+  const { monthsData, previousMonthData } = useRecentMonthsTransactions(currentDate)
+
+  const categoryTransactionRatio = useMemo(() => getCategoryRatio(transactions), [transactions])
+  const previousMonthComparison = useMemo(
+    () => getPreviousMonthComparison(transactions, previousMonthData),
+    [previousMonthData, transactions],
+  )
+  const categoryChangeRanking = useMemo(
+    () => getCategoryChangeRanking(transactions, previousMonthData),
+    [previousMonthData, transactions],
+  )
+  const spendingTransactionLineChart = useMemo(
+    () => getLineChartData(currentDate, monthsData),
+    [currentDate, monthsData],
+  )
+
+  useEffect(() => {
+    void loadMonth()
+  }, [loadMonth])
+
+  const activeCategories = selectedTransaction?.type === 'income' ? incomeCategories : expenseCategories
+
+  const closeTransaction = () => setSelectedTransaction(null)
+
+  const saveTransaction = async (values: Parameters<typeof updateTransaction>[1]) => {
+    if (!selectedTransaction) return
+    await updateTransaction(selectedTransaction.id, values)
+    closeTransaction()
+  }
+
+  const removeTransaction = async () => {
+    if (!selectedTransaction) return
+    await deleteTransaction(selectedTransaction.id)
+    closeTransaction()
+  }
+
+  return {
+    activeCategories,
+    addCategory,
+    categoryChangeRanking,
+    categoryTransactionRatio,
+    closeTransaction,
+    currentDate,
+    deleteCategory,
+    expenseCategories,
+    goNextMonth,
+    goPrevMonth,
+    incomeCategories,
+    previousMonthComparison,
+    ratioSelectedCategoryId,
+    ratioType,
+    removeTransaction,
+    saveTransaction,
+    selectedTransaction,
+    setRatioSelectedCategoryId,
+    setRatioType,
+    setSelectedTransaction,
+    spendingTransactionLineChart,
+    updateCategory,
+  }
+}
