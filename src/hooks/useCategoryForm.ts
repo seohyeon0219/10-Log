@@ -97,22 +97,28 @@ export function useCategoryForm({
   }
 
   return {
-    canSave,
-    deleteTarget,
-    editingCategoryId,
-    errorMessage,
+    del: {
+      onCancel: () => setDeleteTarget(null),
+      onConfirm: handleConfirmDelete,
+      onDelete: handleDeleteClick,
+      target: deleteTarget,
+    },
+    edit: {
+      id: editingCategoryId,
+      isEditing,
+      onEdit: handleEdit,
+    },
+    form: {
+      canSave,
+      errorMessage,
+      isSaving,
+      name,
+      onColorChange: setSelectedColor,
+      onNameChange: setName,
+      onReset: resetForm,
+      onSave: handleSave,
+      selectedColor,
+    },
     formSectionRef,
-    handleConfirmDelete,
-    handleDeleteClick,
-    handleEdit,
-    handleSave,
-    isEditing,
-    isSaving,
-    name,
-    resetForm,
-    selectedColor,
-    setDeleteTarget,
-    setName,
-    setSelectedColor,
   }
 }

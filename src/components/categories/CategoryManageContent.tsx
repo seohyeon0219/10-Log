@@ -44,34 +44,16 @@ export default function CategoryManageContent({
   onUpdateCategory,
 }: CategoryManageContentProps) {
   const [activeType, setActiveType] = useState<TransactionType>(initialType)
-  const {
-    canSave,
-    deleteTarget,
-    editingCategoryId,
-    errorMessage,
-    formSectionRef,
-    handleConfirmDelete,
-    handleDeleteClick,
-    handleEdit,
-    handleSave,
-    isEditing,
-    isSaving,
-    name,
-    resetForm,
-    selectedColor,
-    setDeleteTarget,
-    setName,
-    setSelectedColor,
-  } = useCategoryForm({ activeType, onClose, onCreateCategory, onDeleteCategory, onUpdateCategory })
+  const { del, edit, form, formSectionRef } = useCategoryForm({ activeType, onClose, onCreateCategory, onDeleteCategory, onUpdateCategory })
 
   const activeItems = activeType === 'expense' ? expenseCategories : incomeCategories
 
   return (
     <>
       <CategoryDeleteConfirm
-        category={deleteTarget}
-        onCancel={() => setDeleteTarget(null)}
-        onConfirm={handleConfirmDelete}
+        category={del.target}
+        onCancel={del.onCancel}
+        onConfirm={del.onConfirm}
       />
 
       {/* 지출 / 수입 토글 */}
@@ -84,9 +66,9 @@ export default function CategoryManageContent({
                 ? 'bg-white text-black shadow-[0_2px_8px_rgba(0,0,0,0.10)]'
                 : 'text-(--color-text-muted) hover:text-black',
             ].join(' ')}
-            disabled={isSaving}
+            disabled={form.isSaving}
             key={option.id}
-            onClick={() => { setActiveType(option.id); resetForm() }}
+            onClick={() => { setActiveType(option.id); form.onReset() }}
             type="button"
           >
             {option.label}
@@ -98,9 +80,9 @@ export default function CategoryManageContent({
       <section className="mb-6 grid gap-5" ref={formSectionRef}>
         <Input
           label="카테고리 이름"
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => form.onNameChange(e.target.value)}
           placeholder="예: 식비"
-          value={name}
+          value={form.name}
         />
 
         <fieldset className="m-0 border-0 p-0">
@@ -109,15 +91,15 @@ export default function CategoryManageContent({
             {categoryColors.map((color) => (
               <button
                 aria-label={`색상 ${color}`}
-                aria-pressed={selectedColor === color}
+                aria-pressed={form.selectedColor === color}
                 className={[
                   'h-9 w-9 cursor-pointer rounded-full transition-all duration-150',
-                  selectedColor === color
+                  form.selectedColor === color
                     ? 'scale-110 shadow-[0_0_0_2.5px_white,0_0_0_4.5px_black]'
                     : 'hover:scale-105 active:scale-95',
                 ].join(' ')}
                 key={color}
-                onClick={() => setSelectedColor(color)}
+                onClick={() => form.onColorChange(color)}
                 style={{ backgroundColor: color }}
                 type="button"
               />
@@ -130,25 +112,25 @@ export default function CategoryManageContent({
       <div className="flex gap-3">
         <button
           className="flex h-12 shrink-0 items-center justify-center rounded-full glass-button px-5 text-sm font-bold text-(--color-text-muted) transition disabled:opacity-30"
-          disabled={!isEditing && !name}
-          onClick={resetForm}
+          disabled={!edit.isEditing && !form.name}
+          onClick={form.onReset}
           type="button"
         >
           취소
         </button>
         <button
           className="h-12 flex-1 rounded-full bg-black text-sm font-bold text-white shadow-[0_4px_16px_rgba(0,0,0,0.18)] transition disabled:cursor-not-allowed disabled:opacity-35"
-          disabled={!canSave}
-          onClick={handleSave}
+          disabled={!form.canSave}
+          onClick={form.onSave}
           type="button"
         >
-          {isEditing ? '수정 저장' : '저장'}
+          {edit.isEditing ? '수정 저장' : '저장'}
         </button>
       </div>
 
-      {errorMessage && (
+      {form.errorMessage && (
         <p className="mt-3 text-sm font-semibold text-(--color-expense-red)" role="alert">
-          {errorMessage}
+          {form.errorMessage}
         </p>
       )}
 
@@ -170,7 +152,7 @@ export default function CategoryManageContent({
             <div
               className={[
                 'flex items-center gap-3 rounded-2xl px-4 transition-all duration-150',
-                editingCategoryId === category.id
+                edit.id === category.id
                   ? 'bg-black/6 ring-1 ring-black/10'
                   : 'interactive-row',
               ].join(' ')}
@@ -186,8 +168,8 @@ export default function CategoryManageContent({
               <button
                 aria-label={`${category.name} 수정`}
                 className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-(--color-text-muted) transition interactive-icon hover:text-black disabled:opacity-30"
-                disabled={isSaving}
-                onClick={() => handleEdit(category)}
+                disabled={form.isSaving}
+                onClick={() => edit.onEdit(category)}
                 type="button"
               >
                 <svg fill="none" height="16" viewBox="0 0 15 15" width="16">
@@ -197,8 +179,8 @@ export default function CategoryManageContent({
               <button
                 aria-label={`${category.name} 삭제`}
                 className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-(--color-text-muted) transition interactive-icon hover:text-(--color-expense-red) disabled:opacity-30"
-                disabled={isSaving}
-                onClick={() => handleDeleteClick(category)}
+                disabled={form.isSaving}
+                onClick={() => del.onDelete(category)}
                 type="button"
               >
                 <svg fill="none" height="16" viewBox="0 0 15 15" width="16">
