@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import IncomeExpenseToggle from '../common/IncomeExpenseToggle'
 import StatisticsCard from './StatisticsCard'
+import { getRateClassName } from '../../utils/formatters'
 import type { TransactionType } from '../../types/finance'
 
 type CategoryChangeItem = {
@@ -11,12 +12,6 @@ type CategoryChangeItem = {
 
 type CategoryChangeRankingProps = {
   items: Record<TransactionType, CategoryChangeItem[]>
-}
-
-const getRateClassName = (rate: number) => {
-  if (rate > 0) return 'text-(--color-income-blue)'
-  if (rate < 0) return 'text-(--color-expense-red)'
-  return 'text-gray-400'
 }
 
 export default function CategoryChangeRanking({ items }: CategoryChangeRankingProps) {

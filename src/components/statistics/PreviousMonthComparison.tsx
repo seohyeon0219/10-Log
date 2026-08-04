@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import StatisticsCard from './StatisticsCard'
-import { formatAmount } from '../../utils/formatters'
+import { formatAmount, getRateClassName } from '../../utils/formatters'
 
 type PreviousMonthComparisonItem = {
   currentValue: number
@@ -13,12 +13,6 @@ type PreviousMonthComparisonItem = {
 
 type PreviousMonthComparisonProps = {
   items: PreviousMonthComparisonItem[]
-}
-
-const getRateClassName = (rate: number) => {
-  if (rate > 0) return 'text-(--color-income-blue)'
-  if (rate < 0) return 'text-(--color-expense-red)'
-  return 'text-gray-400'
 }
 
 export default function PreviousMonthComparison({ items }: PreviousMonthComparisonProps) {
