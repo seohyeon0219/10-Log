@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import type { ReactNode } from 'react'
 import StatisticsCard from './StatisticsCard'
 import { formatWon } from '../../utils/formatters'
@@ -21,15 +22,19 @@ export default function MonthlyMoneySummary({
   showRemainingBudget = false,
   spentAmount,
 }: MonthlyMoneySummaryProps) {
-  const netRemaining = budgetAmount - spentAmount
-  const remainingAmount = Math.max(netRemaining, 0)
-  const isOverBudget = netRemaining < 0
-  const usagePercent = budgetAmount > 0 ? Math.min(Math.round((spentAmount / budgetAmount) * 100), 999) : 0
-  const dailyRecommendedAmount = remainingDays > 0 && remainingAmount > 0
-    ? Math.floor(remainingAmount / remainingDays)
-    : 0
-  const progressWidth = `${Math.min(usagePercent, 100)}%`
-  const isEmpty = showRemainingBudget && budgetAmount === 0
+  const { netRemaining, isOverBudget, dailyRecommendedAmount, progressWidth, isEmpty } = useMemo(() => {
+    const net = budgetAmount - spentAmount
+    const remaining = Math.max(net, 0)
+    const percent = budgetAmount > 0 ? Math.min(Math.round((spentAmount / budgetAmount) * 100), 999) : 0
+    return {
+      netRemaining: net,
+      isOverBudget: net < 0,
+      usagePercent: percent,
+      dailyRecommendedAmount: remainingDays > 0 && remaining > 0 ? Math.floor(remaining / remainingDays) : 0,
+      progressWidth: `${Math.min(percent, 100)}%`,
+      isEmpty: showRemainingBudget && budgetAmount === 0,
+    }
+  }, [budgetAmount, spentAmount, remainingDays, showRemainingBudget])
 
   const cardContent = showRemainingBudget ? (
     <>
