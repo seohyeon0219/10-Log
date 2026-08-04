@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
+import { BREAKPOINTS } from '../constants/breakpoints'
 
-const DESKTOP_QUERY = '(min-width: 768px)'
+const DESKTOP_QUERY = `(min-width: ${BREAKPOINTS.md}px)`
 
 export function useIsDesktop() {
   const [isDesktop, setIsDesktop] = useState(() => window.matchMedia(DESKTOP_QUERY).matches)
