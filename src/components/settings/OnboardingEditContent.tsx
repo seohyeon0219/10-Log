@@ -16,7 +16,7 @@ type Props = {
 
 function SectionHeader({ children }: { children: string }) {
   return (
-    <div className="mb-4 border-t border-black/6 pt-6">
+    <div className="mt-6 mb-4 border-t border-black/6 pt-6">
       <p className="text-sm font-bold text-black">{children}</p>
     </div>
   )
