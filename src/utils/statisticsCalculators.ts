@@ -76,33 +76,24 @@ export const getPreviousMonthComparison = (
 
   return [
     {
-      details: [
-        { label: '수입', value: current.income },
-        { label: '고정수입', value: current.fixedIncome },
-        { isEmphasized: true, label: '총수입', value: currentIncome },
-      ],
+      currentValue: currentIncome,
       id: 'income',
       label: '수입',
+      previousValue: previousIncome,
       rate: getRate(currentIncome, previousIncome),
     },
     {
-      details: [
-        { label: '지출', value: current.expense },
-        { label: '고정지출', value: current.fixedExpense },
-        { isEmphasized: true, label: '총지출', value: currentExpense },
-      ],
+      currentValue: currentExpense,
       id: 'expense',
       label: '지출',
+      previousValue: previousExpense,
       rate: getRate(currentExpense, previousExpense),
     },
     {
-      details: [
-        { label: '총수입', value: currentIncome },
-        { label: '총지출', value: currentExpense },
-        { isEmphasized: true, label: '잔액', value: currentBalance },
-      ],
+      currentValue: currentBalance,
       id: 'balance',
       label: '잔액',
+      previousValue: previousBalance,
       rate: getRate(currentBalance, previousBalance),
     },
   ]
