@@ -7,7 +7,6 @@ import SpendingTransactionLineChart from '../components/statistics/SpendingTrans
 import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
 import { useRecentMonthsTransactions } from '../hooks/useRecentMonthsTransactions'
 import { useCalendarStore } from '../stores/calendarStore'
-import { useStatisticsStore } from '../stores/statisticsStore'
 import type { TransactionType } from '../types/finance'
 import {
   getCategoryChangeRanking,
@@ -28,6 +27,8 @@ type SelectedStatisticsTransaction = {
 export default function StatsContainer() {
   const [selectedStatisticsTransaction, setSelectedStatisticsTransaction] =
     useState<SelectedStatisticsTransaction | null>(null)
+  const [ratioType, setRatioType] = useState<TransactionType>('expense')
+  const [ratioSelectedCategoryId, setRatioSelectedCategoryId] = useState('')
   const addCategory = useCalendarStore((state) => state.addCategory)
   const currentDate = useCalendarStore((state) => state.currentDate)
   const goNextMonth = useCalendarStore((state) => state.goNextMonth)
@@ -40,11 +41,7 @@ export default function StatsContainer() {
   const transactions = useCalendarStore((state) => state.transactions)
   const updateCategory = useCalendarStore((state) => state.updateCategory)
   const updateTransaction = useCalendarStore((state) => state.updateTransaction)
-  const ratioType = useStatisticsStore((state) => state.ratioType)
-  const ratioSelectedCategoryId = useStatisticsStore((state) => state.ratioSelectedCategoryId)
-  const setRatioType = useStatisticsStore((state) => state.setRatioType)
-  const setRatioSelectedCategoryId = useStatisticsStore((state) => state.setRatioSelectedCategoryId)
-  const { monthsData, previousMonthData } = useRecentMonthsTransactions(currentDate)
+const { monthsData, previousMonthData } = useRecentMonthsTransactions(currentDate)
   const categoryTransactionRatio = useMemo(() => getCategoryRatio(transactions), [transactions])
   const previousMonthComparison = useMemo(
     () => getPreviousMonthComparison(transactions, previousMonthData),
