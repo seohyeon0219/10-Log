@@ -1,7 +1,7 @@
 import IncomeExpenseToggle from '../common/IncomeExpenseToggle'
 import StatisticsCard from './StatisticsCard'
 import type { TransactionType } from '../../types/finance'
-import { formatWon } from '../../utils/formatters'
+import { formatMonthDay, formatWon } from '../../utils/formatters'
 
 type CategoryTransaction = {
   amount: number
@@ -46,11 +46,6 @@ const getDonutGradient = (items: CategoryRatioItem[], totalAmount: number) => {
       return `${item.color} ${start}% ${end}%`
     })
     .join(', ')
-}
-
-const formatDate = (dateStr: string) => {
-  const parts = dateStr.split('-')
-  return `${parseInt(parts[1])}월 ${parseInt(parts[2])}일`
 }
 
 export default function CategoryTransactionRatio({
@@ -160,7 +155,7 @@ export default function CategoryTransactionRatio({
                   />
                   <span className="min-w-0 flex-1">
                     <span className="block text-[13px] font-bold text-black">
-                      {formatDate(tx.date)}
+                      {formatMonthDay(tx.date)}
                     </span>
                     {tx.memo ? (
                       <span className="block truncate text-[11.5px] text-(--color-text-sand)">

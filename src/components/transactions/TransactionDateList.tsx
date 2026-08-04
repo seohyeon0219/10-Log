@@ -1,5 +1,5 @@
 import type { TransactionType } from '../../types/finance'
-import { formatWon } from '../../utils/formatters'
+import { formatMonthDay, formatWon } from '../../utils/formatters'
 
 export type TransactionDateListItem = {
   amount: number
@@ -36,7 +36,7 @@ export default function TransactionDateList({
     <>
       <div className="flex items-center justify-between gap-2">
         <p className="text-[14px] font-extrabold text-black">
-          {selectedDate.getMonth() + 1}월 {selectedDate.getDate()}일 내역
+          {formatMonthDay(selectedDate)} 내역
         </p>
       </div>
 
