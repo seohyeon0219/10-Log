@@ -18,19 +18,24 @@ const AREAS: { value: SaveArea; label: string }[] = [
   { value: 'other', label: '기타' },
 ]
 
+const MAX_SELECT = 3
+
 export default function StepSaveAreas({ answers, onChange }: Props) {
   const toggle = (value: SaveArea) => {
-    const next = answers.saveAreas.includes(value)
-      ? answers.saveAreas.filter((v) => v !== value)
-      : [...answers.saveAreas, value]
-    onChange('saveAreas', next)
+    const current = answers.saveAreas
+    if (current.includes(value)) {
+      onChange('saveAreas', current.filter((v) => v !== value))
+    } else if (current.length < MAX_SELECT) {
+      onChange('saveAreas', [...current, value])
+    }
   }
 
   return (
     <div className="flex flex-col gap-2.5">
-      {AREAS.map(({ value, label }) => (
+{AREAS.map(({ value, label }) => (
         <OnboardingCardOption
           key={value}
+          disabled={!answers.saveAreas.includes(value) && answers.saveAreas.length >= MAX_SELECT}
           label={label}
           onClick={() => toggle(value)}
           selected={answers.saveAreas.includes(value)}

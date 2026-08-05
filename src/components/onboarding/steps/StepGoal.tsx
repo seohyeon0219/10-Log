@@ -33,7 +33,7 @@ export default function StepGoal({ answers, onChange }: Props) {
 
   return (
     <div className="flex flex-col gap-2.5">
-      {GOALS.map(({ value, label }) => (
+{GOALS.map(({ value, label }) => (
         <OnboardingCardOption
           key={value}
           disabled={!selected.includes(value) && selected.length >= MAX_SELECT}

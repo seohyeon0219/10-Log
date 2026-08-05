@@ -1,7 +1,7 @@
 import OnboardingCardOption from '../OnboardingCardOption'
 import type { OnboardingAnswers, ReportContent } from '../../../types/onboarding'
 
-const MAX_SELECT = 5
+const MAX_SELECT = 3
 
 type Props = {
   answers: OnboardingAnswers
@@ -30,10 +30,7 @@ export default function StepReportContent({ answers, onChange }: Props) {
 
   return (
     <div className="flex flex-col gap-2.5">
-      <p className="mb-1 text-xs font-semibold text-(--color-text-muted)">
-        {answers.reportContents.length} / {MAX_SELECT} 선택
-      </p>
-      {CONTENTS.map(({ value, label }) => {
+{CONTENTS.map(({ value, label }) => {
         const selected = answers.reportContents.includes(value)
         return (
           <OnboardingCardOption
