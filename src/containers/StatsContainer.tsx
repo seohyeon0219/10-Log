@@ -10,7 +10,7 @@ export default function StatsContainer() {
   const stats = useStatsPage()
 
   return (
-    <section className="w-full self-start animate-fade-up md:mt-6 md:min-h-80">
+    <section className="w-full self-start animate-fade-up md:mt-4 md:min-h-80">
       <div className="mb-4 md:hidden">
         <CalendarMonthHeader
           currentDate={stats.currentDate}
@@ -19,7 +19,7 @@ export default function StatsContainer() {
         />
       </div>
 
-      <div className="md:mt-5">
+      <div>
         <CategoryTransactionRatio
           items={stats.categoryTransactionRatio}
           onRatioTypeChange={stats.setRatioType}

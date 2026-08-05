@@ -38,7 +38,7 @@ export default function MoreContainer() {
   const initial = displayName[0]?.toUpperCase() ?? '?'
 
   return (
-    <section className="w-full self-start animate-fade-up md:mt-6 md:min-h-80">
+    <section className="w-full self-start animate-fade-up md:mt-4 md:min-h-80">
       {/* 프로필 */}
       <div className="mb-2 flex items-center gap-4 rounded-2xl border border-white/60 bg-(--color-glass-white) px-5 py-5 backdrop-blur-sm">
         {avatarUrl ? (
