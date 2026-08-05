@@ -100,6 +100,7 @@ export default function StepIntro({ onNext }: Props) {
               initial={{ opacity: 0, y: 16 }}
               onClick={onNext}
               transition={{ duration: 0.45, ease: 'easeOut' }}
+              whileTap={{ scale: 0.96 }}
               type="button"
             >
               답하러 가기
