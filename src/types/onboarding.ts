@@ -40,7 +40,7 @@ export interface OnboardingAnswers {
   name: string
   gender: Gender | null
   ageRange: AgeRange | null
-  spendingGoal: SpendingGoal | null
+  spendingGoals: SpendingGoal[]
   customGoal: string
   saveAreas: SaveArea[]
   spendingValue: SpendingValue | null
@@ -52,7 +52,7 @@ export const INITIAL_ANSWERS: OnboardingAnswers = {
   name: '',
   gender: null,
   ageRange: null,
-  spendingGoal: null,
+  spendingGoals: [],
   customGoal: '',
   saveAreas: [],
   spendingValue: null,

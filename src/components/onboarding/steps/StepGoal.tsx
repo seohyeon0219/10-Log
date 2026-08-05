@@ -18,19 +18,32 @@ const GOALS: { value: SpendingGoal; label: string }[] = [
   { value: 'custom', label: '직접 입력' },
 ]
 
+const MAX_SELECT = 3
+
 export default function StepGoal({ answers, onChange }: Props) {
+  const selected = answers.spendingGoals
+
+  const toggle = (value: SpendingGoal) => {
+    if (selected.includes(value)) {
+      onChange('spendingGoals', selected.filter((v) => v !== value))
+    } else if (selected.length < MAX_SELECT) {
+      onChange('spendingGoals', [...selected, value])
+    }
+  }
+
   return (
     <div className="flex flex-col gap-2.5">
       {GOALS.map(({ value, label }) => (
         <OnboardingCardOption
           key={value}
+          disabled={!selected.includes(value) && selected.length >= MAX_SELECT}
           label={label}
-          onClick={() => onChange('spendingGoal', value)}
-          selected={answers.spendingGoal === value}
+          onClick={() => toggle(value)}
+          selected={selected.includes(value)}
         />
       ))}
 
-      {answers.spendingGoal === 'custom' && (
+      {selected.includes('custom') && (
         <div className="mt-1">
           <Input
             autoFocus

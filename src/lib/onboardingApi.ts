@@ -11,7 +11,7 @@ type ProfileRow = {
   report_contents: string[]
   report_style: string | null
   save_areas: string[]
-  spending_goal: string | null
+  spending_goals: string[]
   spending_value: string | null
 }
 
@@ -38,7 +38,7 @@ export const saveOnboardingAnswers = async (answers: OnboardingAnswers): Promise
       report_contents: answers.reportContents,
       report_style: answers.reportStyle,
       save_areas: answers.saveAreas,
-      spending_goal: answers.spendingGoal,
+      spending_goals: answers.spendingGoals,
       spending_value: answers.spendingValue,
       user_id: userId,
     },
@@ -52,7 +52,7 @@ export const getOnboardingAnswers = async (): Promise<OnboardingAnswers | null> 
   const { data, error } = await supabase
     .from('user_profiles')
     .select(
-      'name, gender, age_range, spending_goal, custom_goal, save_areas, spending_value, report_contents, report_style',
+      'name, gender, age_range, spending_goals, custom_goal, save_areas, spending_value, report_contents, report_style',
     )
     .maybeSingle<ProfileRow>()
 
@@ -67,7 +67,7 @@ export const getOnboardingAnswers = async (): Promise<OnboardingAnswers | null> 
     reportContents: (data.report_contents as OnboardingAnswers['reportContents']) ?? [],
     reportStyle: (data.report_style as OnboardingAnswers['reportStyle']) ?? null,
     saveAreas: (data.save_areas as OnboardingAnswers['saveAreas']) ?? [],
-    spendingGoal: (data.spending_goal as OnboardingAnswers['spendingGoal']) ?? null,
+    spendingGoals: (data.spending_goals as OnboardingAnswers['spendingGoals']) ?? [],
     spendingValue: (data.spending_value as OnboardingAnswers['spendingValue']) ?? null,
   }
 }
