@@ -1,3 +1,5 @@
+-- push_token, notification_hour를 user_profiles에서 제거
+-- notification_settings 별도 테이블로 분리됨 (20260805002000 참고)
 alter table public.user_profiles
-  add column if not exists push_token text,
-  add column if not exists notification_hour integer check (notification_hour in (9, 21, 23));
+  drop column if exists push_token,
+  drop column if exists notification_hour;
