@@ -39,8 +39,6 @@ export default function MoreContainer() {
 
   return (
     <section className="w-full self-start animate-fade-up md:mt-6 md:min-h-80">
-      <h2 className="mb-4 hidden text-xl font-bold text-black md:mb-5 md:block">더보기</h2>
-
       {/* 프로필 */}
       <div className="mb-2 flex items-center gap-4 rounded-2xl border border-white/60 bg-(--color-glass-white) px-5 py-5 backdrop-blur-sm">
         {avatarUrl ? (

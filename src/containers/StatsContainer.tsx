@@ -11,7 +11,6 @@ export default function StatsContainer() {
 
   return (
     <section className="w-full self-start animate-fade-up md:mt-6 md:min-h-80">
-      <h2 className="mb-4 hidden text-xl font-bold text-black md:mb-0 md:block">통계</h2>
       <div className="mb-4 md:hidden">
         <CalendarMonthHeader
           currentDate={stats.currentDate}
