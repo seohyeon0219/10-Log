@@ -1,3 +1,5 @@
+import type { TransactionType } from '../../types/finance'
+
 export type TransactionFormMode = 'create' | 'edit'
 
 export const transactionFormTextByType: Record<
