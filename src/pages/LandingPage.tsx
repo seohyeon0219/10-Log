@@ -3,16 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { getOnboardingCompleted } from '../lib/onboardingApi'
 import { supabase } from '../lib/supabase'
+import { BLOB_GRADIENT, LANDING_GRADIENT } from '../constants/landing'
 
 type Phase = 'intro' | 'revealed'
-
-const blobStyle = {
-  background: 'linear-gradient(160deg, rgba(250,243,226,0.65) 0%, rgba(169,201,255,0.7) 45%, rgba(24,99,220,0.88) 100%)',
-  backdropFilter: 'blur(28px) saturate(180%)',
-  WebkitBackdropFilter: 'blur(28px) saturate(180%)',
-  boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.75), 0 8px 40px rgba(24,99,220,0.35)',
-  border: '0px solid rgba(255,255,255,0.6)',
-} as const
 
 export default function LandingPage() {
   const navigate = useNavigate()
@@ -77,7 +70,7 @@ export default function LandingPage() {
   return (
     <main
       className="relative flex min-h-dvh flex-col"
-      style={{ background: 'linear-gradient(160deg, #faf3e2 0%, #fdf9ef 35%, #e4eeff 68%, #c8dcff 100%)' }}
+      style={{ background: LANDING_GRADIENT }}
     >
 
       {/* 인트로 블롭: 납작한 타원형 */}
@@ -87,7 +80,7 @@ export default function LandingPage() {
             layoutId="morphing-blob"
             className="absolute left-1/2 z-20 -translate-x-1/2 rounded-[50%]"
             style={{
-              ...blobStyle,
+              ...BLOB_GRADIENT,
               bottom: '-75px',
               width: '150vw',
               height: '300px',
@@ -125,7 +118,7 @@ export default function LandingPage() {
               animate={{ filter: 'blur(0px)' }}
               className="relative h-24 w-24 overflow-hidden rounded-full"
               initial={{ filter: 'blur(10px)' }}
-              style={blobStyle}
+              style={BLOB_GRADIENT}
               transition={{
                 layout: { duration: 1.5, ease: [0.34, 1.56, 0.64, 1] },
                 filter: { duration: 0.8, delay: 0.25, ease: 'easeOut' },
