@@ -59,7 +59,6 @@ function LandingRoute({ children }: { children: ReactNode }) {
 // 미로그인 → / 으로
 function OnboardingRoute({ children }: { children: ReactNode }) {
   const { session, onboardingCompleted } = useAuthGuard()
-
   if (session === undefined) return null
   if (!session) return <Navigate to="/" replace />
   if (onboardingCompleted === undefined) return null
