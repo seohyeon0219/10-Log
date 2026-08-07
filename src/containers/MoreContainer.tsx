@@ -63,7 +63,12 @@ export default function MoreContainer() {
         <MenuGroupDivider />
         <MenuItem label="화면 테마" onClick={() => setIsThemeOpen(true)} />
         <MenuGroupDivider />
-        <MenuItem label="알림 설정" onClick={() => {}} />
+        <MenuItem
+          label="알림 설정"
+          onClick={() => {
+            window.ReactNativeWebView?.postMessage(JSON.stringify({ type: 'OPEN_NOTIFICATION_SETTINGS' }))
+          }}
+        />
         <MenuGroupDivider />
         <MenuItem label="계정 관리" onClick={() => {}} />
         <MenuGroupDivider />
