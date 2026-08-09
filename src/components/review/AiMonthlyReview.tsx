@@ -20,16 +20,18 @@ type Props = {
 }
 
 export default function AiMonthlyReview({ monthLabel = '이번 달' }: Props) {
-  const [items, setItems] = useState<string[]>(FALLBACK_ITEMS)
+  const [items, setItems] = useState<string[] | null>(null)
 
   useEffect(() => {
     getOnboardingAnswers()
       .then((answers) => {
         if (answers && answers.reportContents.length > 0) {
           setItems(answers.reportContents.map((c) => CONTENT_LABELS[c]))
+        } else {
+          setItems(FALLBACK_ITEMS)
         }
       })
-      .catch(() => {})
+      .catch(() => setItems(FALLBACK_ITEMS))
   }, [])
 
   return (
@@ -52,7 +54,7 @@ export default function AiMonthlyReview({ monthLabel = '이번 달' }: Props) {
           한 달에 한 번, 내가 작성한 소비내역을 바탕으로 맞춤 리포트를 보내드려요.
         </p>
         <ul className="mt-3 grid gap-2">
-          {items.map((item) => (
+          {items?.map((item) => (
             <li key={item} className="flex items-center gap-2.5 text-[13px] font-semibold text-(--color-dark-gray)">
               <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-black/25" />
               {item}
