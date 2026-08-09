@@ -135,7 +135,7 @@ export default function CategoryTransactionRatio({
           {selectedItem.transactions.length === 0 ? (
             <p className="mt-3 text-[13px] text-(--color-text-sand)">이 카테고리의 내역이 없어요.</p>
           ) : (
-            <div className="mt-2.5 grid gap-1.5">
+            <div className="mt-2.5 grid max-h-64 gap-1.5 overflow-y-auto">
               {selectedItem.transactions.map((tx) => (
                 <button
                   key={tx.id}
