@@ -28,3 +28,4 @@ dist-ssr
 design_handoff/
 .vercel
 .env*
+docs/audit-*.md
