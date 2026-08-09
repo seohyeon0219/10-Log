@@ -74,17 +74,28 @@ Deno.serve(async (req) => {
   })
   const expoData = await expoRes.json()
 
+  const tickets: { status: string; details?: { error?: string } }[] =
+    Array.isArray(expoData?.data) ? expoData.data : []
+
   const sentAt = now.toISOString()
   await Promise.all(
-    toSend.map((s) =>
-      supabase
+    toSend.map((s, i) => {
+      const ticket = tickets[i]
+      // 앱 삭제 등으로 token이 무효화된 경우 push_token 정리
+      if (ticket?.status === 'error' && ticket?.details?.error === 'DeviceNotRegistered') {
+        return supabase
+          .from('notification_settings')
+          .update({ push_token: null })
+          .eq('user_id', s.user_id)
+      }
+      return supabase
         .from('notification_settings')
         .update({ last_sent_at: sentAt })
         .eq('user_id', s.user_id)
-    ),
+    }),
   )
 
-  return Response.json({ sent: toSend.length, tickets: expoData })
+  return Response.json({ sent: toSend.length, tickets })
 })
 
 function toUserDate(date: Date, timezone: string): Date {
