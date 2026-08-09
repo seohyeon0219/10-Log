@@ -50,3 +50,29 @@ supabase secrets set CRON_SECRET=<위에서_생성한_값>
 ## 6. Expo 푸시 알림
 
 별도 설정 불필요. Expo Push API(`https://exp.host/--/api/v2/push/send`)를 직접 호출하는 구조라 서드파티 키가 필요 없음.
+
+## 7. 대시보드 수동 설정 (파일로 관리 불가)
+
+### Google OAuth
+
+Authentication → Providers → Google에서 설정.
+
+1. [Google Cloud Console](https://console.cloud.google.com)에서 OAuth 2.0 클라이언트 생성
+2. Client ID / Client Secret 입력
+3. 승인된 리디렉션 URI에 Supabase 콜백 URL 추가:
+   `https://<PROJECT_REF>.supabase.co/auth/v1/callback`
+
+### Redirect URLs
+
+Authentication → URL Configuration → Redirect URLs에 아래 추가:
+
+```
+http://localhost:5173/**
+http://localhost:5175/**
+https://*-seohyeon0219s-projects.vercel.app/**
+tenlog://auth-callback
+exp://localhost:8081/--/auth-callback
+exp://127.0.0.1:8081/--/auth-callback
+```
+
+> 실제 기기 테스트 시 `exp://<현재_로컬_IP>:8081/--/auth-callback` 형태로 그때그때 추가.
