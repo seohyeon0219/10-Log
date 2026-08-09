@@ -70,7 +70,7 @@ export default function SpendingTransactionLineChart({ data }: SpendingTransacti
 
   return (
     <StatisticsCard title="최근 6개월 흐름">
-      <div className="mt-4 grid gap-1.5">
+      <div className="mt-4 grid gap-2">
         <div className="flex items-center justify-between">
           <span className="flex items-center gap-1.5 text-xs font-semibold text-gray-400">
             <span className="h-2.5 w-2.5 rounded-sm bg-(--color-income-blue)" />
@@ -95,7 +95,7 @@ export default function SpendingTransactionLineChart({ data }: SpendingTransacti
         </div>
       </div>
 
-      <div className="mt-3" ref={containerRef}>
+      <div className="mt-4" ref={containerRef}>
         <svg
           className="w-full overflow-visible"
           height={chartHeight}
