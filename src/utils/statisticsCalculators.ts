@@ -128,8 +128,10 @@ export const getCategoryChangeRanking = (
 
     return Array.from(currentMap.entries())
       .map(([id, item]) => ({
+        currentAmount: item.amount,
         id,
         label: item.label,
+        previousAmount: previousMap.get(id) ?? 0,
         rate: getRate(item.amount, previousMap.get(id) ?? 0),
       }))
       .sort((a, b) => Math.abs(b.rate) - Math.abs(a.rate))
