@@ -23,16 +23,14 @@ function useAuthGuard() {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
       setSession(session)
+      if (!session) setOnboardingCompleted(undefined)
     })
 
     return () => subscription.unsubscribe()
   }, [])
 
   useEffect(() => {
-    if (!session) {
-      setOnboardingCompleted(undefined)
-      return
-    }
+    if (!session) return
     getOnboardingCompleted()
       .then(setOnboardingCompleted)
       .catch(() => setOnboardingCompleted(false))
