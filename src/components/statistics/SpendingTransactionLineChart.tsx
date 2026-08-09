@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import StatisticsCard from './StatisticsCard'
+import { formatAmount } from '../../utils/formatters'
 import type { TransactionType } from '../../types/finance'
 
 type BarChartPoint = {
@@ -33,6 +34,7 @@ const getAxisLabel = (amount: number) => {
 export default function SpendingTransactionLineChart({ data }: SpendingTransactionLineChartProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [chartWidth, setChartWidth] = useState(360)
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -68,15 +70,29 @@ export default function SpendingTransactionLineChart({ data }: SpendingTransacti
 
   return (
     <StatisticsCard title="최근 6개월 흐름">
-      <div className="mt-4 flex items-center gap-4">
-        <span className="flex items-center gap-1.5 text-xs font-semibold text-gray-400">
-          <span className="h-2.5 w-2.5 rounded-sm bg-(--color-income-blue)" />
-          수입
-        </span>
-        <span className="flex items-center gap-1.5 text-xs font-semibold text-gray-400">
-          <span className="h-2.5 w-2.5 rounded-sm bg-(--color-expense-red)" />
-          지출
-        </span>
+      <div className="mt-4 grid gap-1.5">
+        <div className="flex items-center justify-between">
+          <span className="flex items-center gap-1.5 text-xs font-semibold text-gray-400">
+            <span className="h-2.5 w-2.5 rounded-sm bg-(--color-income-blue)" />
+            수입
+          </span>
+          {selectedIndex !== null && (
+            <span className="text-xs font-bold text-(--color-income-blue)">
+              {formatAmount(data.income[selectedIndex]?.amount ?? 0)}원
+            </span>
+          )}
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="flex items-center gap-1.5 text-xs font-semibold text-gray-400">
+            <span className="h-2.5 w-2.5 rounded-sm bg-(--color-expense-red)" />
+            지출
+          </span>
+          {selectedIndex !== null && (
+            <span className="text-xs font-bold text-(--color-expense-red)">
+              {formatAmount(data.expense[selectedIndex]?.amount ?? 0)}원
+            </span>
+          )}
+        </div>
       </div>
 
       <div className="mt-3" ref={containerRef}>
@@ -118,14 +134,28 @@ export default function SpendingTransactionLineChart({ data }: SpendingTransacti
             const expenseAmount = data.expense[i]?.amount ?? 0
             const incomeH = getBarH(incomeAmount)
             const expenseH = getBarH(expenseAmount)
+            const isSelected = selectedIndex === i
+            const barOpacity = selectedIndex === null || isSelected ? 1 : 0.35
 
             return (
-              <g key={month}>
+              <g key={month} style={{ cursor: 'pointer' }} onClick={() => setSelectedIndex(isSelected ? null : i)}>
+                {/* 선택 배경 */}
+                {isSelected && (
+                  <rect
+                    fill="rgba(0,0,0,0.05)"
+                    height={plotHeight + plotTop}
+                    rx="6"
+                    width={groupWidth - barPad}
+                    x={groupX - barPad / 2}
+                    y={0}
+                  />
+                )}
                 {/* 수입 바 (파랑) */}
                 {incomeAmount > 0 && (
                   <rect
                     fill="var(--color-income-blue)"
                     height={incomeH}
+                    opacity={barOpacity}
                     rx="3"
                     width={barWidth}
                     x={groupX}
@@ -137,6 +167,7 @@ export default function SpendingTransactionLineChart({ data }: SpendingTransacti
                   <rect
                     fill="var(--color-expense-red)"
                     height={expenseH}
+                    opacity={barOpacity}
                     rx="3"
                     width={barWidth}
                     x={groupX + barWidth + barGap}
@@ -145,7 +176,7 @@ export default function SpendingTransactionLineChart({ data }: SpendingTransacti
                 )}
                 {/* X축 월 라벨 */}
                 <text
-                  fill="#9ca3af"
+                  fill={isSelected ? '#111111' : '#9ca3af'}
                   fontSize="10"
                   fontWeight="700"
                   textAnchor="middle"
@@ -154,6 +185,14 @@ export default function SpendingTransactionLineChart({ data }: SpendingTransacti
                 >
                   {month}
                 </text>
+                {/* 클릭 투명 영역 */}
+                <rect
+                  fill="transparent"
+                  height={chartHeight}
+                  width={groupWidth}
+                  x={plotLeft + i * groupWidth}
+                  y={0}
+                />
               </g>
             )
           })}
