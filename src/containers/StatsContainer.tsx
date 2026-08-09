@@ -30,7 +30,7 @@ export default function StatsContainer() {
         />
       </div>
 
-      <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)]">
+      <div className="mt-4 grid gap-4 md:grid-cols-2">
         <PreviousMonthComparison items={stats.previousMonthComparison} />
         <CategoryChangeRanking items={stats.categoryChangeRanking} />
       </div>
