@@ -19,7 +19,7 @@ function pickRandom<T>(arr: T[]): T {
 
 Deno.serve(async (req) => {
   const cronSecret = Deno.env.get('CRON_SECRET')
-  if (cronSecret && req.headers.get('x-cron-secret') !== cronSecret) {
+  if (!cronSecret || req.headers.get('x-cron-secret') !== cronSecret) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
