@@ -14,7 +14,6 @@ export function useCalendarTransactionForm() {
   const deleteTransaction = useCalendarStore((state) => state.deleteTransaction)
   const expenseCategories = useCalendarStore((state) => state.expenseCategories)
   const incomeCategories = useCalendarStore((state) => state.incomeCategories)
-  const currentDate = useCalendarStore((state) => state.currentDate)
   const selectedDate = useCalendarStore((state) => state.selectedDate)
   const setSelectedDate = useCalendarStore((state) => state.setSelectedDate)
   const updateTransaction = useCalendarStore((state) => state.updateTransaction)
