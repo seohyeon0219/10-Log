@@ -31,7 +31,7 @@ export function useCalendarTransactionForm() {
     setMode(newMode)
     setEditingTransaction(transaction ?? null)
     if (!selectedDate) {
-      setSelectedDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), 1))
+      setSelectedDate(new Date())
     }
   }
 
