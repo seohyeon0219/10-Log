@@ -1,7 +1,7 @@
 import IncomeExpenseToggle from '../common/IncomeExpenseToggle'
 import StatisticsCard from './StatisticsCard'
 import type { TransactionType } from '../../types/finance'
-import { formatMonthDay, formatWon } from '../../utils/formatters'
+import { formatAmount, formatMonthDay, formatWon } from '../../utils/formatters'
 
 type CategoryTransaction = {
   amount: number
@@ -90,10 +90,8 @@ export default function CategoryTransactionRatio({
           style={{ background: `conic-gradient(${donutGradient})` }}
         >
           <div className="absolute inset-6 grid place-items-center rounded-full bg-white/90 text-center">
-            <p className="text-base font-extrabold text-black">
-              {totalAmount > 0 && selectedItem
-                ? Math.round((selectedItem.amount / totalAmount) * 100)
-                : 0}k
+            <p className="text-base font-extrabold text-black leading-tight">
+              {selectedItem ? formatAmount(selectedItem.amount) : formatAmount(totalAmount)}
             </p>
           </div>
         </div>
