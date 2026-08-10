@@ -33,7 +33,7 @@ export default function MobileBottomNavigation() {
   return (
     <nav className="fixed right-0 bottom-0 left-0 z-40 md:hidden">
       <div
-        className="mx-3.5 mb-[calc(14px+env(safe-area-inset-bottom))] grid grid-cols-5 rounded-full border border-white/55 bg-[linear-gradient(135deg,rgba(255,255,255,0.78),rgba(255,255,255,0.55)_60%)] px-1.5 py-2.5 backdrop-blur-[26px] backdrop-saturate-190 shadow-[inset_0_1px_1px_rgba(255,255,255,0.7),inset_0_-6px_12px_rgba(0,0,0,0.05),0_12px_30px_rgba(0,0,0,0.10)]"
+        className="mx-3.5 mb-[calc(8px+env(safe-area-inset-bottom))] grid grid-cols-5 rounded-full border border-white/55 bg-[linear-gradient(135deg,rgba(255,255,255,0.78),rgba(255,255,255,0.55)_60%)] px-1.5 py-2.5 backdrop-blur-[26px] backdrop-saturate-190 shadow-[inset_0_1px_1px_rgba(255,255,255,0.7),inset_0_-6px_12px_rgba(0,0,0,0.05),0_12px_30px_rgba(0,0,0,0.10)]"
       >
         {tabs.map((tab) => {
           const isActive = tab.id === activeTabId
