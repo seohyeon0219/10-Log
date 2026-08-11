@@ -3,6 +3,7 @@ import CategoryChangeRanking from '../components/statistics/CategoryChangeRankin
 import CategoryTransactionRatio from '../components/statistics/CategoryTransactionRatio'
 import PreviousMonthComparison from '../components/statistics/PreviousMonthComparison'
 import SpendingTransactionLineChart from '../components/statistics/SpendingTransactionLineChart'
+import TransactionSearchCard from '../components/statistics/TransactionSearchCard'
 import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
 import { useStatsPage } from '../hooks/useStatsPage'
 
@@ -16,6 +17,14 @@ export default function StatsContainer() {
           currentDate={stats.currentDate}
           onNextMonth={stats.goNextMonth}
           onPrevMonth={stats.goPrevMonth}
+        />
+      </div>
+
+      <div className="mb-4">
+        <TransactionSearchCard
+          expenseCategories={stats.expenseCategories}
+          incomeCategories={stats.incomeCategories}
+          onSelectTransaction={stats.setSelectedTransaction}
         />
       </div>
 

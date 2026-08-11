@@ -219,6 +219,29 @@ export const getCalendarDayAmounts = (transactions: Transaction[]) =>
     return dayAmounts
   }, [])
 
+export const getTransactionsByFilter = async (
+  startDate: string,
+  endDate: string,
+  categoryIds?: string[],
+) => {
+  let query = supabase
+    .from('transactions')
+    .select('id, type, amount, memo, date, is_fixed, category_id, categories(id, name, color, type)')
+    .gte('date', startDate)
+    .lte('date', endDate)
+    .order('date', { ascending: false })
+    .order('created_at', { ascending: false })
+    .returns<TransactionRow[]>()
+
+  if (categoryIds && categoryIds.length > 0) {
+    query = query.in('category_id', categoryIds)
+  }
+
+  const { data, error } = await query
+  if (error) throw error
+  return data.map(mapTransaction)
+}
+
 export const getMonthlySummary = (transactions: Transaction[]): MonthlySummary =>
   transactions.reduce(
     (summary, transaction) => {
