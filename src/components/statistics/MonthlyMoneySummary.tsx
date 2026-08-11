@@ -40,7 +40,10 @@ export default function MonthlyMoneySummary({
     <>
       <p className="text-sm font-semibold text-gray-400">남은 예산</p>
       {budgetAmount === 0 ? (
-        <p className="mt-2 text-[28px] font-extrabold text-black/25">—</p>
+        <>
+          <p className="mt-2 text-[28px] font-extrabold text-black/25">—</p>
+          <p className="mt-1.5 text-xs font-semibold text-black/30">탭해서 예산을 설정해보세요</p>
+        </>
       ) : (
         <div className="mt-2 flex items-center justify-between gap-3">
           <p className={['text-[28px] font-extrabold', isOverBudget ? 'text-(--color-expense-red)' : 'text-black'].join(' ')}>
