@@ -2,6 +2,7 @@ import { useState } from 'react'
 import StatisticsCard from './StatisticsCard'
 import Button from '../common/Button'
 import Input from '../common/Input'
+import CategorySelect from '../categories/CategorySelect'
 import { getTransactionsByFilter } from '../../lib/financeApi'
 import { toDateKey } from '../../utils/dateUtils'
 import { formatMonthDay, formatWon } from '../../utils/formatters'
@@ -24,6 +25,11 @@ export default function TransactionSearchCard({ expenseCategories, incomeCategor
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+
+  const toggleCategory = (id: string) =>
+    setSelectedCategoryIds((prev) =>
+      prev.includes(id) ? prev.filter((v) => v !== id) : [...prev, id],
+    )
 
   const handleSearch = async () => {
     if (!startDate || !endDate) {
@@ -56,7 +62,6 @@ export default function TransactionSearchCard({ expenseCategories, incomeCategor
 
   return (
     <StatisticsCard>
-      {/* 드롭다운 헤더 */}
       <button
         className="flex w-full items-center justify-between"
         onClick={() => setIsOpen((prev) => !prev)}
@@ -70,7 +75,7 @@ export default function TransactionSearchCard({ expenseCategories, incomeCategor
         <div className="mt-5">
           {view === 'form' ? (
             <div className="grid gap-4">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2">
                 <Input
                   label="시작일"
                   max={endDate || today}
@@ -93,25 +98,17 @@ export default function TransactionSearchCard({ expenseCategories, incomeCategor
               ) : null}
 
               <div className="grid gap-4">
-                <CategoryGroup
+                <CategorySelect
                   categories={expenseCategories}
                   label="지출"
+                  onChange={toggleCategory}
                   selectedCategoryIds={selectedCategoryIds}
-                  onToggle={(id) =>
-                    setSelectedCategoryIds((prev) =>
-                      prev.includes(id) ? prev.filter((v) => v !== id) : [...prev, id],
-                    )
-                  }
                 />
-                <CategoryGroup
+                <CategorySelect
                   categories={incomeCategories}
                   label="수입"
+                  onChange={toggleCategory}
                   selectedCategoryIds={selectedCategoryIds}
-                  onToggle={(id) =>
-                    setSelectedCategoryIds((prev) =>
-                      prev.includes(id) ? prev.filter((v) => v !== id) : [...prev, id],
-                    )
-                  }
                 />
               </div>
 
@@ -206,53 +203,6 @@ export default function TransactionSearchCard({ expenseCategories, incomeCategor
         </div>
       )}
     </StatisticsCard>
-  )
-}
-
-function CategoryGroup({
-  categories,
-  label,
-  onToggle,
-  selectedCategoryIds,
-}: {
-  categories: Category[]
-  label: string
-  onToggle: (id: string) => void
-  selectedCategoryIds: string[]
-}) {
-  if (categories.length === 0) return null
-  return (
-    <div>
-      <p className="mb-2 text-xs font-bold text-gray-400">{label}</p>
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-        {categories.map((category) => {
-          const isSelected = selectedCategoryIds.includes(category.id)
-          return (
-            <button
-              key={category.id}
-              aria-pressed={isSelected}
-              className={[
-                'inline-flex min-h-11 min-w-0 cursor-pointer items-center gap-2 rounded-xl border border-white/60 bg-white/55 px-3 text-left text-sm transition',
-                isSelected ? 'font-bold' : 'font-semibold text-gray-500 hover:bg-white/70',
-              ].join(' ')}
-              onClick={() => onToggle(category.id)}
-              style={
-                isSelected
-                  ? {
-                      backgroundColor: `${category.color}18`,
-                      boxShadow: `inset 0 0 0 1.5px ${category.color}55`,
-                    }
-                  : undefined
-              }
-              type="button"
-            >
-              <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: category.color }} />
-              <span className="min-w-0 truncate">{category.name}</span>
-            </button>
-          )
-        })}
-      </div>
-    </div>
   )
 }
 

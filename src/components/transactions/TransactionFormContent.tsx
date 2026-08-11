@@ -109,7 +109,7 @@ export default function TransactionFormContent({
           categories={categories}
           onChange={setSelectedCategoryId}
           onManageCategories={categoryManageOverlay ? () => setIsCategoryManageOpen(true) : undefined}
-          selectedCategoryId={resolvedSelectedCategoryId}
+          selectedCategoryIds={[resolvedSelectedCategoryId]}
         />
 
         <div className="h-px bg-black/8" />
