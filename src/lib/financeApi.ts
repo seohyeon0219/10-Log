@@ -224,20 +224,21 @@ export const getTransactionsByFilter = async (
   endDate: string,
   categoryIds?: string[],
 ) => {
-  let query = supabase
+  const base = supabase
     .from('transactions')
     .select('id, type, amount, memo, date, is_fixed, category_id, categories(id, name, color, type)')
     .gte('date', startDate)
     .lte('date', endDate)
+
+  const filtered = categoryIds && categoryIds.length > 0
+    ? base.in('category_id', categoryIds)
+    : base
+
+  const { data, error } = await filtered
     .order('date', { ascending: false })
     .order('created_at', { ascending: false })
     .returns<TransactionRow[]>()
 
-  if (categoryIds && categoryIds.length > 0) {
-    query = query.in('category_id', categoryIds)
-  }
-
-  const { data, error } = await query
   if (error) throw error
   return data.map(mapTransaction)
 }
