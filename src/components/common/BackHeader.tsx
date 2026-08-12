@@ -16,7 +16,7 @@ export default function BackHeader({ to }: BackHeaderProps) {
   }
 
   return (
-    <header className="mb-4 flex items-center">
+    <header className="mb-4 flex h-12 items-center">
       <button
         className="flex items-center text-(--color-text-sand) transition active:opacity-60"
         onClick={handleBack}

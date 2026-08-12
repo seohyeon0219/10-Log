@@ -6,7 +6,7 @@ type SearchHeaderProps = {
 
 export default function SearchHeader({ onSearch }: SearchHeaderProps) {
   return (
-    <header className="flex items-center justify-end">
+    <header className="flex h-12 items-center justify-end">
       <button
         aria-label="소비내역 검색"
         className="flex h-9 w-9 items-center justify-center rounded-full transition active:opacity-50"
