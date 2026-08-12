@@ -130,7 +130,7 @@ export default function TransactionSearchCard({ expenseCategories, incomeCategor
               <div className="flex items-start justify-between gap-2">
                 <div>
                   <p className="text-sm font-semibold text-gray-400">{startDate} ~ {endDate}</p>
-                  <div className="mt-1 flex gap-4">
+                  <div className="mt-3 flex gap-4">
                     {totalExpense > 0 && (
                       <div>
                         <p className="text-xs font-semibold text-gray-400">지출</p>
