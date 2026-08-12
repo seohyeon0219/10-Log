@@ -78,7 +78,7 @@ export default function AssetsContainer() {
       ) : null}
 
       {/* 순자산 요약 카드 */}
-      {!isLoading && accounts.length > 0 && (
+      {!isLoading && (
         <div className="mb-4 rounded-[22px] border border-white/60 bg-white/45 p-5 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
           <p className="mb-1 text-xs font-semibold text-gray-500">순자산</p>
           <p
