@@ -23,7 +23,7 @@ export default function StatisticsCard({
             {eyebrow ? (
               <p className="text-sm font-semibold text-(--color-dark-gray)">{eyebrow}</p>
             ) : null}
-            {title ? <h3 className="mt-1 break-keep text-[15px] font-bold text-black">{title}</h3> : null}
+            {title ? <h3 className="break-keep text-[15px] font-bold text-black">{title}</h3> : null}
           </div>
           {action ? <div className="shrink-0 max-[380px]:mt-2 max-[380px]:justify-self-start">{action}</div> : null}
         </div>
