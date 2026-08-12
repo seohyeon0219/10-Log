@@ -8,7 +8,7 @@ export default function ReportDetailContainer() {
 
   return (
     <section className="w-full self-start animate-fade-up md:mt-4 md:min-h-80">
-      <BackHeader to="/app/reports" />
+      <BackHeader title={monthLabel} to="/app/reports" />
       <AiMonthlyReview monthLabel={monthLabel} />
     </section>
   )

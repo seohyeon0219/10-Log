@@ -75,7 +75,7 @@ export default function SearchContainer() {
 
   return (
     <section className="w-full self-start animate-fade-up">
-      <BackHeader />
+      <BackHeader title="검색" />
 
       <SearchBar
         expenseCategories={expenseCategories}

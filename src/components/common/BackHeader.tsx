@@ -1,10 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 
 type BackHeaderProps = {
+  title?: string
   to?: string
 }
 
-export default function BackHeader({ to }: BackHeaderProps) {
+export default function BackHeader({ title, to }: BackHeaderProps) {
   const navigate = useNavigate()
 
   const handleBack = () => {
@@ -16,8 +17,9 @@ export default function BackHeader({ to }: BackHeaderProps) {
   }
 
   return (
-    <header className="mb-4 flex h-12 items-center">
+    <header className="mb-4 flex h-12 items-center gap-2">
       <button
+        aria-label="뒤로 가기"
         className="flex items-center text-(--color-text-sand) transition active:opacity-60"
         onClick={handleBack}
         type="button"
@@ -32,6 +34,7 @@ export default function BackHeader({ to }: BackHeaderProps) {
           />
         </svg>
       </button>
+      {title && <h1 className="text-xl font-bold text-black">{title}</h1>}
     </header>
   )
 }
