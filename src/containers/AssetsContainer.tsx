@@ -90,6 +90,10 @@ export default function AssetsContainer() {
             {netWorth < 0 ? '-' : ''}{formatWon(Math.abs(netWorth))}
           </p>
 
+          {(assets > 0 || liabilities > 0) && (
+            <NetWorthBar assets={assets} liabilities={liabilities} />
+          )}
+
           <div className="mt-4 grid grid-cols-2 gap-3">
             <div>
               <p className="mb-1 text-xs font-semibold text-gray-500">자산 합계</p>
@@ -161,6 +165,33 @@ export default function AssetsContainer() {
         onSave={handleSave}
       />
     </section>
+  )
+}
+
+function NetWorthBar({ assets, liabilities }: { assets: number; liabilities: number }) {
+  const total = assets + liabilities
+  const assetsWidth = total > 0 ? `${Math.round((assets / total) * 100)}%` : '100%'
+  const liabilitiesWidth = total > 0 ? `${Math.round((liabilities / total) * 100)}%` : '0%'
+  const debtRatio = assets > 0 ? Math.round((liabilities / assets) * 100) : null
+
+  return (
+    <div className="mt-3">
+      <div className="flex h-1.5 overflow-hidden rounded-full bg-black/6">
+        <div
+          className="h-full rounded-l-full bg-(--color-income-blue) transition-all duration-500"
+          style={{ width: assetsWidth }}
+        />
+        <div
+          className="h-full rounded-r-full bg-(--color-expense-red) transition-all duration-500"
+          style={{ width: liabilitiesWidth }}
+        />
+      </div>
+      {debtRatio !== null && (
+        <p className="mt-1.5 text-xs font-semibold text-gray-400">
+          부채비율 {debtRatio}%
+        </p>
+      )}
+    </div>
   )
 }
 
