@@ -1,7 +1,7 @@
 import { PlusIcon } from '@heroicons/react/24/outline'
 import { ACCOUNT_TYPE_CONFIG } from '../../types/account'
 import type { Account } from '../../types/account'
-import { formatWon } from '../../utils/formatters'
+import { formatMonthDay, formatWon } from '../../utils/formatters'
 
 type Props = {
   accounts: Account[]
@@ -41,7 +41,11 @@ export default function AccountSection({ accounts, className = '', onAdd, onEdit
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block text-[13px] font-bold text-black">{account.name}</span>
-                {account.memo ? (
+                {account.type === 'investment' ? (
+                  <span className="block text-[11.5px] text-(--color-text-sand)">
+                    {formatMonthDay(account.balanceAsOf)} 기준
+                  </span>
+                ) : account.memo ? (
                   <span className="block truncate text-[11.5px] text-(--color-text-sand)">
                     {account.memo}
                   </span>

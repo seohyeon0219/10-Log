@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { PlusIcon } from '@heroicons/react/24/outline'
 import type { Account, AccountFormValues } from '../types/account'
 import { useAccountStore } from '../stores/accountStore'
@@ -150,9 +151,9 @@ export default function AssetsContainer() {
         />
       )}
 
-      <div className="mt-3">
+      <Link className="mt-3 block" to="/app/review">
         <AiMonthlyReview />
-      </div>
+      </Link>
 
       <ResponsiveAccountForm
         defaultIsLiability={defaultIsLiability}
