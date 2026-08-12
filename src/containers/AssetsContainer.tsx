@@ -7,6 +7,7 @@ import { formatWon } from '../utils/formatters'
 import AccountSection from '../components/accounts/AccountSection'
 import NetWorthBar from '../components/accounts/NetWorthBar'
 import ResponsiveAccountForm from '../components/accounts/ResponsiveAccountForm'
+import AiMonthlyReview from '../components/review/AiMonthlyReview'
 
 export default function AssetsContainer() {
   const accounts = useAccountStore((state) => state.accounts)
@@ -148,6 +149,10 @@ export default function AssetsContainer() {
           title="부채"
         />
       )}
+
+      <div className="mt-3">
+        <AiMonthlyReview />
+      </div>
 
       <ResponsiveAccountForm
         defaultIsLiability={defaultIsLiability}

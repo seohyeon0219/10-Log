@@ -219,22 +219,30 @@ export const getCalendarDayAmounts = (transactions: Transaction[]) =>
     return dayAmounts
   }, [])
 
-export const getTransactionsByFilter = async (
-  startDate: string,
-  endDate: string,
-  categoryIds?: string[],
-) => {
-  const base = supabase
+export const getTransactionsByFilter = async ({
+  startDate,
+  endDate,
+  categoryIds,
+  memo,
+  isFixed,
+}: {
+  startDate?: string
+  endDate?: string
+  categoryIds?: string[]
+  memo?: string
+  isFixed?: boolean
+}) => {
+  let q = supabase
     .from('transactions')
     .select('id, type, amount, memo, date, is_fixed, category_id, categories(id, name, color, type)')
-    .gte('date', startDate)
-    .lte('date', endDate)
 
-  const filtered = categoryIds && categoryIds.length > 0
-    ? base.in('category_id', categoryIds)
-    : base
+  if (startDate) q = q.gte('date', startDate)
+  if (endDate) q = q.lte('date', endDate)
+  if (categoryIds?.length) q = q.in('category_id', categoryIds)
+  if (memo) q = q.ilike('memo', `%${memo}%`)
+  if (isFixed !== undefined) q = q.eq('is_fixed', isFixed)
 
-  const { data, error } = await filtered
+  const { data, error } = await q
     .order('date', { ascending: false })
     .order('created_at', { ascending: false })
     .returns<TransactionRow[]>()

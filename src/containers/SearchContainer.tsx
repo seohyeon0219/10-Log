@@ -1,18 +1,13 @@
 import { useState, useEffect } from 'react'
 import BackHeader from '../components/common/BackHeader'
-import Button from '../components/common/Button'
-import Input from '../components/common/Input'
-import CategorySelect from '../components/categories/CategorySelect'
 import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
+import SearchBar, { type SearchFilters } from '../components/search/SearchBar'
 import { getTransactionsByFilter, updateTransaction, deleteTransaction } from '../lib/financeApi'
-import { toDateKey } from '../utils/dateUtils'
 import { formatMonthDay, formatWon } from '../utils/formatters'
 import { useCalendarStore } from '../stores/calendarStore'
 import type { Transaction, TransactionFormValues } from '../types/finance'
 
 export default function SearchContainer() {
-  const today = toDateKey(new Date())
-
   const expenseCategories = useCalendarStore((state) => state.expenseCategories)
   const incomeCategories = useCalendarStore((state) => state.incomeCategories)
   const addCategory = useCalendarStore((state) => state.addCategory)
@@ -20,64 +15,46 @@ export default function SearchContainer() {
   const updateCategory = useCalendarStore((state) => state.updateCategory)
   const loadMonth = useCalendarStore((state) => state.loadMonth)
 
-  const [startDate, setStartDate] = useState('')
-  const [endDate, setEndDate] = useState(today)
-  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([])
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
   const [hasSearched, setHasSearched] = useState(false)
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
+  const [lastFilters, setLastFilters] = useState<SearchFilters | null>(null)
 
   useEffect(() => {
     void loadMonth()
   }, [loadMonth])
 
-  const toggleCategory = (id: string) =>
-    setSelectedCategoryIds((prev) =>
-      prev.includes(id) ? prev.filter((v) => v !== id) : [...prev, id],
-    )
-
-  const runSearch = async (start: string, end: string, categoryIds: string[]) => {
+  const runSearch = async (filters: SearchFilters) => {
     setIsLoading(true)
     try {
-      const results = await getTransactionsByFilter(
-        start,
-        end,
-        categoryIds.length > 0 ? categoryIds : undefined,
-      )
+      const results = await getTransactionsByFilter({
+        startDate: filters.startDate || undefined,
+        endDate: filters.endDate || undefined,
+        categoryIds: filters.categoryIds.length > 0 ? filters.categoryIds : undefined,
+        memo: filters.memo || undefined,
+        isFixed: filters.isFixed || undefined,
+      })
       setTransactions(results)
       setHasSearched(true)
+      setLastFilters(filters)
     } finally {
       setIsLoading(false)
     }
-  }
-
-  const handleSearch = async () => {
-    if (!startDate || !endDate) {
-      setError('시작일과 종료일을 입력해주세요.')
-      return
-    }
-    if (startDate > endDate) {
-      setError('시작일이 종료일보다 늦을 수 없어요.')
-      return
-    }
-    setError('')
-    await runSearch(startDate, endDate, selectedCategoryIds)
   }
 
   const handleSave = async (values: TransactionFormValues) => {
     if (!selectedTransaction) return
     await updateTransaction(selectedTransaction.id, values)
     setSelectedTransaction(null)
-    if (hasSearched) await runSearch(startDate, endDate, selectedCategoryIds)
+    if (lastFilters) await runSearch(lastFilters)
   }
 
   const handleDelete = async () => {
     if (!selectedTransaction) return
     await deleteTransaction(selectedTransaction.id)
     setSelectedTransaction(null)
-    if (hasSearched) await runSearch(startDate, endDate, selectedCategoryIds)
+    if (lastFilters) await runSearch(lastFilters)
   }
 
   const activeCategories =
@@ -100,48 +77,12 @@ export default function SearchContainer() {
     <section className="w-full self-start animate-fade-up">
       <BackHeader />
 
-      <div className="grid gap-4">
-        <div className="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2">
-          <Input
-            label="시작일"
-            max={endDate || today}
-            onChange={(e) => setStartDate(e.target.value)}
-            type="date"
-            value={startDate}
-          />
-          <Input
-            label="종료일"
-            max={today}
-            min={startDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            type="date"
-            value={endDate}
-          />
-        </div>
-
-        {error ? (
-          <p className="text-sm font-semibold text-(--color-expense-red)">{error}</p>
-        ) : null}
-
-        <div className="grid gap-4">
-          <CategorySelect
-            categories={expenseCategories}
-            label="지출"
-            onChange={toggleCategory}
-            selectedCategoryIds={selectedCategoryIds}
-          />
-          <CategorySelect
-            categories={incomeCategories}
-            label="수입"
-            onChange={toggleCategory}
-            selectedCategoryIds={selectedCategoryIds}
-          />
-        </div>
-
-        <Button disabled={isLoading} onClick={handleSearch}>
-          {isLoading ? '조회 중...' : '조회하기'}
-        </Button>
-      </div>
+      <SearchBar
+        expenseCategories={expenseCategories}
+        incomeCategories={incomeCategories}
+        isLoading={isLoading}
+        onSearch={runSearch}
+      />
 
       {hasSearched && (
         <div className="mt-6">
@@ -180,8 +121,8 @@ export default function SearchContainer() {
                   <div className="grid gap-1.5">
                     {grouped[date].map((tx) => (
                       <button
-                        key={tx.id}
                         className="flex w-full items-center gap-2 rounded-[14px] bg-black/4 px-3 py-2.5 text-left transition hover:bg-black/8"
+                        key={tx.id}
                         onClick={() => setSelectedTransaction(tx)}
                         type="button"
                       >
