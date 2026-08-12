@@ -9,6 +9,7 @@ import CalendarPage from '../pages/CalendarPage'
 import HomePage from '../pages/HomePage'
 import LandingPage from '../pages/LandingPage'
 import AssetsPage from '../pages/AssetsPage'
+import SearchPage from '../pages/SearchPage'
 import MorePage from '../pages/MorePage'
 import OnboardingPage from '../pages/OnboardingPage'
 import ProfileEditPage from '../pages/ProfileEditPage'
@@ -92,6 +93,7 @@ export default function AppRouter() {
           <Route path="assets" element={<AssetsPage />} />
           <Route path="review" element={<ReviewPage />} />
           <Route path="more" element={<MorePage />} />
+          <Route path="search" element={<SearchPage />} />
           <Route path="profile" element={<ProfileEditPage />} />
           <Route path="*" element={<Navigate to="home" replace />} />
         </Route>
