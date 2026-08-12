@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import AiMonthlyReview from '../components/review/AiMonthlyReview'
-import BackButton from '../components/common/BackButton'
+import BackHeader from '../components/common/BackHeader'
 import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
 
 export default function ReviewContainer() {
@@ -15,9 +15,7 @@ export default function ReviewContainer() {
 
   return (
     <section className="w-full self-start animate-fade-up md:mt-4 md:min-h-80">
-      <div className="mb-4">
-        <BackButton to="/app/assets" />
-      </div>
+      <BackHeader to="/app/assets" />
       <div className="mb-4 md:hidden">
         <CalendarMonthHeader
           currentDate={reviewMonth}
