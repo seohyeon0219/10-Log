@@ -42,7 +42,10 @@ export default function StatsContainer() {
       </div>
 
       <div className="mt-4">
-        <SpendingTransactionLineChart data={stats.spendingTransactionLineChart} />
+        <SpendingTransactionLineChart
+          data={stats.spendingTransactionLineChart}
+          lastYearExpense={stats.lastYearExpense}
+        />
       </div>
 
       {stats.selectedTransaction ? (

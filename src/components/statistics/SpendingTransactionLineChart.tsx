@@ -10,6 +10,7 @@ type BarChartPoint = {
 
 type SpendingTransactionLineChartProps = {
   data: Record<TransactionType, BarChartPoint[]>
+  lastYearExpense: BarChartPoint[]
 }
 
 const chartHeight = 200
@@ -31,10 +32,11 @@ const getAxisLabel = (amount: number) => {
   return amount.toLocaleString('ko-KR')
 }
 
-export default function SpendingTransactionLineChart({ data }: SpendingTransactionLineChartProps) {
+export default function SpendingTransactionLineChart({ data, lastYearExpense }: SpendingTransactionLineChartProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [chartWidth, setChartWidth] = useState(360)
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
+  const [showLastYear, setShowLastYear] = useState(false)
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -48,14 +50,18 @@ export default function SpendingTransactionLineChart({ data }: SpendingTransacti
   const months = data.income.map((d) => d.month)
   const N = months.length
   const maxAmount = getRoundedMaxAmount(
-    Math.max(...data.income.map((d) => d.amount), ...data.expense.map((d) => d.amount), 1),
+    Math.max(
+      ...data.income.map((d) => d.amount),
+      ...data.expense.map((d) => d.amount),
+      ...(showLastYear ? lastYearExpense.map((d) => d.amount) : []),
+      1,
+    ),
   )
 
   const plotWidth = chartWidth - plotLeft - plotRight
   const groupWidth = plotWidth / N
-  const barPad = groupWidth * 0.12
-  const barGap = 3
-  const barWidth = (groupWidth - barPad * 2 - barGap) / 2
+  const barPad = groupWidth * 0.2
+  const barWidth = groupWidth - barPad * 2
 
   const gridLines = [1, 0.5, 0].map((ratio) => ({
     amount: Math.round(maxAmount * ratio),
@@ -68,12 +74,38 @@ export default function SpendingTransactionLineChart({ data }: SpendingTransacti
   const getBarH = (amount: number) =>
     (amount / maxAmount) * plotHeight
 
+  const incomeLinePoints = data.income
+    .map((d, i) => {
+      const x = plotLeft + i * groupWidth + groupWidth / 2
+      const y = getBarY(d.amount)
+      return `${x},${y}`
+    })
+    .join(' ')
+
+  const toggle = (
+    <div className="inline-flex rounded-lg bg-black/5 p-0.5">
+      {([false, true] as const).map((lastYear) => (
+        <button
+          className={[
+            'rounded-md px-2.5 py-1 text-[11px] font-bold transition',
+            showLastYear === lastYear ? 'bg-white text-black shadow-sm' : 'text-gray-400',
+          ].join(' ')}
+          key={String(lastYear)}
+          onClick={() => { setShowLastYear(lastYear); setSelectedIndex(null) }}
+          type="button"
+        >
+          {lastYear ? '작년 대비' : '올해'}
+        </button>
+      ))}
+    </div>
+  )
+
   return (
-    <StatisticsCard title="최근 6개월 흐름">
+    <StatisticsCard action={toggle} title="지출 흐름">
       <div className="mt-4 grid gap-2">
         <div className="flex items-center justify-between">
           <span className="flex items-center gap-1.5 text-xs font-semibold text-gray-400">
-            <span className="h-2.5 w-2.5 rounded-sm bg-(--color-income-blue)" />
+            <span className="inline-block h-0.5 w-4 rounded-full bg-(--color-income-blue)" />
             수입
           </span>
           {selectedIndex !== null && (
@@ -93,6 +125,12 @@ export default function SpendingTransactionLineChart({ data }: SpendingTransacti
             </span>
           )}
         </div>
+        {showLastYear && (
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-400">
+            <span className="h-2.5 w-2.5 rounded-sm bg-gray-300" />
+            작년 같은 달
+          </div>
+        )}
       </div>
 
       <div className="mt-4" ref={containerRef}>
@@ -127,19 +165,18 @@ export default function SpendingTransactionLineChart({ data }: SpendingTransacti
             </g>
           ))}
 
-          {/* 바 */}
+          {/* 바 + 라벨 */}
           {months.map((month, i) => {
             const groupX = plotLeft + i * groupWidth + barPad
-            const incomeAmount = data.income[i]?.amount ?? 0
             const expenseAmount = data.expense[i]?.amount ?? 0
-            const incomeH = getBarH(incomeAmount)
+            const lastYearAmount = lastYearExpense[i]?.amount ?? 0
             const expenseH = getBarH(expenseAmount)
+            const lastYearH = getBarH(lastYearAmount)
             const isSelected = selectedIndex === i
             const barOpacity = selectedIndex === null || isSelected ? 1 : 0.35
 
             return (
-              <g key={month} style={{ cursor: 'pointer' }} onClick={() => setSelectedIndex(isSelected ? null : i)}>
-                {/* 선택 배경 */}
+              <g key={month} onClick={() => setSelectedIndex(isSelected ? null : i)} style={{ cursor: 'pointer' }}>
                 {isSelected && (
                   <rect
                     fill="rgba(0,0,0,0.05)"
@@ -150,19 +187,21 @@ export default function SpendingTransactionLineChart({ data }: SpendingTransacti
                     y={0}
                   />
                 )}
-                {/* 수입 바 (파랑) */}
-                {incomeAmount > 0 && (
+
+                {/* 작년 지출 바 (회색, 뒤) */}
+                {showLastYear && lastYearAmount > 0 && (
                   <rect
-                    fill="var(--color-income-blue)"
-                    height={incomeH}
+                    fill="#d1d5db"
+                    height={lastYearH}
                     opacity={barOpacity}
                     rx="3"
                     width={barWidth}
                     x={groupX}
-                    y={getBarY(incomeAmount)}
+                    y={getBarY(lastYearAmount)}
                   />
                 )}
-                {/* 지출 바 (빨강) */}
+
+                {/* 올해 지출 바 (빨강) */}
                 {expenseAmount > 0 && (
                   <rect
                     fill="var(--color-expense-red)"
@@ -170,21 +209,23 @@ export default function SpendingTransactionLineChart({ data }: SpendingTransacti
                     opacity={barOpacity}
                     rx="3"
                     width={barWidth}
-                    x={groupX + barWidth + barGap}
+                    x={groupX}
                     y={getBarY(expenseAmount)}
                   />
                 )}
+
                 {/* X축 월 라벨 */}
                 <text
                   fill={isSelected ? '#111111' : '#9ca3af'}
                   fontSize="10"
                   fontWeight="700"
                   textAnchor="middle"
-                  x={groupX + barWidth + barGap / 2}
+                  x={groupX + barWidth / 2}
                   y={chartHeight - 4}
                 >
                   {month}
                 </text>
+
                 {/* 클릭 투명 영역 */}
                 <rect
                   fill="transparent"
@@ -196,6 +237,29 @@ export default function SpendingTransactionLineChart({ data }: SpendingTransacti
               </g>
             )
           })}
+
+          {/* 수입 선 */}
+          <polyline
+            fill="none"
+            points={incomeLinePoints}
+            stroke="var(--color-income-blue)"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+          />
+
+          {/* 수입 점 */}
+          {data.income.map((d, i) => (
+            <circle
+              key={i}
+              cx={plotLeft + i * groupWidth + groupWidth / 2}
+              cy={getBarY(d.amount)}
+              fill="var(--color-income-blue)"
+              r={selectedIndex === i ? 4 : 3}
+              stroke="white"
+              strokeWidth="1.5"
+            />
+          ))}
         </svg>
       </div>
     </StatisticsCard>

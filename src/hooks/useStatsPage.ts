@@ -8,6 +8,7 @@ import {
   getLineChartData,
   getPreviousMonthComparison,
 } from '../utils/statisticsCalculators'
+import { getMonthDate } from '../utils/dateUtils'
 
 export type SelectedStatisticsTransaction = {
   amount: number
@@ -36,7 +37,9 @@ export function useStatsPage() {
   const updateCategory = useCalendarStore((state) => state.updateCategory)
   const updateTransaction = useCalendarStore((state) => state.updateTransaction)
 
-  const { monthsData, previousMonthData } = useRecentMonthsTransactions(currentDate)
+  const { monthsData, previousMonthData } = useRecentMonthsTransactions(currentDate, 6)
+  const lastYearDate = useMemo(() => getMonthDate(currentDate, -12), [currentDate])
+  const { monthsData: lastYearMonthsData } = useRecentMonthsTransactions(lastYearDate, 6)
 
   const categoryTransactionRatio = useMemo(() => getCategoryRatio(transactions), [transactions])
   const previousMonthComparison = useMemo(
@@ -50,6 +53,13 @@ export function useStatsPage() {
   const spendingTransactionLineChart = useMemo(
     () => getLineChartData(currentDate, monthsData),
     [currentDate, monthsData],
+  )
+  const lastYearExpense = useMemo(
+    () => lastYearMonthsData.map((txs, index) => ({
+      amount: txs.filter((t) => t.type === 'expense').reduce((s, t) => s + t.amount, 0),
+      month: `${getMonthDate(currentDate, index - 5).getMonth() + 1}월`,
+    })),
+    [currentDate, lastYearMonthsData],
   )
 
   useEffect(() => {
@@ -93,6 +103,7 @@ export function useStatsPage() {
     setRatioSelectedCategoryId,
     setRatioType,
     setSelectedTransaction,
+    lastYearExpense,
     spendingTransactionLineChart,
     updateCategory,
   }
