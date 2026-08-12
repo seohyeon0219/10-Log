@@ -46,7 +46,7 @@ export default function TransactionSearchCard({ expenseCategories, incomeCategor
     setError('')
     setIsLoading(true)
     try {
-      const results = await getTransactionsByFilter(startDate, endDate, selectedCategoryIds.length > 0 ? selectedCategoryIds : undefined)
+      const results = await getTransactionsByFilter({ startDate, endDate, categoryIds: selectedCategoryIds.length > 0 ? selectedCategoryIds : undefined })
       setTransactions(results)
       setView('results')
     } finally {
