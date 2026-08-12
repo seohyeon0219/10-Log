@@ -41,19 +41,11 @@ export default function AccountSection({ accounts, className = '', onAdd, onEdit
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block text-[13px] font-bold text-black">{account.name}</span>
-                {account.type === 'investment' ? (
-                  <span className="block text-[11.5px] text-(--color-text-sand)">
-                    {formatMonthDay(account.balanceAsOf)} 기준
-                  </span>
-                ) : account.memo ? (
-                  <span className="block truncate text-[11.5px] text-(--color-text-sand)">
-                    {account.memo}
-                  </span>
-                ) : (
-                  <span className="block text-[11.5px] text-(--color-text-sand)">
-                    {cfg.label}
-                  </span>
-                )}
+                <span className="block text-[11.5px] text-(--color-text-sand)">
+                  {account.type === 'investment'
+                    ? `${cfg.label} · ${formatMonthDay(account.balanceAsOf)} 기준`
+                    : cfg.label}
+                </span>
               </span>
               <span className="shrink-0 text-[13.5px] font-extrabold text-black">
                 {formatWon(account.balance)}
