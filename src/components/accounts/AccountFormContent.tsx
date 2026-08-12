@@ -10,6 +10,7 @@ import UnderInput from '../common/UnderInput'
 
 type Props = {
   initialValues?: Account
+  defaultIsLiability?: boolean
   onSave: (values: AccountFormValues) => Promise<void>
   onArchive?: () => Promise<void>
   onDelete?: () => Promise<void>
@@ -17,11 +18,11 @@ type Props = {
 
 const today = toDateKey(new Date())
 
-export default function AccountFormContent({ initialValues, onSave, onArchive, onDelete }: Props) {
+export default function AccountFormContent({ initialValues, defaultIsLiability = false, onSave, onArchive, onDelete }: Props) {
   const isEdit = Boolean(initialValues)
 
   const [type, setType] = useState<AccountType>(initialValues?.type ?? 'deposit')
-  const [isLiability, setIsLiability] = useState(initialValues?.isLiability ?? false)
+  const [isLiability, setIsLiability] = useState(initialValues?.isLiability ?? defaultIsLiability)
   const [name, setName] = useState(initialValues?.name ?? '')
   const [balanceRaw, setBalanceRaw] = useState(initialValues?.balance ? String(initialValues.balance) : '')
   const [balanceAsOf, setBalanceAsOf] = useState(initialValues?.balanceAsOf ?? today)

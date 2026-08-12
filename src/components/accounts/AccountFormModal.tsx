@@ -4,6 +4,7 @@ import type { Account, AccountFormValues } from '../../types/account'
 
 type Props = {
   editTarget: Account | null
+  defaultIsLiability?: boolean
   isOpen: boolean
   onArchive: (id: string) => Promise<void>
   onClose: () => void
@@ -13,6 +14,7 @@ type Props = {
 
 export default function AccountFormModal({
   editTarget,
+  defaultIsLiability,
   isOpen,
   onArchive,
   onClose,
@@ -28,6 +30,7 @@ export default function AccountFormModal({
       title={isEdit ? '자산 수정' : '자산 추가'}
     >
       <AccountFormContent
+        defaultIsLiability={defaultIsLiability}
         initialValues={editTarget ?? undefined}
         onArchive={editTarget ? () => onArchive(editTarget.id) : undefined}
         onDelete={editTarget ? () => onDelete(editTarget.id) : undefined}

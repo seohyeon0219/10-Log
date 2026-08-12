@@ -5,6 +5,7 @@ import type { Account, AccountFormValues } from '../../types/account'
 
 type Props = {
   editTarget: Account | null
+  defaultIsLiability?: boolean
   isOpen: boolean
   onArchive: (id: string) => Promise<void>
   onClose: () => void
