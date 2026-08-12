@@ -8,6 +8,7 @@ import AppLayout from '../layouts/AppLayout'
 import CalendarPage from '../pages/CalendarPage'
 import HomePage from '../pages/HomePage'
 import LandingPage from '../pages/LandingPage'
+import AssetsPage from '../pages/AssetsPage'
 import MorePage from '../pages/MorePage'
 import OnboardingPage from '../pages/OnboardingPage'
 import ProfileEditPage from '../pages/ProfileEditPage'
@@ -88,6 +89,7 @@ export default function AppRouter() {
           <Route path="home" element={<HomePage />} />
           <Route path="calendar" element={<CalendarPage />} />
           <Route path="stats" element={<StatsPage />} />
+          <Route path="assets" element={<AssetsPage />} />
           <Route path="review" element={<ReviewPage />} />
           <Route path="more" element={<MorePage />} />
           <Route path="profile" element={<ProfileEditPage />} />
