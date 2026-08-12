@@ -3,6 +3,7 @@ import CategoryChangeRanking from '../components/statistics/CategoryChangeRankin
 import CategoryTransactionRatio from '../components/statistics/CategoryTransactionRatio'
 import PreviousMonthComparison from '../components/statistics/PreviousMonthComparison'
 import SpendingTransactionLineChart from '../components/statistics/SpendingTransactionLineChart'
+import AiMonthlyReview from '../components/review/AiMonthlyReview'
 import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
 import { useStatsPage } from '../hooks/useStatsPage'
 
@@ -17,6 +18,10 @@ export default function StatsContainer() {
           onNextMonth={stats.goNextMonth}
           onPrevMonth={stats.goPrevMonth}
         />
+      </div>
+
+      <div className="mb-4">
+        <AiMonthlyReview monthLabel={`${stats.currentDate.getMonth() + 1}월`} />
       </div>
 
       <div>
