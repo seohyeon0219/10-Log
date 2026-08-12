@@ -11,6 +11,8 @@ import LandingPage from '../pages/LandingPage'
 import AssetsPage from '../pages/AssetsPage'
 import SearchPage from '../pages/SearchPage'
 import MorePage from '../pages/MorePage'
+import ReportsPage from '../pages/ReportsPage'
+import ReportDetailPage from '../pages/ReportDetailPage'
 import OnboardingPage from '../pages/OnboardingPage'
 import ProfileEditPage from '../pages/ProfileEditPage'
 import ReviewPage from '../pages/ReviewPage'
@@ -94,6 +96,8 @@ export default function AppRouter() {
           <Route path="review" element={<ReviewPage />} />
           <Route path="more" element={<MorePage />} />
           <Route path="search" element={<SearchPage />} />
+          <Route path="reports" element={<ReportsPage />} />
+          <Route path="reports/:year/:month" element={<ReportDetailPage />} />
           <Route path="profile" element={<ProfileEditPage />} />
           <Route path="*" element={<Navigate to="home" replace />} />
         </Route>

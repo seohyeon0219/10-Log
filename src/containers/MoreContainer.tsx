@@ -56,6 +56,8 @@ export default function MoreContainer() {
 
       <MenuGroup title="소비 관리">
         <MenuItem label="카테고리 관리" onClick={() => setIsCategoryOpen(true)} />
+        <MenuGroupDivider />
+        <MenuItem label="리포트 모아보기" onClick={() => void navigate('/app/reports')} />
       </MenuGroup>
 
       <MenuGroup title="설정">

@@ -5,12 +5,16 @@ import DesktopNav from '../components/navigation/DesktopNav'
 import MobileBottomNavigation from '../components/navigation/MobileBottomNavigation'
 import { THEME_GRADIENTS, useThemeStore } from '../stores/themeStore'
 
-const NO_NAV_ROUTES = ['/app/search', '/app/profile', '/app/review']
+const NO_NAV_ROUTES = ['/app/search', '/app/profile', '/app/review', '/app/reports']
+
+function isNoNavRoute(pathname: string) {
+  return NO_NAV_ROUTES.some((route) => pathname === route || pathname.startsWith(route + '/'))
+}
 
 export default function AppLayout() {
   const theme = useThemeStore((state) => state.theme)
   const { pathname } = useLocation()
-  const hideNav = NO_NAV_ROUTES.includes(pathname)
+  const hideNav = isNoNavRoute(pathname)
 
   useEffect(() => {
     document.documentElement.style.setProperty('--gradient-page-bg', THEME_GRADIENTS[theme])
