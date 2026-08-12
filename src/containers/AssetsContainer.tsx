@@ -169,28 +169,22 @@ export default function AssetsContainer() {
 }
 
 function NetWorthBar({ assets, liabilities }: { assets: number; liabilities: number }) {
-  const total = assets + liabilities
-  const assetsWidth = total > 0 ? `${Math.round((assets / total) * 100)}%` : '100%'
-  const liabilitiesWidth = total > 0 ? `${Math.round((liabilities / total) * 100)}%` : '0%'
-  const debtRatio = assets > 0 ? Math.round((liabilities / assets) * 100) : null
+  const netWorth = assets - liabilities
+  const equityRatio = assets > 0 ? Math.max(0, Math.min(100, Math.round((netWorth / assets) * 100))) : 0
+  const label =
+    assets === 0
+      ? '부채만 있어요'
+      : `${equityRatio}%만큼 내 자산이에요`
 
   return (
     <div className="mt-3">
-      <div className="flex h-1.5 overflow-hidden rounded-full bg-black/6">
+      <div className="h-1.5 overflow-hidden rounded-full bg-black/6">
         <div
-          className="h-full rounded-l-full bg-(--color-income-blue) transition-all duration-500"
-          style={{ width: assetsWidth }}
-        />
-        <div
-          className="h-full rounded-r-full bg-(--color-expense-red) transition-all duration-500"
-          style={{ width: liabilitiesWidth }}
+          className="h-full rounded-full bg-black/40 transition-all duration-500"
+          style={{ width: `${equityRatio}%` }}
         />
       </div>
-      {debtRatio !== null && (
-        <p className="mt-1.5 text-xs font-semibold text-gray-400">
-          부채비율 {debtRatio}%
-        </p>
-      )}
+      <p className="mt-1.5 text-xs font-semibold text-gray-400">{label}</p>
     </div>
   )
 }
