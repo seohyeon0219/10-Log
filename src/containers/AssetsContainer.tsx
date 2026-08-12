@@ -20,7 +20,7 @@ export default function AssetsContainer() {
 
   const [editTarget, setEditTarget] = useState<Account | null>(null)
   const [isFormOpen, setIsFormOpen] = useState(false)
-  const [defaultIsLiability, setDefaultIsLiability] = useState(false)
+  const [isLiability, setIsLiability] = useState(false)
 
   useEffect(() => {
     void loadAccounts()
@@ -31,13 +31,14 @@ export default function AssetsContainer() {
   const assetAccounts = accounts.filter((a) => !a.isLiability)
   const liabilityAccounts = accounts.filter((a) => a.isLiability)
 
-  const openAdd = (isLiability = false) => {
-    setDefaultIsLiability(isLiability)
+  const openAdd = (liability: boolean) => {
+    setIsLiability(liability)
     setEditTarget(null)
     setIsFormOpen(true)
   }
 
   const openEdit = (account: Account) => {
+    setIsLiability(account.isLiability)
     setEditTarget(account)
     setIsFormOpen(true)
   }
@@ -117,14 +118,24 @@ export default function AssetsContainer() {
           <p className="mt-1 text-[13px] font-medium text-gray-400">
             통장, 적금, 투자 계좌 등을 추가해보세요.
           </p>
-          <button
-            className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-black px-5 py-2.5 text-sm font-bold text-white shadow-[0_4px_16px_rgba(0,0,0,0.18)] transition hover:bg-gray-800"
-            onClick={() => openAdd(false)}
-            type="button"
-          >
-            <PlusIcon aria-hidden="true" className="h-4 w-4" />
-            자산 추가
-          </button>
+          <div className="mt-5 flex justify-center gap-2">
+            <button
+              className="inline-flex items-center gap-1.5 rounded-full bg-black px-5 py-2.5 text-sm font-bold text-white shadow-[0_4px_16px_rgba(0,0,0,0.18)] transition hover:bg-gray-800"
+              onClick={() => openAdd(false)}
+              type="button"
+            >
+              <PlusIcon aria-hidden="true" className="h-4 w-4" />
+              자산
+            </button>
+            <button
+              className="inline-flex items-center gap-1.5 rounded-full border border-black/10 bg-white/60 px-5 py-2.5 text-sm font-bold text-gray-600 transition hover:bg-white/80"
+              onClick={() => openAdd(true)}
+              type="button"
+            >
+              <PlusIcon aria-hidden="true" className="h-4 w-4" />
+              부채
+            </button>
+          </div>
         </div>
       )}
 
@@ -149,10 +160,9 @@ export default function AssetsContainer() {
         />
       )}
 
-
       <ResponsiveAccountForm
-        defaultIsLiability={defaultIsLiability}
         editTarget={editTarget}
+        isLiability={isLiability}
         isOpen={isFormOpen}
         onArchive={handleArchive}
         onClose={handleClose}

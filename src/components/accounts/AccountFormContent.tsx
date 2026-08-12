@@ -10,7 +10,7 @@ import UnderInput from '../common/UnderInput'
 
 type Props = {
   initialValues?: Account
-  defaultIsLiability?: boolean
+  isLiability: boolean
   onSave: (values: AccountFormValues) => Promise<void>
   onArchive?: () => Promise<void>
   onDelete?: () => Promise<void>
@@ -18,11 +18,10 @@ type Props = {
 
 const today = toDateKey(new Date())
 
-export default function AccountFormContent({ initialValues, defaultIsLiability = false, onSave, onArchive, onDelete }: Props) {
+export default function AccountFormContent({ initialValues, isLiability, onSave, onArchive, onDelete }: Props) {
   const isEdit = Boolean(initialValues)
 
   const [type, setType] = useState<AccountType>(initialValues?.type ?? 'deposit')
-  const [isLiability, setIsLiability] = useState(initialValues?.isLiability ?? defaultIsLiability)
   const [name, setName] = useState(initialValues?.name ?? '')
   const [balanceRaw, setBalanceRaw] = useState(initialValues?.balance ? String(initialValues.balance) : '')
   const [balanceAsOf, setBalanceAsOf] = useState(initialValues?.balanceAsOf ?? today)
@@ -115,26 +114,6 @@ export default function AccountFormContent({ initialValues, defaultIsLiability =
             })}
           </div>
         </fieldset>
-
-        {/* 자산 / 부채 */}
-        <div className="inline-flex w-full rounded-lg glass-panel p-1">
-          {([false, true] as const).map((liab) => (
-            <button
-              aria-pressed={isLiability === liab}
-              className={[
-                'min-h-8 flex-1 cursor-pointer rounded-md border-0 px-3 text-sm font-extrabold transition',
-                isLiability === liab ? 'bg-white/90 text-black shadow-sm' : 'bg-transparent text-gray-400',
-              ].join(' ')}
-              key={String(liab)}
-              onClick={() => setIsLiability(liab)}
-              type="button"
-            >
-              {liab ? '부채' : '자산'}
-            </button>
-          ))}
-        </div>
-
-        <div className="h-px bg-black/8" />
 
         <UnderInput
           label="이름"
