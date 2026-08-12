@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import StatisticsCard from './StatisticsCard'
 import Button from '../common/Button'
-import Input from '../common/Input'
 import CategorySelect from '../categories/CategorySelect'
 import { getTransactionsByFilter } from '../../lib/financeApi'
 import { toDateKey } from '../../utils/dateUtils'
@@ -75,22 +74,28 @@ export default function TransactionSearchCard({ expenseCategories, incomeCategor
         <div className="mt-5">
           {view === 'form' ? (
             <div className="grid gap-4">
-              <div className="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2">
-                <Input
-                  label="시작일"
-                  max={endDate || today}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  type="date"
-                  value={startDate}
-                />
-                <Input
-                  label="종료일"
-                  max={today}
-                  min={startDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  type="date"
-                  value={endDate}
-                />
+              <div className="flex divide-x divide-black/10 overflow-hidden rounded-2xl glass-input">
+                <div className="flex-1 px-3 py-2.5">
+                  <p className="text-xs font-semibold text-gray-500">시작일</p>
+                  <input
+                    className="mt-1 w-full bg-transparent text-sm font-medium text-black outline-none"
+                    max={endDate || today}
+                    onChange={(e) => setStartDate(e.target.value)}
+                    type="date"
+                    value={startDate}
+                  />
+                </div>
+                <div className="flex-1 px-3 py-2.5">
+                  <p className="text-xs font-semibold text-gray-500">종료일</p>
+                  <input
+                    className="mt-1 w-full bg-transparent text-sm font-medium text-black outline-none"
+                    max={today}
+                    min={startDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    type="date"
+                    value={endDate}
+                  />
+                </div>
               </div>
 
               {error ? (
