@@ -39,6 +39,10 @@ export default function TransactionSearchCard({ expenseCategories, incomeCategor
       setError('시작일이 종료일보다 늦을 수 없어요.')
       return
     }
+    if (selectedCategoryIds.length === 0) {
+      setError('카테고리를 하나 이상 선택해주세요.')
+      return
+    }
     setError('')
     setIsLoading(true)
     try {
