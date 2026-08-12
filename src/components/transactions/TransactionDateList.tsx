@@ -32,6 +32,9 @@ export default function TransactionDateList({
     )
   }
 
+  const totalIncome = transactions.reduce((s, t) => t.type === 'income' ? s + t.amount : s, 0)
+  const totalExpense = transactions.reduce((s, t) => t.type === 'expense' ? s + t.amount : s, 0)
+
   return (
     <>
       <div className="flex items-center justify-between gap-2">
@@ -39,6 +42,21 @@ export default function TransactionDateList({
           {formatMonthDay(selectedDate)} 내역
         </p>
       </div>
+
+      {transactions.length > 0 && (
+        <div className="mt-1.5 flex gap-3">
+          {totalIncome > 0 && (
+            <span className="text-xs font-semibold text-(--color-income-blue)">
+              수입 +{formatWon(totalIncome)}
+            </span>
+          )}
+          {totalExpense > 0 && (
+            <span className="text-xs font-semibold text-(--color-expense-red)">
+              지출 -{formatWon(totalExpense)}
+            </span>
+          )}
+        </div>
+      )}
 
       {transactions.length === 0 ? (
         <p className="mt-3 text-[13px] text-(--color-text-sand)">이 날의 기록이 아직 없어요.</p>
