@@ -5,7 +5,7 @@ type CalendarMonthHeaderProps = {
 }
 
 const glassButtonClassName =
-  'flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-white/65 bg-[linear-gradient(135deg,rgba(255,255,255,0.55),rgba(255,255,255,0.15)_55%)] backdrop-blur-[18px] backdrop-saturate-[180%] shadow-[inset_0_1px_1px_rgba(255,255,255,0.85),inset_0_-4px_8px_rgba(0,0,0,0.05),0_6px_16px_rgba(0,0,0,0.08)]'
+  'flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full transition active:opacity-50'
 
 export default function CalendarMonthHeader({
   currentDate,
