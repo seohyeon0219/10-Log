@@ -4,6 +4,7 @@ import CategoryTransactionRatio from '../components/statistics/CategoryTransacti
 import PreviousMonthComparison from '../components/statistics/PreviousMonthComparison'
 import SpendingTransactionLineChart from '../components/statistics/SpendingTransactionLineChart'
 import AiMonthlyReview from '../components/review/AiMonthlyReview'
+import { Link } from 'react-router-dom'
 import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
 import { useStatsPage } from '../hooks/useStatsPage'
 
@@ -20,9 +21,9 @@ export default function StatsContainer() {
         />
       </div>
 
-      <div className="mb-4">
+      <Link className="mb-4 block" to="/app/review">
         <AiMonthlyReview monthLabel={`${stats.currentDate.getMonth() + 1}월`} />
-      </div>
+      </Link>
 
       <div>
         <CategoryTransactionRatio

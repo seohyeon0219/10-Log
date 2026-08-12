@@ -5,7 +5,7 @@ import DesktopNav from '../components/navigation/DesktopNav'
 import MobileBottomNavigation from '../components/navigation/MobileBottomNavigation'
 import { THEME_GRADIENTS, useThemeStore } from '../stores/themeStore'
 
-const NO_NAV_ROUTES = ['/app/search', '/app/profile']
+const NO_NAV_ROUTES = ['/app/search', '/app/profile', '/app/review']
 
 export default function AppLayout() {
   const theme = useThemeStore((state) => state.theme)

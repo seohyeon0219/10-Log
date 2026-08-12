@@ -15,7 +15,7 @@ export default function ReviewContainer() {
 
   return (
     <section className="w-full self-start animate-fade-up md:mt-4 md:min-h-80">
-      <BackHeader to="/app/assets" />
+      <BackHeader to="/app/stats" />
       <div className="mb-4 md:hidden">
         <CalendarMonthHeader
           currentDate={reviewMonth}
