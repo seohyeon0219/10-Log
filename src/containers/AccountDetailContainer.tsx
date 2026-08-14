@@ -4,6 +4,7 @@ import { PlusIcon, MinusIcon, TrashIcon } from '@heroicons/react/24/outline'
 import BackHeader from '../components/common/BackHeader'
 import BottomSheet from '../components/common/BottomSheet'
 import Button from '../components/common/Button'
+import TransparentButton from '../components/common/TransparentButton'
 import ConfirmModal from '../components/common/ConfirmModal'
 import UnderInput from '../components/common/UnderInput'
 import ResponsiveAccountForm from '../components/accounts/ResponsiveAccountForm'
@@ -130,26 +131,16 @@ export default function AccountDetailContainer() {
 
       {/* 조정 기록 */}
       <div className="mb-3 rounded-[22px] border border-white/60 bg-white/45 p-5 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
-        <div className="mb-3 flex items-center justify-between">
-          <p className="text-sm font-bold text-black">조정 기록</p>
-          <div className="flex gap-1.5">
-            <button
-              aria-label="입금 추가"
-              className="flex h-7 w-7 items-center justify-center rounded-full bg-black/5 text-gray-500 transition hover:bg-black/10"
-              onClick={() => openAdd('+')}
-              type="button"
-            >
-              <PlusIcon className="h-3.5 w-3.5" />
-            </button>
-            <button
-              aria-label="출금 추가"
-              className="flex h-7 w-7 items-center justify-center rounded-full bg-black/5 text-gray-500 transition hover:bg-black/10"
-              onClick={() => openAdd('-')}
-              type="button"
-            >
-              <MinusIcon className="h-3.5 w-3.5" />
-            </button>
-          </div>
+        <p className="mb-3 text-sm font-bold text-black">조정 기록</p>
+        <div className="mb-3 grid grid-cols-2 gap-2">
+          <TransparentButton className="text-(--color-income-blue)" onClick={() => openAdd('+')}>
+            <PlusIcon className="h-4 w-4" />
+            입금
+          </TransparentButton>
+          <TransparentButton className="text-(--color-expense-red)" onClick={() => openAdd('-')}>
+            <MinusIcon className="h-4 w-4" />
+            출금
+          </TransparentButton>
         </div>
 
         {adjustments.length === 0 ? (
