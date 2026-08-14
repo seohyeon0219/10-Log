@@ -95,7 +95,7 @@ export default function AppRouter() {
           <Route path="stats" element={<StatsPage />} />
           <Route path="assets" element={<AssetsPage />} />
           <Route path="assets/:id" element={<AccountDetailPage />} />
-          <Route path="review" element={<ReviewPage />} />
+          <Route path="stats/review" element={<ReviewPage />} />
           <Route path="more" element={<MorePage />} />
           <Route path="search" element={<SearchPage />} />
           <Route path="reports" element={<ReportsPage />} />

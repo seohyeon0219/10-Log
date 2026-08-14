@@ -21,7 +21,7 @@ export default function StatsContainer() {
         />
       </div>
 
-      <Link className="mb-4 block" to="/app/review">
+      <Link className="mb-4 block" to="/app/stats/review">
         <AiMonthlyReview monthLabel={`${stats.currentDate.getMonth() + 1}월`} />
       </Link>
 
