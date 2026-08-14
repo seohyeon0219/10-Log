@@ -103,7 +103,7 @@ export default function SearchBar({
       <FixedToggle checked={isFixed} onChange={setIsFixed} />
 
       <Button disabled={isLoading} type="submit">
-        {isLoading ? '조회 중...' : '조회하기'}
+        {isLoading ? '검색 중...' : '검색'}
       </Button>
     </form>
   )

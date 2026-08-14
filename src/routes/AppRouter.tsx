@@ -10,6 +10,7 @@ import HomePage from '../pages/HomePage'
 import LandingPage from '../pages/LandingPage'
 import AssetsPage from '../pages/AssetsPage'
 import SearchPage from '../pages/SearchPage'
+import SearchResultsPage from '../pages/SearchResultsPage'
 import MorePage from '../pages/MorePage'
 import ReportsPage from '../pages/ReportsPage'
 import ReportDetailPage from '../pages/ReportDetailPage'
@@ -98,6 +99,7 @@ export default function AppRouter() {
           <Route path="stats/review" element={<ReviewPage />} />
           <Route path="more" element={<MorePage />} />
           <Route path="search" element={<SearchPage />} />
+          <Route path="search/results" element={<SearchResultsPage />} />
           <Route path="reports" element={<ReportsPage />} />
           <Route path="reports/:year/:month" element={<ReportDetailPage />} />
           <Route path="profile" element={<ProfileEditPage />} />

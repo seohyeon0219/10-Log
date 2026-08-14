@@ -122,7 +122,7 @@ export default function TransactionSearchCard({ expenseCategories, incomeCategor
               </div>
 
               <Button disabled={isLoading} onClick={handleSearch}>
-                {isLoading ? '조회 중...' : '조회하기'}
+                {isLoading ? '검색 중...' : '검색'}
               </Button>
             </div>
           ) : (
