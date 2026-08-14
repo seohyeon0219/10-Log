@@ -51,7 +51,7 @@ export default function HomeContainer() {
     <section className="flex w-full flex-1 flex-col self-start animate-fade-up md:flex-none md:mt-4">
       <SearchHeader onSearch={() => navigate('/app/search')} />
 
-      <div className="mt-8 shrink-0 text-center">
+      <div className="mt-3 shrink-0 text-center">
         <p className="text-[20px] font-bold tracking-[3px] text-(--color-text-sand)">
           {DAYS_EN[today.getDay()]}
         </p>
