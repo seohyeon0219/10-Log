@@ -63,7 +63,7 @@ export default function CalendarGrid({
   const selectedDateKey = selectedDate ? toDateKey(selectedDate) : ''
 
   return (
-    <section className="overflow-hidden rounded-[22px] border border-white/60 bg-white/40 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+    <section className="overflow-hidden rounded-[22px] glass-card shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
       <div className="grid grid-cols-7 px-2 pb-1 pt-4">
         {weekDays.map((weekDay) => (
           <div

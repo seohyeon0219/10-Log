@@ -70,7 +70,7 @@ export default function CalendarContainer() {
       </div>
 
       {selectedDate && (
-        <div className="mt-4 rounded-[22px] border border-white/60 bg-white/45 p-4.5 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)] md:hidden">
+        <div className="mt-4 rounded-[22px] glass-card p-4.5 shadow-[0_10px_30px_rgba(0,0,0,0.08)] md:hidden">
           <TransactionDateList
             onSelectTransaction={txForm.openEdit}
             selectedDate={selectedDate}
@@ -89,7 +89,7 @@ export default function CalendarContainer() {
           />
         </div>
 
-        <aside className="min-h-80 rounded-[22px] border border-white/60 bg-white/45 px-5 py-5 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+        <aside className="min-h-80 rounded-[22px] glass-card px-5 py-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
           <TransactionDateList
             onSelectTransaction={txForm.openEdit}
             selectedDate={selectedDate}

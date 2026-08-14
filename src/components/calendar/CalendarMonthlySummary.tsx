@@ -46,7 +46,7 @@ export default function CalendarMonthlySummary({
           : []
 
   return (
-    <section className="w-full rounded-[22px] border border-white/60 bg-white/45 my-5 p-4.5 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+    <section className="w-full rounded-[22px] glass-card my-5 p-4.5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
       <div className="grid grid-cols-3">
         <button
           type="button"

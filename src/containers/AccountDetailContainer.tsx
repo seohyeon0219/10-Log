@@ -103,7 +103,7 @@ export default function AccountDetailContainer() {
       <BackHeader title={account.name} to="/app/assets" />
 
       {/* 잔액 카드 */}
-      <div className="mb-3 rounded-[22px] border border-white/60 bg-white/45 p-5 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+      <div className="mb-3 rounded-[22px] glass-card p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
         <div className="mb-4 flex items-center gap-3">
           <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/5">
             <Icon aria-hidden="true" className="h-5 w-5 text-gray-600" />
@@ -142,7 +142,7 @@ export default function AccountDetailContainer() {
       </div>
 
       {/* 조정 기록 */}
-      <div className="mb-3 rounded-[22px] border border-white/60 bg-white/45 p-5 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+      <div className="mb-3 rounded-[22px] glass-card p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
         <p className="mb-3 text-sm font-bold text-black">조정 기록</p>
 
         {adjustments.length === 0 ? (
