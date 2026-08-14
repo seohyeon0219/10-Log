@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { ChangeEvent } from 'react'
-import { ACCOUNT_TYPE_CONFIG, ACCOUNT_TYPES } from '../../types/account'
+import { ACCOUNT_TYPE_CONFIG, ASSET_TYPES, LIABILITY_TYPES } from '../../types/account'
 import type { Account, AccountFormValues, AccountType } from '../../types/account'
 import { toDateKey } from '../../utils/dateUtils'
 import Button from '../common/Button'
@@ -21,7 +21,11 @@ const today = toDateKey(new Date())
 export default function AccountFormContent({ initialValues, isLiability, onSave, onArchive, onDelete }: Props) {
   const isEdit = Boolean(initialValues)
 
-  const [type, setType] = useState<AccountType>(initialValues?.type ?? 'deposit')
+  const validTypes = isLiability ? LIABILITY_TYPES : ASSET_TYPES
+  const defaultType: AccountType = isLiability ? 'loan' : 'deposit'
+  const [type, setType] = useState<AccountType>(
+    initialValues && validTypes.includes(initialValues.type) ? initialValues.type : defaultType,
+  )
   const [name, setName] = useState(initialValues?.name ?? '')
   const [balanceRaw, setBalanceRaw] = useState(initialValues?.balance ? String(initialValues.balance) : '')
   const [balanceAsOf, setBalanceAsOf] = useState(initialValues?.balanceAsOf ?? today)
@@ -86,11 +90,13 @@ export default function AccountFormContent({ initialValues, isLiability, onSave,
   return (
     <>
       <div className="grid gap-5">
-        {/* 자산 종류 */}
+        {/* 자산/부채 종류 */}
         <fieldset className="m-0 border-0 p-0">
-          <legend className="mb-3 p-0 text-sm font-semibold text-gray-500">자산 종류</legend>
-          <div className="grid grid-cols-5 gap-2">
-            {ACCOUNT_TYPES.map((t) => {
+          <legend className="mb-3 p-0 text-sm font-semibold text-gray-500">
+            {isLiability ? '부채 종류' : '자산 종류'}
+          </legend>
+          <div className={`grid gap-2 ${isLiability ? 'grid-cols-3' : 'grid-cols-5'}`}>
+            {validTypes.map((t) => {
               const cfg = ACCOUNT_TYPE_CONFIG[t]
               const Icon = cfg.icon
               const isSelected = type === t
@@ -119,7 +125,7 @@ export default function AccountFormContent({ initialValues, isLiability, onSave,
           label="이름"
           maxLength={20}
           onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="자산 이름"
+          placeholder={isLiability ? '부채 이름' : '자산 이름'}
           suffix=""
           value={name}
         />
@@ -169,7 +175,7 @@ export default function AccountFormContent({ initialValues, isLiability, onSave,
           name="include-in-total"
           onChange={(e) => setIncludeInTotal(e.currentTarget.checked)}
         >
-          순자산에 포함
+          {isLiability ? '순자산에서 차감' : '순자산에 포함'}
         </Checkbox>
       </div>
 
@@ -205,11 +211,11 @@ export default function AccountFormContent({ initialValues, isLiability, onSave,
       <ConfirmModal
         cancelText="취소"
         confirmText="보관하기"
-        description="보관된 자산은 목록에서 숨겨져요. 나중에 언제든 복원할 수 있어요."
+        description={`보관된 ${isLiability ? '부채' : '자산'}은 목록에서 숨겨져요. 나중에 언제든 복원할 수 있어요.`}
         isOpen={showArchiveConfirm}
         onClose={() => setShowArchiveConfirm(false)}
         onConfirm={handleArchive}
-        title="자산을 보관할까요?"
+        title={`${isLiability ? '부채' : '자산'}을 보관할까요?`}
       />
 
       <ConfirmModal

@@ -1,6 +1,6 @@
 import type { ComponentType, SVGProps } from 'react'
 
-export type AccountType = 'cash' | 'deposit' | 'savings' | 'investment' | 'etc'
+export type AccountType = 'cash' | 'deposit' | 'savings' | 'investment' | 'etc' | 'loan' | 'card' | 'other_debt'
 
 export type Account = {
   id: string
@@ -38,6 +38,8 @@ import {
   ArchiveBoxIcon,
   ArrowTrendingUpIcon,
   EllipsisHorizontalCircleIcon,
+  DocumentTextIcon,
+  CreditCardIcon,
 } from '@heroicons/react/24/outline'
 
 export const ACCOUNT_TYPE_CONFIG: Record<AccountType, AccountTypeConfig> = {
@@ -46,6 +48,11 @@ export const ACCOUNT_TYPE_CONFIG: Record<AccountType, AccountTypeConfig> = {
   savings:    { label: '적금',        icon: ArchiveBoxIcon },
   investment: { label: '투자',        icon: ArrowTrendingUpIcon },
   etc:        { label: '기타',        icon: EllipsisHorizontalCircleIcon },
+  loan:       { label: '대출',        icon: DocumentTextIcon },
+  card:       { label: '카드 대금',   icon: CreditCardIcon },
+  other_debt: { label: '기타 부채',   icon: EllipsisHorizontalCircleIcon },
 }
 
+export const ASSET_TYPES: AccountType[] = ['cash', 'deposit', 'savings', 'investment', 'etc']
+export const LIABILITY_TYPES: AccountType[] = ['loan', 'card', 'other_debt']
 export const ACCOUNT_TYPES = Object.keys(ACCOUNT_TYPE_CONFIG) as AccountType[]
