@@ -119,7 +119,7 @@ export default function AccountFormContent({ initialValues, isLiability, onSave,
           label="이름"
           maxLength={20}
           onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="예: 국민은행 통장"
+          placeholder="자산 이름"
           suffix=""
           value={name}
         />
