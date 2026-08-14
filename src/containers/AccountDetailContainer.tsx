@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { PlusIcon, MinusIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { PlusIcon, MinusIcon, TrashIcon, EllipsisVerticalIcon } from '@heroicons/react/24/outline'
 import BackHeader from '../components/common/BackHeader'
 import BottomSheet from '../components/common/BottomSheet'
 import Button from '../components/common/Button'
@@ -24,9 +24,9 @@ export default function AccountDetailContainer() {
   const accounts = useAccountStore((state) => state.accounts)
   const loadAccounts = useAccountStore((state) => state.loadAccounts)
   const updateAccount = useAccountStore((state) => state.updateAccount)
-  const archiveAccount = useAccountStore((state) => state.archiveAccount)
   const deleteAccount = useAccountStore((state) => state.deleteAccount)
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isEditFormOpen, setIsEditFormOpen] = useState(false)
   const [isAddOpen, setIsAddOpen] = useState(false)
   const [addDirection, setAddDirection] = useState<'+' | '-'>('+')
@@ -35,10 +35,23 @@ export default function AccountDetailContainer() {
   const [addMemo, setAddMemo] = useState('')
   const [isSaving, setIsSaving] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     void loadAccounts()
   }, [loadAccounts])
+
+  useEffect(() => {
+    if (!isMenuOpen) return
+    const handleClick = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setIsMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [isMenuOpen])
 
   const account = accounts.find((a) => a.id === id)
   const { adjustments, add, remove } = useAccountAdjustments(id ?? '')
@@ -61,11 +74,6 @@ export default function AccountDetailContainer() {
   const handleEditSave = async (values: AccountFormValues) => {
     await updateAccount(account.id, values)
     setIsEditFormOpen(false)
-  }
-
-  const handleArchive = async () => {
-    await archiveAccount(account.id)
-    navigate('/app/assets', { replace: true })
   }
 
   const handleDelete = async () => {
@@ -98,9 +106,42 @@ export default function AccountDetailContainer() {
     }
   }
 
+  const menu = (
+    <div className="relative" ref={menuRef}>
+      <button
+        aria-label="더보기"
+        className="flex h-9 w-9 items-center justify-center rounded-full text-gray-500 transition hover:bg-black/5 active:opacity-60"
+        onClick={() => setIsMenuOpen((v) => !v)}
+        type="button"
+      >
+        <EllipsisVerticalIcon className="h-5 w-5" />
+      </button>
+
+      {isMenuOpen && (
+        <div className="absolute right-0 top-10 z-50 min-w-32 overflow-hidden rounded-2xl glass-card shadow-[0_8px_24px_rgba(0,0,0,0.12)]">
+          <button
+            className="w-full px-4 py-3 text-left text-sm font-semibold text-black transition hover:bg-black/5"
+            onClick={() => { setIsMenuOpen(false); setIsEditFormOpen(true) }}
+            type="button"
+          >
+            수정하기
+          </button>
+          <div className="h-px bg-black/6" />
+          <button
+            className="w-full px-4 py-3 text-left text-sm font-semibold text-(--color-expense-red) transition hover:bg-black/5"
+            onClick={() => { setIsMenuOpen(false); setShowDeleteConfirm(true) }}
+            type="button"
+          >
+            삭제
+          </button>
+        </div>
+      )}
+    </div>
+  )
+
   return (
     <section className="w-full self-start animate-fade-up md:mt-4">
-      <BackHeader title={account.name} to="/app/assets" />
+      <BackHeader action={menu} title={account.name} to="/app/assets" />
 
       {/* 잔액 카드 */}
       <div className="mb-3 rounded-[22px] glass-card p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
@@ -142,7 +183,7 @@ export default function AccountDetailContainer() {
       </div>
 
       {/* 조정 기록 */}
-      <div className="mb-3 rounded-[22px] glass-card p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+      <div className="rounded-[22px] glass-card p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
         <p className="mb-3 text-sm font-bold text-black">조정 기록</p>
 
         {adjustments.length === 0 ? (
@@ -186,14 +227,6 @@ export default function AccountDetailContainer() {
         )}
       </div>
 
-      <button
-        className="w-full rounded-2xl bg-black py-3.5 text-sm font-bold text-white transition hover:bg-gray-800 active:opacity-80"
-        onClick={() => setIsEditFormOpen(true)}
-        type="button"
-      >
-        수정하기
-      </button>
-
       {/* 조정 추가 바텀시트 */}
       <BottomSheet
         isOpen={isAddOpen}
@@ -210,7 +243,6 @@ export default function AccountDetailContainer() {
             value={addAmountRaw}
             variant="amount"
           />
-
           <UnderInput
             label="날짜"
             max={today}
@@ -219,7 +251,6 @@ export default function AccountDetailContainer() {
             type="date"
             value={addDate}
           />
-
           <UnderInput
             label="메모"
             maxLength={50}
@@ -228,7 +259,6 @@ export default function AccountDetailContainer() {
             suffix=""
             value={addMemo}
           />
-
           <Button
             disabled={!addAmountRaw || !addDate || isSaving}
             onClick={() => void handleAddSave()}
@@ -252,14 +282,23 @@ export default function AccountDetailContainer() {
         title="기록을 삭제할까요?"
       />
 
+      {/* 삭제 확인 */}
+      <ConfirmModal
+        cancelText="취소"
+        confirmText="완전 삭제"
+        description="삭제하면 복원할 수 없어요."
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={handleDelete}
+        title="정말 삭제할까요?"
+      />
+
       {/* 계좌 수정 폼 */}
       <ResponsiveAccountForm
         editTarget={account}
         isLiability={account.isLiability}
         isOpen={isEditFormOpen}
-        onArchive={handleArchive}
         onClose={() => setIsEditFormOpen(false)}
-        onDelete={handleDelete}
         onSave={(values) => void handleEditSave(values)}
       />
     </section>

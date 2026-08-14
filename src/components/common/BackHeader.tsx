@@ -1,11 +1,13 @@
+import type { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 type BackHeaderProps = {
+  action?: ReactNode
   title?: string
   to?: string
 }
 
-export default function BackHeader({ title, to }: BackHeaderProps) {
+export default function BackHeader({ action, title, to }: BackHeaderProps) {
   const navigate = useNavigate()
 
   const handleBack = () => {
@@ -34,7 +36,8 @@ export default function BackHeader({ title, to }: BackHeaderProps) {
           />
         </svg>
       </button>
-      {title && <h1 className="text-xl font-bold text-black">{title}</h1>}
+      {title && <h1 className="min-w-0 flex-1 text-xl font-bold text-black">{title}</h1>}
+      {action ? <div className="ml-auto shrink-0">{action}</div> : null}
     </header>
   )
 }
