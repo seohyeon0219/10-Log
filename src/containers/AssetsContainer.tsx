@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { PlusIcon } from '@heroicons/react/24/outline'
 import type { Account, AccountFormValues } from '../types/account'
 import { useAccountStore } from '../stores/accountStore'
 import { calcNetWorth } from '../utils/accountCalculators'
@@ -111,53 +110,23 @@ export default function AssetsContainer() {
         </div>
       )}
 
-      {/* 빈 상태 */}
-      {!isLoading && accounts.length === 0 && (
-        <div className="rounded-[22px] border border-white/60 bg-white/45 px-6 py-12 text-center backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
-          <p className="text-sm font-semibold text-gray-400">아직 등록된 자산이 없어요.</p>
-          <p className="mt-1 text-[13px] font-medium text-gray-400">
-            통장, 적금, 투자 계좌 등을 추가해보세요.
-          </p>
-          <div className="mt-5 flex justify-center gap-2">
-            <button
-              className="inline-flex items-center gap-1.5 rounded-full bg-black px-5 py-2.5 text-sm font-bold text-white shadow-[0_4px_16px_rgba(0,0,0,0.18)] transition hover:bg-gray-800"
-              onClick={() => openAdd(false)}
-              type="button"
-            >
-              <PlusIcon aria-hidden="true" className="h-4 w-4" />
-              자산
-            </button>
-            <button
-              className="inline-flex items-center gap-1.5 rounded-full border border-black/10 bg-white/60 px-5 py-2.5 text-sm font-bold text-gray-600 transition hover:bg-white/80"
-              onClick={() => openAdd(true)}
-              type="button"
-            >
-              <PlusIcon aria-hidden="true" className="h-4 w-4" />
-              부채
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* 자산 목록 */}
-      {assetAccounts.length > 0 && (
-        <AccountSection
-          accounts={assetAccounts}
-          onAdd={() => openAdd(false)}
-          onEdit={openEdit}
-          title="자산"
-        />
-      )}
-
-      {/* 부채 목록 */}
-      {liabilityAccounts.length > 0 && (
-        <AccountSection
-          accounts={liabilityAccounts}
-          className="mt-3"
-          onAdd={() => openAdd(true)}
-          onEdit={openEdit}
-          title="부채"
-        />
+      {/* 자산/부채 목록 */}
+      {!isLoading && (
+        <>
+          <AccountSection
+            accounts={assetAccounts}
+            onAdd={() => openAdd(false)}
+            onEdit={openEdit}
+            title="자산"
+          />
+          <AccountSection
+            accounts={liabilityAccounts}
+            className="mt-3"
+            onAdd={() => openAdd(true)}
+            onEdit={openEdit}
+            title="부채"
+          />
+        </>
       )}
 
       <ResponsiveAccountForm

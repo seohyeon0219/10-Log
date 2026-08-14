@@ -25,6 +25,15 @@ export default function AccountSection({ accounts, className = '', onAdd, onEdit
           <PlusIcon aria-hidden="true" className="h-4 w-4" />
         </button>
       </div>
+      {accounts.length === 0 ? (
+        <button
+          className="w-full rounded-[14px] border border-dashed border-black/10 py-3 text-center text-sm font-medium text-gray-400 transition hover:border-black/20 hover:text-gray-500"
+          onClick={onAdd}
+          type="button"
+        >
+          + 추가하기
+        </button>
+      ) : null}
       <div className="grid gap-1.5">
         {accounts.map((account) => {
           const cfg = ACCOUNT_TYPE_CONFIG[account.type]

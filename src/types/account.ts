@@ -50,7 +50,7 @@ export const ACCOUNT_TYPE_CONFIG: Record<AccountType, AccountTypeConfig> = {
   etc:        { label: '기타',        icon: EllipsisHorizontalCircleIcon },
   loan:       { label: '대출',        icon: DocumentTextIcon },
   card:       { label: '카드 대금',   icon: CreditCardIcon },
-  other_debt: { label: '기타 부채',   icon: EllipsisHorizontalCircleIcon },
+  other_debt: { label: '기타',   icon: EllipsisHorizontalCircleIcon },
 }
 
 export const ASSET_TYPES: AccountType[] = ['cash', 'deposit', 'savings', 'investment', 'etc']
