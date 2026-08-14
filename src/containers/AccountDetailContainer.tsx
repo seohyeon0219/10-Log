@@ -48,6 +48,17 @@ export default function AccountDetailContainer() {
   const adjustmentSum = adjustments.reduce((s, a) => s + a.amount, 0)
   const currentBalance = account.balance + adjustmentSum
 
+  // adjustments는 최신순 정렬이므로 역순으로 누적해 각 시점 잔액을 계산
+  const balanceByAdjId = (() => {
+    const map = new Map<string, number>()
+    let running = account.balance
+    for (const adj of [...adjustments].reverse()) {
+      running += adj.amount
+      map.set(adj.id, running)
+    }
+    return map
+  })()
+
   const handleEditSave = async (values: AccountFormValues) => {
     await updateAccount(account.id, values)
     setIsEditFormOpen(false)
@@ -134,14 +145,19 @@ export default function AccountDetailContainer() {
                   <p className="text-[13px] font-semibold text-black">{adj.memo}</p>
                   <p className="text-[11.5px] font-medium text-gray-400">{adj.date}</p>
                 </div>
-                <span
-                  className={[
-                    'shrink-0 text-[13.5px] font-extrabold',
-                    adj.amount >= 0 ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
-                  ].join(' ')}
-                >
-                  {adj.amount >= 0 ? '+' : ''}{formatWon(adj.amount)}
-                </span>
+                <div className="shrink-0 text-right">
+                  <p
+                    className={[
+                      'text-[13.5px] font-extrabold',
+                      adj.amount >= 0 ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
+                    ].join(' ')}
+                  >
+                    {adj.amount >= 0 ? '+' : ''}{formatWon(adj.amount)}
+                  </p>
+                  <p className="text-[11px] font-medium text-gray-400">
+                    잔액 {formatWon(balanceByAdjId.get(adj.id) ?? 0)}
+                  </p>
+                </div>
               </button>
             ))}
           </div>
