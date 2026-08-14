@@ -1,7 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import StatisticsCard from './StatisticsCard'
+import SegmentedControl from '../common/SegmentedControl'
 import { formatAmount } from '../../utils/formatters'
 import type { TransactionType } from '../../types/finance'
+
+const yearOptions = [
+  { label: '올해', value: 'current' },
+  { label: '작년 대비', value: 'lastYear' },
+] as const
+
+type YearMode = (typeof yearOptions)[number]['value']
 
 type BarChartPoint = {
   amount: number
@@ -36,7 +44,8 @@ export default function SpendingTransactionLineChart({ data, lastYearExpense }: 
   const containerRef = useRef<HTMLDivElement>(null)
   const [chartWidth, setChartWidth] = useState(360)
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
-  const [showLastYear, setShowLastYear] = useState(false)
+  const [yearMode, setYearMode] = useState<YearMode>('current')
+  const showLastYear = yearMode === 'lastYear'
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -83,21 +92,11 @@ export default function SpendingTransactionLineChart({ data, lastYearExpense }: 
     .join(' ')
 
   const toggle = (
-    <div className="inline-flex rounded-lg bg-black/5 p-0.5">
-      {([false, true] as const).map((lastYear) => (
-        <button
-          className={[
-            'rounded-md px-2.5 py-1 text-[11px] font-bold transition',
-            showLastYear === lastYear ? 'bg-white text-black shadow-sm' : 'text-gray-400',
-          ].join(' ')}
-          key={String(lastYear)}
-          onClick={() => { setShowLastYear(lastYear); setSelectedIndex(null) }}
-          type="button"
-        >
-          {lastYear ? '작년 대비' : '올해'}
-        </button>
-      ))}
-    </div>
+    <SegmentedControl
+      onChange={(v) => { setYearMode(v); setSelectedIndex(null) }}
+      options={yearOptions}
+      value={yearMode}
+    />
   )
 
   return (
