@@ -201,22 +201,6 @@ export default function AccountDetailContainer() {
         title={addDirection === '+' ? '입금 기록' : '출금 기록'}
       >
         <div className="grid gap-5">
-          <div className="inline-flex rounded-lg bg-black/5 p-0.5">
-            {(['+', '-'] as const).map((d) => (
-              <button
-                className={[
-                  'flex-1 rounded-md px-4 py-1.5 text-sm font-bold transition',
-                  addDirection === d ? 'bg-white text-black shadow-sm' : 'text-gray-400',
-                ].join(' ')}
-                key={d}
-                onClick={() => setAddDirection(d)}
-                type="button"
-              >
-                {d === '+' ? '+ 입금' : '- 출금'}
-              </button>
-            ))}
-          </div>
-
           <UnderInput
             inputMode="numeric"
             label="금액"
