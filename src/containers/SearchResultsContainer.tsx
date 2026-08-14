@@ -75,7 +75,7 @@ export default function SearchResultsContainer() {
 
   return (
     <section className="w-full self-start animate-fade-up">
-      <BackHeader title="검색 결과" to="/app/search" />
+      <BackHeader title="검색 결과" />
 
       {isLoading ? (
         <p className="py-8 text-center text-sm font-semibold text-gray-400">검색 중...</p>
