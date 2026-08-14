@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import type { Account, AccountFormValues } from '../types/account'
+import type { AccountFormValues } from '../types/account'
 import { useAccountStore } from '../stores/accountStore'
 import { calcNetWorth } from '../utils/accountCalculators'
 import { formatWon } from '../utils/formatters'

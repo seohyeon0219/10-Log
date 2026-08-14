@@ -316,7 +316,7 @@ export default function AccountDetailContainer() {
         isLiability={account.isLiability}
         isOpen={isEditFormOpen}
         onClose={() => setIsEditFormOpen(false)}
-        onSave={(values) => void handleEditSave(values)}
+        onSave={(values) => handleEditSave(values)}
       />
     </section>
   )
