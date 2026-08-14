@@ -45,6 +45,22 @@ export const createAdjustment = async (
   if (error) throw error
 }
 
+export const updateAdjustment = async (
+  id: string,
+  values: AccountAdjustmentFormValues,
+): Promise<void> => {
+  const { error } = await supabase
+    .from('account_adjustments')
+    .update({
+      amount: values.amount,
+      date: values.date,
+      memo: values.memo.trim() || null,
+    })
+    .eq('id', id)
+
+  if (error) throw error
+}
+
 export const deleteAdjustment = async (id: string): Promise<void> => {
   const { error } = await supabase.from('account_adjustments').delete().eq('id', id)
   if (error) throw error

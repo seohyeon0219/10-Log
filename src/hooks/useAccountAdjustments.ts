@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { getAdjustments, createAdjustment, deleteAdjustment } from '../lib/adjustmentApi'
+import { getAdjustments, createAdjustment, updateAdjustment, deleteAdjustment } from '../lib/adjustmentApi'
 import type { AccountAdjustment, AccountAdjustmentFormValues } from '../types/account'
 
 export function useAccountAdjustments(accountId: string) {
@@ -25,10 +25,15 @@ export function useAccountAdjustments(accountId: string) {
     await load()
   }
 
+  const update = async (id: string, values: AccountAdjustmentFormValues) => {
+    await updateAdjustment(id, values)
+    await load()
+  }
+
   const remove = async (id: string) => {
     await deleteAdjustment(id)
     await load()
   }
 
-  return { adjustments, isLoading, add, remove }
+  return { adjustments, isLoading, add, update, remove }
 }
