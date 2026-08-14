@@ -2,11 +2,17 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type { AccountFormValues } from '../types/account'
 import { useAccountStore } from '../stores/accountStore'
+import { useThemeStore } from '../stores/themeStore'
 import { calcNetWorth } from '../utils/accountCalculators'
 import { formatWon } from '../utils/formatters'
 import AccountSection from '../components/accounts/AccountSection'
 import NetWorthBar from '../components/accounts/NetWorthBar'
 import ResponsiveAccountForm from '../components/accounts/ResponsiveAccountForm'
+
+const NET_WORTH_CARD_BG: Record<string, string> = {
+  yellow: 'linear-gradient(135deg, rgba(255, 253, 235, 0.58) 0%, rgba(254, 246, 205, 0.42) 100%)',
+  blue:   'linear-gradient(135deg, rgba(234, 244, 255, 0.58) 0%, rgba(212, 231, 255, 0.42) 100%)',
+}
 
 export default function AssetsContainer() {
   const accounts = useAccountStore((state) => state.accounts)
@@ -14,6 +20,7 @@ export default function AssetsContainer() {
   const isLoading = useAccountStore((state) => state.isLoading)
   const loadAccounts = useAccountStore((state) => state.loadAccounts)
   const addAccount = useAccountStore((state) => state.addAccount)
+  const theme = useThemeStore((state) => state.theme)
 
   const navigate = useNavigate()
   const [isFormOpen, setIsFormOpen] = useState(false)
@@ -56,7 +63,10 @@ export default function AssetsContainer() {
 
       {/* 순자산 요약 카드 */}
       {!isLoading && (
-        <div className="mb-4 rounded-[22px] glass-card p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+        <div
+          className="mb-4 rounded-[22px] glass-card p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
+          style={{ background: NET_WORTH_CARD_BG[theme] }}
+        >
           <p className="mb-1 text-xs font-semibold text-gray-500">순자산</p>
           <p
             className={[
