@@ -53,6 +53,21 @@ export const ACCOUNT_TYPE_CONFIG: Record<AccountType, AccountTypeConfig> = {
   other_debt: { label: '기타',   icon: EllipsisHorizontalCircleIcon },
 }
 
+export type AccountAdjustment = {
+  id: string
+  accountId: string
+  amount: number
+  date: string
+  memo: string
+  createdAt: string
+}
+
+export type AccountAdjustmentFormValues = {
+  amount: number
+  date: string
+  memo: string
+}
+
 export const ASSET_TYPES: AccountType[] = ['cash', 'deposit', 'savings', 'investment', 'etc']
 export const LIABILITY_TYPES: AccountType[] = ['loan', 'card', 'other_debt']
 export const ACCOUNT_TYPES = Object.keys(ACCOUNT_TYPE_CONFIG) as AccountType[]
