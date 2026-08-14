@@ -7,9 +7,9 @@ type Props = {
   editTarget: Account | null
   isLiability: boolean
   isOpen: boolean
-  onArchive: (id: string) => Promise<void>
+  onArchive?: (id: string) => Promise<void>
   onClose: () => void
-  onDelete: (id: string) => Promise<void>
+  onDelete?: (id: string) => Promise<void>
   onSave: (values: AccountFormValues, id?: string) => Promise<void>
 }
 

@@ -17,6 +17,7 @@ import OnboardingPage from '../pages/OnboardingPage'
 import ProfileEditPage from '../pages/ProfileEditPage'
 import ReviewPage from '../pages/ReviewPage'
 import StatsPage from '../pages/StatsPage'
+import AccountDetailPage from '../pages/AccountDetailPage'
 
 function useAuthGuard() {
   const [session, setSession] = useState<Session | null | undefined>(undefined)
@@ -93,6 +94,7 @@ export default function AppRouter() {
           <Route path="calendar" element={<CalendarPage />} />
           <Route path="stats" element={<StatsPage />} />
           <Route path="assets" element={<AssetsPage />} />
+          <Route path="assets/:id" element={<AccountDetailPage />} />
           <Route path="review" element={<ReviewPage />} />
           <Route path="more" element={<MorePage />} />
           <Route path="search" element={<SearchPage />} />

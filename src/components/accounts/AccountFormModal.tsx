@@ -6,9 +6,9 @@ type Props = {
   editTarget: Account | null
   isLiability: boolean
   isOpen: boolean
-  onArchive: (id: string) => Promise<void>
+  onArchive?: (id: string) => Promise<void>
   onClose: () => void
-  onDelete: (id: string) => Promise<void>
+  onDelete?: (id: string) => Promise<void>
   onSave: (values: AccountFormValues, id?: string) => Promise<void>
 }
 
@@ -33,8 +33,8 @@ export default function AccountFormModal({
       <AccountFormContent
         isLiability={isLiability}
         initialValues={editTarget ?? undefined}
-        onArchive={editTarget ? () => onArchive(editTarget.id) : undefined}
-        onDelete={editTarget ? () => onDelete(editTarget.id) : undefined}
+        onArchive={editTarget && onArchive ? () => onArchive(editTarget.id) : undefined}
+        onDelete={editTarget && onDelete ? () => onDelete(editTarget.id) : undefined}
         onSave={(values) => onSave(values, editTarget?.id)}
       />
     </FormModal>

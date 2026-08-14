@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import type { Account, AccountFormValues } from '../types/account'
 import { useAccountStore } from '../stores/accountStore'
 import { calcNetWorth } from '../utils/accountCalculators'
@@ -13,11 +14,8 @@ export default function AssetsContainer() {
   const isLoading = useAccountStore((state) => state.isLoading)
   const loadAccounts = useAccountStore((state) => state.loadAccounts)
   const addAccount = useAccountStore((state) => state.addAccount)
-  const updateAccount = useAccountStore((state) => state.updateAccount)
-  const archiveAccount = useAccountStore((state) => state.archiveAccount)
-  const deleteAccount = useAccountStore((state) => state.deleteAccount)
 
-  const [editTarget, setEditTarget] = useState<Account | null>(null)
+  const navigate = useNavigate()
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [isLiability, setIsLiability] = useState(false)
 
@@ -32,37 +30,13 @@ export default function AssetsContainer() {
 
   const openAdd = (liability: boolean) => {
     setIsLiability(liability)
-    setEditTarget(null)
     setIsFormOpen(true)
   }
 
-  const openEdit = (account: Account) => {
-    setIsLiability(account.isLiability)
-    setEditTarget(account)
-    setIsFormOpen(true)
-  }
+  const handleClose = () => setIsFormOpen(false)
 
-  const handleClose = () => {
-    setIsFormOpen(false)
-    setEditTarget(null)
-  }
-
-  const handleSave = async (values: AccountFormValues, id?: string) => {
-    if (id) {
-      await updateAccount(id, values)
-    } else {
-      await addAccount(values)
-    }
-    handleClose()
-  }
-
-  const handleArchive = async (id: string) => {
-    await archiveAccount(id)
-    handleClose()
-  }
-
-  const handleDelete = async (id: string) => {
-    await deleteAccount(id)
+  const handleSave = async (values: AccountFormValues) => {
+    await addAccount(values)
     handleClose()
   }
 
@@ -116,26 +90,24 @@ export default function AssetsContainer() {
           <AccountSection
             accounts={assetAccounts}
             onAdd={() => openAdd(false)}
-            onEdit={openEdit}
+            onEdit={(account) => navigate(`/app/assets/${account.id}`)}
             title="자산"
           />
           <AccountSection
             accounts={liabilityAccounts}
             className="mt-3"
             onAdd={() => openAdd(true)}
-            onEdit={openEdit}
+            onEdit={(account) => navigate(`/app/assets/${account.id}`)}
             title="부채"
           />
         </>
       )}
 
       <ResponsiveAccountForm
-        editTarget={editTarget}
+        editTarget={null}
         isLiability={isLiability}
         isOpen={isFormOpen}
-        onArchive={handleArchive}
         onClose={handleClose}
-        onDelete={handleDelete}
         onSave={handleSave}
       />
     </section>
