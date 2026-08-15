@@ -4,6 +4,11 @@ export const BUDGET_MESSAGES = {
     '아직 기록이 없어요.\n오늘의 첫 소비를 남겨보세요.',
     '부담 없이 하나씩,\n이번 달 기록을 시작해봐요.',
   ],
+  no_budget: [
+    '아래 카드를 눌러 예산을 설정하면\n소비 흐름이 더 잘 보여요.',
+    '아래 카드를 눌러 예산을 정해두면\n얼마나 남았는지 바로 알 수 있어요.',
+    '아래 카드를 눌러 예산 설정으로\n나만의 기준을 만들어봐요.',
+  ],
   safe: [
     '잘하고 있어요.\n지금처럼만 이어가요!',
     '예산 안에서\n나를 잘 돌보고 있어요.',
@@ -29,7 +34,11 @@ export const getBudgetStatus = (spent: number, budget: number): BudgetStatus => 
     return 'empty'
   }
 
-  if (budget <= 0 || spent > budget) {
+  if (budget <= 0) {
+    return 'no_budget'
+  }
+
+  if (spent > budget) {
     return 'over'
   }
 
