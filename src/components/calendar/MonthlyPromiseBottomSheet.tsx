@@ -7,8 +7,8 @@ type MonthlyPromiseBottomSheetProps = {
   isRegistered: boolean
   isOpen: boolean
   onClose: () => void
-  onDelete: () => void
-  onSave: (values: { budgetAmount: number }) => void
+  onDelete: () => Promise<void> | void
+  onSave: (values: { budgetAmount: number }) => Promise<void> | void
   onUseIncomeBudget?: () => Promise<void> | void
   totalIncome?: number
 }

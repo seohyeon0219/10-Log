@@ -9,8 +9,8 @@ type MonthlyPromiseFormContentProps = {
   initialMode?: Mode
   isRegistered: boolean
   onClose: () => void
-  onDelete: () => void
-  onSave: (values: { budgetAmount: number }) => void
+  onDelete: () => Promise<void> | void
+  onSave: (values: { budgetAmount: number }) => Promise<void> | void
   onUseIncomeBudget?: () => Promise<void> | void
   totalIncome?: number
 }
@@ -27,6 +27,8 @@ export default function MonthlyPromiseFormContent({
 }: MonthlyPromiseFormContentProps) {
   const [mode, setMode] = useState<Mode>(initialMode)
   const [budgetValue, setBudgetValue] = useState(budgetAmount > 0 ? String(budgetAmount) : '')
+  const [error, setError] = useState('')
+  const [isSaving, setIsSaving] = useState(false)
   const parsedBudgetAmount = Number(budgetValue.replaceAll(',', '')) || 0
 
   const canSave = mode === 'direct' ? parsedBudgetAmount > 0 : totalIncome > 0
@@ -34,10 +36,31 @@ export default function MonthlyPromiseFormContent({
   const handleSubmit = async (event: { preventDefault(): void }) => {
     event.preventDefault()
     if (!canSave) return
-    if (mode === 'income') {
-      await onUseIncomeBudget?.()
-    } else {
-      onSave({ budgetAmount: parsedBudgetAmount })
+    setError('')
+    setIsSaving(true)
+    try {
+      if (mode === 'income') {
+        await onUseIncomeBudget?.()
+      } else {
+        await onSave({ budgetAmount: parsedBudgetAmount })
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : '저장하지 못했어요.')
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  const handleDelete = async () => {
+    setError('')
+    setIsSaving(true)
+    try {
+      await onDelete()
+      onClose()
+    } catch (e) {
+      setError(e instanceof Error ? e.message : '삭제하지 못했어요.')
+    } finally {
+      setIsSaving(false)
     }
   }
 
@@ -101,19 +124,20 @@ export default function MonthlyPromiseFormContent({
         </p>
       </div>
 
-      <div className="grid grid-cols-[96px_minmax(0,1fr)] gap-3 pt-1">
-        <Button
-          disabled={!isRegistered}
-          onClick={() => {
-            onDelete()
-            onClose()
-          }}
-          variant="soft"
-        >
-          삭제
-        </Button>
-        <Button disabled={!canSave} type="submit">
-          저장
+      {error && (
+        <p className="text-sm font-semibold text-(--color-expense-red)" role="alert">
+          {error}
+        </p>
+      )}
+
+      <div className={['gap-3 pt-1', isRegistered ? 'grid grid-cols-[96px_minmax(0,1fr)]' : 'flex'].join(' ')}>
+        {isRegistered && (
+          <Button disabled={isSaving} onClick={() => { void handleDelete() }} variant="soft">
+            삭제
+          </Button>
+        )}
+        <Button disabled={!canSave || isSaving} type="submit">
+          {isSaving ? '저장 중...' : '저장'}
         </Button>
       </div>
     </form>

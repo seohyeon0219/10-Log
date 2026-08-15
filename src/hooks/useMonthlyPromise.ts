@@ -10,30 +10,18 @@ export function useMonthlyPromise() {
   const setUseIncomeAsBudget = useCalendarStore((state) => state.setUseIncomeAsBudget)
 
   const handleSave = async (values: { budgetAmount: number }) => {
-    try {
-      await updateMonthlyPromise(values)
-      setIsEditOpen(false)
-    } catch {
-      // 에러는 store.error 상태를 통해 표시됨
-    }
+    await updateMonthlyPromise(values)
+    setIsEditOpen(false)
   }
 
   const handleDelete = async () => {
-    try {
-      await deleteMonthlyPromise()
-      setIsEditOpen(false)
-    } catch {
-      // 에러는 store.error 상태를 통해 표시됨
-    }
+    await deleteMonthlyPromise()
+    setIsEditOpen(false)
   }
 
   const handleUseIncomeBudget = async () => {
-    try {
-      await setUseIncomeAsBudget(true)
-      setIsEditOpen(false)
-    } catch {
-      // 에러는 store.error 상태를 통해 표시됨
-    }
+    await setUseIncomeAsBudget(true)
+    setIsEditOpen(false)
   }
 
   const initialMode: 'income' | 'direct' = useIncomeAsBudget && !monthlyPromise.isRegistered ? 'income' : 'direct'
