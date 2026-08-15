@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import type { ReactNode } from 'react'
+import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import StatisticsCard from './StatisticsCard'
 import { formatWon } from '../../utils/formatters'
 
@@ -42,7 +43,10 @@ export default function MonthlyMoneySummary({
       {budgetAmount === 0 ? (
         <>
           <p className="mt-2 text-[28px] font-extrabold text-black/25">—</p>
-          <p className="mt-1.5 text-xs font-semibold text-black/30">탭해서 예산을 설정해보세요</p>
+          <p className="mt-1.5 flex items-center gap-0.5 text-xs font-semibold text-black/30">
+            탭해서 예산을 설정해보세요
+            <ChevronRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
+          </p>
         </>
       ) : (
         <div className="mt-2 flex items-center justify-between gap-3">

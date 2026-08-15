@@ -1,3 +1,4 @@
+import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { ACCOUNT_TYPE_CONFIG } from '../../types/account'
 import type { Account } from '../../types/account'
 import { formatMonthDay, formatWon } from '../../utils/formatters'
@@ -28,8 +29,11 @@ export default function AccountRow({ account, onClick }: Props) {
             : cfg.label}
         </span>
       </span>
-      <span className="shrink-0 text-[13.5px] font-extrabold text-black">
-        {formatWon(account.currentBalance)}
+      <span className="flex shrink-0 items-center gap-1">
+        <span className="text-[13.5px] font-extrabold text-black">
+          {formatWon(account.currentBalance)}
+        </span>
+        <ChevronRightIcon aria-hidden="true" className="h-3.5 w-3.5 text-gray-300" />
       </span>
     </button>
   )
