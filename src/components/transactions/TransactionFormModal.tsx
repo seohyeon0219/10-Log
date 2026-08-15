@@ -68,6 +68,7 @@ export default function TransactionFormModal({
         initialCategoryId={initialCategoryId}
         initialIsFixed={initialIsFixed}
         initialMemo={initialMemo}
+        mode={mode}
         onDelete={onDelete}
         onSave={onSave}
         selectedDate={selectedDate}

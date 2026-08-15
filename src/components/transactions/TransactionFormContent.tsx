@@ -15,6 +15,7 @@ type TransactionFormContentProps = {
   initialCategoryId?: string
   initialIsFixed?: boolean
   initialMemo?: string
+  mode?: 'create' | 'edit'
   onDelete?: () => Promise<void> | void
   onSave?: (values: TransactionFormValues) => Promise<void> | void
   selectedDate?: Date | null
@@ -30,6 +31,7 @@ export default function TransactionFormContent({
   initialCategoryId,
   initialIsFixed = false,
   initialMemo,
+  mode = 'create',
   onDelete,
   onSave,
   selectedDate,
@@ -56,7 +58,16 @@ export default function TransactionFormContent({
   const handleSave = async () => {
     const numericAmount = Number(amount)
 
-    if (!numericAmount || !resolvedSelectedCategoryId || !date) {
+    if (!numericAmount) {
+      setErrorMessage('금액을 입력해주세요.')
+      return
+    }
+    if (!resolvedSelectedCategoryId) {
+      setErrorMessage('카테고리를 선택해주세요.')
+      return
+    }
+    if (!date) {
+      setErrorMessage('날짜를 입력해주세요.')
       return
     }
 
@@ -148,10 +159,12 @@ export default function TransactionFormContent({
         </p>
       )}
 
-      <div className="mt-5 grid grid-cols-[96px_minmax(0,1fr)] gap-3 pt-1">
-        <Button disabled={isSaving} onClick={handleDelete} variant="soft">
-          삭제
-        </Button>
+      <div className={['mt-5 pt-1', mode === 'edit' ? 'grid grid-cols-[96px_minmax(0,1fr)] gap-3' : ''].join(' ')}>
+        {mode === 'edit' && (
+          <Button disabled={isSaving} onClick={handleDelete} variant="soft">
+            삭제
+          </Button>
+        )}
         <Button disabled={isSaving} onClick={handleSave}>{isSaving ? '저장 중...' : submitText}</Button>
       </div>
 

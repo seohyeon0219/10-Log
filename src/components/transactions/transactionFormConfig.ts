@@ -7,13 +7,13 @@ export const transactionFormTextByType: Record<
   { createTitle: string; editTitle: string; fixedLabel: string }
 > = {
   income: {
-    createTitle: '수입을 기록해요',
-    editTitle: '수입을 수정해요',
+    createTitle: '수입 기록',
+    editTitle: '수입 수정',
     fixedLabel: '고정수입',
   },
   expense: {
-    createTitle: '지출을 기록해요',
-    editTitle: '지출을 수정해요',
+    createTitle: '지출 기록',
+    editTitle: '지출 수정',
     fixedLabel: '고정지출',
   },
 }
