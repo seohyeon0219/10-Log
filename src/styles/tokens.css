@@ -28,7 +28,8 @@
   --radius-12: 12px;
 
   /* glass primitives — consumed by @utility below */
-  --glass-bg-card:   rgba(255, 255, 255, 0.55);
+  --glass-bg-card:    rgba(255, 255, 255, 0.55);
+  --glass-bg-overlay: rgba(255, 255, 255, 0.55);
   --glass-bg-panel:  rgba(255, 255, 255, 0.50);
   --glass-bg-button: rgba(255, 255, 255, 0.50);
   --glass-bg-input:  rgba(255, 255, 255, 0.60);

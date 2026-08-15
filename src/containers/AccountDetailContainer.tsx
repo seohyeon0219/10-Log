@@ -114,7 +114,7 @@ export default function AccountDetailContainer() {
 
       <AccountBalanceCard account={account} currentBalance={currentBalance} />
 
-      {/* 입금/출금 버튼 */}
+      {/* 추가/차감 버튼 */}
       <div className="mb-3 grid grid-cols-2 gap-2">
         <TransparentButton className="text-(--color-income-blue)" onClick={() => openAddAdj('+')}>
           <PlusIcon className="h-4 w-4" />

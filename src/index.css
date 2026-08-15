@@ -76,6 +76,13 @@ button:active {
   border: 1px solid var(--glass-border);
 }
 
+@utility glass-overlay {
+  background: var(--glass-bg-overlay);
+  backdrop-filter: var(--glass-blur-card);
+  -webkit-backdrop-filter: var(--glass-blur-card);
+  border: 1px solid var(--glass-border);
+}
+
 @utility glass-panel {
   background: var(--glass-bg-panel);
   backdrop-filter: var(--glass-blur-base);
