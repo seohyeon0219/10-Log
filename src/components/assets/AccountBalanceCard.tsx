@@ -1,15 +1,14 @@
 import { ACCOUNT_TYPE_CONFIG } from '../../types/account'
 import type { Account } from '../../types/account'
-import { formatMonthDay, formatWon } from '../../utils/formatters'
+import { formatWon } from '../../utils/formatters'
 
 type Props = {
   account: Account
   currentBalance: number
-  lastAdjDate: string | null
   thisMonthChange: number
 }
 
-export default function AccountBalanceCard({ account, currentBalance, lastAdjDate, thisMonthChange }: Props) {
+export default function AccountBalanceCard({ account, currentBalance, thisMonthChange }: Props) {
   const cfg = ACCOUNT_TYPE_CONFIG[account.type]
   const Icon = cfg.icon
   const typeLabel = account.isLiability ? '부채' : '자산'
@@ -38,17 +37,6 @@ export default function AccountBalanceCard({ account, currentBalance, lastAdjDat
           이번 달 {thisMonthChange > 0 ? '+' : ''}{formatWon(thisMonthChange)}
         </p>
       )}
-
-      <div className="mt-3 flex flex-wrap gap-x-3 gap-y-0.5">
-        <p className="text-xs font-medium text-gray-400">
-          초기 잔액 {formatWon(account.balance)}
-        </p>
-        {lastAdjDate && (
-          <p className="text-xs font-medium text-gray-400">
-            마지막 조정 {formatMonthDay(lastAdjDate)}
-          </p>
-        )}
-      </div>
 
       {account.memo ? (
         <p className="mt-3 text-xs font-medium text-gray-500">{account.memo}</p>

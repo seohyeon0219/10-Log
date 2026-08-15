@@ -70,7 +70,6 @@ export default function AccountDetailContainer() {
   const thisMonthChange = adjustments
     .filter((adj) => adj.date.startsWith(thisMonthPrefix))
     .reduce((s, adj) => s + adj.amount, 0)
-  const lastAdjDate = adjustments[0]?.date ?? null
 
   const handleEditSave = async (values: AccountFormValues) => {
     await updateAccount(account.id, values)
@@ -124,7 +123,7 @@ export default function AccountDetailContainer() {
     <section className="w-full self-start animate-fade-up md:mt-4">
       <BackHeader action={menu} title={account.name} to="/app/assets" />
 
-      <AccountBalanceCard account={account} currentBalance={currentBalance} lastAdjDate={lastAdjDate} thisMonthChange={thisMonthChange} />
+      <AccountBalanceCard account={account} currentBalance={currentBalance} thisMonthChange={thisMonthChange} />
 
       {/* 입금/출금 버튼 */}
       <div className="mb-3 grid grid-cols-2 gap-2">
@@ -144,7 +143,7 @@ export default function AccountDetailContainer() {
           <p className="text-sm font-bold text-black">기록</p>
           {adjustments.length > 0 && (
             <p className="text-[11px] font-semibold text-gray-400">
-              총 {adjustments.length}건 · {adjustmentSum >= 0 ? '+' : ''}{formatWon(adjustmentSum)}
+              총 {adjustments.length}건
             </p>
           )}
         </div>
