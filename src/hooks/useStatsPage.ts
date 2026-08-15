@@ -6,6 +6,7 @@ import {
   getCategoryChangeRanking,
   getCategoryRatio,
   getLineChartData,
+  getMonthlyInsights,
   getPreviousMonthComparison,
 } from '../utils/statisticsCalculators'
 import { getMonthDate } from '../utils/dateUtils'
@@ -54,6 +55,11 @@ export function useStatsPage() {
     () => getLineChartData(currentDate, monthsData),
     [currentDate, monthsData],
   )
+  const monthlyInsights = useMemo(
+    () => getMonthlyInsights(currentDate, transactions, monthsData),
+    [currentDate, transactions, monthsData],
+  )
+
   const lastYearExpense = useMemo(
     () => lastYearMonthsData.map((txs, index) => ({
       amount: txs.filter((t) => t.type === 'expense').reduce((s, t) => s + t.amount, 0),
@@ -104,6 +110,7 @@ export function useStatsPage() {
     setRatioType,
     setSelectedTransaction,
     lastYearExpense,
+    monthlyInsights,
     spendingTransactionLineChart,
     updateCategory,
   }

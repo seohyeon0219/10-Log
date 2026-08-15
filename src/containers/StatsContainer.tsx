@@ -3,6 +3,7 @@ import CategoryChangeRanking from '../components/statistics/CategoryChangeRankin
 import CategoryTransactionRatio from '../components/statistics/CategoryTransactionRatio'
 import PreviousMonthComparison from '../components/statistics/PreviousMonthComparison'
 import SpendingTransactionLineChart from '../components/statistics/SpendingTransactionLineChart'
+import MonthlyInsightsCard from '../components/statistics/MonthlyInsightsCard'
 import AiMonthlyReview from '../components/review/AiMonthlyReview'
 import { Link } from 'react-router-dom'
 import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
@@ -46,6 +47,10 @@ export default function StatsContainer() {
           data={stats.spendingTransactionLineChart}
           lastYearExpense={stats.lastYearExpense}
         />
+      </div>
+
+      <div className="mt-4">
+        <MonthlyInsightsCard data={stats.monthlyInsights} />
       </div>
 
       {stats.selectedTransaction ? (

@@ -141,6 +141,54 @@ export const getCategoryChangeRanking = (
   return { expense: makeRanking('expense'), income: makeRanking('income') }
 }
 
+export type MonthlyInsightsData = {
+  threeMonthComparison: {
+    avgAmount: number
+    currentAmount: number
+    dayOfMonth: number
+    rate: number
+  }
+  topExpenses: Array<{
+    amount: number
+    categoryColor: string
+    categoryName: string
+    date: string
+    id: string
+    memo: string
+  }>
+}
+
+export const getMonthlyInsights = (
+  currentDate: Date,
+  currentTransactions: Transaction[],
+  monthsData: Transaction[][], // length 6, index 5 = current, 4/3/2 = past 3 months
+): MonthlyInsightsData => {
+  const dayOfMonth = currentDate.getDate()
+
+  const currentExpenses = currentTransactions.filter((t) => t.type === 'expense')
+  const currentAmount = currentExpenses.reduce((s, t) => s + t.amount, 0)
+
+  // monthsData[2]=3개월 전, [3]=2개월 전, [4]=지난달
+  const past3 = monthsData.slice(-4, -1)
+  const pastAmounts = past3.map((txs) =>
+    txs.filter((t) => t.type === 'expense' && t.day <= dayOfMonth).reduce((s, t) => s + t.amount, 0),
+  )
+  const avgAmount = Math.round(pastAmounts.reduce((s, a) => s + a, 0) / Math.max(past3.length, 1))
+  const rate = avgAmount > 0 ? Math.round(((currentAmount - avgAmount) / avgAmount) * 100) : 0
+
+  const topExpenses = [...currentExpenses]
+    .sort((a, b) => b.amount - a.amount)
+    .slice(0, 3)
+    .map(({ id, amount, categoryName, categoryColor, date, memo }) => ({
+      id, amount, categoryName, categoryColor, date, memo,
+    }))
+
+  return {
+    threeMonthComparison: { currentAmount, avgAmount, dayOfMonth, rate },
+    topExpenses,
+  }
+}
+
 export const getLineChartData = (currentDate: Date, monthTransactions: Transaction[][]) => {
   const currentMonthIndex = monthTransactions.length - 1
 
