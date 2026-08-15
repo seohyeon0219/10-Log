@@ -163,7 +163,13 @@ export const getMonthlyInsights = (
   currentTransactions: Transaction[],
   monthsData: Transaction[][], // length 6, index 5 = current, 4/3/2 = past 3 months
 ): MonthlyInsightsData => {
-  const dayOfMonth = currentDate.getDate()
+  const today = new Date()
+  const isCurrentMonth =
+    currentDate.getFullYear() === today.getFullYear() &&
+    currentDate.getMonth() === today.getMonth()
+  const dayOfMonth = isCurrentMonth
+    ? today.getDate()
+    : new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate()
 
   const currentExpenses = currentTransactions.filter((t) => t.type === 'expense')
   const currentAmount = currentExpenses.reduce((s, t) => s + t.amount, 0)
