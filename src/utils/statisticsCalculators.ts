@@ -195,6 +195,97 @@ export const getMonthlyInsights = (
   }
 }
 
+const DAY_ORDER = [1, 2, 3, 4, 5, 6, 0] // Mon → Sun
+const DAY_LABELS: Record<number, string> = { 0: '일', 1: '월', 2: '화', 3: '수', 4: '목', 5: '금', 6: '토' }
+
+export type DayOfWeekSpending = {
+  amount: number
+  isMax: boolean
+  label: string
+}
+
+export const getSpendingByDayOfWeek = (transactions: Transaction[]): DayOfWeekSpending[] => {
+  const map = new Map<number, number>(DAY_ORDER.map((d) => [d, 0]))
+
+  transactions
+    .filter((t) => t.type === 'expense')
+    .forEach((t) => {
+      const dow = new Date(`${t.date}T00:00:00`).getDay()
+      map.set(dow, (map.get(dow) ?? 0) + t.amount)
+    })
+
+  const max = Math.max(...Array.from(map.values()))
+
+  return DAY_ORDER.map((d) => ({
+    amount: map.get(d) ?? 0,
+    isMax: max > 0 && (map.get(d) ?? 0) === max,
+    label: DAY_LABELS[d],
+  }))
+}
+
+export type WeekSpending = {
+  amount: number
+  isMax: boolean
+  label: string
+}
+
+export const getSpendingByWeek = (transactions: Transaction[]): WeekSpending[] => {
+  const weeks = [0, 0, 0, 0]
+
+  transactions
+    .filter((t) => t.type === 'expense')
+    .forEach((t) => {
+      const weekIndex = Math.min(Math.floor((t.day - 1) / 7), 3)
+      weeks[weekIndex] += t.amount
+    })
+
+  const max = Math.max(...weeks)
+
+  return weeks.map((amount, i) => ({
+    amount,
+    isMax: max > 0 && amount === max,
+    label: `${i + 1}주차`,
+  }))
+}
+
+export type SpendingDensity = {
+  dailyAvg: number
+  peakDay: { amount: number; date: string } | null
+  refDay: number
+  spendingDays: number
+}
+
+export const getSpendingDensity = (transactions: Transaction[], currentDate: Date): SpendingDensity => {
+  const today = new Date()
+  const isCurrentMonth =
+    currentDate.getFullYear() === today.getFullYear() && currentDate.getMonth() === today.getMonth()
+  const refDay = isCurrentMonth
+    ? today.getDate()
+    : new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate()
+
+  const expenseTransactions = transactions.filter((t) => t.type === 'expense')
+  const totalExpense = expenseTransactions.reduce((s, t) => s + t.amount, 0)
+
+  const daySet = new Set(expenseTransactions.map((t) => t.date))
+
+  const dayTotals = new Map<string, number>()
+  expenseTransactions.forEach((t) => {
+    dayTotals.set(t.date, (dayTotals.get(t.date) ?? 0) + t.amount)
+  })
+
+  let peakDay: { amount: number; date: string } | null = null
+  dayTotals.forEach((amount, date) => {
+    if (!peakDay || amount > peakDay.amount) peakDay = { amount, date }
+  })
+
+  return {
+    dailyAvg: refDay > 0 ? Math.round(totalExpense / refDay) : 0,
+    peakDay,
+    refDay,
+    spendingDays: daySet.size,
+  }
+}
+
 export const getLineChartData = (currentDate: Date, monthTransactions: Transaction[][]) => {
   const currentMonthIndex = monthTransactions.length - 1
 
