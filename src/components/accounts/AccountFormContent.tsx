@@ -138,7 +138,7 @@ export default function AccountFormContent({ initialValues, isLiability, onSave,
           onChange={handleAmountChange}
           pattern="[0-9]*"
           placeholder="0"
-          value={balanceRaw}
+          value={balanceRaw ? Number(balanceRaw).toLocaleString('ko-KR') : ''}
           variant="amount"
         />
 

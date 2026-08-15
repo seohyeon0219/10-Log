@@ -72,7 +72,7 @@ export default function AdjustmentSheet({ isOpen, onClose, editingAdj, direction
             onChange={(e) => setAdjAmountRaw(e.currentTarget.value.replace(/\D/g, ''))}
             pattern="[0-9]*"
             placeholder="0"
-            value={adjAmountRaw}
+            value={adjAmountRaw ? Number(adjAmountRaw).toLocaleString('ko-KR') : ''}
             variant="amount"
           />
           <UnderInput

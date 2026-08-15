@@ -99,7 +99,7 @@ export default function TransactionFormContent({
           onChange={handleAmountChange}
           pattern="[0-9]*"
           placeholder="0"
-          value={amount}
+          value={amount ? Number(amount).toLocaleString('ko-KR') : ''}
           variant="amount"
         />
 
