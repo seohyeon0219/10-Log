@@ -14,13 +14,13 @@ export default function NetWorthBar({ assets, liabilities }: Props) {
       <div className="flex h-2 overflow-hidden rounded-full">
         {assetPct > 0 && (
           <div
-            className="h-full bg-blue-300/80 transition-all duration-500"
+            className="h-full bg-(--color-income-blue)/40 transition-all duration-500"
             style={{ width: `${assetPct}%`, borderRadius: liabilityPct > 0 ? '9999px 0 0 9999px' : '9999px' }}
           />
         )}
         {liabilityPct > 0 && (
           <div
-            className="h-full bg-red-300/70 transition-all duration-500"
+            className="h-full bg-(--color-expense-red)/40 transition-all duration-500"
             style={{ width: `${liabilityPct}%`, borderRadius: assetPct > 0 ? '0 9999px 9999px 0' : '9999px', marginLeft: assetPct > 0 ? '2px' : 0 }}
           />
         )}

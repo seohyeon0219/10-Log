@@ -36,22 +36,23 @@ type AccountTypeConfig = {
 import {
   BanknotesIcon,
   BuildingLibraryIcon,
-  ArchiveBoxIcon,
+  CircleStackIcon,
   ArrowTrendingUpIcon,
   EllipsisHorizontalCircleIcon,
   DocumentTextIcon,
   CreditCardIcon,
+  MinusCircleIcon,
 } from '@heroicons/react/24/outline'
 
 export const ACCOUNT_TYPE_CONFIG: Record<AccountType, AccountTypeConfig> = {
   cash:       { label: '현금·입출금', icon: BanknotesIcon },
   deposit:    { label: '예금',        icon: BuildingLibraryIcon },
-  savings:    { label: '적금',        icon: ArchiveBoxIcon },
+  savings:    { label: '적금',        icon: CircleStackIcon },
   investment: { label: '투자',        icon: ArrowTrendingUpIcon },
   etc:        { label: '기타',        icon: EllipsisHorizontalCircleIcon },
   loan:       { label: '대출',        icon: DocumentTextIcon },
   card:       { label: '카드 대금',   icon: CreditCardIcon },
-  other_debt: { label: '기타',   icon: EllipsisHorizontalCircleIcon },
+  other_debt: { label: '기타',        icon: MinusCircleIcon },
 }
 
 export type AccountAdjustment = {

@@ -73,7 +73,7 @@ export default function AssetsContainer() {
           <div className="p-5">
             {/* 순자산 뱃지 + 숫자 */}
             <div className="mb-3 flex items-center gap-2">
-              <span className="rounded-full bg-black/6 px-2 py-0.5 text-[10px] font-bold tracking-wide text-gray-500">
+              <span className="rounded-full bg-black/6 px-2 py-0.5 text-xs font-bold tracking-wide text-gray-600">
                 순자산
               </span>
             </div>
@@ -100,7 +100,7 @@ export default function AssetsContainer() {
                   <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
                   <p className="text-[11px] font-semibold text-gray-400">자산 합계</p>
                 </div>
-                <p className="text-[15px] font-bold text-black">{formatWon(assets)}</p>
+                <p className="text-[15px] font-bold text-(--color-income-blue)">{formatWon(assets)}</p>
               </div>
               <div>
                 <div className="mb-1 flex items-center gap-1.5">

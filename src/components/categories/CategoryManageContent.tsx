@@ -110,16 +110,17 @@ export default function CategoryManageContent({
 
       {/* 액션 버튼 */}
       <div className="flex gap-3">
+        {(edit.isEditing || !!form.name) && (
+          <button
+            className="flex h-12 shrink-0 items-center justify-center rounded-xl glass-button px-5 text-sm font-bold text-(--color-text-muted) transition"
+            onClick={form.onReset}
+            type="button"
+          >
+            취소
+          </button>
+        )}
         <button
-          className="flex h-12 shrink-0 items-center justify-center rounded-full glass-button px-5 text-sm font-bold text-(--color-text-muted) transition disabled:opacity-30"
-          disabled={!edit.isEditing && !form.name}
-          onClick={form.onReset}
-          type="button"
-        >
-          취소
-        </button>
-        <button
-          className="h-12 flex-1 rounded-full bg-black text-sm font-bold text-white shadow-[0_4px_16px_rgba(0,0,0,0.18)] transition disabled:cursor-not-allowed disabled:opacity-35"
+          className="h-12 flex-1 rounded-xl bg-black text-sm font-bold text-white shadow-[0_4px_16px_rgba(0,0,0,0.18)] transition disabled:cursor-not-allowed disabled:opacity-35"
           disabled={!form.canSave}
           onClick={form.onSave}
           type="button"

@@ -22,7 +22,7 @@ export default function AccountRow({ account, onClick }: Props) {
         <Icon aria-hidden="true" className="h-4 w-4 text-gray-600" />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block text-[13px] font-bold text-black">{account.name}</span>
+        <span className="block truncate text-[13px] font-bold text-black">{account.name}</span>
         <span className="block text-[11.5px] text-(--color-text-sand)">
           {account.type === 'investment'
             ? `${cfg.label} · ${formatMonthDay(account.balanceAsOf)} 기준`
@@ -33,7 +33,7 @@ export default function AccountRow({ account, onClick }: Props) {
         <span className="text-[13.5px] font-extrabold text-black">
           {formatWon(account.currentBalance)}
         </span>
-        <ChevronRightIcon aria-hidden="true" className="h-3.5 w-3.5 text-gray-300" />
+        <ChevronRightIcon aria-hidden="true" className="h-3.5 w-3.5 text-gray-400" />
       </span>
     </button>
   )

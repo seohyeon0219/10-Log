@@ -14,10 +14,10 @@ export default function AccountSection({ accounts, className = '', onAdd, onEdit
   return (
     <div className={['rounded-[22px] glass-card p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]', className].join(' ')}>
       <div className="mb-3 flex items-center justify-between">
-        <p className="text-sm font-bold text-black">{title}</p>
+        <p className="text-[15px] font-bold text-black">{title}</p>
         <button
           aria-label={`${title} 추가`}
-          className="flex h-6 w-6 items-center justify-center text-gray-400 transition hover:text-black"
+          className="flex h-6 w-6 items-center justify-center text-gray-500 transition hover:text-black"
           onClick={onAdd}
           type="button"
         >
