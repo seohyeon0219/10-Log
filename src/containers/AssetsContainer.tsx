@@ -48,7 +48,7 @@ export default function AssetsContainer() {
   }
 
   return (
-    <section className="w-full self-start animate-fade-up md:mt-4">
+    <section className="w-full self-start animate-fade-up pb-6 md:mt-4">
       {error ? (
         <div className="mb-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-semibold text-(--color-expense-red)">
           {error}
@@ -91,20 +91,20 @@ export default function AssetsContainer() {
             )}
 
             {/* 구분선 */}
-            <div className="my-4 h-px bg-black/6" />
+            <div className="my-3 h-px bg-black/6" />
 
             {/* 자산 / 부채 합계 */}
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <div className="mb-1 flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
+                  <span className="h-2 w-2 rounded-full bg-blue-400" />
                   <p className="text-[11px] font-semibold text-gray-400">자산 합계</p>
                 </div>
                 <p className="text-[15px] font-bold text-(--color-income-blue)">{formatWon(assets)}</p>
               </div>
               <div>
                 <div className="mb-1 flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
+                  <span className="h-2 w-2 rounded-full bg-red-400" />
                   <p className="text-[11px] font-semibold text-gray-400">부채 합계</p>
                 </div>
                 <p className="text-[15px] font-bold text-(--color-expense-red)">{formatWon(liabilities)}</p>
@@ -125,7 +125,7 @@ export default function AssetsContainer() {
           />
           <AccountSection
             accounts={liabilityAccounts}
-            className="mt-3"
+            className="mt-4"
             onAdd={() => openAdd(true)}
             onEdit={(account) => navigate(`/app/assets/${account.id}`)}
             title="부채"

@@ -11,7 +11,7 @@ export default function NetWorthBar({ assets, liabilities }: Props) {
 
   return (
     <div className="mt-3">
-      <div className="flex h-2 overflow-hidden rounded-full">
+      <div className="flex h-2.5 overflow-hidden rounded-full">
         {assetPct > 0 && (
           <div
             className="h-full bg-(--color-income-blue)/40 transition-all duration-500"
