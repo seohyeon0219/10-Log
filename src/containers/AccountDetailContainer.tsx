@@ -140,7 +140,14 @@ export default function AccountDetailContainer() {
 
       {/* 기록 */}
       <div className="rounded-[22px] glass-card p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
-        <p className="mb-3 text-sm font-bold text-black">기록</p>
+        <div className="mb-3 flex items-baseline justify-between">
+          <p className="text-sm font-bold text-black">기록</p>
+          {adjustments.length > 0 && (
+            <p className="text-[11px] font-semibold text-gray-400">
+              총 {adjustments.length}건 · {adjustmentSum >= 0 ? '+' : ''}{formatWon(adjustmentSum)}
+            </p>
+          )}
+        </div>
         <div className="grid gap-3">
           {sortedAdjDates.map((date) => (
             <div key={date}>
