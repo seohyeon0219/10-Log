@@ -5,15 +5,10 @@ import DesktopNav from '../components/navigation/DesktopNav'
 import MobileBottomNavigation from '../components/navigation/MobileBottomNavigation'
 import { THEME_GRADIENTS, useThemeStore } from '../stores/themeStore'
 
-const TAB_ROUTES = ['/app/home', '/app/calendar', '/app/stats', '/app/assets', '/app/more']
 const NO_NAV_ROUTES = ['/app/search', '/app/profile', '/app/review', '/app/reports']
 
 function isNoNavRoute(pathname: string) {
   return NO_NAV_ROUTES.some((route) => pathname === route || pathname.startsWith(route + '/'))
-}
-
-function isTabRoute(pathname: string) {
-  return TAB_ROUTES.includes(pathname)
 }
 
 export default function AppLayout() {
@@ -22,7 +17,7 @@ export default function AppLayout() {
   const hideNav = isNoNavRoute(pathname)
 
   useEffect(() => {
-    if (!isTabRoute(pathname)) window.scrollTo(0, 0)
+    window.scrollTo(0, 0)
   }, [pathname])
 
   useEffect(() => {
