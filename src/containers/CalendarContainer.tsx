@@ -31,21 +31,24 @@ export default function CalendarContainer() {
   const selectedDateTransactions = transactions.filter((tx) => tx.date === selectedDateKey)
 
   const txListRef = useRef<HTMLDivElement>(null)
-  const isMounted = useRef(false)
+  const justSelected = useRef(false)
 
   useEffect(() => {
     void loadMonth()
   }, [loadMonth])
 
   useEffect(() => {
-    if (!isMounted.current) {
-      isMounted.current = true
-      return
-    }
+    if (!justSelected.current) return
+    justSelected.current = false
     if (!selectedDate || !txListRef.current) return
     const top = txListRef.current.getBoundingClientRect().top + window.scrollY - 16
     window.scrollTo({ top, behavior: 'smooth' })
   }, [selectedDate])
+
+  const handleDateSelect = (date: Date) => {
+    justSelected.current = true
+    selectDate(date)
+  }
 
   return (
     <section className="w-full self-start animate-fade-up md:mt-4">
@@ -77,7 +80,7 @@ export default function CalendarContainer() {
         <CalendarGrid
           currentDate={currentDate}
           dayAmounts={calendarDayAmounts}
-          onDateSelect={selectDate}
+          onDateSelect={handleDateSelect}
           selectedDate={selectedDate}
         />
       </div>
@@ -97,7 +100,7 @@ export default function CalendarContainer() {
           <CalendarGrid
             currentDate={currentDate}
             dayAmounts={calendarDayAmounts}
-            onDateSelect={selectDate}
+            onDateSelect={handleDateSelect}
             selectedDate={selectedDate}
           />
         </div>
