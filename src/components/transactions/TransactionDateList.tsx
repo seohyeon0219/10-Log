@@ -44,7 +44,7 @@ export default function TransactionDateList({
       </div>
 
       {transactions.length > 0 && (
-        <div className="mt-1.5 flex gap-3">
+        <div className="mt-1.5 mb-2 flex gap-3">
           {totalIncome > 0 && (
             <span className="text-xs font-semibold text-(--color-income-blue)">
               수입 +{formatWon(totalIncome)}
