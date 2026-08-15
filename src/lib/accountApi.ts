@@ -38,9 +38,12 @@ const mapAccount = (row: AccountRow): Account => {
 }
 
 export const getAccounts = async (): Promise<Account[]> => {
+  const userId = await getCurrentUserId()
+
   const { data, error } = await supabase
     .from('accounts')
     .select('id, user_id, name, type, is_liability, balance, balance_as_of, memo, include_in_total, sort_order, is_archived, created_at, account_adjustments(amount)')
+    .eq('user_id', userId)
     .eq('is_archived', false)
     .order('sort_order', { ascending: true })
     .order('created_at', { ascending: true })

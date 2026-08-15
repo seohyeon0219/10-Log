@@ -30,7 +30,13 @@ export const useAccountStore = create<AccountStore>((set, get) => ({
       const accounts = await getAccounts()
       set({ accounts, isLoading: false })
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Supabase 데이터를 불러오지 못했어요.'
+      console.error('[loadAccounts] raw error:', error)
+      const message =
+        error instanceof Error
+          ? error.message
+          : typeof error === 'object' && error !== null && 'message' in error
+            ? String((error as { message: unknown }).message)
+            : `알 수 없는 오류: ${JSON.stringify(error)}`
       set({ error: message, isLoading: false })
     }
   },
