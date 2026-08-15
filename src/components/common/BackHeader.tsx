@@ -22,7 +22,7 @@ export default function BackHeader({ action, title, to }: BackHeaderProps) {
     <header className="mb-4 flex h-12 items-center gap-2">
       <button
         aria-label="뒤로 가기"
-        className="flex items-center text-(--color-text-sand) transition active:opacity-60"
+        className="flex h-10 w-10 items-center justify-center text-(--color-text-sand) transition active:opacity-60"
         onClick={handleBack}
         type="button"
       >
@@ -36,7 +36,7 @@ export default function BackHeader({ action, title, to }: BackHeaderProps) {
           />
         </svg>
       </button>
-      {title && <h1 className="min-w-0 flex-1 text-xl font-bold text-black">{title}</h1>}
+      {title && <h1 className="min-w-0 flex-1 truncate text-xl font-bold text-black">{title}</h1>}
       {action ? <div className="ml-auto shrink-0">{action}</div> : null}
     </header>
   )

@@ -109,7 +109,7 @@ export default function AccountDetailContainer() {
   )
 
   return (
-    <section className="w-full self-start animate-fade-up md:mt-4">
+    <section className="w-full self-start animate-fade-up pb-6 md:mt-4">
       <BackHeader action={menu} title={account.name} to="/app/assets" />
 
       <AccountBalanceCard account={account} currentBalance={currentBalance} />
@@ -136,7 +136,7 @@ export default function AccountDetailContainer() {
             </p>
           )}
         </div>
-        <div className="grid gap-1">
+        <div className="grid gap-1.5">
           {adjustments.map((adj) => (
             <button
               className="flex w-full items-center justify-between rounded-[14px] bg-white/50 px-3 py-2.5 text-left transition hover:bg-white/70"
