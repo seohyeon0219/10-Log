@@ -17,6 +17,10 @@ export default function AppLayout() {
   const hideNav = isNoNavRoute(pathname)
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
+  useEffect(() => {
     document.documentElement.style.setProperty('--gradient-page-bg', THEME_GRADIENTS[theme])
   }, [theme])
 
