@@ -103,7 +103,7 @@ export default function TransactionFormContent({
 
   return (
     <>
-      <div className="grid gap-5">
+      <div className="grid gap-4">
         <UnderInput
           inputMode="numeric"
           label="금액"
@@ -114,16 +114,12 @@ export default function TransactionFormContent({
           variant="amount"
         />
 
-        <div className="h-px bg-black/8" />
-
         <CategorySelect
           categories={categories}
           onChange={setSelectedCategoryId}
           onManageCategories={categoryManageOverlay ? () => setIsCategoryManageOpen(true) : undefined}
           selectedCategoryIds={[resolvedSelectedCategoryId]}
         />
-
-        <div className="h-px bg-black/8" />
 
         <UnderInput
           label="날짜"
@@ -132,8 +128,6 @@ export default function TransactionFormContent({
           type="date"
           value={date}
         />
-
-        <div className="h-px bg-black/8" />
 
         <UnderInput
           label="메모"
