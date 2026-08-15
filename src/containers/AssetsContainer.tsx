@@ -64,31 +64,51 @@ export default function AssetsContainer() {
       {/* 순자산 요약 카드 */}
       {!isLoading && (
         <div
-          className="mb-4 rounded-[22px] glass-card p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
+          className="mb-4 overflow-hidden rounded-[22px] glass-card shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
           style={{ background: NET_WORTH_CARD_BG[theme] }}
         >
-          <p className="mb-1 text-xs font-semibold text-gray-500">순자산</p>
-          <p
-            className={[
-              'text-[26px] font-extrabold leading-none',
-              netWorth >= 0 ? 'text-black' : 'text-(--color-expense-red)',
-            ].join(' ')}
-          >
-            {netWorth < 0 ? '-' : ''}{formatWon(Math.abs(netWorth))}
-          </p>
+          {/* 상단 shimmer */}
+          <div className="h-px bg-gradient-to-r from-transparent via-white/60 to-transparent" />
 
-          {(assets > 0 || liabilities > 0) && (
-            <NetWorthBar assets={assets} liabilities={liabilities} />
-          )}
-
-          <div className="mt-4 grid grid-cols-2 gap-3">
-            <div>
-              <p className="mb-1 text-xs font-semibold text-gray-500">자산 합계</p>
-              <p className="text-base font-bold text-black">{formatWon(assets)}</p>
+          <div className="p-5">
+            {/* 순자산 뱃지 + 숫자 */}
+            <div className="mb-3 flex items-center gap-2">
+              <span className="rounded-full bg-black/6 px-2 py-0.5 text-[10px] font-bold tracking-wide text-gray-500">
+                순자산
+              </span>
             </div>
-            <div>
-              <p className="mb-1 text-xs font-semibold text-gray-500">부채 합계</p>
-              <p className="text-base font-bold text-(--color-expense-red)">{formatWon(liabilities)}</p>
+            <p
+              className={[
+                'text-[30px] font-extrabold leading-none',
+                netWorth >= 0 ? 'text-black' : 'text-(--color-expense-red)',
+              ].join(' ')}
+            >
+              {netWorth < 0 ? '-' : ''}{formatWon(Math.abs(netWorth))}
+            </p>
+
+            {(assets > 0 || liabilities > 0) && (
+              <NetWorthBar assets={assets} liabilities={liabilities} />
+            )}
+
+            {/* 구분선 */}
+            <div className="my-4 h-px bg-black/6" />
+
+            {/* 자산 / 부채 합계 */}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <div className="mb-1 flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
+                  <p className="text-[11px] font-semibold text-gray-400">자산 합계</p>
+                </div>
+                <p className="text-[15px] font-bold text-black">{formatWon(assets)}</p>
+              </div>
+              <div>
+                <div className="mb-1 flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
+                  <p className="text-[11px] font-semibold text-gray-400">부채 합계</p>
+                </div>
+                <p className="text-[15px] font-bold text-(--color-expense-red)">{formatWon(liabilities)}</p>
+              </div>
             </div>
           </div>
         </div>

@@ -127,48 +127,53 @@ export default function AccountDetailContainer() {
 
       {/* 기록 */}
       <div className="rounded-[22px] glass-card p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
-        <div>
+        <div className="mb-3">
           <p className="text-sm font-bold text-black">기록</p>
-          {adjustments.length > 0 && (
-            <p className="text-[11px] font-semibold leading-none text-gray-400 mt-3 mb-2">
-              {adjustments[0].date.split('-')[0]}
-            </p>
-          )}
-        </div>
-        {adjustments.length === 0 ? (
-          <p className="py-4 text-center text-[13px] font-medium text-gray-400">
-            아직 기록이 없어요
+          <p className="mt-0.5 text-[11px] font-semibold text-gray-400">
+            {(adjustments[0]?.date ?? account.balanceAsOf).split('-')[0]}
           </p>
-        ) : (
-          <div className="grid gap-1">
-            {adjustments.map((adj) => (
-              <button
-                className="flex w-full items-center justify-between rounded-[14px] bg-white/50 px-3 py-2.5 text-left transition hover:bg-white/70"
-                key={adj.id}
-                onClick={() => openEditAdj(adj)}
-                type="button"
-              >
-                <div className="min-w-0">
-                  <p className="text-[13px] font-semibold text-black">{adj.memo}</p>
-                  <p className="text-[11.5px] font-medium text-gray-400">{formatMonthDay(adj.date)}</p>
-                </div>
-                <div className="shrink-0 text-right">
-                  <p
-                    className={[
-                      'text-[13.5px] font-extrabold',
-                      adj.amount >= 0 ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
-                    ].join(' ')}
-                  >
-                    {adj.amount >= 0 ? '+' : ''}{formatWon(adj.amount)}
-                  </p>
-                  <p className="text-[11px] font-medium text-gray-400">
-                    잔액 {formatWon(balanceByAdjId.get(adj.id) ?? 0)}
-                  </p>
-                </div>
-              </button>
-            ))}
+        </div>
+        <div className="grid gap-1">
+          {adjustments.map((adj) => (
+            <button
+              className="flex w-full items-center justify-between rounded-[14px] bg-white/50 px-3 py-2.5 text-left transition hover:bg-white/70"
+              key={adj.id}
+              onClick={() => openEditAdj(adj)}
+              type="button"
+            >
+              <div className="min-w-0">
+                <p className="text-[13px] font-semibold text-black">{adj.memo}</p>
+                <p className="text-[11.5px] font-medium text-gray-400">{formatMonthDay(adj.date)}</p>
+              </div>
+              <div className="shrink-0 text-right">
+                <p
+                  className={[
+                    'text-[13.5px] font-extrabold',
+                    adj.amount >= 0 ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
+                  ].join(' ')}
+                >
+                  {adj.amount >= 0 ? '+' : ''}{formatWon(adj.amount)}
+                </p>
+                <p className="text-[11px] font-medium text-gray-400">
+                  잔액 {formatWon(balanceByAdjId.get(adj.id) ?? 0)}
+                </p>
+              </div>
+            </button>
+          ))}
+
+          {/* 초기 잔액 — 수정 불가 고정 항목 */}
+          <div className="flex w-full items-center justify-between px-3 py-2.5">
+            <div className="min-w-0">
+              <p className="text-[13px] font-semibold text-black">시작 잔액</p>
+              <p className="text-[11.5px] font-medium text-gray-400">{formatMonthDay(account.balanceAsOf)}</p>
+            </div>
+            <div className="shrink-0 text-right">
+              <p className="text-[13.5px] font-extrabold text-black">
+                {formatWon(account.balance)}
+              </p>
+            </div>
           </div>
-        )}
+        </div>
       </div>
 
       <AdjustmentSheet
