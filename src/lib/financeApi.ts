@@ -44,7 +44,7 @@ export const getMonthlyPromise = async (
 
   return {
     budgetAmount: data?.budget_amount ?? 0,
-    isRegistered: Boolean(data?.budget_amount && data.budget_amount > 0),
+    isRegistered: Boolean(data?.budget_amount && data.budget_amount > 0) || Boolean(data?.use_income_as_budget),
     monthLabel: '이번 달',
     promise: data?.promise ?? fallbackPromise,
     useIncomeAsBudget: data?.use_income_as_budget ?? false,

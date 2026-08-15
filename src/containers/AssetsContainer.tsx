@@ -10,8 +10,8 @@ import NetWorthBar from '../components/accounts/NetWorthBar'
 import ResponsiveAccountForm from '../components/accounts/ResponsiveAccountForm'
 
 const NET_WORTH_CARD_BG: Record<string, string> = {
-  yellow: 'linear-gradient(135deg, rgba(255, 253, 235, 0.58) 0%, rgba(254, 246, 205, 0.42) 100%)',
-  blue:   'linear-gradient(135deg, rgba(234, 244, 255, 0.58) 0%, rgba(212, 231, 255, 0.42) 100%)',
+  yellow: 'linear-gradient(135deg, rgba(251, 249, 245, 0.40) 0%, rgba(242, 237, 228, 0.28) 100%)',
+  blue:   'linear-gradient(135deg, rgba(225, 233, 255, 0.40) 0%, rgba(205, 218, 255, 0.28) 100%)',
 }
 
 export default function AssetsContainer() {
