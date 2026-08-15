@@ -52,7 +52,7 @@ export default function AdjustmentSheet({ isOpen, onClose, editingAdj, direction
     }
   }
 
-  const title = editingAdj ? '기록 수정' : (direction === '+' ? '입금 기록' : '출금 기록')
+  const title = editingAdj ? '기록 수정' : (direction === '+' ? '추가 기록' : '차감 기록')
 
   return (
     <>
