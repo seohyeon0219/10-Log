@@ -11,7 +11,7 @@ import AdjustmentSheet from '../components/assets/AdjustmentSheet'
 import { useAccountStore } from '../stores/accountStore'
 import { useAccountAdjustments } from '../hooks/useAccountAdjustments'
 import type { AccountAdjustment, AccountAdjustmentFormValues, AccountFormValues } from '../types/account'
-import { formatWon } from '../utils/formatters'
+import { formatMonthDay, formatWon } from '../utils/formatters'
 
 export default function AccountDetailContainer() {
   const { id } = useParams<{ id: string }>()
@@ -127,7 +127,14 @@ export default function AccountDetailContainer() {
 
       {/* 기록 */}
       <div className="rounded-[22px] glass-card p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
-        <p className="mb-3 text-sm font-bold text-black">기록</p>
+        <div>
+          <p className="text-sm font-bold text-black">기록</p>
+          {adjustments.length > 0 && (
+            <p className="text-[11px] font-semibold leading-none text-gray-400 mt-3 mb-2">
+              {adjustments[0].date.split('-')[0]}
+            </p>
+          )}
+        </div>
         {adjustments.length === 0 ? (
           <p className="py-4 text-center text-[13px] font-medium text-gray-400">
             아직 기록이 없어요
@@ -143,7 +150,7 @@ export default function AccountDetailContainer() {
               >
                 <div className="min-w-0">
                   <p className="text-[13px] font-semibold text-black">{adj.memo}</p>
-                  <p className="text-[11.5px] font-medium text-gray-400">{adj.date}</p>
+                  <p className="text-[11.5px] font-medium text-gray-400">{formatMonthDay(adj.date)}</p>
                 </div>
                 <div className="shrink-0 text-right">
                   <p
