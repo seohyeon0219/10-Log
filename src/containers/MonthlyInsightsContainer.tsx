@@ -3,15 +3,16 @@ import BackHeader from '../components/common/BackHeader'
 import { useCalendarStore } from '../stores/calendarStore'
 import { useRecentMonthsTransactions } from '../hooks/useRecentMonthsTransactions'
 import {
+  getCategoryChangeRanking,
+  getLineChartData,
   getMonthlyInsights,
-  getSpendingByDayOfWeek,
-  getSpendingByWeek,
-  getSpendingDensity,
+  getPreviousMonthComparison,
 } from '../utils/statisticsCalculators'
+import { getMonthDate } from '../utils/dateUtils'
 import MonthlyInsightsCard from '../components/statistics/MonthlyInsightsCard'
-import SpendingByDayOfWeekCard from '../components/statistics/SpendingByDayOfWeekCard'
-import SpendingByWeekCard from '../components/statistics/SpendingByWeekCard'
-import SpendingDensityCard from '../components/statistics/SpendingDensityCard'
+import PreviousMonthComparison from '../components/statistics/PreviousMonthComparison'
+import CategoryChangeRanking from '../components/statistics/CategoryChangeRanking'
+import SpendingTransactionLineChart from '../components/statistics/SpendingTransactionLineChart'
 
 export default function MonthlyInsightsContainer() {
   const currentDate = useCalendarStore((state) => state.currentDate)
@@ -19,7 +20,9 @@ export default function MonthlyInsightsContainer() {
   const isLoading = useCalendarStore((state) => state.isLoading)
   const loadMonth = useCalendarStore((state) => state.loadMonth)
 
-  const { monthsData } = useRecentMonthsTransactions(currentDate, 6)
+  const { monthsData, previousMonthData } = useRecentMonthsTransactions(currentDate, 6)
+  const lastYearDate = useMemo(() => getMonthDate(currentDate, -12), [currentDate])
+  const { monthsData: lastYearMonthsData } = useRecentMonthsTransactions(lastYearDate, 6)
 
   useEffect(() => {
     void loadMonth()
@@ -29,9 +32,25 @@ export default function MonthlyInsightsContainer() {
     () => getMonthlyInsights(currentDate, transactions, monthsData),
     [currentDate, transactions, monthsData],
   )
-  const spendingByDayOfWeek = useMemo(() => getSpendingByDayOfWeek(transactions), [transactions])
-  const spendingByWeek = useMemo(() => getSpendingByWeek(transactions), [transactions])
-  const spendingDensity = useMemo(() => getSpendingDensity(transactions, currentDate), [transactions, currentDate])
+  const previousMonthComparison = useMemo(
+    () => getPreviousMonthComparison(transactions, previousMonthData),
+    [transactions, previousMonthData],
+  )
+  const categoryChangeRanking = useMemo(
+    () => getCategoryChangeRanking(transactions, previousMonthData),
+    [transactions, previousMonthData],
+  )
+  const spendingTransactionLineChart = useMemo(
+    () => getLineChartData(currentDate, monthsData),
+    [currentDate, monthsData],
+  )
+  const lastYearExpense = useMemo(
+    () => lastYearMonthsData.map((txs, index) => ({
+      amount: txs.filter((t) => t.type === 'expense').reduce((s, t) => s + t.amount, 0),
+      month: `${getMonthDate(currentDate, index - 5).getMonth() + 1}월`,
+    })),
+    [currentDate, lastYearMonthsData],
+  )
 
   const monthLabel = `${currentDate.getMonth() + 1}월 인사이트`
 
@@ -47,9 +66,16 @@ export default function MonthlyInsightsContainer() {
 
       <div className="mt-4 grid gap-4">
         <MonthlyInsightsCard data={monthlyInsights} showDetailLink={false} />
-        <SpendingByDayOfWeekCard data={spendingByDayOfWeek} />
-        <SpendingByWeekCard data={spendingByWeek} />
-        <SpendingDensityCard data={spendingDensity} />
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <PreviousMonthComparison items={previousMonthComparison} />
+          <CategoryChangeRanking items={categoryChangeRanking} />
+        </div>
+
+        <SpendingTransactionLineChart
+          data={spendingTransactionLineChart}
+          lastYearExpense={lastYearExpense}
+        />
       </div>
     </section>
   )

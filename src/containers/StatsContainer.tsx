@@ -1,9 +1,7 @@
 import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
-import CategoryChangeRanking from '../components/statistics/CategoryChangeRanking'
 import CategoryTransactionRatio from '../components/statistics/CategoryTransactionRatio'
-import PreviousMonthComparison from '../components/statistics/PreviousMonthComparison'
-import SpendingTransactionLineChart from '../components/statistics/SpendingTransactionLineChart'
 import MonthlyInsightsCard from '../components/statistics/MonthlyInsightsCard'
+import SpendingPatternsSummaryCard from '../components/statistics/SpendingPatternsSummaryCard'
 import AiMonthlyReview from '../components/review/AiMonthlyReview'
 import { Link } from 'react-router-dom'
 import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
@@ -26,7 +24,7 @@ export default function StatsContainer() {
         <AiMonthlyReview monthLabel={`${stats.currentDate.getMonth() + 1}월`} />
       </Link>
 
-      <div>
+      <div className="grid gap-4">
         <CategoryTransactionRatio
           items={stats.categoryTransactionRatio}
           onRatioTypeChange={stats.setRatioType}
@@ -35,22 +33,8 @@ export default function StatsContainer() {
           ratioType={stats.ratioType}
           selectedCategoryId={stats.ratioSelectedCategoryId}
         />
-      </div>
-
-      <div className="mt-4 grid gap-4 md:grid-cols-2">
-        <PreviousMonthComparison items={stats.previousMonthComparison} />
-        <CategoryChangeRanking items={stats.categoryChangeRanking} />
-      </div>
-
-      <div className="mt-4">
-        <SpendingTransactionLineChart
-          data={stats.spendingTransactionLineChart}
-          lastYearExpense={stats.lastYearExpense}
-        />
-      </div>
-
-      <div className="mt-4">
         <MonthlyInsightsCard data={stats.monthlyInsights} />
+        <SpendingPatternsSummaryCard />
       </div>
 
       {stats.selectedTransaction ? (
