@@ -105,6 +105,7 @@ export default function TransactionFormContent({
     <>
       <div className="grid gap-4">
         <UnderInput
+          autoFocus
           inputMode="numeric"
           label="금액"
           onChange={handleAmountChange}

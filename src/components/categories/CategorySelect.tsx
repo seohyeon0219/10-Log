@@ -25,7 +25,7 @@ export default function CategorySelect({
         <legend className="p-0 text-sm font-semibold text-gray-500">{label}</legend>
         {onManageCategories ? (
           <button
-            className="cursor-pointer rounded-lg border-0 bg-transparent px-2 py-1 text-sm font-medium text-gray-400 transition hover:bg-white/50 hover:text-black"
+            className="flex min-h-11 cursor-pointer items-center rounded-lg border-0 bg-transparent px-3 text-sm font-medium text-gray-400 transition hover:bg-white/50 hover:text-black"
             onClick={onManageCategories}
             type="button"
           >
