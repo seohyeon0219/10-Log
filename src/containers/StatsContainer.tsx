@@ -1,9 +1,14 @@
+import { Link } from 'react-router-dom'
 import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
+import AiMonthlyReview from '../components/review/AiMonthlyReview'
+import CategoryChangeRanking from '../components/statistics/CategoryChangeRanking'
 import CategoryTransactionRatio from '../components/statistics/CategoryTransactionRatio'
 import MonthlyInsightsCard from '../components/statistics/MonthlyInsightsCard'
-import SpendingPatternsSummaryCard from '../components/statistics/SpendingPatternsSummaryCard'
-import AiMonthlyReview from '../components/review/AiMonthlyReview'
-import { Link } from 'react-router-dom'
+import PreviousMonthComparison from '../components/statistics/PreviousMonthComparison'
+import SpendingByDayOfWeekCard from '../components/statistics/SpendingByDayOfWeekCard'
+import SpendingByWeekCard from '../components/statistics/SpendingByWeekCard'
+import SpendingDensityCard from '../components/statistics/SpendingDensityCard'
+import SpendingTransactionLineChart from '../components/statistics/SpendingTransactionLineChart'
 import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
 import { useStatsPage } from '../hooks/useStatsPage'
 
@@ -33,8 +38,22 @@ export default function StatsContainer() {
           ratioType={stats.ratioType}
           selectedCategoryId={stats.ratioSelectedCategoryId}
         />
-        <MonthlyInsightsCard data={stats.monthlyInsights} />
-        <SpendingPatternsSummaryCard />
+
+        <MonthlyInsightsCard data={stats.monthlyInsights} showDetailLink={false} />
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <PreviousMonthComparison items={stats.previousMonthComparison} />
+          <CategoryChangeRanking items={stats.categoryChangeRanking} />
+        </div>
+
+        <SpendingTransactionLineChart
+          data={stats.spendingTransactionLineChart}
+          lastYearExpense={stats.lastYearExpense}
+        />
+
+        <SpendingByDayOfWeekCard data={stats.spendingByDayOfWeek} />
+        <SpendingByWeekCard data={stats.spendingByWeek} />
+        <SpendingDensityCard data={stats.spendingDensity} />
       </div>
 
       {stats.selectedTransaction ? (

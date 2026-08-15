@@ -20,6 +20,7 @@ import ReviewPage from '../pages/ReviewPage'
 import StatsPage from '../pages/StatsPage'
 import AccountDetailPage from '../pages/AccountDetailPage'
 import MonthlyInsightsPage from '../pages/MonthlyInsightsPage'
+import SpendingPatternsPage from '../pages/SpendingPatternsPage'
 
 function useAuthGuard() {
   const [session, setSession] = useState<Session | null | undefined>(undefined)
@@ -99,6 +100,7 @@ export default function AppRouter() {
           <Route path="assets/:id" element={<AccountDetailPage />} />
           <Route path="stats/review" element={<ReviewPage />} />
           <Route path="stats/insights" element={<MonthlyInsightsPage />} />
+          <Route path="stats/patterns" element={<SpendingPatternsPage />} />
           <Route path="more" element={<MorePage />} />
           <Route path="search" element={<SearchPage />} />
           <Route path="search/results" element={<SearchResultsPage />} />

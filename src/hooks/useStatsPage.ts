@@ -8,6 +8,9 @@ import {
   getLineChartData,
   getMonthlyInsights,
   getPreviousMonthComparison,
+  getSpendingByDayOfWeek,
+  getSpendingByWeek,
+  getSpendingDensity,
 } from '../utils/statisticsCalculators'
 import { getMonthDate } from '../utils/dateUtils'
 
@@ -68,6 +71,10 @@ export function useStatsPage() {
     [currentDate, lastYearMonthsData],
   )
 
+  const spendingByDayOfWeek = useMemo(() => getSpendingByDayOfWeek(transactions), [transactions])
+  const spendingByWeek = useMemo(() => getSpendingByWeek(transactions), [transactions])
+  const spendingDensity = useMemo(() => getSpendingDensity(transactions, currentDate), [transactions, currentDate])
+
   useEffect(() => {
     void loadMonth()
   }, [loadMonth])
@@ -111,6 +118,9 @@ export function useStatsPage() {
     setSelectedTransaction,
     lastYearExpense,
     monthlyInsights,
+    spendingByDayOfWeek,
+    spendingByWeek,
+    spendingDensity,
     spendingTransactionLineChart,
     updateCategory,
   }
