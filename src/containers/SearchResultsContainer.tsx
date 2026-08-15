@@ -82,41 +82,49 @@ export default function SearchResultsContainer() {
       ) : (
         <>
           {(totalExpense > 0 || totalIncome > 0) && (
-            <div className="mb-4 flex gap-4">
-              {totalExpense > 0 && (
-                <div>
-                  <p className="text-xs font-semibold text-gray-400">지출</p>
-                  <p className="text-[15px] font-extrabold text-(--color-expense-red)">
-                    -{formatWon(totalExpense)}
-                  </p>
-                </div>
-              )}
-              {totalIncome > 0 && (
-                <div>
-                  <p className="text-xs font-semibold text-gray-400">수입</p>
-                  <p className="text-[15px] font-extrabold text-(--color-income-blue)">
-                    +{formatWon(totalIncome)}
-                  </p>
-                </div>
-              )}
+            <div className="mb-3 rounded-[22px] border border-white/60 bg-white/45 px-5 py-4 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+              <p className="mb-2 text-xs font-semibold text-gray-400">
+                {transactions.length}건
+              </p>
+              <div className="flex gap-5">
+                {totalExpense > 0 && (
+                  <div>
+                    <p className="text-xs font-semibold text-gray-400">지출</p>
+                    <p className="text-[15px] font-extrabold text-(--color-expense-red)">
+                      -{formatWon(totalExpense)}
+                    </p>
+                  </div>
+                )}
+                {totalIncome > 0 && (
+                  <div>
+                    <p className="text-xs font-semibold text-gray-400">수입</p>
+                    <p className="text-[15px] font-extrabold text-(--color-income-blue)">
+                      +{formatWon(totalIncome)}
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
           {transactions.length === 0 ? (
-            <p className="py-8 text-center text-sm font-semibold text-gray-400">
-              조건에 맞는 내역이 없어요.
-            </p>
+            <div className="rounded-[22px] border border-white/60 bg-white/45 px-6 py-12 text-center backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+              <p className="text-sm font-semibold text-gray-400">조건에 맞는 내역이 없어요.</p>
+            </div>
           ) : (
-            <div className="grid gap-4">
+            <div className="grid gap-3">
               {sortedDates.map((date) => (
-                <div key={date}>
-                  <p className="mb-1.5 text-[12px] font-bold text-gray-500">
+                <div
+                  className="rounded-[22px] border border-white/60 bg-white/45 p-4 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
+                  key={date}
+                >
+                  <p className="mb-2 text-[12px] font-bold text-gray-500">
                     {formatMonthDay(date)}
                   </p>
                   <div className="grid gap-1.5">
                     {grouped[date].map((tx) => (
                       <button
-                        className="flex w-full items-center gap-2 rounded-[14px] bg-black/4 px-3 py-2.5 text-left transition hover:bg-black/8"
+                        className="flex w-full items-center gap-2 rounded-[14px] bg-white/50 px-3 py-2.5 text-left transition hover:bg-white/70"
                         key={tx.id}
                         onClick={() => setSelectedTransaction(tx)}
                         type="button"
