@@ -221,7 +221,7 @@ export default function AccountFormContent({ initialValues, isLiability, onSave,
       <ConfirmModal
         cancelText="취소"
         confirmText="삭제"
-        description="삭제하면 복원할 수 없어요. 연결된 거래 이력도 함께 사라질 수 있어요."
+        description="삭제하면 복원할 수 없어요."
         isOpen={showDeleteConfirm}
         onClose={() => setShowDeleteConfirm(false)}
         onConfirm={handleDelete}
