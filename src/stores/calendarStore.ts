@@ -159,7 +159,7 @@ export const useCalendarStore = create<CalendarStore>((set, get) => ({
   },
   monthlyPromise: emptyMonthlyPromise,
   monthlySummary: emptyMonthlySummary,
-  selectedDate: null,
+  selectedDate: initialDate,
   selectDate: (date) =>
     set((state) => {
       if (state.selectedDate && toDateKey(state.selectedDate) === toDateKey(date)) {
