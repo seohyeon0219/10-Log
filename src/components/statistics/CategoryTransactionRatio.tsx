@@ -109,7 +109,7 @@ export default function CategoryTransactionRatio({
                   isSelected ? 'bg-black/5' : '',
                 ].join(' ')}
                 key={item.id}
-                onClick={() => onSelectedCategoryIdChange(item.id)}
+                onClick={() => onSelectedCategoryIdChange(isSelected ? '' : item.id)}
                 type="button"
               >
                 <span
