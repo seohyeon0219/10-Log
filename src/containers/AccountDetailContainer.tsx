@@ -65,6 +65,13 @@ export default function AccountDetailContainer() {
   }, {})
   const sortedAdjDates = Object.keys(groupedAdj).sort((a, b) => b.localeCompare(a))
 
+  const now = new Date()
+  const thisMonthPrefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
+  const thisMonthChange = adjustments
+    .filter((adj) => adj.date.startsWith(thisMonthPrefix))
+    .reduce((s, adj) => s + adj.amount, 0)
+  const lastAdjDate = adjustments[0]?.date ?? null
+
   const handleEditSave = async (values: AccountFormValues) => {
     await updateAccount(account.id, values)
     setIsEditFormOpen(false)
@@ -117,7 +124,7 @@ export default function AccountDetailContainer() {
     <section className="w-full self-start animate-fade-up md:mt-4">
       <BackHeader action={menu} title={account.name} to="/app/assets" />
 
-      <AccountBalanceCard account={account} currentBalance={currentBalance} />
+      <AccountBalanceCard account={account} currentBalance={currentBalance} lastAdjDate={lastAdjDate} thisMonthChange={thisMonthChange} />
 
       {/* 입금/출금 버튼 */}
       <div className="mb-3 grid grid-cols-2 gap-2">
