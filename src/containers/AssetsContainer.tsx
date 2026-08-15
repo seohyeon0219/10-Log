@@ -11,7 +11,7 @@ import ResponsiveAccountForm from '../components/accounts/ResponsiveAccountForm'
 
 const NET_WORTH_CARD_BG: Record<string, string> = {
   yellow: 'linear-gradient(135deg, rgba(251, 249, 245, 0.40) 0%, rgba(242, 237, 228, 0.28) 100%)',
-  blue:   'linear-gradient(135deg, rgba(225, 233, 255, 0.40) 0%, rgba(205, 218, 255, 0.28) 100%)',
+  blue:   'linear-gradient(135deg, rgba(241, 246, 255, 0.40) 0%, rgba(233, 238, 249, 0.28) 100%)',
 }
 
 export default function AssetsContainer() {
