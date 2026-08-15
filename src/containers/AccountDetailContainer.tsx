@@ -188,7 +188,7 @@ export default function AccountDetailContainer() {
       {/* 계좌 삭제 확인 */}
       <ConfirmModal
         cancelText="취소"
-        confirmText="완전 삭제"
+        confirmText="삭제"
         description="삭제하면 복원할 수 없어요."
         isOpen={showDeleteConfirm}
         onClose={() => setShowDeleteConfirm(false)}
