@@ -59,17 +59,6 @@ export default function AccountDetailContainer() {
     return map
   })()
 
-  const groupedAdj = adjustments.reduce<Record<string, typeof adjustments>>((acc, adj) => {
-    ;(acc[adj.date] ??= []).push(adj)
-    return acc
-  }, {})
-  const sortedAdjDates = Object.keys(groupedAdj).sort((a, b) => b.localeCompare(a))
-
-  const now = new Date()
-  const thisMonthPrefix = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`
-  const thisMonthChange = adjustments
-    .filter((adj) => adj.date.startsWith(thisMonthPrefix))
-    .reduce((s, adj) => s + adj.amount, 0)
 
   const handleEditSave = async (values: AccountFormValues) => {
     await updateAccount(account.id, values)
@@ -123,7 +112,7 @@ export default function AccountDetailContainer() {
     <section className="w-full self-start animate-fade-up md:mt-4">
       <BackHeader action={menu} title={account.name} to="/app/assets" />
 
-      <AccountBalanceCard account={account} currentBalance={currentBalance} thisMonthChange={thisMonthChange} />
+      <AccountBalanceCard account={account} currentBalance={currentBalance} />
 
       {/* 입금/출금 버튼 */}
       <div className="mb-3 grid grid-cols-2 gap-2">
@@ -147,46 +136,31 @@ export default function AccountDetailContainer() {
             </p>
           )}
         </div>
-        <div className="grid gap-3">
-          {sortedAdjDates.map((date) => (
-            <div key={date}>
-              <p className="mb-1 text-[11px] font-bold text-gray-400">{formatMonthDay(date)}</p>
-              <div className="grid gap-1">
-                {groupedAdj[date].map((adj) => (
-                  <button
-                    className="flex w-full items-center justify-between rounded-[14px] bg-white/50 px-3 py-2.5 text-left transition hover:bg-white/70"
-                    key={adj.id}
-                    onClick={() => openEditAdj(adj)}
-                    type="button"
-                  >
-                    <p className="text-[13px] font-semibold text-black">{adj.memo ?? '-'}</p>
-                    <div className="shrink-0 text-right">
-                      <p
-                        className={[
-                          'text-[13.5px] font-extrabold',
-                          adj.amount >= 0 ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
-                        ].join(' ')}
-                      >
-                        {adj.amount >= 0 ? '+' : ''}{formatWon(adj.amount)}
-                      </p>
-                      <p className="text-[11px] font-medium text-gray-400">
-                        잔액 {formatWon(balanceByAdjId.get(adj.id) ?? 0)}
-                      </p>
-                    </div>
-                  </button>
-                ))}
+        <div className="grid gap-1">
+          {adjustments.map((adj) => (
+            <button
+              className="flex w-full items-center justify-between rounded-[14px] bg-white/50 px-3 py-2.5 text-left transition hover:bg-white/70"
+              key={adj.id}
+              onClick={() => openEditAdj(adj)}
+              type="button"
+            >
+              <div className="min-w-0">
+                <p className="text-[13px] font-semibold text-black">{adj.memo ?? '-'}</p>
+                <p className="text-[11.5px] font-medium text-gray-400">{formatMonthDay(adj.date)}</p>
               </div>
-            </div>
+              <div className="shrink-0 text-right">
+                <p className={[
+                  'text-[13.5px] font-extrabold',
+                  adj.amount >= 0 ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
+                ].join(' ')}>
+                  {adj.amount >= 0 ? '+' : ''}{formatWon(adj.amount)}
+                </p>
+                <p className="text-[11px] font-medium text-gray-400">
+                  잔액 {formatWon(balanceByAdjId.get(adj.id) ?? 0)}
+                </p>
+              </div>
+            </button>
           ))}
-
-          {/* 초기 잔액 — 수정 불가 고정 항목 */}
-          <div>
-            <p className="mb-1 text-[11px] font-bold text-gray-400">{formatMonthDay(account.balanceAsOf)}</p>
-            <div className="flex w-full items-center justify-between px-3 py-2.5">
-              <p className="text-[13px] font-semibold text-black">시작 잔액</p>
-              <p className="text-[13.5px] font-extrabold text-black">{formatWon(account.balance)}</p>
-            </div>
-          </div>
         </div>
       </div>
 
