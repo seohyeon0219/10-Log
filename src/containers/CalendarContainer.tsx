@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import CalendarGrid from '../components/calendar/CalendarGrid'
 import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
 import CalendarMonthlySummary from '../components/calendar/CalendarMonthlySummary'
@@ -30,9 +30,22 @@ export default function CalendarContainer() {
   const selectedDateKey = selectedDate ? toDateKey(selectedDate) : ''
   const selectedDateTransactions = transactions.filter((tx) => tx.date === selectedDateKey)
 
+  const txListRef = useRef<HTMLDivElement>(null)
+  const isMounted = useRef(false)
+
   useEffect(() => {
     void loadMonth()
   }, [loadMonth])
+
+  useEffect(() => {
+    if (!isMounted.current) {
+      isMounted.current = true
+      return
+    }
+    if (!selectedDate || !txListRef.current) return
+    const top = txListRef.current.getBoundingClientRect().top + window.scrollY - 16
+    window.scrollTo({ top, behavior: 'smooth' })
+  }, [selectedDate])
 
   return (
     <section className="w-full self-start animate-fade-up md:mt-4">
@@ -70,7 +83,7 @@ export default function CalendarContainer() {
       </div>
 
       {selectedDate && (
-        <div className="mt-4 rounded-[22px] glass-card p-4.5 shadow-[0_10px_30px_rgba(0,0,0,0.08)] md:hidden">
+        <div className="mt-4 rounded-[22px] glass-card p-4.5 shadow-[0_10px_30px_rgba(0,0,0,0.08)] md:hidden" ref={txListRef}>
           <TransactionDateList
             onSelectTransaction={txForm.openEdit}
             selectedDate={selectedDate}
