@@ -11,7 +11,9 @@ export type CategoryRow = {
 export type TransactionRow = {
   amount: number
   categories: CategoryRow | null
-  category_id: string
+  category_color: string | null
+  category_id: string | null
+  category_name: string | null
   date: string
   id: string
   is_fixed: boolean
@@ -34,9 +36,9 @@ export const mapTransaction = (row: TransactionRow): Transaction => {
 
   return {
     amount: row.amount,
-    categoryColor: category?.color ?? DEFAULT_CATEGORY_COLOR,
-    categoryId: row.category_id,
-    categoryName: category?.name ?? '미분류',
+    categoryColor: category?.color ?? row.category_color ?? DEFAULT_CATEGORY_COLOR,
+    categoryId: row.category_id ?? '',
+    categoryName: category?.name ?? row.category_name ?? '미분류',
     date: row.date,
     day: Number(row.date.slice(8, 10)),
     id: row.id,

@@ -138,7 +138,7 @@ export const getMonthlyTransactions = async (date: Date) => {
   const { start, end } = getMonthRange(date)
   const { data, error } = await supabase
     .from('transactions')
-    .select('id, type, amount, memo, date, is_fixed, category_id, categories(id, name, color, type)')
+    .select('id, type, amount, memo, date, is_fixed, category_id, category_name, category_color, categories(id, name, color, type)')
     .gte('date', start)
     .lt('date', end)
     .order('date', { ascending: true })
@@ -234,7 +234,7 @@ export const getTransactionsByFilter = async ({
 }) => {
   let q = supabase
     .from('transactions')
-    .select('id, type, amount, memo, date, is_fixed, category_id, categories(id, name, color, type)')
+    .select('id, type, amount, memo, date, is_fixed, category_id, category_name, category_color, categories(id, name, color, type)')
 
   if (startDate) q = q.gte('date', startDate)
   if (endDate) q = q.lte('date', endDate)
