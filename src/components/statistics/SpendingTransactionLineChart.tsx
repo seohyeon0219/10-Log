@@ -91,13 +91,15 @@ export default function SpendingTransactionLineChart({ data, lastYearExpense }: 
     })
     .join(' ')
 
-  const toggle = (
+  const hasLastYearData = lastYearExpense.some((d) => d.amount > 0)
+
+  const toggle = hasLastYearData ? (
     <SegmentedControl
       onChange={(v) => { setYearMode(v); setSelectedIndex(null) }}
       options={yearOptions}
       value={yearMode}
     />
-  )
+  ) : null
 
   return (
     <StatisticsCard action={toggle} title="지출 흐름">
