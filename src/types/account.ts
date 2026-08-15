@@ -9,6 +9,7 @@ export type Account = {
   type: AccountType
   isLiability: boolean
   balance: number
+  currentBalance: number
   balanceAsOf: string
   memo: string
   includeInTotal: boolean

@@ -29,7 +29,7 @@ export default function AccountRow({ account, onClick }: Props) {
         </span>
       </span>
       <span className="shrink-0 text-[13.5px] font-extrabold text-black">
-        {formatWon(account.balance)}
+        {formatWon(account.currentBalance)}
       </span>
     </button>
   )
