@@ -4,20 +4,20 @@ import { getActiveTabId } from '../../utils/navigation'
 import {
   CalendarIcon,
   EllipsisHorizontalIcon,
-  WalletIcon,
+  BookOpenIcon,
   ChartBarIcon,
   HomeIcon,
 } from '@heroicons/react/24/outline'
 import {
   CalendarIcon as CalendarSolid,
   EllipsisHorizontalIcon as EllipsisSolid,
-  WalletIcon as WalletSolid,
+  BookOpenIcon as BookOpenSolid,
   ChartBarIcon as ChartSolid,
   HomeIcon as HomeSolid,
 } from '@heroicons/react/24/solid'
 
 const navIconsById: Record<string, { outline: React.ElementType; solid: React.ElementType }> = {
-  assets: { outline: WalletIcon, solid: WalletSolid },
+  log: { outline: BookOpenIcon, solid: BookOpenSolid },
   calendar: { outline: CalendarIcon, solid: CalendarSolid },
   home: { outline: HomeIcon, solid: HomeSolid },
   more: { outline: EllipsisHorizontalIcon, solid: EllipsisSolid },
