@@ -1,5 +1,5 @@
 import { DEFAULT_CATEGORY_COLOR } from '../constants/color'
-import type { DailyReview, Transaction, TransactionType } from '../types/finance'
+import type { DailyReview, Satisfaction, Transaction, TransactionType } from '../types/finance'
 
 export type CategoryRow = {
   color: string
@@ -18,6 +18,7 @@ export type TransactionRow = {
   id: string
   is_fixed: boolean
   memo: string | null
+  satisfaction: Satisfaction | null
   type: TransactionType
 }
 
@@ -44,6 +45,7 @@ export const mapTransaction = (row: TransactionRow): Transaction => {
     id: row.id,
     isFixed: row.is_fixed,
     memo: row.memo ?? '',
+    satisfaction: row.satisfaction,
     type: row.type,
   }
 }
