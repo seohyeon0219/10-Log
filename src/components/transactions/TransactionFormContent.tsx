@@ -163,11 +163,12 @@ export default function TransactionFormContent({
             <div className="flex gap-2">
               {SATISFACTION_OPTIONS.map((option) => (
                 <button
+                  aria-pressed={satisfaction === option.value}
                   className={[
-                    'flex flex-1 flex-col items-center gap-1 rounded-xl py-2.5 text-[11px] font-bold transition',
+                    'flex flex-1 flex-col items-center gap-1 rounded-xl py-2 text-[11px] font-bold transition',
                     satisfaction === option.value
                       ? 'bg-black text-white'
-                      : 'bg-black/5 text-gray-400 hover:bg-black/8',
+                      : 'border border-white/60 bg-white/55 text-gray-500',
                   ].join(' ')}
                   key={option.value}
                   onClick={() => setSatisfaction(satisfaction === option.value ? null : option.value)}
