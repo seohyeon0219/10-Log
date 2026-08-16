@@ -173,6 +173,7 @@ export default function SearchResultsContainer() {
           initialCategoryId={selectedTransaction.categoryId}
           initialIsFixed={selectedTransaction.isFixed}
           initialMemo={selectedTransaction.memo}
+          initialSatisfaction={selectedTransaction.satisfaction}
           isOpen
           mode="edit"
           onClose={() => setSelectedTransaction(null)}

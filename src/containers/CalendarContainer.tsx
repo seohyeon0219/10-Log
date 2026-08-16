@@ -122,6 +122,7 @@ export default function CalendarContainer() {
         initialCategoryId={txForm.initialCategoryId}
         initialIsFixed={txForm.editingTransaction?.isFixed}
         initialMemo={txForm.editingTransaction?.memo}
+        initialSatisfaction={txForm.editingTransaction?.satisfaction}
         isOpen={txForm.isOpen}
         mode={txForm.mode}
         onClose={txForm.close}

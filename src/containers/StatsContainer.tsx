@@ -64,6 +64,7 @@ export default function StatsContainer() {
           initialAmount={stats.selectedTransaction.amount}
           initialCategoryId={stats.selectedTransaction.categoryId}
           initialMemo={stats.selectedTransaction.memo}
+          initialSatisfaction={stats.selectedTransaction.satisfaction}
           isOpen
           mode="edit"
           onClose={stats.closeTransaction}
