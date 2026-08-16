@@ -66,7 +66,7 @@ export default function ReviewContainer() {
 
   return (
     <section className="w-full self-start animate-fade-up md:mt-4 md:min-h-80">
-      <BackHeader title={`${monthLabel} AI 리포트`} to="/app/stats" />
+      <BackHeader title={`${monthLabel} AI 리포트`} to="/app/log" />
       <div className="flex flex-col items-center py-16 text-center">
         <p className="text-sm font-bold text-black">{title}</p>
         <p className="mt-1.5 text-[13px] font-medium text-gray-400">{body}</p>

@@ -160,15 +160,15 @@ export default function TransactionFormContent({
         {type === 'expense' && (
           <div>
             <p className="mb-2 text-sm font-semibold text-gray-500">만족도</p>
-            <div className="flex gap-2">
+            <div className="flex rounded-full bg-gray-100 p-1">
               {SATISFACTION_OPTIONS.map((option) => (
                 <button
                   aria-pressed={satisfaction === option.value}
                   className={[
-                    'flex flex-1 flex-col items-center gap-1 rounded-xl py-2 text-[11px] font-bold transition',
+                    'flex flex-1 flex-col items-center gap-0.5 rounded-full py-1.5 text-[11px] font-bold transition',
                     satisfaction === option.value
-                      ? 'border-2 border-black bg-gray-100 text-black'
-                      : 'border border-transparent bg-gray-100 text-gray-500',
+                      ? 'bg-white text-gray-800 shadow-sm'
+                      : 'text-gray-400',
                   ].join(' ')}
                   key={option.value}
                   onClick={() => setSatisfaction(satisfaction === option.value ? null : option.value)}

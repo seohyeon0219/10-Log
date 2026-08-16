@@ -21,19 +21,24 @@ export default function ReportProgressCard({ currentDate, satisfactionCount }: P
   return (
     <section className="rounded-[22px] glass-card p-5 shadow-[0_6px_20px_rgba(0,0,0,0.06)]">
       <div className="flex items-center justify-between">
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-(--color-text-sand)">AI 리포트</p>
-        <ChevronRightIcon className="h-4 w-4 text-gray-300" />
+        <span className="rounded-full bg-black/6 px-2 py-0.5 text-xs font-bold tracking-wide text-gray-600">
+          AI 리포트
+        </span>
+        <ChevronRightIcon className="h-4 w-4 text-gray-400" />
       </div>
-      <h3 className="mt-0.5 text-[15px] font-bold text-black">{monthLabel} 리포트 준비 중</h3>
+
+      <h3 className="mt-2.5 text-[15px] font-bold text-black">{monthLabel} 리포트 준비 중</h3>
       <p className="mt-0.5 text-[13px] font-medium text-gray-400">
-        감정 기록 {satisfactionCount}건 · {arrivalLabel}
+        {satisfactionCount === 0
+          ? '감정을 기록할수록 리포트가 풍성해져요'
+          : `감정 기록 ${satisfactionCount}건 · ${arrivalLabel}`}
       </p>
 
       <div className="mt-3.5">
-        <div className="h-2 w-full overflow-hidden rounded-full bg-black/8">
+        <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/8">
           <div
-            className="h-full rounded-full bg-black/70 transition-all duration-500"
-            style={{ width: `${progressPercent}%` }}
+            className="h-full rounded-full transition-all duration-500"
+            style={{ width: `${progressPercent}%`, background: 'linear-gradient(90deg, #60a5fa 0%, #1863dc 100%)' }}
           />
         </div>
         <div className="mt-1.5 flex justify-between text-[11px] font-semibold text-gray-400">
