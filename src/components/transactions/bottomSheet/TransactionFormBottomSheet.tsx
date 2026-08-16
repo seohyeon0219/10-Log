@@ -1,6 +1,6 @@
 import CategoryManageBottomSheet from '../../categories/CategoryManageBottomSheet'
 import BottomSheet from '../../common/BottomSheet'
-import type { Category, TransactionFormValues, TransactionType } from '../../../types/finance'
+import type { Category, Satisfaction, TransactionFormValues, TransactionType } from '../../../types/finance'
 import TransactionFormContent from '../TransactionFormContent'
 import { transactionFormTextByType, type TransactionFormMode } from '../transactionFormConfig'
 
@@ -12,6 +12,7 @@ type TransactionFormBottomSheetProps = {
   initialCategoryId?: string
   initialIsFixed?: boolean
   initialMemo?: string
+  initialSatisfaction?: Satisfaction | null
   isOpen: boolean
   mode?: TransactionFormMode
   onClose: () => void
@@ -32,6 +33,7 @@ export default function TransactionFormBottomSheet({
   initialCategoryId,
   initialIsFixed,
   initialMemo,
+  initialSatisfaction,
   isOpen,
   mode = 'create',
   onClose,
@@ -68,6 +70,7 @@ export default function TransactionFormBottomSheet({
         initialCategoryId={initialCategoryId}
         initialIsFixed={initialIsFixed}
         initialMemo={initialMemo}
+        initialSatisfaction={initialSatisfaction}
         mode={mode}
         onDelete={onDelete}
         onSave={onSave}

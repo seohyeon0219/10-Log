@@ -1,4 +1,4 @@
-import type { TransactionType } from '../../types/finance'
+import type { Satisfaction, TransactionType } from '../../types/finance'
 import { formatMonthDay, formatWon } from '../../utils/formatters'
 
 export type TransactionDateListItem = {
@@ -10,6 +10,7 @@ export type TransactionDateListItem = {
   id: string
   isFixed?: boolean
   memo?: string
+  satisfaction?: Satisfaction | null
   type: TransactionType
 }
 

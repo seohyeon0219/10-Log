@@ -21,6 +21,7 @@ type TransactionFormContentProps = {
   initialCategoryId?: string
   initialIsFixed?: boolean
   initialMemo?: string
+  initialSatisfaction?: Satisfaction | null
   mode?: 'create' | 'edit'
   onDelete?: () => Promise<void> | void
   onSave?: (values: TransactionFormValues) => Promise<void> | void
@@ -37,6 +38,7 @@ export default function TransactionFormContent({
   initialCategoryId,
   initialIsFixed = false,
   initialMemo,
+  initialSatisfaction = null,
   mode = 'create',
   onDelete,
   onSave,
@@ -51,7 +53,7 @@ export default function TransactionFormContent({
   const [date, setDate] = useState(selectedDate ? toDateKey(selectedDate) : '')
   const [memo, setMemo] = useState(initialMemo ?? '')
   const [isFixed, setIsFixed] = useState(initialIsFixed)
-  const [satisfaction, setSatisfaction] = useState<Satisfaction | null>(null)
+  const [satisfaction, setSatisfaction] = useState<Satisfaction | null>(initialSatisfaction)
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
   const resolvedSelectedCategoryId = categories.some((category) => category.id === selectedCategoryId)
