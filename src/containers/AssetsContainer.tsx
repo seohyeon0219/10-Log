@@ -5,6 +5,7 @@ import { useAccountStore } from '../stores/accountStore'
 import { useThemeStore } from '../stores/themeStore'
 import { calcNetWorth } from '../utils/accountCalculators'
 import { formatWon } from '../utils/formatters'
+import BackHeader from '../components/common/BackHeader'
 import AccountSection from '../components/accounts/AccountSection'
 import NetWorthBar from '../components/accounts/NetWorthBar'
 import ResponsiveAccountForm from '../components/accounts/ResponsiveAccountForm'
@@ -49,6 +50,8 @@ export default function AssetsContainer() {
 
   return (
     <section className="w-full self-start animate-fade-up pb-6 md:mt-4">
+      <BackHeader title="자산·부채 관리" to="/app/more" />
+
       {error ? (
         <div className="mb-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-semibold text-(--color-expense-red)">
           {error}
