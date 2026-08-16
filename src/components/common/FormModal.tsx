@@ -23,7 +23,7 @@ export default function FormModal({
   }
 
   return (
-    <ModalSurface className="flex max-h-[88dvh] w-full max-w-125 flex-col rounded-2xl glass-overlay shadow-xl" layer={layer}>
+    <ModalSurface className="flex max-h-[88dvh] w-full max-w-125 flex-col rounded-2xl glass-overlay shadow-xl" layer={layer} onBackdropClick={onClose}>
       <header className="flex shrink-0 items-start justify-between gap-4 px-6 pt-6 pb-4">
         <div>
           <h2 className="m-0 text-xl font-bold text-black">{title}</h2>

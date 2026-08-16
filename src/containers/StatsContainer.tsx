@@ -1,6 +1,4 @@
-import { Link } from 'react-router-dom'
 import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
-import AiMonthlyReview from '../components/review/AiMonthlyReview'
 import CategoryChangeRanking from '../components/statistics/CategoryChangeRanking'
 import CategoryTransactionRatio from '../components/statistics/CategoryTransactionRatio'
 import MonthlyInsightsCard from '../components/statistics/MonthlyInsightsCard'
@@ -24,10 +22,6 @@ export default function StatsContainer() {
           onPrevMonth={stats.goPrevMonth}
         />
       </div>
-
-      <Link className="mb-4 block" to="/app/stats/review">
-        <AiMonthlyReview monthLabel={`${stats.currentDate.getMonth() + 1}월`} />
-      </Link>
 
       <div className="grid gap-4">
         <CategoryTransactionRatio

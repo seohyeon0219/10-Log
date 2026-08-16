@@ -167,8 +167,8 @@ export default function TransactionFormContent({
                   className={[
                     'flex flex-1 flex-col items-center gap-1 rounded-xl py-2 text-[11px] font-bold transition',
                     satisfaction === option.value
-                      ? 'bg-black text-white'
-                      : 'border border-white/60 bg-white/55 text-gray-500',
+                      ? 'border-2 border-black bg-gray-100 text-black'
+                      : 'border border-transparent bg-gray-100 text-gray-500',
                   ].join(' ')}
                   key={option.value}
                   onClick={() => setSatisfaction(satisfaction === option.value ? null : option.value)}

@@ -8,6 +8,7 @@ const VELOCITY_THRESHOLD = 0.4  // px/ms 이상 빠르게 내리면 닫힘
 
 type BottomSheetProps = {
   children: ReactNode
+  closeOnBackdrop?: boolean
   description?: string
   isOpen: boolean
   layer?: 1 | 2
@@ -18,6 +19,7 @@ type BottomSheetProps = {
 
 export default function BottomSheet({
   children,
+  closeOnBackdrop = true,
   description,
   isOpen,
   layer = 1,
@@ -71,7 +73,7 @@ export default function BottomSheet({
   const backdropClass = `fixed inset-0 z-60 ${layer === 2 ? 'bg-black/15' : 'bg-black/35'}`
 
   const content = (
-    <div className={backdropClass}>
+    <div className={backdropClass} onClick={closeOnBackdrop ? onClose : undefined}>
       <section
         aria-modal="true"
         className={[
@@ -80,6 +82,7 @@ export default function BottomSheet({
         ].join(' ')}
         ref={sheetRef}
         role="dialog"
+        onClick={(e) => e.stopPropagation()}
         onTouchEnd={handleTouchEnd}
         onTouchMove={handleTouchMove}
         onTouchStart={handleTouchStart}
