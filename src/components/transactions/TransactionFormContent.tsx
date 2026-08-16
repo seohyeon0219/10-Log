@@ -5,7 +5,13 @@ import Button from '../common/Button'
 import Checkbox from '../common/Checkbox'
 import UnderInput from '../common/UnderInput'
 import { toDateKey } from '../../utils/dateUtils'
-import type { Category, TransactionFormValues, TransactionType } from '../../types/finance'
+import type { Category, Satisfaction, TransactionFormValues, TransactionType } from '../../types/finance'
+
+const SATISFACTION_OPTIONS: { label: string; value: Satisfaction; emoji: string }[] = [
+  { label: '만족', value: 'satisfied', emoji: '😊' },
+  { label: '보통', value: 'neutral', emoji: '😐' },
+  { label: '후회', value: 'regret', emoji: '😔' },
+]
 
 type TransactionFormContentProps = {
   categories: Category[]
@@ -45,6 +51,7 @@ export default function TransactionFormContent({
   const [date, setDate] = useState(selectedDate ? toDateKey(selectedDate) : '')
   const [memo, setMemo] = useState(initialMemo ?? '')
   const [isFixed, setIsFixed] = useState(initialIsFixed)
+  const [satisfaction, setSatisfaction] = useState<Satisfaction | null>(null)
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
   const resolvedSelectedCategoryId = categories.some((category) => category.id === selectedCategoryId)
@@ -81,6 +88,7 @@ export default function TransactionFormContent({
         date,
         isFixed,
         memo,
+        satisfaction,
       })
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : '저장하지 못했어요.')
@@ -146,6 +154,28 @@ export default function TransactionFormContent({
         >
           {fixedLabel}
         </Checkbox>
+
+        <div>
+          <p className="mb-2 text-sm font-semibold text-gray-500">이 소비 어땠어요?</p>
+          <div className="flex gap-2">
+            {SATISFACTION_OPTIONS.map((option) => (
+              <button
+                className={[
+                  'flex flex-1 flex-col items-center gap-1 rounded-xl py-2.5 text-[11px] font-bold transition',
+                  satisfaction === option.value
+                    ? 'bg-black text-white'
+                    : 'bg-black/5 text-gray-400 hover:bg-black/8',
+                ].join(' ')}
+                key={option.value}
+                onClick={() => setSatisfaction(satisfaction === option.value ? null : option.value)}
+                type="button"
+              >
+                <span className="text-base leading-none">{option.emoji}</span>
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
       {errorMessage && (
