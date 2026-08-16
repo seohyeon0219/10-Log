@@ -32,6 +32,7 @@ export default function LogContainer() {
   const moodCounts = useMemo(() => {
     const counts = { neutral: 0, regret: 0, satisfied: 0, untagged: 0 }
     for (const tx of transactions) {
+      if (tx.type !== 'expense') continue
       if (tx.satisfaction === 'satisfied') counts.satisfied++
       else if (tx.satisfaction === 'neutral') counts.neutral++
       else if (tx.satisfaction === 'regret') counts.regret++
@@ -42,11 +43,16 @@ export default function LogContainer() {
 
   const satisfactionCount = moodCounts.satisfied + moodCounts.neutral + moodCounts.regret
 
+  const expenseTransactions = useMemo(
+    () => transactions.filter((tx) => tx.type === 'expense'),
+    [transactions],
+  )
+
   const filteredTransactions = useMemo(() => {
-    if (!moodFilter) return transactions
-    if (moodFilter === 'untagged') return transactions.filter((tx) => !tx.satisfaction)
-    return transactions.filter((tx) => tx.satisfaction === moodFilter)
-  }, [transactions, moodFilter])
+    if (!moodFilter) return expenseTransactions
+    if (moodFilter === 'untagged') return expenseTransactions.filter((tx) => !tx.satisfaction)
+    return expenseTransactions.filter((tx) => tx.satisfaction === moodFilter)
+  }, [expenseTransactions, moodFilter])
 
   const activeCategories =
     editingTransaction?.type === 'income' ? incomeCategories : expenseCategories
