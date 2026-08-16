@@ -90,7 +90,7 @@ export default function TransactionFormContent({
         date,
         isFixed,
         memo,
-        satisfaction,
+        satisfaction: type === 'expense' ? satisfaction : null,
       })
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : '저장하지 못했어요.')
@@ -157,27 +157,29 @@ export default function TransactionFormContent({
           {fixedLabel}
         </Checkbox>
 
-        <div>
-          <p className="mb-2 text-sm font-semibold text-gray-500">이 소비 어땠어요?</p>
-          <div className="flex gap-2">
-            {SATISFACTION_OPTIONS.map((option) => (
-              <button
-                className={[
-                  'flex flex-1 flex-col items-center gap-1 rounded-xl py-2.5 text-[11px] font-bold transition',
-                  satisfaction === option.value
-                    ? 'bg-black text-white'
-                    : 'bg-black/5 text-gray-400 hover:bg-black/8',
-                ].join(' ')}
-                key={option.value}
-                onClick={() => setSatisfaction(satisfaction === option.value ? null : option.value)}
-                type="button"
-              >
-                <span className="text-base leading-none">{option.emoji}</span>
-                {option.label}
-              </button>
-            ))}
+        {type === 'expense' && (
+          <div>
+            <p className="mb-2 text-sm font-semibold text-gray-500">만족도</p>
+            <div className="flex gap-2">
+              {SATISFACTION_OPTIONS.map((option) => (
+                <button
+                  className={[
+                    'flex flex-1 flex-col items-center gap-1 rounded-xl py-2.5 text-[11px] font-bold transition',
+                    satisfaction === option.value
+                      ? 'bg-black text-white'
+                      : 'bg-black/5 text-gray-400 hover:bg-black/8',
+                  ].join(' ')}
+                  key={option.value}
+                  onClick={() => setSatisfaction(satisfaction === option.value ? null : option.value)}
+                  type="button"
+                >
+                  <span className="text-base leading-none">{option.emoji}</span>
+                  {option.label}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {errorMessage && (
