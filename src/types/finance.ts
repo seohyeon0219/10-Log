@@ -1,5 +1,7 @@
 export type TransactionType = 'expense' | 'income'
 
+export type Satisfaction = 'satisfied' | 'neutral' | 'regret'
+
 export type Category = {
   color: string
   id: string
@@ -17,6 +19,7 @@ export type Transaction = {
   id: string
   isFixed: boolean
   memo: string
+  satisfaction: Satisfaction | null
   type: TransactionType
 }
 
@@ -53,6 +56,7 @@ export type TransactionFormValues = {
   date: string
   isFixed: boolean
   memo: string
+  satisfaction: Satisfaction | null
 }
 
 export type DailyReviewValues = {
