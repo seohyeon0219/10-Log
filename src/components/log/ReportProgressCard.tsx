@@ -1,3 +1,5 @@
+import { ChevronRightIcon } from '@heroicons/react/24/outline'
+
 type Props = {
   currentDate: Date
   satisfactionCount: number
@@ -18,7 +20,10 @@ export default function ReportProgressCard({ currentDate, satisfactionCount }: P
 
   return (
     <section className="rounded-[22px] glass-card p-5 shadow-[0_6px_20px_rgba(0,0,0,0.06)]">
-      <p className="text-[11px] font-semibold uppercase tracking-wide text-(--color-text-sand)">AI 리포트</p>
+      <div className="flex items-center justify-between">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-(--color-text-sand)">AI 리포트</p>
+        <ChevronRightIcon className="h-4 w-4 text-gray-300" />
+      </div>
       <h3 className="mt-0.5 text-[15px] font-bold text-black">{monthLabel} 리포트 준비 중</h3>
       <p className="mt-0.5 text-[13px] font-medium text-gray-400">
         감정 기록 {satisfactionCount}건 · {arrivalLabel}

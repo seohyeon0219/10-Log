@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
 import LogTransactionList from '../components/log/LogTransactionList'
 import MoodFilterBar from '../components/log/MoodFilterBar'
@@ -80,7 +81,9 @@ export default function LogContainer() {
       </div>
 
       <div className="grid gap-4">
-        <ReportProgressCard currentDate={currentDate} satisfactionCount={satisfactionCount} />
+        <Link to="/app/stats/review">
+          <ReportProgressCard currentDate={currentDate} satisfactionCount={satisfactionCount} />
+        </Link>
 
         <MoodFilterBar counts={moodCounts} onChange={setMoodFilter} selected={moodFilter} />
 
