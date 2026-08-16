@@ -6,7 +6,7 @@ import MoodFilterBar from '../components/log/MoodFilterBar'
 import ReportProgressCard from '../components/log/ReportProgressCard'
 import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
 import { useCalendarStore } from '../stores/calendarStore'
-import type { Satisfaction, Transaction } from '../types/finance'
+import type { Transaction } from '../types/finance'
 import type { MoodFilter } from '../components/log/MoodFilterBar'
 
 export default function LogContainer() {

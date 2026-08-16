@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useRecentMonthsTransactions } from './useRecentMonthsTransactions'
 import { useCalendarStore } from '../stores/calendarStore'
-import type { TransactionType } from '../types/finance'
+import type { Satisfaction, TransactionType } from '../types/finance'
 import {
   getCategoryChangeRanking,
   getCategoryRatio,
@@ -20,6 +20,7 @@ export type SelectedStatisticsTransaction = {
   date: string
   id: string
   memo: string
+  satisfaction: Satisfaction | null
   type: TransactionType
 }
 

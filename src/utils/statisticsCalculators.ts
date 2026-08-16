@@ -1,5 +1,5 @@
 import { getMonthlySummary } from '../lib/financeApi'
-import type { Transaction, TransactionType } from '../types/finance'
+import type { Satisfaction, Transaction, TransactionType } from '../types/finance'
 import { getMonthDate } from './dateUtils'
 
 type CategoryRatioItem = {
@@ -13,6 +13,7 @@ type CategoryRatioItem = {
     date: string
     id: string
     memo: string
+    satisfaction: Satisfaction | null
   }>
 }
 
@@ -40,6 +41,7 @@ export const getCategoryRatio = (transactions: Transaction[]) => {
           date: transaction.date,
           id: transaction.id,
           memo: transaction.memo,
+          satisfaction: transaction.satisfaction,
         }],
       })
       return
@@ -52,6 +54,7 @@ export const getCategoryRatio = (transactions: Transaction[]) => {
       date: transaction.date,
       id: transaction.id,
       memo: transaction.memo,
+      satisfaction: transaction.satisfaction,
     })
   })
 

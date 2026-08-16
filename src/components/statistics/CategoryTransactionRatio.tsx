@@ -1,6 +1,6 @@
 import IncomeExpenseToggle from '../common/IncomeExpenseToggle'
 import StatisticsCard from './StatisticsCard'
-import type { TransactionType } from '../../types/finance'
+import type { Satisfaction, TransactionType } from '../../types/finance'
 import { formatAmount, formatMonthDay, formatWon } from '../../utils/formatters'
 
 type CategoryTransaction = {
@@ -9,6 +9,7 @@ type CategoryTransaction = {
   date: string
   id: string
   memo: string
+  satisfaction: Satisfaction | null
 }
 
 type CategoryRatioItem = {
@@ -28,6 +29,7 @@ type CategoryTransactionRatioProps = {
     date: string
     id: string
     memo: string
+    satisfaction: Satisfaction | null
     type: TransactionType
   }) => void
   onSelectedCategoryIdChange: (id: string) => void
