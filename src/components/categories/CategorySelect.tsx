@@ -33,15 +33,15 @@ export default function CategorySelect({
           </button>
         ) : null}
       </div>
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+      <div className="grid grid-cols-3 gap-2">
         {categories.map((category) => {
           const isSelected = selectedCategoryIds.includes(category.id)
           return (
             <button
               aria-pressed={isSelected}
               className={[
-                'inline-flex min-h-11 min-w-0 cursor-pointer items-center gap-2 rounded-xl border border-white/60 bg-white/55 px-3 text-left text-sm text-black transition',
-                isSelected ? 'font-bold' : 'font-semibold text-gray-500 hover:bg-white/70',
+                'inline-flex min-h-9 min-w-0 cursor-pointer items-center gap-2 rounded-xl border border-white/60 bg-white/55 px-3 text-left text-xs text-black transition',
+                isSelected ? 'font-bold' : 'font-medium text-gray-500 hover:bg-white/70',
               ].join(' ').trim()}
               key={category.id}
               onClick={() => onChange(category.id)}
