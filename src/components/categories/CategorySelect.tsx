@@ -62,7 +62,7 @@ export default function CategorySelect({
           )}
           {hasToggle && (
             <button
-              className="flex cursor-pointer items-center rounded-lg border-0 bg-transparent px-2 py-1 text-gray-400 transition hover:bg-white/50 hover:text-black"
+              className="flex cursor-pointer items-center rounded-lg border-0 bg-transparent px-2 py-1 text-gray-500 transition hover:bg-white/50 hover:text-black"
               onClick={() => setShowAll((v) => !v)}
               type="button"
               aria-label={showAll ? '접기' : '전체보기'}

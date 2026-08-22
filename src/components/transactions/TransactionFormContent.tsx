@@ -176,7 +176,7 @@ export default function TransactionFormContent({
 
         {type === 'expense' && (
           <div className="grid gap-3">
-            <p className="text-sm font-semibold text-gray-500">이 소비 어떠셨나요?</p>
+            <p className="text-sm font-semibold text-gray-400">이 소비 어떠셨나요?</p>
             <SegmentedControl
               onChange={(v) => setSatisfaction(satisfaction === v ? null : v)}
               options={SATISFACTION_OPTIONS.map((v) => ({ color: MOOD_COLORS[v], label: MOOD_LABELS[v], value: v }))}
