@@ -62,6 +62,16 @@ export default function TransactionFormContent({
     ? selectedCategoryId
     : initialSelectedCategoryId
 
+  const initialAmountStr = initialAmount ? String(initialAmount) : ''
+  const initialDate = selectedDate ? toDateKey(selectedDate) : ''
+  const isDirty =
+    amount !== initialAmountStr ||
+    resolvedSelectedCategoryId !== initialSelectedCategoryId ||
+    date !== initialDate ||
+    memo !== (initialMemo ?? '') ||
+    isFixed !== initialIsFixed ||
+    satisfaction !== initialSatisfaction
+
   const handleAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
     setAmount(event.currentTarget.value.replace(/\D/g, ''))
   }
@@ -210,7 +220,7 @@ export default function TransactionFormContent({
             삭제
           </Button>
         )}
-        <Button disabled={isSaving} onClick={handleSave}>{isSaving ? '저장 중...' : submitText}</Button>
+        <Button disabled={isSaving || (mode === 'edit' && !isDirty)} onClick={handleSave}>{isSaving ? '저장 중...' : submitText}</Button>
       </div>
 
       {categoryManageOverlay?.(isCategoryManageOpen, () => setIsCategoryManageOpen(false))}

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import BottomSheet from '../common/BottomSheet'
 import Button from '../common/Button'
 import { useSettingsStore, DEFAULT_SATISFACTION_EMOJIS } from '../../stores/settingsStore'
@@ -19,15 +19,15 @@ export default function SatisfactionEmojiSheet({ isOpen, onClose }: Props) {
   const emojis = useSettingsStore((s) => s.satisfactionEmojis)
   const setSatisfactionEmoji = useSettingsStore((s) => s.setSatisfactionEmoji)
 
-  const [isEditing, setIsEditing] = useState(false)
-  const [draft, setDraft] = useState<SatisfactionEmojis>({ ...DEFAULT_SATISFACTION_EMOJIS })
+  const [draft, setDraft] = useState<SatisfactionEmojis>({ ...emojis })
   const firstInputRef = useRef<HTMLInputElement>(null)
 
-  const startEdit = () => {
-    setDraft({ ...emojis })
-    setIsEditing(true)
-    setTimeout(() => firstInputRef.current?.focus(), 50)
-  }
+  useEffect(() => {
+    if (isOpen) setDraft({ ...emojis })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen])
+
+  const isDirty = OPTIONS.some((opt) => draft[opt.key] !== emojis[opt.key])
 
   const save = () => {
     for (const opt of OPTIONS) {
@@ -35,14 +35,11 @@ export default function SatisfactionEmojiSheet({ isOpen, onClose }: Props) {
       const last = chars[chars.length - 1]
       if (last) setSatisfactionEmoji(opt.key, last)
     }
-    setIsEditing(false)
+    onClose()
   }
 
   const handleReset = () => {
-    for (const opt of OPTIONS) {
-      setSatisfactionEmoji(opt.key, DEFAULT_SATISFACTION_EMOJIS[opt.key])
-    }
-    setIsEditing(false)
+    setDraft({ ...DEFAULT_SATISFACTION_EMOJIS })
   }
 
   return (
@@ -54,30 +51,22 @@ export default function SatisfactionEmojiSheet({ isOpen, onClose }: Props) {
             className="flex items-center gap-4 rounded-2xl bg-black/4 px-4 py-3"
           >
             <span className="flex-1 text-sm font-bold text-black">{opt.label}</span>
-            {isEditing ? (
-              <input
-                ref={i === 0 ? firstInputRef : undefined}
-                className="w-12 bg-transparent text-center text-2xl outline-none"
-                value={draft[opt.key]}
-                onChange={(e) => {
-                  const chars = [...e.target.value]
-                  const last = chars[chars.length - 1] ?? draft[opt.key]
-                  setDraft((prev) => ({ ...prev, [opt.key]: last }))
-                }}
-              />
-            ) : (
-              <span className="text-2xl">{emojis[opt.key]}</span>
-            )}
+            <input
+              ref={i === 0 ? firstInputRef : undefined}
+              className="w-12 bg-transparent text-center text-2xl outline-none"
+              value={draft[opt.key]}
+              onChange={(e) => {
+                const chars = [...e.target.value]
+                const last = chars[chars.length - 1] ?? draft[opt.key]
+                setDraft((prev) => ({ ...prev, [opt.key]: last }))
+              }}
+            />
           </div>
         ))}
       </div>
 
       <div className="mt-4 grid gap-2">
-        {isEditing ? (
-          <Button onClick={save}>저장</Button>
-        ) : (
-          <Button variant="soft" onClick={startEdit}>수정</Button>
-        )}
+        <Button disabled={!isDirty} onClick={save}>저장</Button>
         <button
           className="w-full text-center text-sm font-semibold text-gray-400 transition active:text-gray-600"
           onClick={handleReset}
