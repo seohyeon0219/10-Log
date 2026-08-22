@@ -1,3 +1,6 @@
+import { useState } from 'react'
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
+
 type CategoryOption = {
   color: string
   id: string
@@ -9,32 +12,70 @@ type CategorySelectProps = {
   label?: string
   onChange: (categoryId: string) => void
   onManageCategories?: () => void
+  recentCategoryIds?: string[]
   selectedCategoryIds: string[]
 }
+
+const COLLAPSED_COUNT = 3
 
 export default function CategorySelect({
   categories,
   label = '카테고리',
   onChange,
   onManageCategories,
+  recentCategoryIds = [],
   selectedCategoryIds,
 }: CategorySelectProps) {
+  const [showAll, setShowAll] = useState(false)
+
+  const sorted =
+    recentCategoryIds.length > 0
+      ? [
+          ...categories
+            .filter((c) => recentCategoryIds.includes(c.id))
+            .sort((a, b) => recentCategoryIds.indexOf(a.id) - recentCategoryIds.indexOf(b.id)),
+          ...categories.filter((c) => !recentCategoryIds.includes(c.id)),
+        ]
+      : categories
+
+  const selectedHidden =
+    !showAll &&
+    sorted.length > COLLAPSED_COUNT &&
+    sorted.slice(COLLAPSED_COUNT).some((c) => selectedCategoryIds.includes(c.id))
+
+  const displayed = showAll || sorted.length <= COLLAPSED_COUNT || selectedHidden ? sorted : sorted.slice(0, COLLAPSED_COUNT)
+  const hasToggle = sorted.length > COLLAPSED_COUNT
+
   return (
     <fieldset className="m-0 min-w-0 border-0 p-0">
-      <div className="mb-3 flex items-center justify-between gap-3">
+      <div className="flex items-center justify-between gap-3">
         <legend className="p-0 text-sm font-semibold text-gray-500">{label}</legend>
-        {onManageCategories ? (
-          <button
-            className="flex min-h-11 cursor-pointer items-center rounded-lg border-0 bg-transparent px-3 text-sm font-medium text-gray-400 transition hover:bg-white/50 hover:text-black"
-            onClick={onManageCategories}
-            type="button"
-          >
-            관리
-          </button>
-        ) : null}
+        <div className="flex items-center">
+          {onManageCategories && (
+            <button
+              className="flex min-h-11 cursor-pointer items-center rounded-lg border-0 bg-transparent px-3 text-sm font-medium text-gray-400 transition hover:bg-white/50 hover:text-black"
+              onClick={onManageCategories}
+              type="button"
+            >
+              관리
+            </button>
+          )}
+          {hasToggle && (
+            <button
+              className="flex min-h-11 cursor-pointer items-center rounded-lg border-0 bg-transparent px-2 text-gray-400 transition hover:bg-white/50 hover:text-black"
+              onClick={() => setShowAll((v) => !v)}
+              type="button"
+              aria-label={showAll ? '접기' : '전체보기'}
+            >
+              {showAll
+                ? <ChevronUpIcon className="h-4 w-4" />
+                : <ChevronDownIcon className="h-4 w-4" />}
+            </button>
+          )}
+        </div>
       </div>
       <div className="grid grid-cols-3 gap-2">
-        {categories.map((category) => {
+        {displayed.map((category) => {
           const isSelected = selectedCategoryIds.includes(category.id)
           return (
             <button
