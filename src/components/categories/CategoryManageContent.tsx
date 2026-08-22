@@ -3,6 +3,7 @@ import { categoryColors } from '../../constants/color'
 import { useCategoryForm } from '../../hooks/useCategoryForm'
 import type { TransactionType } from '../../types/finance'
 import Input from '../common/Input'
+import SegmentedControl from '../common/SegmentedControl'
 import CategoryDeleteConfirm from './CategoryDeleteConfirm'
 
 type Category = {
@@ -24,9 +25,9 @@ type CategoryManageContentProps = {
   ) => Promise<void> | void
 }
 
-const typeOptions: Array<{ id: TransactionType; label: string }> = [
-  { id: 'expense', label: '지출' },
-  { id: 'income', label: '수입' },
+const typeOptions = [
+  { label: '지출', value: 'expense' as const },
+  { label: '수입', value: 'income' as const },
 ]
 
 const categoryLabelByType: Record<TransactionType, string> = {
@@ -56,24 +57,13 @@ export default function CategoryManageContent({
         onConfirm={del.onConfirm}
       />
 
-      {/* 지출 / 수입 토글 */}
-      <div className="mb-5 grid grid-cols-2 gap-1 rounded-2xl bg-black/6 p-1">
-        {typeOptions.map((option) => (
-          <button
-            className={[
-              'h-11 rounded-xl text-[15px] font-bold transition-all duration-200',
-              activeType === option.id
-                ? 'bg-white text-black shadow-[0_2px_8px_rgba(0,0,0,0.10)]'
-                : 'text-(--color-text-muted) hover:text-black',
-            ].join(' ')}
-            disabled={form.isSaving}
-            key={option.id}
-            onClick={() => { setActiveType(option.id); form.onReset() }}
-            type="button"
-          >
-            {option.label}
-          </button>
-        ))}
+      <div className="mb-5">
+        <SegmentedControl
+          onChange={(type) => { setActiveType(type); form.onReset() }}
+          options={typeOptions}
+          size="lg"
+          value={activeType}
+        />
       </div>
 
       {/* 이름 + 색상 폼 */}

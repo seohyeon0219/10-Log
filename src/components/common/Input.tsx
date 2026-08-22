@@ -2,17 +2,18 @@ import type { InputHTMLAttributes } from 'react'
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   error?: string
+  inputClassName?: string
   label?: string
 }
 
-export default function Input({ error, id, label, className = '', ...props }: InputProps) {
+export default function Input({ error, id, inputClassName = '', label, className = '', ...props }: InputProps) {
   const inputId = id ?? props.name
 
   return (
     <label className={['grid w-full gap-2', className].join(' ').trim()} htmlFor={inputId}>
       {label ? <span className="text-sm font-semibold text-gray-500">{label}</span> : null}
       <input
-        className="min-h-12 w-full rounded-2xl glass-input px-4 text-base font-medium text-black outline-none transition placeholder:text-black/25 focus:border-black/20 focus:bg-white/90"
+        className={['min-h-12 w-full rounded-2xl glass-input px-4 text-base font-medium text-black outline-none transition placeholder:text-black/25 focus:border-black/20 focus:bg-white/90', inputClassName].join(' ').trim()}
         id={inputId}
         {...props}
       />
