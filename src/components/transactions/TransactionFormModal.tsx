@@ -75,7 +75,7 @@ export default function TransactionFormModal({
         onDelete={onDelete}
         onSave={onSave}
         selectedDate={selectedDate}
-        submitText="저장"
+        submitText={mode === 'edit' ? '수정 저장' : '저장'}
         type={type}
       />
     </FormModal>
