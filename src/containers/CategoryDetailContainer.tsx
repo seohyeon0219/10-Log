@@ -31,6 +31,8 @@ export default function CategoryDetailContainer() {
   const categoryName = filtered[0]?.categoryName ?? ''
   const categoryColor = filtered[0]?.categoryColor ?? '#9ca3af'
   const totalAmount = filtered.reduce((sum, tx) => sum + tx.amount, 0)
+  const count = filtered.length
+  const average = count > 0 ? Math.round(totalAmount / count) : 0
 
   const grouped = useMemo(() => {
     const map = new Map<string, Transaction[]>()
@@ -61,13 +63,19 @@ export default function CategoryDetailContainer() {
     <section className="w-full self-start animate-fade-up md:mt-4">
       <BackHeader title={categoryName} to="/app/stats" />
 
+      {/* 합계 카드 */}
       <div className="mb-4 flex items-center gap-3 rounded-2xl bg-white/60 px-5 py-4 shadow-sm backdrop-blur-sm">
         <span className="h-3 w-3 shrink-0 rounded-full" style={{ backgroundColor: categoryColor }} />
         <div>
           <p className="text-[11px] font-semibold text-gray-400">{month} 합계</p>
-          <p className="text-[22px] font-extrabold text-black leading-tight">
+          <p className="text-[22px] font-extrabold tabular-nums text-black leading-tight">
             {formatWon(totalAmount)}
           </p>
+          {count > 0 && (
+            <p className="mt-0.5 text-[11px] font-semibold text-gray-400">
+              {count}건 · 평균 {formatWon(average)}
+            </p>
+          )}
         </div>
       </div>
 
@@ -75,33 +83,46 @@ export default function CategoryDetailContainer() {
         <p className="mt-8 text-center text-sm font-semibold text-gray-400">이번 달 내역이 없어요.</p>
       ) : (
         <div className="grid gap-4">
-          {grouped.map(([date, txs]) => (
-            <div key={date}>
-              <p className="mb-1.5 px-1 text-[11px] font-bold text-gray-400">{formatMonthDay(date)}</p>
-              <div className="grid gap-1">
-                {txs.map((tx) => (
-                  <button
-                    className="flex w-full items-center gap-3 rounded-[18px] bg-white/60 px-4 py-3 text-left backdrop-blur-sm transition active:bg-white/80"
-                    key={tx.id}
-                    onClick={() => setEditingTransaction(tx)}
-                    type="button"
-                  >
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-[13.5px] font-bold text-black">
-                        {tx.memo || categoryName}
+          {grouped.map(([date, txs]) => {
+            const dayTotal = txs.reduce((sum, tx) => sum + tx.amount, 0)
+
+            return (
+              <div key={date}>
+                {/* 날짜 그룹 헤더 + 일 합계 */}
+                <div className="mb-1.5 flex items-center justify-between px-1">
+                  <p className="text-[11px] font-bold text-gray-400">{formatMonthDay(date)}</p>
+                  <p className="text-[11px] font-bold tabular-nums text-gray-400">
+                    {type === 'income' ? '+' : '-'}{formatWon(dayTotal)}
+                  </p>
+                </div>
+
+                <div className="grid gap-1">
+                  {txs.map((tx) => (
+                    <button
+                      className="flex w-full items-center gap-3 rounded-[18px] bg-white/60 px-4 py-3 text-left backdrop-blur-sm transition active:bg-white/80"
+                      key={tx.id}
+                      onClick={() => setEditingTransaction(tx)}
+                      type="button"
+                    >
+                      <div className="min-w-0 flex-1">
+                        {tx.memo ? (
+                          <p className="truncate text-[12px] text-(--color-text-sand)">{tx.memo}</p>
+                        ) : (
+                          <p className="text-[12px] text-gray-300">메모 없음</p>
+                        )}
+                      </div>
+                      <p className={[
+                        'shrink-0 text-[13.5px] font-extrabold tabular-nums',
+                        type === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
+                      ].join(' ')}>
+                        {type === 'income' ? '+' : '-'}{formatWon(tx.amount)}
                       </p>
-                    </div>
-                    <p className={[
-                      'shrink-0 text-[13.5px] font-extrabold',
-                      type === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
-                    ].join(' ')}>
-                      {type === 'income' ? '+' : '-'}{formatWon(tx.amount)}
-                    </p>
-                  </button>
-                ))}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       )}
 
