@@ -30,10 +30,7 @@ export default function StatsContainer() {
         <CategoryTransactionRatio
           items={stats.categoryTransactionRatio}
           onRatioTypeChange={stats.setRatioType}
-          onSelectTransaction={stats.setSelectedTransaction}
-          onSelectedCategoryIdChange={stats.setRatioSelectedCategoryId}
           ratioType={stats.ratioType}
-          selectedCategoryId={stats.ratioSelectedCategoryId}
         />
 
         <MonthlyInsightsCard data={stats.monthlyInsights} showDetailLink={false} />

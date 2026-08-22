@@ -1,40 +1,20 @@
+import { useNavigate } from 'react-router-dom'
 import IncomeExpenseToggle from '../common/IncomeExpenseToggle'
 import StatisticsCard from './StatisticsCard'
-import type { Satisfaction, TransactionType } from '../../types/finance'
-import { formatAmount, formatMonthDay, formatWon } from '../../utils/formatters'
-
-type CategoryTransaction = {
-  amount: number
-  categoryId?: string
-  date: string
-  id: string
-  memo: string
-  satisfaction: Satisfaction | null
-}
+import type { TransactionType } from '../../types/finance'
+import { formatAmount } from '../../utils/formatters'
 
 type CategoryRatioItem = {
   amount: number
   color: string
   id: string
   label: string
-  transactions: CategoryTransaction[]
 }
 
 type CategoryTransactionRatioProps = {
   items: Record<TransactionType, CategoryRatioItem[]>
   onRatioTypeChange: (type: TransactionType) => void
-  onSelectTransaction?: (transaction: {
-    amount: number
-    categoryId: string
-    date: string
-    id: string
-    memo: string
-    satisfaction: Satisfaction | null
-    type: TransactionType
-  }) => void
-  onSelectedCategoryIdChange: (id: string) => void
   ratioType: TransactionType
-  selectedCategoryId: string
 }
 
 const getDonutGradient = (items: CategoryRatioItem[], totalAmount: number) => {
@@ -53,24 +33,15 @@ const getDonutGradient = (items: CategoryRatioItem[], totalAmount: number) => {
 export default function CategoryTransactionRatio({
   items,
   onRatioTypeChange,
-  onSelectTransaction,
-  onSelectedCategoryIdChange,
   ratioType,
-  selectedCategoryId,
 }: CategoryTransactionRatioProps) {
+  const navigate = useNavigate()
   const activeItems = items[ratioType]
   const totalAmount = activeItems.reduce((total, item) => total + item.amount, 0)
-  const selectedItem = activeItems.find((item) => item.id === selectedCategoryId) ?? null
   const donutGradient = getDonutGradient(activeItems, totalAmount)
 
   const toggle = (
-    <IncomeExpenseToggle
-      onChange={(type) => {
-        onRatioTypeChange(type)
-        onSelectedCategoryIdChange('')
-      }}
-      value={ratioType}
-    />
+    <IncomeExpenseToggle onChange={onRatioTypeChange} value={ratioType} />
   )
 
   if (activeItems.length === 0) {
@@ -93,7 +64,7 @@ export default function CategoryTransactionRatio({
         >
           <div className="absolute inset-6 grid place-items-center rounded-full bg-white/90 text-center">
             <p className="text-base font-extrabold text-black leading-tight">
-              {selectedItem ? formatAmount(selectedItem.amount) : formatAmount(totalAmount)}
+              {formatAmount(totalAmount)}
             </p>
           </div>
         </div>
@@ -102,16 +73,12 @@ export default function CategoryTransactionRatio({
         <div className="grid gap-0.5">
           {activeItems.map((item) => {
             const percent = totalAmount > 0 ? Math.round((item.amount / totalAmount) * 100) : 0
-            const isSelected = selectedItem !== null && item.id === selectedItem.id
 
             return (
               <button
-                className={[
-                  'flex items-center gap-2 rounded-xl px-3 py-2 text-left transition interactive-row',
-                  isSelected ? 'bg-black/5' : '',
-                ].join(' ')}
+                className="flex items-center gap-2 rounded-xl px-3 py-2 text-left transition interactive-row"
                 key={item.id}
-                onClick={() => onSelectedCategoryIdChange(isSelected ? '' : item.id)}
+                onClick={() => void navigate(`/app/stats/category/${item.id}?type=${ratioType}`)}
                 type="button"
               >
                 <span
@@ -127,57 +94,6 @@ export default function CategoryTransactionRatio({
           })}
         </div>
       </div>
-
-      {/* 선택된 카테고리 거래 내역 */}
-      {selectedItem && (
-        <div className="mt-4">
-          <p className="text-[14px] font-extrabold text-black">{selectedItem.label} 내역</p>
-          {selectedItem.transactions.length === 0 ? (
-            <p className="mt-3 text-[13px] text-(--color-text-sand)">이 카테고리의 내역이 없어요.</p>
-          ) : (
-            <div className="mt-2.5 grid max-h-64 gap-1.5 overflow-y-auto">
-              {selectedItem.transactions.map((tx) => (
-                <button
-                  key={tx.id}
-                  className="flex w-full items-center gap-2 rounded-[14px] bg-white/50 px-3 py-2.5 text-left"
-                  onClick={() =>
-                    onSelectTransaction?.({
-                      ...tx,
-                      categoryId: tx.categoryId ?? selectedItem.id,
-                      type: ratioType,
-                    })
-                  }
-                  type="button"
-                >
-                  <span
-                    className="h-2 w-2 shrink-0 rounded-full"
-                    style={{ background: selectedItem.color }}
-                  />
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-[13px] font-bold text-black">
-                      {formatMonthDay(tx.date)}
-                    </span>
-                    {tx.memo ? (
-                      <span className="block truncate text-[11.5px] text-(--color-text-sand)">
-                        {tx.memo}
-                      </span>
-                    ) : null}
-                  </span>
-                  <span
-                    className={[
-                      'shrink-0 text-[13.5px] font-extrabold',
-                      ratioType === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
-                    ].join(' ')}
-                  >
-                    {ratioType === 'income' ? '+' : '-'}
-                    {formatWon(tx.amount)}
-                  </span>
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
     </StatisticsCard>
   )
 }

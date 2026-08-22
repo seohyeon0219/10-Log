@@ -26,7 +26,6 @@ export type SelectedStatisticsTransaction = {
 
 export function useStatsPage() {
   const [ratioType, setRatioType] = useState<TransactionType>('expense')
-  const [ratioSelectedCategoryId, setRatioSelectedCategoryId] = useState('')
   const [selectedTransaction, setSelectedTransaction] = useState<SelectedStatisticsTransaction | null>(null)
 
   const addCategory = useCalendarStore((state) => state.addCategory)
@@ -109,12 +108,10 @@ export function useStatsPage() {
     goPrevMonth,
     incomeCategories,
     previousMonthComparison,
-    ratioSelectedCategoryId,
     ratioType,
     removeTransaction,
     saveTransaction,
     selectedTransaction,
-    setRatioSelectedCategoryId,
     setRatioType,
     setSelectedTransaction,
     lastYearExpense,

@@ -20,6 +20,7 @@ import ProfileEditPage from '../pages/ProfileEditPage'
 import ReviewPage from '../pages/ReviewPage'
 import StatsPage from '../pages/StatsPage'
 import AccountDetailPage from '../pages/AccountDetailPage'
+import CategoryDetailPage from '../pages/CategoryDetailPage'
 import MonthlyInsightsPage from '../pages/MonthlyInsightsPage'
 import SpendingPatternsPage from '../pages/SpendingPatternsPage'
 
@@ -100,6 +101,7 @@ export default function AppRouter() {
           <Route path="assets" element={<AssetsPage />} />
           <Route path="log" element={<LogPage />} />
           <Route path="assets/:id" element={<AccountDetailPage />} />
+          <Route path="stats/category/:categoryId" element={<CategoryDetailPage />} />
           <Route path="stats/review" element={<ReviewPage />} />
           <Route path="stats/insights" element={<MonthlyInsightsPage />} />
           <Route path="stats/patterns" element={<SpendingPatternsPage />} />
