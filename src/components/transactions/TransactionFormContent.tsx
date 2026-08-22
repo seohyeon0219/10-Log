@@ -3,20 +3,24 @@ import type { ChangeEvent, ReactNode } from 'react'
 import CategorySelect from '../categories/CategorySelect'
 import Button from '../common/Button'
 import Checkbox from '../common/Checkbox'
+import Input from '../common/Input'
+import SegmentedControl from '../common/SegmentedControl'
 import UnderInput from '../common/UnderInput'
 import { toDateKey } from '../../utils/dateUtils'
 import type { Category, Satisfaction, TransactionFormValues, TransactionType } from '../../types/finance'
 import { useSettingsStore } from '../../stores/settingsStore'
 
-const SATISFACTION_OPTIONS: { label: string; value: Satisfaction; color: string }[] = [
-  { label: '만족', value: 'satisfied', color: '#22c55e' },
-  { label: '보통', value: 'neutral', color: '#9ca3af' },
-  { label: '후회', value: 'regret', color: '#f97316' },
+const SATISFACTION_OPTIONS: { label: string; value: Satisfaction }[] = [
+  { label: '만족', value: 'satisfied' },
+  { label: '보통', value: 'neutral' },
+  { label: '후회', value: 'regret' },
 ]
 
 type TransactionFormContentProps = {
   categories: Category[]
   categoryManageOverlay?: (isOpen: boolean, onClose: () => void) => ReactNode
+  controlledDate?: string
+  onControlledDateChange?: (date: string) => void
   fixedLabel: string
   initialAmount?: number
   initialCategoryId?: string
@@ -34,6 +38,8 @@ type TransactionFormContentProps = {
 export default function TransactionFormContent({
   categories,
   categoryManageOverlay,
+  controlledDate,
+  onControlledDateChange,
   fixedLabel,
   initialAmount,
   initialCategoryId,
@@ -51,11 +57,14 @@ export default function TransactionFormContent({
   const [selectedCategoryId, setSelectedCategoryId] = useState(initialSelectedCategoryId)
   const [isCategoryManageOpen, setIsCategoryManageOpen] = useState(false)
   const [amount, setAmount] = useState(initialAmount ? String(initialAmount) : '')
-  const [date, setDate] = useState(selectedDate ? toDateKey(selectedDate) : '')
+  const [internalDate, setInternalDate] = useState(selectedDate ? toDateKey(selectedDate) : '')
+  const date = controlledDate ?? internalDate
+  const setDate = onControlledDateChange ?? setInternalDate
   const [memo, setMemo] = useState(initialMemo ?? '')
   const [isFixed, setIsFixed] = useState(initialIsFixed)
   const [satisfaction, setSatisfaction] = useState<Satisfaction | null>(initialSatisfaction)
-  const satisfactionEmojis = useSettingsStore((s) => s.satisfactionEmojis)
+  const recentCategoryIds = useSettingsStore((s) => s.recentCategoryIds)
+  const addRecentCategoryId = useSettingsStore((s) => s.addRecentCategoryId)
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
   const resolvedSelectedCategoryId = categories.some((category) => category.id === selectedCategoryId)
@@ -86,6 +95,7 @@ export default function TransactionFormContent({
     setIsSaving(true)
 
     try {
+      addRecentCategoryId(resolvedSelectedCategoryId)
       await onSave?.({
         amount: numericAmount,
         categoryId: resolvedSelectedCategoryId,
@@ -116,7 +126,7 @@ export default function TransactionFormContent({
   return (
     <>
       <div className="grid gap-4">
-        <div className="flex items-center justify-center gap-2 py-4">
+        <div className="flex items-center justify-center gap-2">
           <span className="text-3xl font-bold text-gray-400">
             {type === 'expense' ? '−' : '+'}
           </span>
@@ -137,22 +147,24 @@ export default function TransactionFormContent({
           categories={categories}
           onChange={setSelectedCategoryId}
           onManageCategories={categoryManageOverlay ? () => setIsCategoryManageOpen(true) : undefined}
+          recentCategoryIds={recentCategoryIds}
           selectedCategoryIds={[resolvedSelectedCategoryId]}
         />
 
-        <UnderInput
-          label="날짜"
-          onChange={(event) => setDate(event.currentTarget.value)}
-          suffix=""
-          type="date"
-          value={date}
-        />
+        {!controlledDate && (
+          <UnderInput
+            label="날짜"
+            onChange={(event) => setDate(event.currentTarget.value)}
+            suffix=""
+            type="date"
+            value={date}
+          />
+        )}
 
-        <UnderInput
-          label="메모"
+        <Input
+
           onChange={(event) => setMemo(event.currentTarget.value)}
           placeholder="기록해두고 싶은 내용을 남겨보세요."
-          suffix=""
           value={memo}
         />
 
@@ -166,40 +178,14 @@ export default function TransactionFormContent({
         </Checkbox>
 
         {type === 'expense' && (
-          <div>
-            <p className="mb-2 text-sm font-semibold text-gray-500">만족도</p>
-            <div className="flex gap-4">
-              {SATISFACTION_OPTIONS.map((option) => (
-                <button
-                  aria-pressed={satisfaction === option.value}
-                  className="flex flex-col items-center gap-1.5"
-                  key={option.value}
-                  onClick={() => setSatisfaction(satisfaction === option.value ? null : option.value)}
-                  type="button"
-                >
-                  <span
-                    className={[
-                      'flex h-10 w-10 items-center justify-center rounded-full text-xl transition-all duration-150',
-                      satisfaction === option.value ? 'scale-110' : 'opacity-40',
-                    ].join(' ')}
-                    style={{
-                      background: option.color,
-                      boxShadow: satisfaction === option.value
-                        ? `0 0 0 2px white, 0 0 0 4px ${option.color}`
-                        : 'none',
-                    }}
-                  >
-                    {satisfactionEmojis[option.value]}
-                  </span>
-                  <span className={[
-                    'text-[11px] font-bold transition-colors',
-                    satisfaction === option.value ? 'text-gray-700' : 'text-gray-400',
-                  ].join(' ')}>
-                    {option.label}
-                  </span>
-                </button>
-              ))}
-            </div>
+          <div className="grid gap-3">
+            <p className="text-sm font-semibold text-gray-500">이 소비 어떠셨나요?</p>
+            <SegmentedControl
+              onChange={(value) => setSatisfaction(satisfaction === value ? null : value)}
+              options={SATISFACTION_OPTIONS.map((o) => ({ label: o.label, value: o.value }))}
+              size="md"
+              value={satisfaction}
+            />
           </div>
         )}
       </div>

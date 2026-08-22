@@ -1,8 +1,10 @@
+import { useEffect, useRef, useState } from 'react'
 import CategoryManageBottomSheet from '../../categories/CategoryManageBottomSheet'
 import BottomSheet from '../../common/BottomSheet'
 import type { Category, Satisfaction, TransactionFormValues, TransactionType } from '../../../types/finance'
 import TransactionFormContent from '../TransactionFormContent'
 import { transactionFormTextByType, type TransactionFormMode } from '../transactionFormConfig'
+import { toDateKey } from '../../../utils/dateUtils'
 
 type TransactionFormBottomSheetProps = {
   categories: Category[]
@@ -23,6 +25,14 @@ type TransactionFormBottomSheetProps = {
   onUpdateCategory?: Parameters<typeof CategoryManageBottomSheet>[0]['onUpdateCategory']
   selectedDate?: Date | null
   type: TransactionType
+}
+
+const todayKey = toDateKey(new Date())
+
+const formatDateLabel = (dateKey: string) => {
+  if (!dateKey || dateKey === todayKey) return '오늘'
+  const [, month, day] = dateKey.split('-')
+  return `${Number(month)}월 ${Number(day)}일`
 }
 
 export default function TransactionFormBottomSheet({
@@ -49,8 +59,38 @@ export default function TransactionFormBottomSheet({
   const canManageCategories = Boolean(expenseCategories?.length && incomeCategories?.length)
   const title = mode === 'edit' ? formText.editTitle : formText.createTitle
 
+  const [date, setDate] = useState(() => selectedDate ? toDateKey(selectedDate) : todayKey)
+  const dateInputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (isOpen) {
+      setDate(selectedDate ? toDateKey(selectedDate) : todayKey)
+    }
+  }, [isOpen, selectedDate])
+
+  const titleRight = (
+    <div className="relative">
+      <button
+        className="rounded-full bg-black/6 px-3 py-1 text-[13px] font-semibold text-gray-600 transition hover:bg-black/10"
+        onClick={() => dateInputRef.current?.showPicker()}
+        type="button"
+      >
+        {formatDateLabel(date)}
+      </button>
+      <input
+        className="pointer-events-none absolute inset-0 opacity-0"
+        max={todayKey}
+        onChange={(e) => setDate(e.target.value)}
+        ref={dateInputRef}
+        tabIndex={-1}
+        type="date"
+        value={date}
+      />
+    </div>
+  )
+
   return (
-    <BottomSheet isOpen={isOpen} onClose={onClose} scrollToBottom={mode === 'edit' && type === 'expense'} title={title}>
+    <BottomSheet isOpen={isOpen} onClose={onClose} scrollToBottom={mode === 'edit' && type === 'expense'} title={title} titleRight={titleRight}>
       <TransactionFormContent
         categories={categories}
         categoryManageOverlay={canManageCategories ? (isOpen, onClose) => (
@@ -65,6 +105,7 @@ export default function TransactionFormBottomSheet({
             onUpdateCategory={onUpdateCategory}
           />
         ) : undefined}
+        controlledDate={date}
         fixedLabel={formText.fixedLabel}
         initialAmount={initialAmount}
         initialCategoryId={initialCategoryId}
@@ -72,6 +113,7 @@ export default function TransactionFormBottomSheet({
         initialMemo={initialMemo}
         initialSatisfaction={initialSatisfaction}
         mode={mode}
+        onControlledDateChange={setDate}
         onDelete={onDelete}
         onSave={onSave}
         selectedDate={selectedDate}
