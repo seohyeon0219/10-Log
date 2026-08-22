@@ -116,16 +116,22 @@ export default function TransactionFormContent({
   return (
     <>
       <div className="grid gap-4">
-        <UnderInput
-          autoFocus
-          inputMode="numeric"
-          label="금액"
-          onChange={handleAmountChange}
-          pattern="[0-9]*"
-          placeholder="0"
-          value={amount ? Number(amount).toLocaleString('ko-KR') : ''}
-          variant="amount"
-        />
+        <div className="flex items-center justify-center gap-2 py-4">
+          <span className="text-3xl font-bold text-gray-400">
+            {type === 'expense' ? '−' : '+'}
+          </span>
+          <input
+            autoFocus
+            className="min-w-0 bg-transparent text-2xl font-bold text-black outline-none placeholder:text-gray-400"
+            inputMode="numeric"
+            onChange={handleAmountChange}
+            pattern="[0-9]*"
+            placeholder="0"
+            style={{ width: `${Math.max((amount || '0').length, 1) + 0.2}ch` }}
+            value={amount ? Number(amount).toLocaleString('ko-KR') : ''}
+          />
+          <span className="text-xl font-bold text-gray-400">원</span>
+        </div>
 
         <CategorySelect
           categories={categories}
