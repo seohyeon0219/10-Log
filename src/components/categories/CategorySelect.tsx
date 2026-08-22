@@ -48,12 +48,12 @@ export default function CategorySelect({
 
   return (
     <fieldset className="m-0 min-w-0 border-0 p-0">
-      <div className="flex items-center justify-between gap-3">
-        <legend className="p-0 text-sm font-semibold text-gray-500">{label}</legend>
+      <div className="mb-2 flex items-center justify-between gap-3">
+        <span className="text-sm font-semibold text-gray-400">{label}</span>
         <div className="flex items-center">
           {onManageCategories && (
             <button
-              className="flex min-h-11 cursor-pointer items-center rounded-lg border-0 bg-transparent px-3 text-sm font-medium text-gray-400 transition hover:bg-white/50 hover:text-black"
+              className="flex cursor-pointer items-center rounded-lg border-0 bg-transparent px-3 py-1 text-sm font-medium text-gray-500 transition hover:bg-white/50 hover:text-black"
               onClick={onManageCategories}
               type="button"
             >
@@ -62,7 +62,7 @@ export default function CategorySelect({
           )}
           {hasToggle && (
             <button
-              className="flex min-h-11 cursor-pointer items-center rounded-lg border-0 bg-transparent px-2 text-gray-400 transition hover:bg-white/50 hover:text-black"
+              className="flex cursor-pointer items-center rounded-lg border-0 bg-transparent px-2 py-1 text-gray-400 transition hover:bg-white/50 hover:text-black"
               onClick={() => setShowAll((v) => !v)}
               type="button"
               aria-label={showAll ? '접기' : '전체보기'}
