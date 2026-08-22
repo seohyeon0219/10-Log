@@ -2,18 +2,21 @@ import type { InputHTMLAttributes } from 'react'
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   error?: string
-  inputClassName?: string
   label?: string
+  variant?: 'default' | 'soft'
 }
 
-export default function Input({ error, id, inputClassName = '', label, className = '', ...props }: InputProps) {
+export default function Input({ error, id, label, variant = 'default', className = '', ...props }: InputProps) {
   const inputId = id ?? props.name
+  const inputCls = variant === 'soft'
+    ? 'min-h-12 w-full rounded-2xl bg-black/6 border-0 px-4 text-base font-medium text-black outline-none transition placeholder:text-black/25 focus:bg-black/8'
+    : 'min-h-12 w-full rounded-2xl glass-input px-4 text-base font-medium text-black outline-none transition placeholder:text-black/25 focus:border-black/20 focus:bg-white/90'
 
   return (
     <label className={['grid w-full gap-2', className].join(' ').trim()} htmlFor={inputId}>
       {label ? <span className="text-sm font-semibold text-gray-500">{label}</span> : null}
       <input
-        className={['min-h-12 w-full rounded-2xl glass-input px-4 text-base font-medium text-black outline-none transition placeholder:text-black/25 focus:border-black/20 focus:bg-white/90', inputClassName].join(' ').trim()}
+        className={inputCls}
         id={inputId}
         {...props}
       />
