@@ -6,7 +6,6 @@ import MonthlyInsightsCard from '../components/statistics/MonthlyInsightsCard'
 import PreviousMonthComparison from '../components/statistics/PreviousMonthComparison'
 import SpendingByDayOfWeekCard from '../components/statistics/SpendingByDayOfWeekCard'
 import SpendingByWeekCard from '../components/statistics/SpendingByWeekCard'
-import SpendingDensityCard from '../components/statistics/SpendingDensityCard'
 import SpendingTransactionLineChart from '../components/statistics/SpendingTransactionLineChart'
 import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
 import { useStatsPage } from '../hooks/useStatsPage'
@@ -35,8 +34,6 @@ export default function StatsContainer() {
           selectedCategoryId={stats.ratioSelectedCategoryId}
         />
 
-        <MonthlyInsightsCard data={stats.monthlyInsights} showDetailLink={false} />
-
         <div className="grid gap-4 md:grid-cols-2">
           <PreviousMonthComparison items={stats.previousMonthComparison} />
           <CategoryChangeRanking items={stats.categoryChangeRanking} />
@@ -49,7 +46,7 @@ export default function StatsContainer() {
 
         <InfoChip className="mt-4">상세 분석</InfoChip>
 
-        <SpendingDensityCard data={stats.spendingDensity} />
+        <MonthlyInsightsCard data={stats.monthlyInsights} density={stats.spendingDensity} showDetailLink={false} />
         <SpendingByDayOfWeekCard data={stats.spendingByDayOfWeek} />
         <SpendingByWeekCard data={stats.spendingByWeek} />
       </div>

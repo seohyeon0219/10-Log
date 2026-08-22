@@ -2,14 +2,15 @@ import { Link } from 'react-router-dom'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import StatisticsCard from './StatisticsCard'
 import { formatMonthDay, formatWon } from '../../utils/formatters'
-import type { MonthlyInsightsData } from '../../utils/statisticsCalculators'
+import type { MonthlyInsightsData, SpendingDensity } from '../../utils/statisticsCalculators'
 
 type Props = {
   data: MonthlyInsightsData
+  density?: SpendingDensity
   showDetailLink?: boolean
 }
 
-export default function MonthlyInsightsCard({ data, showDetailLink = true }: Props) {
+export default function MonthlyInsightsCard({ data, density, showDetailLink = true }: Props) {
   const { threeMonthComparison: cmp, topExpenses } = data
   const isHigher = cmp.rate > 0
   const hasAvg = cmp.avgAmount > 0
@@ -105,6 +106,46 @@ export default function MonthlyInsightsCard({ data, showDetailLink = true }: Pro
         <p className="mt-4 text-center text-sm font-semibold text-gray-400">
           이번 달 지출 내역이 없어요.
         </p>
+      )}
+
+      {density && (
+        <>
+          <div className="my-4 border-t border-black/6" />
+
+          <p className="mb-3 text-[13px] font-bold text-black">지출 밀도</p>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="rounded-[14px] bg-black/4 px-3 py-2.5">
+              <p className="text-[11px] font-semibold text-gray-400">하루 평균 지출</p>
+              <p className="mt-1 text-[15px] font-extrabold text-(--color-expense-red)">
+                {density.dailyAvg > 0 ? `-${formatWon(density.dailyAvg)}` : '—'}
+              </p>
+              <p className="mt-0.5 text-[10px] font-medium text-gray-400">1~{density.refDay}일 기준</p>
+            </div>
+            <div className="rounded-[14px] bg-black/4 px-3 py-2.5">
+              <p className="text-[11px] font-semibold text-gray-400">지출한 날</p>
+              <p className="mt-1 text-[15px] font-extrabold text-black">
+                {density.spendingDays > 0 ? `${density.spendingDays}일` : '—'}
+              </p>
+              <p className="mt-0.5 text-[10px] font-medium text-gray-400">
+                {density.refDay - density.spendingDays > 0
+                  ? `지출 없는 날 ${density.refDay - density.spendingDays}일`
+                  : '매일 지출'}
+              </p>
+            </div>
+          </div>
+
+          {density.peakDay && (
+            <div className="mt-2 flex items-center justify-between rounded-[14px] bg-black/4 px-3 py-2.5">
+              <div>
+                <p className="text-[11px] font-semibold text-gray-400">가장 많이 쓴 날</p>
+                <p className="mt-1 text-[13px] font-bold text-black">{formatMonthDay(density.peakDay.date)}</p>
+              </div>
+              <p className="text-[15px] font-extrabold text-(--color-expense-red)">
+                -{formatWon(density.peakDay.amount)}
+              </p>
+            </div>
+          )}
+        </>
       )}
     </StatisticsCard>
   )
