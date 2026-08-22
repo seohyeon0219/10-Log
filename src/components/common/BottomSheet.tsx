@@ -1,5 +1,5 @@
 import { createPortal } from 'react-dom'
-import { useRef, useCallback } from 'react'
+import { useRef, useCallback, useEffect } from 'react'
 import type { ReactNode, TouchEvent } from 'react'
 import { useBodyScrollLock } from '../../hooks/useBodyScrollLock'
 
@@ -14,6 +14,7 @@ type BottomSheetProps = {
   layer?: 1 | 2
   maxHeightClassName?: string
   onClose: () => void
+  scrollToBottom?: boolean
   title?: string
 }
 
@@ -25,12 +26,21 @@ export default function BottomSheet({
   layer = 1,
   maxHeightClassName = 'max-h-[90dvh]',
   onClose,
+  scrollToBottom = false,
   title,
 }: BottomSheetProps) {
   useBodyScrollLock(isOpen)
 
   const sheetRef = useRef<HTMLElement>(null)
   const drag = useRef<{ startY: number; lastY: number; startTime: number } | null>(null)
+
+  useEffect(() => {
+    if (!scrollToBottom) return
+    const timer = setTimeout(() => {
+      sheetRef.current?.scrollTo({ top: sheetRef.current.scrollHeight, behavior: 'smooth' })
+    }, 350)
+    return () => clearTimeout(timer)
+  }, [scrollToBottom])
 
   const handleTouchStart = useCallback((e: TouchEvent) => {
     drag.current = {

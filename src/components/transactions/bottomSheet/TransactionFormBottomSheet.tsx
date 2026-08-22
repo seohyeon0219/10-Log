@@ -50,7 +50,7 @@ export default function TransactionFormBottomSheet({
   const title = mode === 'edit' ? formText.editTitle : formText.createTitle
 
   return (
-    <BottomSheet isOpen={isOpen} onClose={onClose} title={title}>
+    <BottomSheet isOpen={isOpen} onClose={onClose} scrollToBottom={mode === 'edit' && type === 'expense'} title={title}>
       <TransactionFormContent
         categories={categories}
         categoryManageOverlay={canManageCategories ? (isOpen, onClose) => (
