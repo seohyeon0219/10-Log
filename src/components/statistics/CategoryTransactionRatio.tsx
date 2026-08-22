@@ -128,6 +128,7 @@ export default function CategoryTransactionRatio({
       {/* 선택된 카테고리 프리뷰 */}
       {selectedItem && (
         <div className="mt-4" ref={previewRef}>
+          <div className="mb-4 h-px bg-black/6" />
           <button
             className="mb-2 flex w-full items-center justify-between text-left transition active:opacity-60"
             onClick={() => void navigate(`/app/stats/category/${selectedItem.id}?type=${ratioType}`)}
