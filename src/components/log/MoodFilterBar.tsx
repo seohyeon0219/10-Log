@@ -15,45 +15,43 @@ type Props = {
   selected: MoodFilter
 }
 
-const OPTIONS: { color: string | null; key: keyof MoodCounts; label: string; value: Satisfaction | 'untagged' }[] = [
+const OPTIONS: { color: string | null; key: keyof MoodCounts | null; label: string; value: MoodFilter }[] = [
+  { color: null, key: null, label: '전체', value: null },
   { color: '#22c55e', key: 'satisfied', label: '만족', value: 'satisfied' },
   { color: '#9ca3af', key: 'neutral', label: '보통', value: 'neutral' },
   { color: '#f97316', key: 'regret', label: '후회', value: 'regret' },
   { color: null, key: 'untagged', label: '미입력', value: 'untagged' },
 ]
 
+const total = (counts: MoodCounts) => counts.satisfied + counts.neutral + counts.regret + counts.untagged
+
 export default function MoodFilterBar({ counts, onChange, selected }: Props) {
   return (
-    <div className="flex gap-2">
+    <div className="flex rounded-2xl bg-black/5 p-1">
       {OPTIONS.map((option) => {
         const isActive = selected === option.value
+        const count = option.key ? counts[option.key] : total(counts)
 
         return (
           <button
             className={[
-              'flex flex-1 flex-col items-center gap-1.5 rounded-2xl py-3 transition',
-              isActive ? 'bg-white shadow-sm' : 'bg-black/4',
+              'flex flex-1 flex-col items-center gap-0.5 rounded-xl py-2 transition',
+              isActive ? 'bg-white shadow-sm' : '',
             ].join(' ')}
-            key={option.value}
-            onClick={() => onChange(isActive ? null : option.value)}
+            key={String(option.value)}
+            onClick={() => onChange(option.value)}
             type="button"
           >
-            {option.color ? (
-              <span
-                className={['h-5 w-5 rounded-full transition-all', isActive ? 'scale-110' : 'opacity-50'].join(' ')}
-                style={{
-                  background: option.color,
-                  boxShadow: isActive ? `0 0 0 2px white, 0 0 0 3.5px ${option.color}` : 'none',
-                }}
-              />
-            ) : (
-              <span className={['h-5 w-5 rounded-full border-2 border-dashed transition-all', isActive ? 'border-gray-400' : 'border-gray-300'].join(' ')} />
-            )}
-            <span className={['text-[10px] font-bold', isActive ? 'text-black' : 'text-gray-400'].join(' ')}>
-              {option.label}
+            <span className="flex items-center gap-1">
+              {option.color && (
+                <span className="h-2 w-2 rounded-full" style={{ background: option.color }} />
+              )}
+              <span className={['text-[11px] font-bold', isActive ? 'text-black' : 'text-gray-400'].join(' ')}>
+                {option.label}
+              </span>
             </span>
-            <span className={['text-[14px] font-extrabold leading-none', isActive ? 'text-black' : 'text-gray-400'].join(' ')}>
-              {counts[option.key]}
+            <span className={['text-[15px] font-extrabold', isActive ? 'text-black' : 'text-gray-400'].join(' ')}>
+              {count}
             </span>
           </button>
         )
