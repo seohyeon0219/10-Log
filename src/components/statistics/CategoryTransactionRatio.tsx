@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import IncomeExpenseToggle from '../common/IncomeExpenseToggle'
@@ -52,10 +53,17 @@ export default function CategoryTransactionRatio({
   selectedCategoryId,
 }: CategoryTransactionRatioProps) {
   const navigate = useNavigate()
+  const previewRef = useRef<HTMLDivElement>(null)
   const activeItems = items[ratioType]
   const totalAmount = activeItems.reduce((total, item) => total + item.amount, 0)
   const selectedItem = activeItems.find((item) => item.id === selectedCategoryId) ?? null
   const donutGradient = getDonutGradient(activeItems, totalAmount)
+
+  useEffect(() => {
+    if (selectedCategoryId && previewRef.current) {
+      previewRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    }
+  }, [selectedCategoryId])
 
   const toggle = (
     <IncomeExpenseToggle
@@ -119,7 +127,7 @@ export default function CategoryTransactionRatio({
 
       {/* 선택된 카테고리 프리뷰 */}
       {selectedItem && (
-        <div className="mt-4">
+        <div className="mt-4" ref={previewRef}>
           <button
             className="mb-2 flex w-full items-center justify-between text-left transition active:opacity-60"
             onClick={() => void navigate(`/app/stats/category/${selectedItem.id}?type=${ratioType}`)}
