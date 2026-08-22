@@ -47,9 +47,9 @@ export default function StatsContainer() {
 
         <InfoChip className="mt-4">상세 분석</InfoChip>
 
+        <SpendingDensityCard data={stats.spendingDensity} />
         <SpendingByDayOfWeekCard data={stats.spendingByDayOfWeek} />
         <SpendingByWeekCard data={stats.spendingByWeek} />
-        <SpendingDensityCard data={stats.spendingDensity} />
       </div>
 
       {stats.selectedTransaction ? (
