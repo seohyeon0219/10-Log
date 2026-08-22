@@ -4,6 +4,7 @@ import CategorySelect from '../categories/CategorySelect'
 import Button from '../common/Button'
 import Checkbox from '../common/Checkbox'
 import Input from '../common/Input'
+import SegmentedControl from '../common/SegmentedControl'
 import UnderInput from '../common/UnderInput'
 import { toDateKey } from '../../utils/dateUtils'
 import type { Category, Satisfaction, TransactionFormValues, TransactionType } from '../../types/finance'
@@ -59,7 +60,6 @@ export default function TransactionFormContent({
   const [memo, setMemo] = useState(initialMemo ?? '')
   const [isFixed, setIsFixed] = useState(initialIsFixed)
   const [satisfaction, setSatisfaction] = useState<Satisfaction | null>(initialSatisfaction)
-  const satisfactionEmojis = useSettingsStore((s) => s.satisfactionEmojis)
   const recentCategoryIds = useSettingsStore((s) => s.recentCategoryIds)
   const addRecentCategoryId = useSettingsStore((s) => s.addRecentCategoryId)
   const [errorMessage, setErrorMessage] = useState('')
@@ -177,34 +177,12 @@ export default function TransactionFormContent({
         {type === 'expense' && (
           <div className="grid gap-3">
             <p className="text-sm font-semibold text-gray-500">이 소비 어떠셨나요?</p>
-            <div className="flex gap-2">
-              {SATISFACTION_OPTIONS.map((value) => {
-                const color = MOOD_COLORS[value]
-                const isSelected = satisfaction === value
-                return (
-                  <button
-                    aria-pressed={isSelected}
-                    className="flex flex-1 flex-col items-center gap-1.5 rounded-2xl py-3 transition-all duration-150"
-                    key={value}
-                    onClick={() => setSatisfaction(isSelected ? null : value)}
-                    style={isSelected
-                      ? { backgroundColor: `${color}18`, boxShadow: `inset 0 0 0 1.5px ${color}55` }
-                      : { backgroundColor: 'rgba(0,0,0,0.04)' }}
-                    type="button"
-                  >
-                    <span className={['text-xl transition-all duration-150', isSelected ? 'scale-110' : 'opacity-50'].join(' ')}>
-                      {satisfactionEmojis[value]}
-                    </span>
-                    <span
-                      className="text-[11px] font-bold transition-colors"
-                      style={{ color: isSelected ? color : '#9ca3af' }}
-                    >
-                      {MOOD_LABELS[value]}
-                    </span>
-                  </button>
-                )
-              })}
-            </div>
+            <SegmentedControl
+              onChange={(v) => setSatisfaction(satisfaction === v ? null : v)}
+              options={SATISFACTION_OPTIONS.map((v) => ({ color: MOOD_COLORS[v], label: MOOD_LABELS[v], value: v }))}
+              size="lg"
+              value={satisfaction}
+            />
           </div>
         )}
       </div>
