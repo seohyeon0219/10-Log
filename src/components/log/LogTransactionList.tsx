@@ -1,3 +1,4 @@
+import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import type { Satisfaction, Transaction } from '../../types/finance'
 import { formatMonthDay, formatWon } from '../../utils/formatters'
 
@@ -52,7 +53,7 @@ export default function LogTransactionList({
           <span className="text-[13px] font-semibold text-gray-500">
             아직 {untaggedCount}건이 감정 미입력이에요
           </span>
-          <span className="text-[13px] font-semibold text-(--color-income-blue)">바로 입력 →</span>
+          <ChevronRightIcon aria-hidden="true" className="h-4 w-4 text-gray-400" />
         </button>
       )}
 

@@ -7,10 +7,10 @@ import UnderInput from '../common/UnderInput'
 import { toDateKey } from '../../utils/dateUtils'
 import type { Category, Satisfaction, TransactionFormValues, TransactionType } from '../../types/finance'
 
-const SATISFACTION_OPTIONS: { label: string; value: Satisfaction; emoji: string }[] = [
-  { label: '만족', value: 'satisfied', emoji: '😊' },
-  { label: '보통', value: 'neutral', emoji: '😐' },
-  { label: '후회', value: 'regret', emoji: '😔' },
+const SATISFACTION_OPTIONS: { label: string; value: Satisfaction; color: string }[] = [
+  { label: '만족', value: 'satisfied', color: '#3b82f6' },
+  { label: '보통', value: 'neutral', color: '#22c55e' },
+  { label: '후회', value: 'regret', color: '#f97316' },
 ]
 
 type TransactionFormContentProps = {
@@ -160,22 +160,33 @@ export default function TransactionFormContent({
         {type === 'expense' && (
           <div>
             <p className="mb-2 text-sm font-semibold text-gray-500">만족도</p>
-            <div className="flex rounded-full bg-gray-100 p-1">
+            <div className="flex gap-4">
               {SATISFACTION_OPTIONS.map((option) => (
                 <button
                   aria-pressed={satisfaction === option.value}
-                  className={[
-                    'flex flex-1 flex-col items-center gap-0.5 rounded-full py-1.5 text-[11px] font-bold transition',
-                    satisfaction === option.value
-                      ? 'bg-white text-gray-800 shadow-sm'
-                      : 'text-gray-400',
-                  ].join(' ')}
+                  className="flex flex-col items-center gap-1.5"
                   key={option.value}
                   onClick={() => setSatisfaction(satisfaction === option.value ? null : option.value)}
                   type="button"
                 >
-                  <span className="text-base leading-none">{option.emoji}</span>
-                  {option.label}
+                  <span
+                    className={[
+                      'h-8 w-8 rounded-full transition-all duration-150',
+                      satisfaction === option.value ? 'scale-110' : 'opacity-25',
+                    ].join(' ')}
+                    style={{
+                      background: option.color,
+                      boxShadow: satisfaction === option.value
+                        ? `0 0 0 2px white, 0 0 0 4px ${option.color}`
+                        : 'none',
+                    }}
+                  />
+                  <span className={[
+                    'text-[11px] font-bold transition-colors',
+                    satisfaction === option.value ? 'text-gray-700' : 'text-gray-400',
+                  ].join(' ')}>
+                    {option.label}
+                  </span>
                 </button>
               ))}
             </div>
