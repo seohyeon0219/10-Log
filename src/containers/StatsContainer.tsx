@@ -1,4 +1,5 @@
 import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
+import InfoChip from '../components/common/InfoChip'
 import CategoryChangeRanking from '../components/statistics/CategoryChangeRanking'
 import CategoryTransactionRatio from '../components/statistics/CategoryTransactionRatio'
 import MonthlyInsightsCard from '../components/statistics/MonthlyInsightsCard'
@@ -24,6 +25,8 @@ export default function StatsContainer() {
       </div>
 
       <div className="grid gap-4">
+        <InfoChip>기본 분석</InfoChip>
+
         <CategoryTransactionRatio
           items={stats.categoryTransactionRatio}
           onRatioTypeChange={stats.setRatioType}
@@ -44,6 +47,8 @@ export default function StatsContainer() {
           data={stats.spendingTransactionLineChart}
           lastYearExpense={stats.lastYearExpense}
         />
+
+        <InfoChip>상세 분석</InfoChip>
 
         <SpendingByDayOfWeekCard data={stats.spendingByDayOfWeek} />
         <SpendingByWeekCard data={stats.spendingByWeek} />
