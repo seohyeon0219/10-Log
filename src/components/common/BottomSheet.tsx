@@ -16,6 +16,7 @@ type BottomSheetProps = {
   onClose: () => void
   scrollToBottom?: boolean
   title?: string
+  titleRight?: ReactNode
 }
 
 export default function BottomSheet({
@@ -28,6 +29,7 @@ export default function BottomSheet({
   onClose,
   scrollToBottom = false,
   title,
+  titleRight,
 }: BottomSheetProps) {
   useBodyScrollLock(isOpen)
 
@@ -100,10 +102,10 @@ export default function BottomSheet({
         <div className="mx-auto w-full max-w-2xl">
           <header className="mb-5 grid gap-3">
             <span aria-hidden="true" className="mx-auto h-1 w-9 rounded-full bg-gray-200" />
-            <div className="flex items-start justify-between gap-4">
+            <div className="flex items-center justify-between gap-4">
               {title ? (
-                <div>
-                  <h2 className="m-0 pt-2 text-xl font-bold text-black">{title}</h2>
+                <div className="pt-2">
+                  <h2 className="m-0 text-xl font-bold text-black">{title}</h2>
                   {description ? (
                     <p className="mt-2 mb-0 text-sm font-medium text-gray-400">{description}</p>
                   ) : null}
@@ -111,14 +113,7 @@ export default function BottomSheet({
               ) : (
                 <span className="min-h-11" />
               )}
-              <button
-                aria-label={`${title ?? '바텀시트'} 닫기`}
-                className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent text-3xl leading-none text-gray-500 transition interactive-icon"
-                onClick={onClose}
-                type="button"
-              >
-                ×
-              </button>
+              {titleRight && <div className="flex flex-1 justify-end pr-2">{titleRight}</div>}
             </div>
           </header>
 
