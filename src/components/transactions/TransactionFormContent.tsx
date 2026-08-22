@@ -6,6 +6,7 @@ import Checkbox from '../common/Checkbox'
 import UnderInput from '../common/UnderInput'
 import { toDateKey } from '../../utils/dateUtils'
 import type { Category, Satisfaction, TransactionFormValues, TransactionType } from '../../types/finance'
+import { useSettingsStore } from '../../stores/settingsStore'
 
 const SATISFACTION_OPTIONS: { label: string; value: Satisfaction; color: string }[] = [
   { label: '만족', value: 'satisfied', color: '#22c55e' },
@@ -54,6 +55,7 @@ export default function TransactionFormContent({
   const [memo, setMemo] = useState(initialMemo ?? '')
   const [isFixed, setIsFixed] = useState(initialIsFixed)
   const [satisfaction, setSatisfaction] = useState<Satisfaction | null>(initialSatisfaction)
+  const satisfactionEmojis = useSettingsStore((s) => s.satisfactionEmojis)
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
   const resolvedSelectedCategoryId = categories.some((category) => category.id === selectedCategoryId)
@@ -171,8 +173,8 @@ export default function TransactionFormContent({
                 >
                   <span
                     className={[
-                      'h-8 w-8 rounded-full transition-all duration-150',
-                      satisfaction === option.value ? 'scale-110' : 'opacity-25',
+                      'flex h-10 w-10 items-center justify-center rounded-full text-xl transition-all duration-150',
+                      satisfaction === option.value ? 'scale-110' : 'opacity-40',
                     ].join(' ')}
                     style={{
                       background: option.color,
@@ -180,7 +182,9 @@ export default function TransactionFormContent({
                         ? `0 0 0 2px white, 0 0 0 4px ${option.color}`
                         : 'none',
                     }}
-                  />
+                  >
+                    {satisfactionEmojis[option.value]}
+                  </span>
                   <span className={[
                     'text-[11px] font-bold transition-colors',
                     satisfaction === option.value ? 'text-gray-700' : 'text-gray-400',

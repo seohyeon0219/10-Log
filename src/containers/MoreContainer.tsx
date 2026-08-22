@@ -6,6 +6,7 @@ import ConfirmModal from '../components/common/ConfirmModal'
 import MenuGroup, { MenuGroupDivider } from '../components/common/MenuGroup'
 import MenuItem from '../components/common/MenuItem'
 import ResponsiveThemeSelect from '../components/settings/ResponsiveThemeSelect'
+import SatisfactionEmojiSheet from '../components/settings/SatisfactionEmojiSheet'
 import { supabase } from '../lib/supabase'
 import { useCalendarStore } from '../stores/calendarStore'
 
@@ -14,6 +15,7 @@ export default function MoreContainer() {
   const [user, setUser] = useState<User | null>(null)
   const [isCategoryOpen, setIsCategoryOpen] = useState(false)
   const [isThemeOpen, setIsThemeOpen] = useState(false)
+  const [isEmojiOpen, setIsEmojiOpen] = useState(false)
   const [isLogoutOpen, setIsLogoutOpen] = useState(false)
 
   const addCategory = useCalendarStore((state) => state.addCategory)
@@ -67,6 +69,8 @@ export default function MoreContainer() {
         <MenuGroupDivider />
         <MenuItem label="화면 테마" onClick={() => setIsThemeOpen(true)} />
         <MenuGroupDivider />
+        <MenuItem label="감정 아이콘 설정" onClick={() => setIsEmojiOpen(true)} />
+        <MenuGroupDivider />
         <MenuItem
           label="알림 설정"
           onClick={() => {
@@ -110,6 +114,7 @@ export default function MoreContainer() {
       />
 
       <ResponsiveThemeSelect isOpen={isThemeOpen} onClose={() => setIsThemeOpen(false)} />
+      <SatisfactionEmojiSheet isOpen={isEmojiOpen} onClose={() => setIsEmojiOpen(false)} />
 
       <ResponsiveCategoryManage
         expenseCategories={expenseCategories}

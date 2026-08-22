@@ -1,12 +1,7 @@
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
-import type { Satisfaction, Transaction } from '../../types/finance'
+import type { Transaction } from '../../types/finance'
 import { formatMonthDay, formatWon } from '../../utils/formatters'
-
-const SATISFACTION_EMOJI: Record<Satisfaction, string> = {
-  neutral: '😐',
-  regret: '😔',
-  satisfied: '😊',
-}
+import { useSettingsStore } from '../../stores/settingsStore'
 
 type Props = {
   onSelectTransaction: (tx: Transaction) => void
@@ -21,6 +16,7 @@ export default function LogTransactionList({
   transactions,
   untaggedCount,
 }: Props) {
+  const satisfactionEmojis = useSettingsStore((s) => s.satisfactionEmojis)
   const isEmpty = transactions.length === 0 && untaggedCount === 0
 
   if (isEmpty) {
@@ -73,7 +69,7 @@ export default function LogTransactionList({
               <span className="flex items-center gap-1.5">
                 <span className="text-[13px] font-bold text-black">{tx.categoryName}</span>
                 {tx.satisfaction ? (
-                  <span className="text-[12px] leading-none">{SATISFACTION_EMOJI[tx.satisfaction]}</span>
+                  <span className="text-[12px] leading-none">{satisfactionEmojis[tx.satisfaction]}</span>
                 ) : (
                   <span className="text-[10px] font-semibold text-gray-300">미입력</span>
                 )}
