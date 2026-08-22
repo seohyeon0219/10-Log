@@ -8,8 +8,8 @@ import { toDateKey } from '../../utils/dateUtils'
 import type { Category, Satisfaction, TransactionFormValues, TransactionType } from '../../types/finance'
 
 const SATISFACTION_OPTIONS: { label: string; value: Satisfaction; color: string }[] = [
-  { label: '만족', value: 'satisfied', color: '#3b82f6' },
-  { label: '보통', value: 'neutral', color: '#22c55e' },
+  { label: '만족', value: 'satisfied', color: '#22c55e' },
+  { label: '보통', value: 'neutral', color: '#9ca3af' },
   { label: '후회', value: 'regret', color: '#f97316' },
 ]
 
