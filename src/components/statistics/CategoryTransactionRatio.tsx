@@ -133,8 +133,8 @@ export default function CategoryTransactionRatio({
             onClick={() => void navigate(`/app/stats/category/${selectedItem.id}?type=${ratioType}`)}
             type="button"
           >
-            <span className="text-[14px] font-extrabold text-black">{selectedItem.label} 내역</span>
-            <span className="flex items-center gap-0.5 text-[12px] font-bold text-gray-400">
+            <span className="text-[14px] font-extrabold text-gray-800">{selectedItem.label} 내역</span>
+            <span className="flex items-center gap-0.5 text-[12px] font-bold text-gray-800">
               {selectedItem.transactions.length}건
               <ChevronRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
             </span>
