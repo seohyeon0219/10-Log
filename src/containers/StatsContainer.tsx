@@ -48,7 +48,7 @@ export default function StatsContainer() {
           lastYearExpense={stats.lastYearExpense}
         />
 
-        <InfoChip>상세 분석</InfoChip>
+        <InfoChip className="mt-4">상세 분석</InfoChip>
 
         <SpendingByDayOfWeekCard data={stats.spendingByDayOfWeek} />
         <SpendingByWeekCard data={stats.spendingByWeek} />
