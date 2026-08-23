@@ -60,67 +60,57 @@ export default function LogTransactionList({
         </button>
       )}
 
-      <div className="overflow-hidden rounded-[22px] glass-card shadow-[0_6px_20px_rgba(0,0,0,0.06)]">
-        <div className="divide-y divide-black/4">
-          {transactions.map((tx) => {
-            const moodColor = tx.satisfaction ? MOOD_COLORS[tx.satisfaction] : null
+      {transactions.map((tx) => {
+        const moodColor = tx.satisfaction ? MOOD_COLORS[tx.satisfaction] : null
 
-            return (
-              <button
-                className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-black/4"
-                key={tx.id}
-                onClick={() => onSelectTransaction(tx)}
-                type="button"
-              >
-                {/* 카테고리 뱃지 */}
-                <span
-                  className="shrink-0 rounded-full px-2.5 py-1 text-[11.5px] font-bold"
-                  style={{
-                    background: `${tx.categoryColor}22`,
-                    color: tx.categoryColor,
-                  }}
-                >
-                  {tx.categoryName}
-                </span>
+        return (
+          <button
+            className="flex w-full items-center gap-3 rounded-[22px] glass-card px-4 py-3.5 text-left shadow-[0_4px_14px_rgba(0,0,0,0.05)] transition hover:bg-white/60"
+            key={tx.id}
+            onClick={() => onSelectTransaction(tx)}
+            type="button"
+          >
+            <span
+              className="shrink-0 rounded-full px-2.5 py-1 text-[11.5px] font-bold"
+              style={{ background: `${tx.categoryColor}22`, color: tx.categoryColor }}
+            >
+              {tx.categoryName}
+            </span>
 
-                {/* 메모 + 날짜·감정 */}
-                <span className="min-w-0 flex-1">
-                  {tx.memo ? (
-                    <span className="block truncate text-[13.5px] font-bold text-black">{tx.memo}</span>
-                  ) : (
-                    <span className="block text-[13.5px] font-semibold text-gray-300">메모 없음</span>
-                  )}
-                  <span className="block text-[11.5px] text-gray-400">
-                    {formatMonthDay(tx.date)}
-                    {tx.satisfaction ? (
-                      <>
-                        {' · '}
-                        <span style={{ color: MOOD_COLORS[tx.satisfaction] }}>
-                          {MOOD_LABELS[tx.satisfaction]}
-                        </span>
-                      </>
-                    ) : ' · 감정 미입력'}
-                  </span>
-                </span>
+            <span className="min-w-0 flex-1">
+              {tx.memo ? (
+                <span className="block truncate text-[13.5px] font-bold text-black">{tx.memo}</span>
+              ) : (
+                <span className="block text-[13.5px] font-semibold text-gray-300">메모 없음</span>
+              )}
+              <span className="block text-[11.5px] text-gray-400">
+                {formatMonthDay(tx.date)}
+                {tx.satisfaction ? (
+                  <>
+                    {' · '}
+                    <span style={{ color: MOOD_COLORS[tx.satisfaction] }}>
+                      {MOOD_LABELS[tx.satisfaction]}
+                    </span>
+                  </>
+                ) : ' · 감정 미입력'}
+              </span>
+            </span>
 
-                {/* 금액 + 감정 바 */}
-                <span className="shrink-0 text-right">
-                  <span className={[
-                    'block text-[13.5px] font-extrabold tabular-nums',
-                    tx.type === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
-                  ].join(' ')}>
-                    {tx.type === 'income' ? '+' : '-'}{formatWon(tx.amount)}
-                  </span>
-                  <span
-                    className="mt-1.5 ml-auto block h-1 w-10 rounded-full"
-                    style={{ background: moodColor ?? '#e5e7eb' }}
-                  />
-                </span>
-              </button>
-            )
-          })}
-        </div>
-      </div>
+            <span className="shrink-0 text-right">
+              <span className={[
+                'block text-[13.5px] font-extrabold tabular-nums',
+                tx.type === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
+              ].join(' ')}>
+                {tx.type === 'income' ? '+' : '-'}{formatWon(tx.amount)}
+              </span>
+              <span
+                className="mt-1.5 ml-auto block h-1 w-10 rounded-full"
+                style={{ background: moodColor ?? '#e5e7eb' }}
+              />
+            </span>
+          </button>
+        )
+      })}
     </div>
   )
 }
