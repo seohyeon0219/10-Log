@@ -2,9 +2,9 @@ import { useState } from 'react'
 import type { ChangeEvent, ReactNode } from 'react'
 import CategorySelect from '../categories/CategorySelect'
 import Button from '../common/Button'
-import Checkbox from '../common/Checkbox'
 import Input from '../common/Input'
 import SegmentedControl from '../common/SegmentedControl'
+import Toggle from '../common/Toggle'
 import UnderInput from '../common/UnderInput'
 import { toDateKey } from '../../utils/dateUtils'
 import type { Category, Satisfaction, TransactionFormValues, TransactionType } from '../../types/finance'
@@ -165,14 +165,9 @@ export default function TransactionFormContent({
           variant="soft"
         />
 
-        <Checkbox
-          checked={isFixed}
-          name={`fixed-${type}`}
-          onChange={(event) => setIsFixed(event.currentTarget.checked)}
-          variant="toggle"
-        >
+        <Toggle checked={isFixed} onChange={setIsFixed}>
           {fixedLabel}
-        </Checkbox>
+        </Toggle>
 
         {type === 'expense' && (
           <div className="grid gap-3">
