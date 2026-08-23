@@ -167,9 +167,9 @@ export default function TransactionFormContent({
 
         <Checkbox
           checked={isFixed}
-          className="text-sm"
           name={`fixed-${type}`}
           onChange={(event) => setIsFixed(event.currentTarget.checked)}
+          variant="toggle"
         >
           {fixedLabel}
         </Checkbox>
@@ -187,19 +187,20 @@ export default function TransactionFormContent({
         )}
       </div>
 
-      {errorMessage && (
-        <p className="mt-4 text-sm font-semibold text-(--color-expense-red)" role="alert">
-          {errorMessage}
-        </p>
-      )}
-
-      <div className={['mt-5 pt-1', mode === 'edit' ? 'grid grid-cols-[96px_minmax(0,1fr)] gap-3' : ''].join(' ')}>
-        {mode === 'edit' && (
-          <Button disabled={isSaving} onClick={handleDelete} variant="soft">
-            삭제
-          </Button>
+      <div className="sticky bottom-0 -mx-5 bg-gradient-to-t from-white/90 to-transparent px-5 pb-safe-bottom pt-8 md:static md:mx-0 md:bg-none md:px-0 md:pb-1 md:pt-4">
+        {errorMessage && (
+          <p className="mb-3 text-sm font-semibold text-(--color-expense-red)" role="alert">
+            {errorMessage}
+          </p>
         )}
-        <Button disabled={isSaving} onClick={handleSave}>{isSaving ? '저장 중...' : submitText}</Button>
+        <div className={[mode === 'edit' ? 'grid grid-cols-[96px_minmax(0,1fr)] gap-3' : ''].join(' ')}>
+          {mode === 'edit' && (
+            <Button disabled={isSaving} onClick={handleDelete} variant="soft">
+              삭제
+            </Button>
+          )}
+          <Button disabled={isSaving} onClick={handleSave}>{isSaving ? '저장 중...' : submitText}</Button>
+        </div>
       </div>
 
       {categoryManageOverlay?.(isCategoryManageOpen, () => setIsCategoryManageOpen(false))}
