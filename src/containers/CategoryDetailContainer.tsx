@@ -106,9 +106,9 @@ export default function CategoryDetailContainer() {
                     >
                       <div className="min-w-0 flex-1">
                         {tx.memo ? (
-                          <p className="truncate text-[12px] text-(--color-text-sand)">{tx.memo}</p>
+                          <p className="truncate text-sm font-semibold text-gray-700">{tx.memo}</p>
                         ) : (
-                          <p className="text-[12px] text-gray-300">메모 없음</p>
+                          <p className="text-sm font-semibold text-gray-300">메모 없음</p>
                         )}
                       </div>
                       <p className={[

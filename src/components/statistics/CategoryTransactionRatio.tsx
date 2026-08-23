@@ -135,7 +135,7 @@ export default function CategoryTransactionRatio({
             type="button"
           >
             <span className="text-[14px] font-extrabold text-gray-800">{selectedItem.label} 내역</span>
-            <span className="flex items-center gap-0.5 text-[12px] font-bold text-gray-800">
+            <span className="flex items-center gap-0.5 text-[12px] font-bold text-gray-400">
               {selectedItem.transactions.length}건
               <ChevronRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
             </span>
@@ -148,13 +148,13 @@ export default function CategoryTransactionRatio({
                   style={{ background: selectedItem.color }}
                 />
                 <span className="min-w-0 flex-1">
-                  <span className="block text-[13px] font-bold text-black">{formatMonthDay(tx.date)}</span>
+                  <span className="block text-sm font-bold text-black">{formatMonthDay(tx.date)}</span>
                   {tx.memo ? (
                     <span className="block truncate text-xs text-(--color-text-sand)">{tx.memo}</span>
                   ) : null}
                 </span>
                 <span className={[
-                  'shrink-0 text-[13px] font-extrabold tabular-nums',
+                  'shrink-0 text-sm font-extrabold tabular-nums',
                   ratioType === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
                 ].join(' ')}>
                   {ratioType === 'income' ? '+' : '-'}{formatWon(tx.amount)}
