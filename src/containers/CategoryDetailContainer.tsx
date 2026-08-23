@@ -5,7 +5,7 @@ import ResponsiveTransactionForm from '../components/transactions/ResponsiveTran
 import { useRecentMonthsTransactions } from '../hooks/useRecentMonthsTransactions'
 import { useCalendarStore } from '../stores/calendarStore'
 import type { Transaction, TransactionType } from '../types/finance'
-import { MOOD_COLORS, MOOD_LABELS } from '../components/log/EmotionRateCard'
+import { MOOD_COLORS } from '../components/log/EmotionRateCard'
 import { formatMonthDay, formatWon } from '../utils/formatters'
 
 export default function CategoryDetailContainer() {
@@ -162,11 +162,6 @@ export default function CategoryDetailContainer() {
                           <p className="truncate text-sm font-semibold text-gray-700">{tx.memo}</p>
                         ) : (
                           <p className="text-sm font-semibold text-gray-300">메모 없음</p>
-                        )}
-                        {type === 'expense' && tx.satisfaction && (
-                          <p className="mt-0.5 text-[11px] font-semibold" style={{ color: MOOD_COLORS[tx.satisfaction] }}>
-                            {MOOD_LABELS[tx.satisfaction]}
-                          </p>
                         )}
                       </div>
                       <p className={[
