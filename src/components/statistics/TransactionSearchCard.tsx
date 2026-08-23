@@ -184,14 +184,14 @@ export default function TransactionSearchCard({ expenseCategories, incomeCategor
                                 {tx.categoryName}
                               </span>
                               {tx.memo && (
-                                <span className="block truncate text-[11.5px] text-(--color-text-sand)">
+                                <span className="block truncate text-xs text-(--color-text-sand)">
                                   {tx.memo}
                                 </span>
                               )}
                             </span>
                             <span
                               className={[
-                                'shrink-0 text-[13.5px] font-extrabold',
+                                'shrink-0 text-sm font-extrabold',
                                 tx.type === 'income'
                                   ? 'text-(--color-income-blue)'
                                   : 'text-(--color-expense-red)',

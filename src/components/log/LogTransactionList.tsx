@@ -49,7 +49,7 @@ export default function LogTransactionList({
             ?
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block text-[13.5px] font-bold text-gray-700">
+            <span className="block text-sm font-bold text-gray-700">
               감정을 아직 안 남긴 내역 {untaggedCount}건
             </span>
             <span className="block text-[12px] text-gray-400">
@@ -71,7 +71,7 @@ export default function LogTransactionList({
             type="button"
           >
             <span
-              className="shrink-0 rounded-full px-2.5 py-1 text-[11.5px] font-bold"
+              className="shrink-0 rounded-full px-2.5 py-1 text-xs font-bold"
               style={{ background: `${tx.categoryColor}22`, color: tx.categoryColor }}
             >
               {tx.categoryName}
@@ -79,11 +79,11 @@ export default function LogTransactionList({
 
             <span className="min-w-0 flex-1">
               {tx.memo ? (
-                <span className="block truncate text-[13.5px] font-bold text-black">{tx.memo}</span>
+                <span className="block truncate text-sm font-bold text-black">{tx.memo}</span>
               ) : (
-                <span className="block text-[13.5px] font-semibold text-gray-300">메모 없음</span>
+                <span className="block text-sm font-semibold text-gray-300">메모 없음</span>
               )}
-              <span className="block text-[11.5px] text-gray-400">
+              <span className="block text-xs text-gray-400">
                 {formatMonthDay(tx.date)}
                 {tx.satisfaction ? (
                   <>
@@ -98,7 +98,7 @@ export default function LogTransactionList({
 
             <span className="shrink-0 text-right">
               <span className={[
-                'block text-[13.5px] font-extrabold tabular-nums',
+                'block text-sm font-extrabold tabular-nums',
                 tx.type === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
               ].join(' ')}>
                 {tx.type === 'income' ? '+' : '-'}{formatWon(tx.amount)}

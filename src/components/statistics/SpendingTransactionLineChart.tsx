@@ -155,7 +155,7 @@ export default function SpendingTransactionLineChart({ data, lastYearExpense }: 
               />
               <text
                 fill="#9ca3af"
-                fontSize="10"
+                fontSize="11"
                 fontWeight="700"
                 textAnchor="end"
                 x={plotLeft - 6}
@@ -218,7 +218,7 @@ export default function SpendingTransactionLineChart({ data, lastYearExpense }: 
                 {/* X축 월 라벨 */}
                 <text
                   fill={isSelected ? '#111111' : '#9ca3af'}
-                  fontSize="10"
+                  fontSize="11"
                   fontWeight="700"
                   textAnchor="middle"
                   x={groupX + barWidth / 2}

@@ -38,7 +38,7 @@ export default function SpendingByDayOfWeekCard({ data }: Props) {
               </div>
               <span
                 className={[
-                  'text-[11px] font-bold',
+                  'text-xs font-bold',
                   item.isMax ? 'text-(--color-expense-red)' : 'text-gray-400',
                 ].join(' ')}
               >
@@ -50,7 +50,7 @@ export default function SpendingByDayOfWeekCard({ data }: Props) {
       </div>
 
       {peakItem && peakItem.amount > 0 && (
-        <p className="mt-3 text-right text-[11px] font-semibold text-gray-400">
+        <p className="mt-3 text-right text-xs font-semibold text-gray-400">
           {peakItem.label}요일 합계 {formatAmount(peakItem.amount)}원
         </p>
       )}
