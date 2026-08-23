@@ -2,10 +2,11 @@ import { ChevronRightIcon } from '@heroicons/react/24/outline'
 
 type Props = {
   currentDate: Date
+  insights?: string[]
   satisfactionCount: number
 }
 
-export default function ReportProgressCard({ currentDate, satisfactionCount }: Props) {
+export default function ReportProgressCard({ currentDate, insights = [], satisfactionCount }: Props) {
   const year = currentDate.getFullYear()
   const month = currentDate.getMonth()
   const today = new Date()
@@ -35,11 +36,19 @@ export default function ReportProgressCard({ currentDate, satisfactionCount }: P
       </div>
 
       <h3 className="mt-2.5 text-[15px] font-bold text-black">{monthLabel} 리포트 준비 중</h3>
-      <p className="mt-0.5 text-[13px] font-medium text-gray-400">
-        {satisfactionCount === 0
-          ? '감정을 기록할수록 리포트가 풍성해져요'
-          : `감정 기록 ${satisfactionCount}건 · ${arrivalLabel}`}
-      </p>
+      {insights.length > 0 ? (
+        <ul className="mt-1.5 grid gap-0.5">
+          {insights.map((text) => (
+            <li key={text} className="text-[13px] font-medium text-gray-500">{text}</li>
+          ))}
+        </ul>
+      ) : (
+        <p className="mt-0.5 text-[13px] font-medium text-gray-400">
+          {satisfactionCount === 0
+            ? '감정을 기록할수록 리포트가 풍성해져요'
+            : `감정 기록 ${satisfactionCount}건 · ${arrivalLabel}`}
+        </p>
+      )}
 
       <div className="mt-3.5">
         <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/8">
