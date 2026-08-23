@@ -185,27 +185,29 @@ export default function AccountFormContent({ initialValues, isLiability, onSave,
         </p>
       )}
 
-      <div className="mt-5 grid gap-3 pt-1">
-        <Button disabled={!canSave || isSaving} onClick={handleSave}>
-          {isSaving ? '저장 중...' : isEdit ? '수정 저장' : '저장'}
-        </Button>
-
-        {isEdit && onArchive && (
-          <Button disabled={isSaving} onClick={() => setShowArchiveConfirm(true)} variant="soft">
-            보관하기
+      <div className="sticky bottom-0 -mx-5 bg-gradient-to-t from-white/90 to-transparent px-5 pb-safe-bottom pt-8 md:static md:mx-0 md:bg-none md:px-0 md:pb-1 md:pt-4">
+        <div className="grid gap-3">
+          <Button disabled={!canSave || isSaving} onClick={handleSave}>
+            {isSaving ? '저장 중...' : isEdit ? '수정 저장' : '저장'}
           </Button>
-        )}
 
-        {isEdit && onDelete && (
-          <button
-            className="text-sm font-semibold text-(--color-expense-red) transition hover:opacity-70 disabled:opacity-40"
-            disabled={isSaving}
-            onClick={() => setShowDeleteConfirm(true)}
-            type="button"
-          >
-            삭제
-          </button>
-        )}
+          {isEdit && onArchive && (
+            <Button disabled={isSaving} onClick={() => setShowArchiveConfirm(true)} variant="soft">
+              보관하기
+            </Button>
+          )}
+
+          {isEdit && onDelete && (
+            <button
+              className="text-sm font-semibold text-(--color-expense-red) transition hover:opacity-70 disabled:opacity-40"
+              disabled={isSaving}
+              onClick={() => setShowDeleteConfirm(true)}
+              type="button"
+            >
+              삭제
+            </button>
+          )}
+        </div>
       </div>
 
       <ConfirmModal

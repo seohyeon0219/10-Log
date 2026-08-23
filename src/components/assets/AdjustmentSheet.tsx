@@ -83,6 +83,8 @@ export default function AdjustmentSheet({ isOpen, onClose, editingAdj, direction
             type="date"
             value={adjDate}
           />
+        </div>
+        <div className="sticky bottom-0 -mx-5 bg-gradient-to-t from-white/90 to-transparent px-5 pb-safe-bottom pt-8 md:static md:mx-0 md:bg-none md:px-0 md:pb-1 md:pt-4">
           <Button
             disabled={!adjAmountRaw || !adjDate || !adjName.trim() || isSaving}
             onClick={() => void handleSave()}
@@ -91,7 +93,7 @@ export default function AdjustmentSheet({ isOpen, onClose, editingAdj, direction
           </Button>
           {editingAdj && (
             <button
-              className="text-sm font-semibold text-(--color-expense-red) transition hover:opacity-70"
+              className="mt-3 block w-full text-center text-sm font-semibold text-(--color-expense-red) transition hover:opacity-70"
               onClick={() => setShowDeleteConfirm(true)}
               type="button"
             >

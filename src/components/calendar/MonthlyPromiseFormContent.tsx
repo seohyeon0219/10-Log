@@ -100,21 +100,22 @@ export default function MonthlyPromiseFormContent({
         </div>
       </div>
 
-      {error && (
-        <p className="text-sm font-semibold text-(--color-expense-red)" role="alert">
-          {error}
-        </p>
-      )}
-
-      <div className={['gap-3 pt-1', isRegistered ? 'grid grid-cols-[96px_minmax(0,1fr)]' : 'flex'].join(' ')}>
-        {isRegistered && (
-          <Button disabled={isSaving} onClick={() => { void handleDelete() }} variant="soft">
-            삭제
-          </Button>
+      <div className="sticky bottom-0 -mx-5 bg-gradient-to-t from-white/90 to-transparent px-5 pb-safe-bottom pt-8 md:static md:mx-0 md:bg-none md:px-0 md:pb-1 md:pt-4">
+        {error && (
+          <p className="mb-3 text-sm font-semibold text-(--color-expense-red)" role="alert">
+            {error}
+          </p>
         )}
-        <Button disabled={!canSave || isSaving} type="submit">
-          {isSaving ? '저장 중...' : '저장'}
-        </Button>
+        <div className={[isRegistered ? 'grid grid-cols-[96px_minmax(0,1fr)] gap-3' : ''].join(' ')}>
+          {isRegistered && (
+            <Button disabled={isSaving} onClick={() => { void handleDelete() }} variant="soft">
+              삭제
+            </Button>
+          )}
+          <Button disabled={!canSave || isSaving} type="submit">
+            {isSaving ? '저장 중...' : '저장'}
+          </Button>
+        </div>
       </div>
     </form>
   )
