@@ -73,11 +73,7 @@ export default function LogTransactionList({
         const isExpanded = expandedId === tx.id
 
         const handleClick = () => {
-          if (isUntagged) {
-            setExpandedId(isExpanded ? null : tx.id)
-          } else {
-            onSelectTransaction(tx)
-          }
+          setExpandedId(isExpanded ? null : tx.id)
         }
 
         return (
@@ -130,25 +126,30 @@ export default function LogTransactionList({
               </span>
             </button>
 
-            {isUntagged && (
-              <div className={['grid transition-all duration-200', isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'].join(' ')}>
-                <div className="overflow-hidden">
-                  <div className="flex gap-2 px-4 pb-3.5 pt-1">
-                    {SATISFACTION_OPTIONS.map((v) => (
+            <div className={['grid transition-all duration-200', isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'].join(' ')}>
+              <div className="overflow-hidden">
+                <div className="flex gap-2 px-4 pb-3.5 pt-1">
+                  {SATISFACTION_OPTIONS.map((v) => {
+                    const isSelected = tx.satisfaction === v
+                    return (
                       <button
                         className="flex-1 rounded-xl py-2 text-sm font-bold transition active:scale-95"
                         key={v}
                         onClick={() => { onQuickTag(tx.id, v); setExpandedId(null) }}
-                        style={{ background: `${MOOD_COLORS[v]}18`, color: MOOD_COLORS[v] }}
+                        style={{
+                          background: isSelected ? `${MOOD_COLORS[v]}35` : `${MOOD_COLORS[v]}18`,
+                          color: MOOD_COLORS[v],
+                          boxShadow: isSelected ? `inset 0 0 0 1.5px ${MOOD_COLORS[v]}55` : undefined,
+                        }}
                         type="button"
                       >
                         {MOOD_LABELS[v]}
                       </button>
-                    ))}
-                  </div>
+                    )
+                  })}
                 </div>
               </div>
-            )}
+            </div>
           </div>
         )
       })}
