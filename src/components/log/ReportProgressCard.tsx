@@ -59,7 +59,6 @@ export default function ReportProgressCard({ currentDate, insights = [], satisfa
         </div>
         <div className="mt-1.5 flex justify-between text-[11px] font-semibold text-gray-400">
           <span>1일</span>
-          <span>{elapsedDays}/{totalDays}일</span>
           <span>{totalDays}일</span>
         </div>
       </div>
