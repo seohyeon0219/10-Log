@@ -37,7 +37,7 @@ export default function SpendingByWeekCard({ data }: Props) {
                 <div
                   className={[
                     'absolute inset-y-0 left-0 rounded-full transition-all duration-500',
-                    item.isMax ? 'bg-(--color-expense-red)/60' : 'bg-black/[0.12]',
+                    item.isMax ? 'bg-(--color-expense-red)/70' : 'bg-black/[0.12]',
                   ].join(' ')}
                   style={{ width: `${widthPct}%` }}
                 />
