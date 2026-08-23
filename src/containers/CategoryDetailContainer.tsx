@@ -2,8 +2,10 @@ import { useMemo, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import BackHeader from '../components/common/BackHeader'
 import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
+import { useRecentMonthsTransactions } from '../hooks/useRecentMonthsTransactions'
 import { useCalendarStore } from '../stores/calendarStore'
 import type { Transaction, TransactionType } from '../types/finance'
+import { MOOD_COLORS, MOOD_LABELS } from '../components/log/EmotionRateCard'
 import { formatMonthDay, formatWon } from '../utils/formatters'
 
 export default function CategoryDetailContainer() {
@@ -23,16 +25,34 @@ export default function CategoryDetailContainer() {
 
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null)
 
+  const { previousMonthData } = useRecentMonthsTransactions(currentDate, 2)
+
   const filtered = useMemo(
     () => transactions.filter((tx) => tx.categoryId === categoryId && tx.type === type),
     [transactions, categoryId, type],
   )
 
   const categoryName = filtered[0]?.categoryName ?? ''
-  const categoryColor = filtered[0]?.categoryColor ?? '#9ca3af'
   const totalAmount = filtered.reduce((sum, tx) => sum + tx.amount, 0)
   const count = filtered.length
   const average = count > 0 ? Math.round(totalAmount / count) : 0
+
+  const prevMonthTotal = useMemo(
+    () => previousMonthData
+      .filter((tx) => tx.categoryId === categoryId && tx.type === type)
+      .reduce((sum, tx) => sum + tx.amount, 0),
+    [previousMonthData, categoryId, type],
+  )
+
+  const changePercent = prevMonthTotal > 0
+    ? Math.round(((totalAmount - prevMonthTotal) / prevMonthTotal) * 100)
+    : null
+
+  const allTypeTotal = useMemo(
+    () => transactions.filter((tx) => tx.type === type).reduce((sum, tx) => sum + tx.amount, 0),
+    [transactions, type],
+  )
+  const ratioPercent = allTypeTotal > 0 ? Math.round((totalAmount / allTypeTotal) * 100) : 0
 
   const grouped = useMemo(() => {
     const map = new Map<string, Transaction[]>()
@@ -64,18 +84,47 @@ export default function CategoryDetailContainer() {
       <BackHeader title={categoryName} to="/app/stats" />
 
       {/* 합계 카드 */}
-      <div className="mb-4 flex items-center gap-3 rounded-2xl bg-white/60 px-5 py-4 shadow-sm backdrop-blur-sm">
-        <span className="h-3 w-3 shrink-0 rounded-full" style={{ backgroundColor: categoryColor }} />
-        <div>
-          <p className="text-[11px] font-semibold text-gray-400">{month} 합계</p>
-          <p className="text-[22px] font-extrabold tabular-nums text-black leading-tight">
-            {formatWon(totalAmount)}
-          </p>
-          {count > 0 && (
-            <p className="mt-0.5 text-[11px] font-semibold text-gray-400">
-              {count}건 · 평균 {formatWon(average)}
-            </p>
-          )}
+      <div className="mb-4 rounded-2xl glass-card px-5 py-4 shadow-[0_6px_20px_rgba(0,0,0,0.06)]">
+        <p className="text-[11px] font-semibold text-gray-400">
+          {month} {categoryName} {type === 'income' ? '수입' : '지출'}
+        </p>
+        <p className="mt-1 text-[26px] font-extrabold tabular-nums text-black leading-tight">
+          {formatWon(totalAmount)}
+        </p>
+
+        {/* 전월 비교 */}
+        <div className="mt-1.5 flex items-center gap-2">
+          {changePercent !== null ? (
+            <span
+              className={[
+                'inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-[11px] font-bold backdrop-blur-sm',
+                changePercent >= 0
+                  ? 'bg-red-500/10 text-(--color-expense-red)'
+                  : 'bg-blue-500/10 text-(--color-income-blue)',
+              ].join(' ')}
+            >
+              {changePercent >= 0 ? '▲' : '▼'} {Math.abs(changePercent)}%
+            </span>
+          ) : null}
+          <span className="text-[11px] font-semibold text-gray-400">
+            지난 달 {formatWon(prevMonthTotal)}
+          </span>
+        </div>
+
+        {/* 통계 박스 */}
+        <div className="mt-3 flex items-center divide-x divide-black/8 rounded-[14px] bg-black/4 px-1 py-2.5 backdrop-blur-sm">
+          <div className="flex flex-1 flex-col items-center gap-0.5">
+            <span className="text-[10px] font-semibold text-gray-400">건수</span>
+            <span className="text-[13px] font-extrabold tabular-nums text-black">{count}건</span>
+          </div>
+          <div className="flex flex-1 flex-col items-center gap-0.5">
+            <span className="text-[10px] font-semibold text-gray-400">평균</span>
+            <span className="text-[13px] font-extrabold tabular-nums text-black">{formatWon(average)}</span>
+          </div>
+          <div className="flex flex-1 flex-col items-center gap-0.5">
+            <span className="text-[10px] font-semibold text-gray-400">전체대비</span>
+            <span className="text-[13px] font-extrabold tabular-nums text-black">{ratioPercent}%</span>
+          </div>
         </div>
       </div>
 
@@ -99,16 +148,25 @@ export default function CategoryDetailContainer() {
                 <div className="grid gap-1">
                   {txs.map((tx) => (
                     <button
-                      className="flex w-full items-center gap-3 rounded-[18px] bg-white/60 px-4 py-3 text-left backdrop-blur-sm transition active:bg-white/80"
+                      className="flex w-full items-center gap-3 rounded-[18px] bg-white/60 py-3 pl-3 pr-4 text-left backdrop-blur-sm transition active:bg-white/80"
                       key={tx.id}
                       onClick={() => setEditingTransaction(tx)}
                       type="button"
                     >
+                      <div
+                        className="w-1 self-stretch shrink-0 rounded-full"
+                        style={{ backgroundColor: tx.satisfaction ? MOOD_COLORS[tx.satisfaction] : '#e5e7eb' }}
+                      />
                       <div className="min-w-0 flex-1">
                         {tx.memo ? (
                           <p className="truncate text-sm font-semibold text-gray-700">{tx.memo}</p>
                         ) : (
                           <p className="text-sm font-semibold text-gray-300">메모 없음</p>
+                        )}
+                        {type === 'expense' && tx.satisfaction && (
+                          <p className="mt-0.5 text-[11px] font-semibold" style={{ color: MOOD_COLORS[tx.satisfaction] }}>
+                            {MOOD_LABELS[tx.satisfaction]}
+                          </p>
                         )}
                       </div>
                       <p className={[
