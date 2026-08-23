@@ -134,7 +134,7 @@ export default function TransactionFormContent({
             onChange={handleAmountChange}
             pattern="[0-9]*"
             placeholder="0"
-            style={{ width: `${Math.max((amount || '0').length, 1) + 0.2}ch` }}
+            style={{ width: `${Math.max((amount ? Number(amount).toLocaleString('ko-KR') : '0').length, 1) + 0.2}ch` }}
             value={amount ? Number(amount).toLocaleString('ko-KR') : ''}
           />
           <span className="text-xl font-bold text-gray-400">원</span>
