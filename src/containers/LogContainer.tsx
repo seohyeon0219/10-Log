@@ -6,7 +6,7 @@ import MoodFilterBar from '../components/log/MoodFilterBar'
 import ReportProgressCard from '../components/log/ReportProgressCard'
 import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
 import { useCalendarStore } from '../stores/calendarStore'
-import type { Transaction } from '../types/finance'
+import type { Satisfaction, Transaction } from '../types/finance'
 import type { MoodFilter } from '../components/log/MoodFilterBar'
 
 export default function LogContainer() {
@@ -98,6 +98,19 @@ export default function LogContainer() {
     setEditingTransaction(null)
   }
 
+  const handleQuickTag = async (txId: string, satisfaction: Satisfaction) => {
+    const tx = transactions.find((t) => t.id === txId)
+    if (!tx) return
+    await updateTransaction(txId, {
+      amount: tx.amount,
+      categoryId: tx.categoryId,
+      date: tx.date,
+      isFixed: tx.isFixed,
+      memo: tx.memo,
+      satisfaction,
+    })
+  }
+
   const handleDelete = async () => {
     if (!editingTransaction) return
     await deleteTransaction(editingTransaction.id)
@@ -122,6 +135,7 @@ export default function LogContainer() {
         <MoodFilterBar counts={moodCounts} onChange={setMoodFilter} selected={moodFilter} />
 
         <LogTransactionList
+          onQuickTag={handleQuickTag}
           onSelectTransaction={setEditingTransaction}
           onTagUntagged={() => setMoodFilter('untagged')}
           transactions={filteredTransactions}
