@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import BackHeader from '../components/common/BackHeader'
+import SegmentedControl from '../components/common/SegmentedControl'
 import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
 import { useRecentMonthsTransactions } from '../hooks/useRecentMonthsTransactions'
 import { useCalendarStore } from '../stores/calendarStore'
@@ -24,6 +25,7 @@ export default function CategoryDetailContainer() {
   const updateTransaction = useCalendarStore((state) => state.updateTransaction)
 
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null)
+  const [sortOrder, setSortOrder] = useState<'date' | 'amount'>('date')
 
   const { previousMonthData } = useRecentMonthsTransactions(currentDate, 2)
 
@@ -63,6 +65,11 @@ export default function CategoryDetailContainer() {
     }
     return [...map.entries()]
   }, [filtered])
+
+  const sortedFlat = useMemo(
+    () => [...filtered].sort((a, b) => b.amount - a.amount),
+    [filtered],
+  )
 
   const month = `${currentDate.getMonth() + 1}월`
   const activeCategories = type === 'income' ? incomeCategories : expenseCategories
@@ -128,23 +135,34 @@ export default function CategoryDetailContainer() {
         </div>
       </div>
 
-      {grouped.length === 0 ? (
+      {/* 정렬 토글 */}
+      {filtered.length > 0 && (
+        <div className="mb-3 flex justify-end">
+          <SegmentedControl
+            onChange={setSortOrder}
+            options={[
+              { label: '최신', value: 'date' as const },
+              { label: '금액', value: 'amount' as const },
+            ]}
+            value={sortOrder}
+          />
+        </div>
+      )}
+
+      {filtered.length === 0 ? (
         <p className="mt-8 text-center text-sm font-semibold text-gray-400">이번 달 내역이 없어요.</p>
-      ) : (
+      ) : sortOrder === 'date' ? (
         <div className="grid gap-4">
           {grouped.map(([date, txs]) => {
             const dayTotal = txs.reduce((sum, tx) => sum + tx.amount, 0)
-
             return (
               <div key={date}>
-                {/* 날짜 그룹 헤더 + 일 합계 */}
                 <div className="mb-1.5 flex items-center justify-between px-1">
                   <p className="text-[11px] font-bold text-gray-400">{formatMonthDay(date)}</p>
                   <p className="text-[11px] font-bold tabular-nums text-gray-400">
                     {type === 'income' ? '+' : '-'}{formatWon(dayTotal)}
                   </p>
                 </div>
-
                 <div className="grid gap-1">
                   {txs.map((tx) => (
                     <button
@@ -176,6 +194,36 @@ export default function CategoryDetailContainer() {
               </div>
             )
           })}
+        </div>
+      ) : (
+        <div className="grid gap-1">
+          {sortedFlat.map((tx) => (
+            <button
+              className="flex w-full items-center gap-3 rounded-[18px] bg-white/60 py-3 pl-3 pr-4 text-left backdrop-blur-sm transition active:bg-white/80"
+              key={tx.id}
+              onClick={() => setEditingTransaction(tx)}
+              type="button"
+            >
+              <div
+                className="w-1 self-stretch shrink-0 rounded-full"
+                style={{ backgroundColor: tx.satisfaction ? MOOD_COLORS[tx.satisfaction] : '#e5e7eb' }}
+              />
+              <div className="min-w-0 flex-1">
+                {tx.memo ? (
+                  <p className="truncate text-sm font-semibold text-gray-700">{tx.memo}</p>
+                ) : (
+                  <p className="text-sm font-semibold text-gray-300">메모 없음</p>
+                )}
+                <p className="text-[11px] font-semibold text-gray-400">{formatMonthDay(tx.date)}</p>
+              </div>
+              <p className={[
+                'shrink-0 text-[13.5px] font-extrabold tabular-nums',
+                type === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
+              ].join(' ')}>
+                {type === 'income' ? '+' : '-'}{formatWon(tx.amount)}
+              </p>
+            </button>
+          ))}
         </div>
       )}
 
