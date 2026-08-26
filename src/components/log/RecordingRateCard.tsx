@@ -1,5 +1,6 @@
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import SatisfactionIcon from '../common/SatisfactionIcon'
+import { THEME_ACCENT, useThemeStore } from '../../stores/themeStore'
 
 type Props = {
   currentDate: Date
@@ -9,6 +10,7 @@ type Props = {
 }
 
 export default function RecordingRateCard({ currentDate, satisfactionCount, totalExpenseCount, untaggedCount }: Props) {
+  const theme = useThemeStore((state) => state.theme)
   const month = currentDate.getMonth() + 1
   const recordingRate = totalExpenseCount > 0 ? Math.round((satisfactionCount / totalExpenseCount) * 100) : 0
 
@@ -32,7 +34,7 @@ export default function RecordingRateCard({ currentDate, satisfactionCount, tota
           <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-black/8">
             <div
               className="h-full rounded-full transition-all duration-500"
-              style={{ width: `${recordingRate}%`, background: 'linear-gradient(90deg, #818cf8 0%, #a855f7 100%)' }}
+              style={{ width: `${recordingRate}%`, background: THEME_ACCENT[theme] }}
             />
           </div>
         </div>

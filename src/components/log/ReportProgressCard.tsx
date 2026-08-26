@@ -1,4 +1,5 @@
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
+import { THEME_ACCENT, useThemeStore } from '../../stores/themeStore'
 
 type Props = {
   currentDate: Date
@@ -7,6 +8,7 @@ type Props = {
 }
 
 export default function ReportProgressCard({ currentDate, insights = [], satisfactionCount }: Props) {
+  const theme = useThemeStore((state) => state.theme)
   const year = currentDate.getFullYear()
   const month = currentDate.getMonth()
   const today = new Date()
@@ -54,7 +56,7 @@ export default function ReportProgressCard({ currentDate, insights = [], satisfa
         <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/8">
           <div
             className="h-full rounded-full transition-all duration-500"
-            style={{ width: `${progressPercent}%`, background: 'linear-gradient(90deg, #818cf8 0%, #a855f7 100%)' }}
+            style={{ width: `${progressPercent}%`, background: THEME_ACCENT[theme] }}
           />
         </div>
         <div className="mt-1.5 flex justify-between text-[11px] font-semibold text-gray-400">
