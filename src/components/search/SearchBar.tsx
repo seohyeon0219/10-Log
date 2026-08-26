@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import BottomSheet from '../common/BottomSheet'
 import Button from '../common/Button'
 import CategorySelect from '../categories/CategorySelect'
 import Input from '../common/Input'
@@ -35,9 +36,27 @@ export default function SearchBar({
   const [period, setPeriod] = useState<Period>('thisMonth')
   const [customStart, setCustomStart] = useState('')
   const [customEnd, setCustomEnd] = useState(today)
+  const [draftStart, setDraftStart] = useState('')
+  const [draftEnd, setDraftEnd] = useState(today)
+  const [isDateSheetOpen, setIsDateSheetOpen] = useState(false)
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([])
   const [isFixed, setIsFixed] = useState(false)
   const [error, setError] = useState('')
+
+  const handlePeriodChange = (p: Period) => {
+    setPeriod(p)
+    if (p === 'custom') {
+      setDraftStart(customStart)
+      setDraftEnd(customEnd || today)
+      setIsDateSheetOpen(true)
+    }
+  }
+
+  const handleDateConfirm = () => {
+    setCustomStart(draftStart)
+    setCustomEnd(draftEnd)
+    setIsDateSheetOpen(false)
+  }
 
   const toggleCategory = (id: string) =>
     setSelectedCategoryIds((prev) =>
@@ -74,12 +93,34 @@ export default function SearchBar({
       <PeriodSelector
         customEnd={customEnd}
         customStart={customStart}
-        onCustomEndChange={setCustomEnd}
-        onCustomStartChange={setCustomStart}
-        onPeriodChange={setPeriod}
+        onPeriodChange={handlePeriodChange}
         period={period}
-        today={today}
       />
+
+      <BottomSheet isOpen={isDateSheetOpen} onClose={() => setIsDateSheetOpen(false)} title="기간 직접 선택">
+        <div className="grid gap-4">
+          <div className="grid grid-cols-2 gap-3">
+            <Input
+              label="시작일"
+              max={draftEnd || today}
+              onChange={(e) => setDraftStart(e.target.value)}
+              type="date"
+              value={draftStart}
+            />
+            <Input
+              label="종료일"
+              max={today}
+              min={draftStart}
+              onChange={(e) => setDraftEnd(e.target.value)}
+              type="date"
+              value={draftEnd}
+            />
+          </div>
+          <Button disabled={!draftStart || !draftEnd} onClick={handleDateConfirm} type="button">
+            확인
+          </Button>
+        </div>
+      </BottomSheet>
 
       {error ? (
         <p className="text-sm font-semibold text-(--color-expense-red)">{error}</p>

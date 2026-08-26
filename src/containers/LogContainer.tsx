@@ -136,7 +136,6 @@ export default function LogContainer() {
 
         <LogTransactionList
           onQuickTag={handleQuickTag}
-          onSelectTransaction={setEditingTransaction}
           onTagUntagged={() => setMoodFilter('untagged')}
           transactions={filteredTransactions}
           untaggedCount={moodFilter === null ? moodCounts.untagged : 0}

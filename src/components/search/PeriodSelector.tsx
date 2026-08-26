@@ -1,4 +1,3 @@
-import Input from '../common/Input'
 import { toDateKey } from '../../utils/dateUtils'
 
 export type Period = 'thisMonth' | 'lastMonth' | 'custom' | 'all'
@@ -36,21 +35,15 @@ export function getPeriodDates(
 type PeriodSelectorProps = {
   customEnd: string
   customStart: string
-  onCustomEndChange: (value: string) => void
-  onCustomStartChange: (value: string) => void
   onPeriodChange: (period: Period) => void
   period: Period
-  today: string
 }
 
 export default function PeriodSelector({
   customEnd,
   customStart,
-  onCustomEndChange,
-  onCustomStartChange,
   onPeriodChange,
   period,
-  today,
 }: PeriodSelectorProps) {
   return (
     <div className="grid gap-2">
@@ -73,24 +66,10 @@ export default function PeriodSelector({
         ))}
       </div>
 
-      {period === 'custom' && (
-        <div className="mt-1 grid grid-cols-2 gap-3">
-          <Input
-            label="시작일"
-            max={customEnd || today}
-            onChange={(e) => onCustomStartChange(e.target.value)}
-            type="date"
-            value={customStart}
-          />
-          <Input
-            label="종료일"
-            max={today}
-            min={customStart}
-            onChange={(e) => onCustomEndChange(e.target.value)}
-            type="date"
-            value={customEnd}
-          />
-        </div>
+      {period === 'custom' && customStart && customEnd && (
+        <p className="text-[13px] font-semibold text-gray-500">
+          {customStart} ~ {customEnd}
+        </p>
       )}
     </div>
   )

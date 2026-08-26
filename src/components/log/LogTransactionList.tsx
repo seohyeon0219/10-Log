@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
+import SatisfactionIcon from '../common/SatisfactionIcon'
 import type { Satisfaction, Transaction } from '../../types/finance'
 import { formatMonthDay, formatWon } from '../../utils/formatters'
-import { MOOD_COLORS, MOOD_LABELS } from './EmotionRateCard'
+import { MOOD_LABELS } from './EmotionRateCard'
 
 const SATISFACTION_OPTIONS: Satisfaction[] = ['satisfied', 'neutral', 'regret']
 
 type Props = {
   onQuickTag: (txId: string, satisfaction: Satisfaction) => void
-  onSelectTransaction: (tx: Transaction) => void
   onTagUntagged: () => void
   transactions: Transaction[]
   untaggedCount: number
@@ -16,7 +16,6 @@ type Props = {
 
 export default function LogTransactionList({
   onQuickTag,
-  onSelectTransaction,
   onTagUntagged,
   transactions,
   untaggedCount,
@@ -68,13 +67,7 @@ export default function LogTransactionList({
       )}
 
       {transactions.map((tx) => {
-        const moodColor = tx.satisfaction ? MOOD_COLORS[tx.satisfaction] : null
-        const isUntagged = !tx.satisfaction
         const isExpanded = expandedId === tx.id
-
-        const handleClick = () => {
-          setExpandedId(isExpanded ? null : tx.id)
-        }
 
         return (
           <div
@@ -83,7 +76,7 @@ export default function LogTransactionList({
           >
             <button
               className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-white/60"
-              onClick={handleClick}
+              onClick={() => setExpandedId(isExpanded ? null : tx.id)}
               type="button"
             >
               <span
@@ -101,27 +94,21 @@ export default function LogTransactionList({
                 )}
                 <span className="block text-xs text-gray-400">
                   {formatMonthDay(tx.date)}
-                  {tx.satisfaction ? (
-                    <>
-                      {' · '}
-                      <span style={{ color: MOOD_COLORS[tx.satisfaction] }}>
-                        {MOOD_LABELS[tx.satisfaction]}
-                      </span>
-                    </>
-                  ) : ' · 감정 미입력'}
+                  {tx.satisfaction ? ` · ${MOOD_LABELS[tx.satisfaction]}` : ' · 감정 미입력'}
                 </span>
               </span>
 
-              <span className="shrink-0 text-right">
+              <span className="flex shrink-0 flex-col items-end gap-1.5">
                 <span className={[
-                  'block text-sm font-extrabold tabular-nums',
+                  'text-sm font-extrabold tabular-nums',
                   tx.type === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
                 ].join(' ')}>
                   {tx.type === 'income' ? '+' : '-'}{formatWon(tx.amount)}
                 </span>
-                <span
-                  className="mt-1.5 ml-auto block h-1 w-10 rounded-full"
-                  style={{ background: moodColor ?? '#e5e7eb' }}
+                <SatisfactionIcon
+                  className={tx.satisfaction ? 'text-gray-500' : 'text-gray-300'}
+                  size={14}
+                  value={tx.satisfaction}
                 />
               </span>
             </button>
@@ -133,17 +120,22 @@ export default function LogTransactionList({
                     const isSelected = tx.satisfaction === v
                     return (
                       <button
-                        className="flex-1 rounded-xl py-2 text-sm font-bold transition active:scale-95"
+                        className={[
+                          'flex flex-1 flex-col items-center gap-1.5 rounded-xl py-2.5 transition active:scale-95',
+                          isSelected ? 'bg-black/8' : 'bg-black/4',
+                        ].join(' ')}
                         key={v}
                         onClick={() => { onQuickTag(tx.id, v); setExpandedId(null) }}
-                        style={{
-                          background: isSelected ? `${MOOD_COLORS[v]}35` : `${MOOD_COLORS[v]}18`,
-                          color: MOOD_COLORS[v],
-                          boxShadow: isSelected ? `inset 0 0 0 1.5px ${MOOD_COLORS[v]}55` : undefined,
-                        }}
                         type="button"
                       >
-                        {MOOD_LABELS[v]}
+                        <SatisfactionIcon
+                          className={isSelected ? 'text-black' : 'text-gray-300'}
+                          size={20}
+                          value={v}
+                        />
+                        <span className={['text-[11px] font-bold', isSelected ? 'text-black' : 'text-gray-400'].join(' ')}>
+                          {MOOD_LABELS[v]}
+                        </span>
                       </button>
                     )
                   })}
