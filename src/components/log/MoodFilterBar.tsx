@@ -16,11 +16,10 @@ type Props = {
   selected: MoodFilter
 }
 
-const OPTIONS: { color: string | null; key: keyof MoodCounts | null; label: string; value: MoodFilter }[] = [
+const OPTIONS: { color: string; key: keyof MoodCounts; label: string; value: MoodFilter }[] = [
   { color: MOOD_COLORS.satisfied, key: 'satisfied', label: '만족', value: 'satisfied' },
   { color: MOOD_COLORS.neutral, key: 'neutral', label: '보통', value: 'neutral' },
   { color: MOOD_COLORS.regret, key: 'regret', label: '후회', value: 'regret' },
-  { color: null, key: 'untagged', label: '미입력', value: 'untagged' },
 ]
 
 export default function MoodFilterBar({ counts, onChange, selected }: Props) {
@@ -28,7 +27,7 @@ export default function MoodFilterBar({ counts, onChange, selected }: Props) {
     <div className="flex rounded-2xl bg-black/5 p-1">
       {OPTIONS.map((option) => {
         const isActive = selected === option.value
-        const count = option.key ? counts[option.key] : 0
+        const count = counts[option.key]
 
         return (
           <button
@@ -41,9 +40,7 @@ export default function MoodFilterBar({ counts, onChange, selected }: Props) {
             type="button"
           >
             <span className="flex items-center gap-1">
-              {option.color && (
-                <span className="h-1.5 w-1.5 rounded-full" style={{ background: option.color }} />
-              )}
+              <span className="h-1.5 w-1.5 rounded-full" style={{ background: option.color }} />
               <span className={['text-[11px] font-bold', isActive ? 'text-black' : 'text-gray-400'].join(' ')}>
                 {option.label}
               </span>
