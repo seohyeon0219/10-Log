@@ -1,5 +1,8 @@
+import { useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
 import InfoChip from '../components/common/InfoChip'
+import ReportProgressCard from '../components/log/ReportProgressCard'
 import CategoryChangeRanking from '../components/statistics/CategoryChangeRanking'
 import CategoryTransactionRatio from '../components/statistics/CategoryTransactionRatio'
 import MonthlyInsightsCard from '../components/statistics/MonthlyInsightsCard'
@@ -13,6 +16,39 @@ import { useStatsPage } from '../hooks/useStatsPage'
 export default function StatsContainer() {
   const stats = useStatsPage()
 
+  const satisfactionCount = useMemo(() => {
+    return stats.transactions.filter((tx) => tx.type === 'expense' && tx.satisfaction).length
+  }, [stats.transactions])
+
+  const insights = useMemo(() => {
+    const map = new Map<string, { name: string; satisfied: number; regret: number; tagged: number }>()
+    for (const cat of stats.expenseCategories) {
+      map.set(cat.id, { name: cat.name, satisfied: 0, regret: 0, tagged: 0 })
+    }
+    for (const tx of stats.transactions) {
+      if (tx.type !== 'expense' || !tx.categoryId || !tx.satisfaction) continue
+      const s = map.get(tx.categoryId)
+      if (!s) continue
+      s.tagged++
+      if (tx.satisfaction === 'satisfied') s.satisfied++
+      if (tx.satisfaction === 'regret') s.regret++
+    }
+    const sentences: string[] = []
+    let topSatisfied: { name: string; satisfied: number } | null = null
+    let topRegret: { name: string; regret: number } | null = null
+    for (const s of map.values()) {
+      if (s.satisfied >= 2 && s.satisfied / s.tagged > 0.5) {
+        if (!topSatisfied || s.satisfied > topSatisfied.satisfied) topSatisfied = s
+      }
+      if (s.regret >= 1) {
+        if (!topRegret || s.regret > topRegret.regret) topRegret = s
+      }
+    }
+    if (topSatisfied) sentences.push(`이번 달 ${topSatisfied.name} 지출은 대부분 만족으로 남았어요`)
+    if (topRegret) sentences.push(`후회 소비가 가장 많았던 카테고리는 ${topRegret.name}예요`)
+    return sentences
+  }, [stats.transactions, stats.expenseCategories])
+
   return (
     <section className="w-full self-start animate-fade-up md:mt-4 md:min-h-80">
       <div className="mb-4 md:hidden">
@@ -24,6 +60,10 @@ export default function StatsContainer() {
       </div>
 
       <div className="grid gap-4">
+        <Link to="/app/stats/review">
+          <ReportProgressCard currentDate={stats.currentDate} insights={insights} satisfactionCount={satisfactionCount} />
+        </Link>
+
         <InfoChip>기본 분석</InfoChip>
 
         <CategoryTransactionRatio

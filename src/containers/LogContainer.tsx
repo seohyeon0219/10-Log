@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
 import LogTransactionList from '../components/log/LogTransactionList'
 import MoodFilterBar from '../components/log/MoodFilterBar'
-import ReportProgressCard from '../components/log/ReportProgressCard'
+import RecordingRateCard from '../components/log/RecordingRateCard'
 import ResponsiveTransactionForm from '../components/transactions/ResponsiveTransactionForm'
 import { useCalendarStore } from '../stores/calendarStore'
 import type { Satisfaction, Transaction } from '../types/finance'
@@ -96,7 +96,7 @@ export default function LogContainer() {
 
       <div className="grid gap-4">
         <Link to="/app/log/tag">
-          <ReportProgressCard currentDate={currentDate} satisfactionCount={satisfactionCount} totalExpenseCount={totalExpenseCount} untaggedCount={moodCounts.untagged} />
+          <RecordingRateCard currentDate={currentDate} satisfactionCount={satisfactionCount} totalExpenseCount={totalExpenseCount} untaggedCount={moodCounts.untagged} />
         </Link>
 
         <MoodFilterBar counts={moodCounts} onChange={setMoodFilter} selected={moodFilter} />

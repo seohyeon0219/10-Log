@@ -123,6 +123,7 @@ export function useStatsPage() {
     spendingByWeek,
     spendingDensity,
     spendingTransactionLineChart,
+    transactions,
     updateCategory,
   }
 }
