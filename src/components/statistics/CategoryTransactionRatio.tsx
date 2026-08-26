@@ -7,6 +7,7 @@ import type { Satisfaction, TransactionType } from '../../types/finance'
 import { formatAmount, formatMonthDay, formatWon } from '../../utils/formatters'
 
 const PREVIEW_COUNT = 3
+const PREVIEW_SCROLL_HEIGHT = 224 // ~PREVIEW_COUNT rows + header
 
 type CategoryTransaction = {
   amount: number
@@ -60,9 +61,17 @@ export default function CategoryTransactionRatio({
   const donutGradient = getDonutGradient(activeItems, totalAmount)
 
   useEffect(() => {
-    if (selectedCategoryId && previewRef.current) {
-      previewRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-    }
+    if (!selectedCategoryId || !previewRef.current) return
+    const el = previewRef.current
+    const timer = setTimeout(() => {
+      const rect = el.getBoundingClientRect()
+      const targetBottom = rect.top + PREVIEW_SCROLL_HEIGHT
+      const overflow = targetBottom - window.innerHeight
+      if (overflow > 0) {
+        window.scrollBy({ top: overflow + 16, behavior: 'smooth' })
+      }
+    }, 50)
+    return () => clearTimeout(timer)
   }, [selectedCategoryId])
 
   const toggle = (
