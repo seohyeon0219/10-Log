@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import SearchHeader from '../components/common/SearchHeader'
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import ResponsiveMonthlyPromise from '../components/calendar/ResponsiveMonthlyPromise'
 import FloatingAddButton from '../components/common/FloatingAddButton'
 import MonthlyMoneySummary from '../components/statistics/MonthlyMoneySummary'
@@ -49,23 +49,39 @@ export default function HomeContainer() {
 
   return (
     <section className="flex w-full flex-1 flex-col self-start animate-fade-up md:flex-none md:mt-4">
-      <SearchHeader onSearch={() => navigate('/app/search')} />
-
-      <div className="mt-3 shrink-0 text-center">
-        <p className="text-[20px] font-semibold tracking-[3px] text-(--ink-3)">
-          {DAYS_EN[today.getDay()]}
-        </p>
-        <div className="mt-1 flex items-baseline justify-center gap-2.5">
-          <span className="text-[58px] font-bold leading-[0.9] tracking-[-2px] text-black">
+      {/* 날짜 + 검색 */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-baseline gap-2">
+          <span className="text-[34px] font-semibold leading-none tracking-[-0.035em] text-(--ink-1)">
             {today.getDate()}
           </span>
-          <span className="text-[14px] font-semibold text-(--ink-3)">
-            {today.getFullYear()}
+          <span className="text-[13px] font-semibold text-(--ink-3)">
+            {DAYS_EN[today.getDay()]}
           </span>
         </div>
-        <p className="mt-6 whitespace-pre-line text-[13px] font-medium leading-normal text-(--ink-2)">
-          {budgetMessage}
-        </p>
+        <button
+          aria-label="소비내역 검색"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition active:opacity-50"
+          onClick={() => navigate('/app/search')}
+          type="button"
+        >
+          <MagnifyingGlassIcon aria-hidden="true" className="h-5 w-5 text-(--ink-3)" />
+        </button>
+      </div>
+
+      {/* 예산 메시지 — 첫 줄 600, 둘째 줄 400 */}
+      <div className="mt-2 shrink-0">
+        {budgetMessage.split('\n').map((line, i) => (
+          <p
+            className={[
+              'text-[13px] leading-[1.4]',
+              i === 0 ? 'font-semibold text-(--ink-1)' : 'font-normal text-(--ink-2)',
+            ].join(' ')}
+            key={i}
+          >
+            {line}
+          </p>
+        ))}
       </div>
 
       {error ? (
