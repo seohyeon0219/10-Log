@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import type { ReactNode } from 'react'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import StatisticsCard from './StatisticsCard'
+import { THEME_ACCENT, useThemeStore } from '../../stores/themeStore'
 import { formatWon } from '../../utils/formatters'
 
 type MonthlyMoneySummaryProps = {
@@ -23,6 +24,7 @@ export default function MonthlyMoneySummary({
   showRemainingBudget = false,
   spentAmount,
 }: MonthlyMoneySummaryProps) {
+  const theme = useThemeStore((state) => state.theme)
   const { netRemaining, isOverBudget, dailyRecommendedAmount, progressWidth, isEmpty } = useMemo(() => {
     const net = budgetAmount - spentAmount
     const remaining = Math.max(net, 0)
@@ -62,8 +64,8 @@ export default function MonthlyMoneySummary({
       )}
       <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-black/6">
         <div
-          className={['h-full rounded-full transition-all duration-500', isOverBudget ? 'bg-(--color-expense-red)' : 'bg-(--color-income-blue)'].join(' ')}
-          style={{ width: progressWidth }}
+          className="h-full rounded-full transition-all duration-500"
+          style={{ width: progressWidth, background: isOverBudget ? 'var(--color-expense-red)' : THEME_ACCENT[theme] }}
         />
       </div>
       {/* M8: caption(12/500) */}
