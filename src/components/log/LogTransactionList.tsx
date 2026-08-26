@@ -75,7 +75,7 @@ export default function LogTransactionList({
             key={tx.id}
           >
             <button
-              className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-white/60"
+              className="flex h-14 w-full items-center gap-3 px-4 text-left transition hover:bg-white/60"
               onClick={() => setExpandedId(isExpanded ? null : tx.id)}
               type="button"
             >
@@ -92,10 +92,7 @@ export default function LogTransactionList({
                 ) : (
                   <span className="block text-sm font-semibold text-gray-300">메모 없음</span>
                 )}
-                <span className="block text-xs text-gray-400">
-                  {formatMonthDay(tx.date)}
-                  {tx.satisfaction ? ` · ${MOOD_LABELS[tx.satisfaction]}` : ' · 감정 미입력'}
-                </span>
+                <span className="block text-xs text-gray-400">{formatMonthDay(tx.date)}</span>
               </span>
 
               <span className="flex shrink-0 flex-col items-end gap-1.5">
