@@ -43,40 +43,7 @@ export default function LogContainer() {
   }, [transactions])
 
   const satisfactionCount = moodCounts.satisfied + moodCounts.neutral + moodCounts.regret
-
-  const insights = useMemo(() => {
-    const map = new Map<string, { name: string; satisfied: number; regret: number; tagged: number }>()
-    for (const cat of expenseCategories) {
-      map.set(cat.id, { name: cat.name, satisfied: 0, regret: 0, tagged: 0 })
-    }
-    for (const tx of transactions) {
-      if (tx.type !== 'expense' || !tx.categoryId || !tx.satisfaction) continue
-      const s = map.get(tx.categoryId)
-      if (!s) continue
-      s.tagged++
-      if (tx.satisfaction === 'satisfied') s.satisfied++
-      if (tx.satisfaction === 'regret') s.regret++
-    }
-
-    const sentences: string[] = []
-
-    let topSatisfied: { name: string; satisfied: number } | null = null
-    let topRegret: { name: string; regret: number } | null = null
-
-    for (const s of map.values()) {
-      if (s.satisfied >= 2 && s.satisfied / s.tagged > 0.5) {
-        if (!topSatisfied || s.satisfied > topSatisfied.satisfied) topSatisfied = s
-      }
-      if (s.regret >= 1) {
-        if (!topRegret || s.regret > topRegret.regret) topRegret = s
-      }
-    }
-
-    if (topSatisfied) sentences.push(`이번 달 ${topSatisfied.name} 지출은 대부분 만족으로 남았어요`)
-    if (topRegret) sentences.push(`후회 소비가 가장 많았던 카테고리는 ${topRegret.name}예요`)
-
-    return sentences
-  }, [transactions, expenseCategories])
+  const totalExpenseCount = satisfactionCount + moodCounts.untagged
 
   const expenseTransactions = useMemo(
     () => transactions.filter((tx) => tx.type === 'expense'),
@@ -129,7 +96,7 @@ export default function LogContainer() {
 
       <div className="grid gap-4">
         <Link to="/app/stats/review">
-          <ReportProgressCard currentDate={currentDate} insights={insights} satisfactionCount={satisfactionCount} />
+          <ReportProgressCard currentDate={currentDate} satisfactionCount={satisfactionCount} totalExpenseCount={totalExpenseCount} untaggedCount={moodCounts.untagged} />
         </Link>
 
         <MoodFilterBar counts={moodCounts} onChange={setMoodFilter} selected={moodFilter} />
