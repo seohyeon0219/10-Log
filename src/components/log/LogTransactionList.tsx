@@ -71,7 +71,7 @@ export default function LogTransactionList({
 
         return (
           <div
-            className="overflow-hidden rounded-[22px] glass-card shadow-[0_4px_14px_rgba(0,0,0,0.05)]"
+            className="rounded-[22px] glass-card shadow-[0_4px_14px_rgba(0,0,0,0.05)]"
             key={tx.id}
           >
             <button
