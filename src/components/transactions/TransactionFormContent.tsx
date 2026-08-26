@@ -3,13 +3,13 @@ import type { ChangeEvent, ReactNode } from 'react'
 import CategorySelect from '../categories/CategorySelect'
 import Button from '../common/Button'
 import Input from '../common/Input'
-import SegmentedControl from '../common/SegmentedControl'
+import SatisfactionIcon from '../common/SatisfactionIcon'
 import Toggle from '../common/Toggle'
 import UnderInput from '../common/UnderInput'
 import { toDateKey } from '../../utils/dateUtils'
 import type { Category, Satisfaction, TransactionFormValues, TransactionType } from '../../types/finance'
 import { useSettingsStore } from '../../stores/settingsStore'
-import { MOOD_COLORS, MOOD_LABELS } from '../log/EmotionRateCard'
+import { MOOD_LABELS } from '../log/EmotionRateCard'
 
 const SATISFACTION_OPTIONS: Satisfaction[] = ['satisfied', 'neutral', 'regret']
 
@@ -172,12 +172,31 @@ export default function TransactionFormContent({
         {type === 'expense' && (
           <div className="grid gap-3">
             <p className="text-sm font-semibold text-gray-400">이 소비 어떠셨나요?</p>
-            <SegmentedControl
-              onChange={(v) => setSatisfaction(satisfaction === v ? null : v)}
-              options={SATISFACTION_OPTIONS.map((v) => ({ color: MOOD_COLORS[v], label: MOOD_LABELS[v], value: v }))}
-              size="lg"
-              value={satisfaction}
-            />
+            <div className="flex gap-2">
+              {SATISFACTION_OPTIONS.map((v) => {
+                const isSelected = satisfaction === v
+                return (
+                  <button
+                    className={[
+                      'flex flex-1 flex-col items-center gap-2 rounded-xl py-3.5 transition',
+                      isSelected ? 'bg-black/8' : 'bg-black/4',
+                    ].join(' ')}
+                    key={v}
+                    onClick={() => setSatisfaction(satisfaction === v ? null : v)}
+                    type="button"
+                  >
+                    <SatisfactionIcon
+                      className={isSelected ? 'text-black' : 'text-gray-300'}
+                      size={26}
+                      value={v}
+                    />
+                    <span className={['text-xs font-bold', isSelected ? 'text-black' : 'text-gray-400'].join(' ')}>
+                      {MOOD_LABELS[v]}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
           </div>
         )}
       </div>

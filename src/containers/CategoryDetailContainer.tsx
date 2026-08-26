@@ -6,7 +6,7 @@ import ResponsiveTransactionForm from '../components/transactions/ResponsiveTran
 import { useRecentMonthsTransactions } from '../hooks/useRecentMonthsTransactions'
 import { useCalendarStore } from '../stores/calendarStore'
 import type { Transaction, TransactionType } from '../types/finance'
-import { MOOD_COLORS } from '../components/log/EmotionRateCard'
+import SatisfactionIcon from '../components/common/SatisfactionIcon'
 import { formatMonthDay, formatWon } from '../utils/formatters'
 
 export default function CategoryDetailContainer() {
@@ -171,10 +171,6 @@ export default function CategoryDetailContainer() {
                       onClick={() => setEditingTransaction(tx)}
                       type="button"
                     >
-                      <div
-                        className="w-1 self-stretch shrink-0 rounded-full"
-                        style={{ backgroundColor: tx.satisfaction ? MOOD_COLORS[tx.satisfaction] : '#e5e7eb' }}
-                      />
                       <div className="min-w-0 flex-1">
                         {tx.memo ? (
                           <p className="truncate text-sm font-semibold text-gray-700">{tx.memo}</p>
@@ -182,12 +178,19 @@ export default function CategoryDetailContainer() {
                           <p className="text-sm font-semibold text-gray-300">메모 없음</p>
                         )}
                       </div>
-                      <p className={[
-                        'shrink-0 text-[13.5px] font-extrabold tabular-nums',
-                        type === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
-                      ].join(' ')}>
-                        {type === 'income' ? '+' : '-'}{formatWon(tx.amount)}
-                      </p>
+                      <div className="flex shrink-0 flex-col items-end gap-1.5">
+                        <p className={[
+                          'text-[13.5px] font-extrabold tabular-nums',
+                          type === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
+                        ].join(' ')}>
+                          {type === 'income' ? '+' : '-'}{formatWon(tx.amount)}
+                        </p>
+                        <SatisfactionIcon
+                          className={tx.satisfaction ? 'text-gray-500' : 'text-gray-300'}
+                          size={14}
+                          value={tx.satisfaction}
+                        />
+                      </div>
                     </button>
                   ))}
                 </div>
@@ -204,10 +207,6 @@ export default function CategoryDetailContainer() {
               onClick={() => setEditingTransaction(tx)}
               type="button"
             >
-              <div
-                className="w-1 self-stretch shrink-0 rounded-full"
-                style={{ backgroundColor: tx.satisfaction ? MOOD_COLORS[tx.satisfaction] : '#e5e7eb' }}
-              />
               <div className="min-w-0 flex-1">
                 {tx.memo ? (
                   <p className="truncate text-sm font-semibold text-gray-700">{tx.memo}</p>
@@ -216,12 +215,19 @@ export default function CategoryDetailContainer() {
                 )}
                 <p className="text-[11px] font-semibold text-gray-400">{formatMonthDay(tx.date)}</p>
               </div>
-              <p className={[
-                'shrink-0 text-[13.5px] font-extrabold tabular-nums',
-                type === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
-              ].join(' ')}>
-                {type === 'income' ? '+' : '-'}{formatWon(tx.amount)}
-              </p>
+              <div className="flex shrink-0 flex-col items-end gap-1.5">
+                <p className={[
+                  'text-[13.5px] font-extrabold tabular-nums',
+                  type === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
+                ].join(' ')}>
+                  {type === 'income' ? '+' : '-'}{formatWon(tx.amount)}
+                </p>
+                <SatisfactionIcon
+                  className={tx.satisfaction ? 'text-gray-500' : 'text-gray-300'}
+                  size={14}
+                  value={tx.satisfaction}
+                />
+              </div>
             </button>
           ))}
         </div>
