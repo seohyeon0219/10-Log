@@ -5,7 +5,7 @@ import DesktopNav from '../components/navigation/DesktopNav'
 import MobileBottomNavigation from '../components/navigation/MobileBottomNavigation'
 import { THEME_GRADIENTS, useThemeStore } from '../stores/themeStore'
 
-const NO_NAV_ROUTES = ['/app/search', '/app/profile', '/app/review', '/app/reports']
+const NO_NAV_ROUTES = ['/app/search', '/app/profile', '/app/review', '/app/reports', '/app/log/tag']
 
 function isNoNavRoute(pathname: string) {
   return NO_NAV_ROUTES.some((route) => pathname === route || pathname.startsWith(route + '/'))

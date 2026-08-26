@@ -10,6 +10,7 @@ import HomePage from '../pages/HomePage'
 import LandingPage from '../pages/LandingPage'
 import AssetsPage from '../pages/AssetsPage'
 import LogPage from '../pages/LogPage'
+import TaggingPage from '../pages/TaggingPage'
 import SearchPage from '../pages/SearchPage'
 import SearchResultsPage from '../pages/SearchResultsPage'
 import MorePage from '../pages/MorePage'
@@ -100,6 +101,7 @@ export default function AppRouter() {
           <Route path="stats" element={<StatsPage />} />
           <Route path="assets" element={<AssetsPage />} />
           <Route path="log" element={<LogPage />} />
+          <Route path="log/tag" element={<TaggingPage />} />
           <Route path="assets/:id" element={<AccountDetailPage />} />
           <Route path="stats/category/:categoryId" element={<CategoryDetailPage />} />
           <Route path="stats/review" element={<ReviewPage />} />
