@@ -52,18 +52,18 @@ export default function HomeContainer() {
       <SearchHeader onSearch={() => navigate('/app/search')} />
 
       <div className="mt-3 shrink-0 text-center">
-        <p className="text-[20px] font-bold tracking-[3px] text-(--color-text-sand)">
+        <p className="text-[20px] font-semibold tracking-[3px] text-(--ink-3)">
           {DAYS_EN[today.getDay()]}
         </p>
         <div className="mt-1 flex items-baseline justify-center gap-2.5">
           <span className="text-[58px] font-bold leading-[0.9] tracking-[-2px] text-black">
             {today.getDate()}
           </span>
-          <span className="text-[14px] font-semibold text-(--color-text-sand)">
+          <span className="text-[14px] font-semibold text-(--ink-3)">
             {today.getFullYear()}
           </span>
         </div>
-        <p className="mt-6 whitespace-pre-line text-base font-semibold leading-7 text-(--color-text-dim)">
+        <p className="mt-6 whitespace-pre-line text-[13px] font-medium leading-normal text-(--ink-2)">
           {budgetMessage}
         </p>
       </div>

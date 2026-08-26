@@ -39,18 +39,22 @@ export default function MonthlyMoneySummary({
 
   const cardContent = showRemainingBudget ? (
     <>
-      <p className="text-sm font-semibold text-gray-400">남은 예산</p>
+      {/* M1: 필드 라벨 → label(12/500) */}
+      <p className="text-xs font-medium text-(--ink-3)">남은 예산</p>
       {budgetAmount === 0 ? (
         <>
-          <p className="mt-2 text-[28px] font-extrabold text-black/25">—</p>
-          <p className="mt-1.5 flex items-center gap-0.5 text-xs font-semibold text-black/30">
+          {/* M2 empty: display(36/600), ink-3 for placeholder */}
+          <p className="mt-2 text-[36px] font-semibold leading-none text-(--ink-3)">—</p>
+          {/* M3: caption(12/500), ink-3 */}
+          <p className="mt-1.5 flex items-center gap-0.5 text-xs font-medium text-(--ink-3)">
             탭해서 예산을 설정해보세요
             <ChevronRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
           </p>
         </>
       ) : (
         <div className="mt-2 flex items-center justify-between gap-3">
-          <p className={['text-[28px] font-extrabold', isOverBudget ? 'text-(--color-expense-red)' : 'text-black'].join(' ')}>
+          {/* M2: display(36/600) */}
+          <p className={['text-[36px] font-semibold leading-none', isOverBudget ? 'text-(--color-expense-red)' : 'text-(--ink-1)'].join(' ')}>
             {isOverBudget ? '−' : ''}{formatWon(Math.abs(netRemaining))}
           </p>
           {action && <div className="shrink-0">{action}</div>}
@@ -62,19 +66,24 @@ export default function MonthlyMoneySummary({
           style={{ width: progressWidth }}
         />
       </div>
+      {/* M8: caption(12/500) */}
       {budgetAmount > 0 && (
-        <p className="mt-2 text-xs font-semibold text-gray-400">
+        <p className="mt-2 text-xs font-medium text-(--ink-3)">
           총 {formatWon(budgetAmount)}
         </p>
       )}
       <div className="mt-4 grid grid-cols-2 gap-4 border-t border-black/6 pt-4">
         <div>
-          <p className="text-xs font-semibold text-gray-400">남은 기간</p>
-          <p className="mt-1 text-xl font-extrabold text-black">{remainingDays}일</p>
+          {/* M6: caption(12/500) */}
+          <p className="text-xs font-medium text-(--ink-3)">남은 기간</p>
+          {/* M4: value-lg(22/600) */}
+          <p className="mt-1 text-[22px] font-semibold leading-none text-(--ink-1)">{remainingDays}일</p>
         </div>
         <div>
-          <p className="text-xs font-semibold text-gray-400">하루 권장 사용 금액</p>
-          <p className="mt-1 text-xl font-extrabold text-black">
+          {/* M7: caption(12/500) */}
+          <p className="text-xs font-medium text-(--ink-3)">하루 권장 사용 금액</p>
+          {/* M5: value-lg(22/600) */}
+          <p className="mt-1 text-[22px] font-semibold leading-none text-(--ink-1)">
             {dailyRecommendedAmount > 0 ? formatWon(dailyRecommendedAmount) : '—'}
           </p>
         </div>
@@ -82,8 +91,8 @@ export default function MonthlyMoneySummary({
     </>
   ) : (
     <>
-      <p className="text-sm font-semibold text-gray-400">사용 금액</p>
-      <p className="mt-2 text-[28px] font-extrabold text-black">{formatWon(spentAmount)}</p>
+      <p className="text-xs font-medium text-(--ink-3)">사용 금액</p>
+      <p className="mt-2 text-[36px] font-semibold leading-none text-(--ink-1)">{formatWon(spentAmount)}</p>
     </>
   )
 

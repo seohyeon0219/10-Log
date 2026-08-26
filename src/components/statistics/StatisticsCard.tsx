@@ -21,9 +21,9 @@ export default function StatisticsCard({
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             {eyebrow ? (
-              <p className="text-sm font-semibold text-(--color-dark-gray)">{eyebrow}</p>
+              <p className="text-xs font-medium text-(--ink-3)">{eyebrow}</p>
             ) : null}
-            {title ? <h3 className="break-keep text-[15px] font-bold text-black">{title}</h3> : null}
+            {title ? <h3 className="break-keep text-[18px] font-semibold leading-none text-(--ink-1)">{title}</h3> : null}
           </div>
           {action ? <div className="shrink-0">{action}</div> : null}
         </div>
