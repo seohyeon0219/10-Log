@@ -90,7 +90,7 @@ export default function HomeContainer() {
         </div>
       ) : null}
 
-      <div className="flex flex-col flex-1 justify-center md:mt-10 md:flex-none md:block">
+      <div className="mt-5 md:mt-10">
         <MonthlyMoneySummary
           budgetAmount={effectiveBudget}
           onTopClick={promise.openEdit}
