@@ -88,18 +88,15 @@ export default function LogTransactionList({
 
               <span className="min-w-0 flex-1">
                 {tx.memo ? (
-                  <span className="block truncate text-sm font-bold text-black">{tx.memo}</span>
+                  <span className="block truncate text-sm font-medium text-medium">{tx.memo}</span>
                 ) : (
-                  <span className="block text-sm font-semibold text-gray-300">메모 없음</span>
+                  <span className="block text-sm font-medium text-gray-300">메모 없음</span>
                 )}
                 <span className="block text-xs text-gray-400">{formatMonthDay(tx.date)}</span>
               </span>
 
-              <span className="flex shrink-0 flex-col items-end gap-1.5">
-                <span className={[
-                  'text-sm font-extrabold tabular-nums',
-                  tx.type === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
-                ].join(' ')}>
+              <span className="flex shrink-0 items-center gap-2">
+                <span className="text-sm font-semibold tabular-nums text-gray-800">
                   {tx.type === 'income' ? '+' : '-'}{formatWon(tx.amount)}
                 </span>
                 <SatisfactionIcon
