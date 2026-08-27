@@ -15,11 +15,6 @@
   box-sizing: border-box;
 }
 
-html,
-body {
-  overflow-x: hidden;
-}
-
 body {
   min-width: 320px;
   color: var(--color-black);

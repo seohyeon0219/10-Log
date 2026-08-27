@@ -24,7 +24,7 @@ const OPTIONS: { color: string; key: keyof MoodCounts; label: string; value: Moo
 
 export default function MoodFilterBar({ counts, onChange, selected }: Props) {
   return (
-    <div className="flex rounded-2xl bg-black/5 p-1">
+    <div className="flex min-w-0 rounded-2xl bg-black/5 p-1">
       {OPTIONS.map((option) => {
         const isActive = selected === option.value
         const count = counts[option.key]

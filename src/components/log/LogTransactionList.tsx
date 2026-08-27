@@ -44,7 +44,7 @@ export default function LogTransactionList({
   }
 
   return (
-    <div className="grid gap-2">
+    <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-2">
       {untaggedCount > 0 && (
         <button
           className="flex w-full items-center gap-3 rounded-[22px] border-2 border-dashed border-gray-200 px-4 py-3.5 text-left transition hover:border-gray-300 hover:bg-black/3"
@@ -55,10 +55,10 @@ export default function LogTransactionList({
             ?
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block text-sm font-bold text-(--ink-2)">
+            <span className="block wrap-break-word text-sm font-bold text-(--ink-2)">
               감정을 아직 안 남긴 내역 {untaggedCount}건
             </span>
-            <span className="block text-[12px] text-(--ink-3)">
+            <span className="block wrap-break-word text-[12px] text-(--ink-3)">
               지금 기록하면 이번 달 소비 패턴을 볼 수 있어요
             </span>
           </span>
@@ -70,7 +70,7 @@ export default function LogTransactionList({
         const isExpanded = expandedId === tx.id
 
         return (
-          <div key={tx.id}>
+          <div className="min-w-0" key={tx.id}>
             {/* glass-card에는 버튼만 — overflow-hidden 자손 없음 (iOS 합성 레이어 충돌 방지) */}
             <div className="rounded-[22px] glass-card shadow-[0_4px_14px_rgba(0,0,0,0.05)]">
               <button
@@ -79,7 +79,7 @@ export default function LogTransactionList({
                 type="button"
               >
                 <span
-                  className="shrink-0 rounded-full px-2.5 py-1 text-xs font-bold"
+                  className="max-w-[40%] shrink-0 truncate rounded-full px-2.5 py-1 text-xs font-bold"
                   style={{ background: `${tx.categoryColor}22`, color: tx.categoryColor }}
                 >
                   {tx.categoryName}

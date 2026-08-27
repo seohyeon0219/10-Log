@@ -95,7 +95,7 @@ export default function LogContainer() {
       </div>
 
       <div className="grid gap-4">
-        <Link to="/app/log/tag">
+        <Link className="min-w-0 block" to="/app/log/tag">
           <RecordingRateCard currentDate={currentDate} satisfactionCount={satisfactionCount} totalExpenseCount={totalExpenseCount} untaggedCount={moodCounts.untagged} />
         </Link>
 
