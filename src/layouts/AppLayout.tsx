@@ -32,7 +32,7 @@ export default function AppLayout() {
       <div aria-hidden="true" className="pointer-events-none fixed top-[40%] -right-10 -z-10 h-55 w-55 rounded-full bg-(--color-blob-blue) opacity-[0.22] blur-[85px]" />
       <main
         className={[
-          'mx-auto flex min-h-dvh w-full max-w-360 flex-col px-4 pt-safe-top md:px-6 md:py-6 md:pt-6',
+          'mx-auto flex min-h-dvh w-full max-w-360 flex-col overflow-x-clip px-4 pt-safe-top md:px-6 md:py-6 md:pt-6',
           hideNav ? 'pb-8' : 'pb-32',
         ].join(' ')}
       >
