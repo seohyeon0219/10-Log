@@ -28,7 +28,7 @@ export default function TransactionDateList({
   if (!selectedDate) {
     return (
       <div className="flex min-h-60 items-center justify-center text-center">
-        <p className="m-0 text-sm font-medium text-gray-400">날짜를 선택하면 내역이 보여요</p>
+        <p className="m-0 text-sm font-medium text-(--ink-3)">날짜를 선택하면 내역이 보여요</p>
       </div>
     )
   }
@@ -39,7 +39,7 @@ export default function TransactionDateList({
   return (
     <>
       <div className="flex items-center justify-between gap-2">
-        <p className="text-[14px] font-extrabold text-black">
+        <p className="text-[14px] font-extrabold text-(--ink-1)">
           {formatMonthDay(selectedDate)} 내역
         </p>
       </div>
@@ -60,7 +60,7 @@ export default function TransactionDateList({
       )}
 
       {transactions.length === 0 ? (
-        <p className="mt-3 text-[13px] text-(--color-text-sand)">이 날의 기록이 아직 없어요.</p>
+        <p className="mt-3 text-[13px] text-(--ink-3)">이 날의 기록이 아직 없어요.</p>
       ) : (
         <div className="mt-2.5 grid gap-1.5">
           {transactions.map((tx) => (
@@ -75,9 +75,9 @@ export default function TransactionDateList({
                 style={{ background: tx.categoryColor }}
               />
               <span className="min-w-0 flex-1">
-                <span className="block text-[13px] font-bold text-black">{tx.categoryName}</span>
+                <span className="block text-[13px] font-bold text-(--ink-1)">{tx.categoryName}</span>
                 {tx.memo ? (
-                  <span className="block truncate text-[11.5px] text-(--color-text-sand)">{tx.memo}</span>
+                  <span className="block truncate text-[11.5px] text-(--ink-3)">{tx.memo}</span>
                 ) : null}
               </span>
               <span
