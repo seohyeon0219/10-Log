@@ -4,7 +4,7 @@ import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import IncomeExpenseToggle from '../common/IncomeExpenseToggle'
 import StatisticsCard from './StatisticsCard'
 import type { Satisfaction, TransactionType } from '../../types/finance'
-import { formatAmount, formatWon } from '../../utils/formatters'
+import { formatCompactKorean, formatWon } from '../../utils/formatters'
 
 const TOP_COUNT = 3
 
@@ -84,15 +84,14 @@ export default function CategoryTransactionRatio({
     const percent = totalAmount > 0 ? Math.round((item.amount / totalAmount) * 100) : 0
     return (
       <button
-        className="flex items-center gap-2 rounded-xl px-3 py-2 text-left transition interactive-row w-full"
+        className="flex items-center gap-2 rounded-xl px-3 py-1 text-left transition interactive-row w-full"
         key={item.id}
         onClick={() => void navigate(`/app/stats/category/${item.id}?type=${ratioType}`)}
         type="button"
       >
         <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: item.color }} />
-        <span className="min-w-0 flex-1 truncate text-sm font-bold text-black">{item.label}</span>
-        <span className="shrink-0 text-sm font-bold text-(--ink-2)">{percent}%</span>
-        <ChevronRightIcon aria-hidden="true" className="h-3.5 w-3.5 shrink-0 text-(--ink-3)" />
+        <span className="min-w-0 flex-1 truncate text-xs font-medium text-black">{item.label}</span>
+        <span className="shrink-0 text-sm font-semibold text-gray-900">{percent}%</span>
       </button>
     )
   }
@@ -101,16 +100,16 @@ export default function CategoryTransactionRatio({
     const percent = totalAmount > 0 ? Math.round((item.amount / totalAmount) * 100) : 0
     return (
       <button
-        className="flex items-center gap-2 rounded-xl px-3 py-2 text-left transition interactive-row w-full"
+        className="flex items-center gap-3 rounded-xl px-3 py-2 text-left transition interactive-row w-full"
         key={item.id}
         onClick={() => void navigate(`/app/stats/category/${item.id}?type=${ratioType}`)}
         type="button"
       >
         <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: item.color }} />
-        <span className="min-w-0 flex-1 truncate text-sm font-bold text-black">{item.label}</span>
-        <span className="shrink-0 text-xs font-semibold text-(--ink-3)">{formatWon(item.amount)}</span>
-        <span className="shrink-0 text-sm font-bold text-(--ink-2)">{percent}%</span>
-        <ChevronRightIcon aria-hidden="true" className="h-3.5 w-3.5 shrink-0 text-(--ink-3)" />
+        <span className="min-w-0 flex-1 truncate text-sm font-semibold text-gray-900">{item.label}</span>
+        <span className="shrink-0 text-sm font-semibold text-gray-900">{formatWon(item.amount)}</span>
+        <span className="shrink-0 text-[11px] font-medium text-gray-500">{percent}%</span>
+        <ChevronRightIcon aria-hidden="true" className="h-3.5 w-3.5 shrink-0 text-gray-300" />
       </button>
     )
   }
@@ -120,12 +119,12 @@ export default function CategoryTransactionRatio({
       <div className="mt-5 grid grid-cols-[120px_minmax(0,1fr)] items-start gap-4 md:grid-cols-[160px_minmax(0,1fr)] md:gap-5">
         {/* 도넛 차트 */}
         <div
-          className="relative h-30 w-30 shrink-0 rounded-full md:h-40 md:w-40"
+          className="relative h-32 w-32 shrink-0 rounded-full md:h-40 md:w-40"
           style={{ background: `conic-gradient(${donutGradient})` }}
         >
-          <div className="absolute inset-5 grid place-items-center rounded-full bg-white/90 text-center md:inset-6">
-            <p className="text-base font-extrabold text-black leading-tight">
-              {formatAmount(totalAmount)}
+          <div className="absolute inset-4 grid place-items-center rounded-full bg-white text-center md:inset-6">
+            <p className="text-[18px] font-semibold leading-none text-black">
+              {formatCompactKorean(totalAmount)}
             </p>
           </div>
         </div>

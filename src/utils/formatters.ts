@@ -4,6 +4,12 @@ export const formatWon = (amount: number) => `${amount.toLocaleString('ko-KR')}�
 
 export const formatAmountShort = (amount: number) => `${Math.round(amount / 1000)}k`
 
+export const formatCompactKorean = (amount: number): string => {
+  if (amount >= 100_000_000) return `${+( amount / 100_000_000).toFixed(1)}억원`
+  if (amount >= 10_000) return `${+(amount / 10_000).toFixed(1)}만원`
+  return formatWon(amount)
+}
+
 export const getRateClassName = (rate: number) => {
   if (rate > 0) return 'text-(--color-income-blue)'
   if (rate < 0) return 'text-(--color-expense-red)'
