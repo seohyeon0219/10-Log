@@ -1,13 +1,12 @@
-import { useEffect, useRef } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import IncomeExpenseToggle from '../common/IncomeExpenseToggle'
 import StatisticsCard from './StatisticsCard'
 import type { Satisfaction, TransactionType } from '../../types/finance'
-import { formatAmount, formatMonthDay, formatWon } from '../../utils/formatters'
+import { formatAmount, formatWon } from '../../utils/formatters'
 
-const PREVIEW_COUNT = 3
-const PREVIEW_SCROLL_HEIGHT = 224 // ~PREVIEW_COUNT rows + header
+const TOP_COUNT = 3
 
 type CategoryTransaction = {
   amount: number
@@ -51,34 +50,21 @@ export default function CategoryTransactionRatio({
   onRatioTypeChange,
   onSelectedCategoryIdChange,
   ratioType,
-  selectedCategoryId,
 }: CategoryTransactionRatioProps) {
   const navigate = useNavigate()
-  const previewRef = useRef<HTMLDivElement>(null)
+  const [isExpanded, setIsExpanded] = useState(false)
   const activeItems = items[ratioType]
   const totalAmount = activeItems.reduce((total, item) => total + item.amount, 0)
-  const selectedItem = activeItems.find((item) => item.id === selectedCategoryId) ?? null
   const donutGradient = getDonutGradient(activeItems, totalAmount)
-
-  useEffect(() => {
-    if (!selectedCategoryId || !previewRef.current) return
-    const el = previewRef.current
-    const timer = setTimeout(() => {
-      const rect = el.getBoundingClientRect()
-      const targetBottom = rect.top + PREVIEW_SCROLL_HEIGHT
-      const overflow = targetBottom - window.innerHeight
-      if (overflow > 0) {
-        window.scrollBy({ top: overflow + 16, behavior: 'smooth' })
-      }
-    }, 50)
-    return () => clearTimeout(timer)
-  }, [selectedCategoryId])
+  const topItems = activeItems.slice(0, TOP_COUNT)
+  const hasMore = activeItems.length > TOP_COUNT
 
   const toggle = (
     <IncomeExpenseToggle
       onChange={(type) => {
         onRatioTypeChange(type)
         onSelectedCategoryIdChange('')
+        setIsExpanded(false)
       }}
       value={ratioType}
     />
@@ -94,83 +80,79 @@ export default function CategoryTransactionRatio({
     )
   }
 
+  const renderTopRow = (item: CategoryRatioItem) => {
+    const percent = totalAmount > 0 ? Math.round((item.amount / totalAmount) * 100) : 0
+    return (
+      <button
+        className="flex items-center gap-2 rounded-xl px-3 py-2 text-left transition interactive-row w-full"
+        key={item.id}
+        onClick={() => void navigate(`/app/stats/category/${item.id}?type=${ratioType}`)}
+        type="button"
+      >
+        <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: item.color }} />
+        <span className="min-w-0 flex-1 truncate text-sm font-bold text-black">{item.label}</span>
+        <span className="shrink-0 text-sm font-bold text-(--ink-2)">{percent}%</span>
+        <ChevronRightIcon aria-hidden="true" className="h-3.5 w-3.5 shrink-0 text-(--ink-3)" />
+      </button>
+    )
+  }
+
+  const renderExpandedRow = (item: CategoryRatioItem) => {
+    const percent = totalAmount > 0 ? Math.round((item.amount / totalAmount) * 100) : 0
+    return (
+      <button
+        className="flex items-center gap-2 rounded-xl px-3 py-2 text-left transition interactive-row w-full"
+        key={item.id}
+        onClick={() => void navigate(`/app/stats/category/${item.id}?type=${ratioType}`)}
+        type="button"
+      >
+        <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: item.color }} />
+        <span className="min-w-0 flex-1 truncate text-sm font-bold text-black">{item.label}</span>
+        <span className="shrink-0 text-xs font-semibold text-(--ink-3)">{formatWon(item.amount)}</span>
+        <span className="shrink-0 text-sm font-bold text-(--ink-2)">{percent}%</span>
+        <ChevronRightIcon aria-hidden="true" className="h-3.5 w-3.5 shrink-0 text-(--ink-3)" />
+      </button>
+    )
+  }
+
   return (
     <StatisticsCard action={toggle} title="카테고리 거래 비율">
-      <div className="mt-5 grid gap-5 md:grid-cols-[160px_minmax(0,1fr)] md:items-start">
+      <div className="mt-5 grid grid-cols-[120px_minmax(0,1fr)] items-start gap-4 md:grid-cols-[160px_minmax(0,1fr)] md:gap-5">
         {/* 도넛 차트 */}
         <div
-          className="relative mx-auto h-40 w-40 shrink-0 rounded-full"
+          className="relative h-30 w-30 shrink-0 rounded-full md:h-40 md:w-40"
           style={{ background: `conic-gradient(${donutGradient})` }}
         >
-          <div className="absolute inset-6 grid place-items-center rounded-full bg-white/90 text-center">
+          <div className="absolute inset-5 grid place-items-center rounded-full bg-white/90 text-center md:inset-6">
             <p className="text-base font-extrabold text-black leading-tight">
-              {selectedItem ? formatAmount(selectedItem.amount) : formatAmount(totalAmount)}
+              {formatAmount(totalAmount)}
             </p>
           </div>
         </div>
 
-        {/* 범례 */}
+        {/* 상위 3개 범례 */}
         <div className="grid gap-0.5">
-          {activeItems.map((item) => {
-            const percent = totalAmount > 0 ? Math.round((item.amount / totalAmount) * 100) : 0
-            const isSelected = item.id === selectedCategoryId
-
-            return (
-              <button
-                className={[
-                  'flex items-center gap-2 rounded-xl px-3 py-2 text-left transition interactive-row',
-                  isSelected ? 'bg-black/5' : '',
-                ].join(' ')}
-                key={item.id}
-                onClick={() => onSelectedCategoryIdChange(isSelected ? '' : item.id)}
-                type="button"
-              >
-                <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: item.color }} />
-                <span className="min-w-0 flex-1 truncate text-sm font-bold text-black">{item.label}</span>
-                <span className="shrink-0 text-sm font-bold text-gray-400">{percent}%</span>
-              </button>
-            )
-          })}
+          {topItems.map(renderTopRow)}
+          {hasMore && (
+            <button
+              className="flex items-center gap-1 px-3 py-2 text-left text-xs font-semibold text-gray-400 transition active:opacity-60"
+              onClick={() => setIsExpanded((v) => !v)}
+              type="button"
+            >
+              {isExpanded ? '접기' : `전체보기 (${activeItems.length}개)`}
+              <ChevronRightIcon
+                aria-hidden="true"
+                className={['h-3.5 w-3.5 transition-transform', isExpanded ? 'rotate-90' : ''].join(' ')}
+              />
+            </button>
+          )}
         </div>
       </div>
 
-      {/* 선택된 카테고리 프리뷰 */}
-      {selectedItem && (
-        <div className="mt-4" ref={previewRef}>
-          <div className="mb-4 h-px bg-black/6" />
-          <button
-            className="mb-2 flex w-full items-center justify-between text-left transition active:opacity-60"
-            onClick={() => void navigate(`/app/stats/category/${selectedItem.id}?type=${ratioType}`)}
-            type="button"
-          >
-            <span className="text-[14px] font-extrabold text-gray-800">{selectedItem.label} 내역</span>
-            <span className="flex items-center gap-0.5 text-[12px] font-bold text-gray-400">
-              {selectedItem.transactions.length}건
-              <ChevronRightIcon aria-hidden="true" className="h-3.5 w-3.5" />
-            </span>
-          </button>
-          <div className="divide-y divide-black/4">
-            {selectedItem.transactions.slice(0, PREVIEW_COUNT).map((tx) => (
-              <div className="flex items-center gap-3 py-2.5" key={tx.id}>
-                <span
-                  className="h-2 w-2 shrink-0 rounded-full"
-                  style={{ background: selectedItem.color }}
-                />
-                <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-bold text-black">{formatMonthDay(tx.date)}</span>
-                  {tx.memo ? (
-                    <span className="block truncate text-xs text-(--color-text-sand)">{tx.memo}</span>
-                  ) : null}
-                </span>
-                <span className={[
-                  'shrink-0 text-sm font-extrabold tabular-nums',
-                  ratioType === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
-                ].join(' ')}>
-                  {ratioType === 'income' ? '+' : '-'}{formatWon(tx.amount)}
-                </span>
-              </div>
-            ))}
-          </div>
+      {/* 전체 목록 */}
+      {isExpanded && (
+        <div className="mt-4 border-t border-black/6 pt-4 grid gap-0.5">
+          {activeItems.map(renderExpandedRow)}
         </div>
       )}
     </StatisticsCard>
