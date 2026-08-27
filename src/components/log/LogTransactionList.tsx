@@ -70,46 +70,47 @@ export default function LogTransactionList({
         const isExpanded = expandedId === tx.id
 
         return (
-          <div
-            className="rounded-[22px] glass-card shadow-[0_4px_14px_rgba(0,0,0,0.05)]"
-            key={tx.id}
-          >
-            <button
-              className="flex h-14 w-full items-center gap-3 px-4 text-left transition hover:bg-white/60"
-              onClick={() => setExpandedId(isExpanded ? null : tx.id)}
-              type="button"
-            >
-              <span
-                className="shrink-0 rounded-full px-2.5 py-1 text-xs font-bold"
-                style={{ background: `${tx.categoryColor}22`, color: tx.categoryColor }}
+          <div key={tx.id}>
+            {/* glass-card에는 버튼만 — overflow-hidden 자손 없음 (iOS 합성 레이어 충돌 방지) */}
+            <div className="rounded-[22px] glass-card shadow-[0_4px_14px_rgba(0,0,0,0.05)]">
+              <button
+                className="flex h-14 w-full items-center gap-3 px-4 text-left transition hover:bg-white/60"
+                onClick={() => setExpandedId(isExpanded ? null : tx.id)}
+                type="button"
               >
-                {tx.categoryName}
-              </span>
-
-              <span className="min-w-0 flex-1">
-                {tx.memo ? (
-                  <span className="block truncate text-sm font-medium text-medium">{tx.memo}</span>
-                ) : (
-                  <span className="block text-sm font-medium text-gray-300">메모 없음</span>
-                )}
-                <span className="block text-xs text-gray-400">{formatMonthDay(tx.date)}</span>
-              </span>
-
-              <span className="flex shrink-0 items-center gap-2">
-                <span className="text-sm font-semibold tabular-nums text-gray-800">
-                  {tx.type === 'income' ? '+' : '-'}{formatWon(tx.amount)}
+                <span
+                  className="shrink-0 rounded-full px-2.5 py-1 text-xs font-bold"
+                  style={{ background: `${tx.categoryColor}22`, color: tx.categoryColor }}
+                >
+                  {tx.categoryName}
                 </span>
-                <SatisfactionIcon
-                  className={tx.satisfaction ? 'text-gray-500' : 'text-gray-300'}
-                  size={14}
-                  value={tx.satisfaction}
-                />
-              </span>
-            </button>
 
+                <span className="min-w-0 flex-1">
+                  {tx.memo ? (
+                    <span className="block truncate text-sm font-medium text-medium">{tx.memo}</span>
+                  ) : (
+                    <span className="block text-sm font-medium text-gray-300">메모 없음</span>
+                  )}
+                  <span className="block text-xs text-gray-400">{formatMonthDay(tx.date)}</span>
+                </span>
+
+                <span className="flex shrink-0 items-center gap-2">
+                  <span className="text-sm font-semibold tabular-nums text-gray-800">
+                    {tx.type === 'income' ? '+' : '-'}{formatWon(tx.amount)}
+                  </span>
+                  <SatisfactionIcon
+                    className={tx.satisfaction ? 'text-gray-500' : 'text-gray-300'}
+                    size={14}
+                    value={tx.satisfaction}
+                  />
+                </span>
+              </button>
+            </div>
+
+            {/* 아코디언 패널 — glass-card 바깥에 위치해 overflow-hidden이 backdrop-filter 조상을 갖지 않음 */}
             <div className={['grid transition-all duration-200', isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'].join(' ')}>
               <div className="overflow-hidden">
-                <div className="flex gap-2 px-4 pb-3.5 pt-1">
+                <div className="flex gap-2 rounded-b-[22px] bg-white/20 px-4 pb-3.5 pt-2">
                   {SATISFACTION_OPTIONS.map((v) => {
                     const isSelected = tx.satisfaction === v
                     return (
