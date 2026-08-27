@@ -49,7 +49,7 @@ const getDateTextClassName = (day: CalendarDay) => {
   if (day.weekDayIndex === sundayIndex) return 'text-(--color-expense-red)'
   if (day.weekDayIndex === saturdayIndex) return 'text-(--color-income-blue)'
 
-  return 'text-black'
+  return 'text-(--ink-1)'
 }
 
 export default function CalendarGrid({
@@ -68,7 +68,7 @@ export default function CalendarGrid({
         {weekDays.map((weekDay) => (
           <div
             key={weekDay}
-            className="text-center text-[11px] font-extrabold text-(--color-text-sand)"
+            className="text-center text-[11px] font-extrabold text-(--ink-3)"
           >
             {weekDay}
           </div>

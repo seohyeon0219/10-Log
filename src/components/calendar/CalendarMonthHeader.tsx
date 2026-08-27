@@ -21,7 +21,7 @@ export default function CalendarMonthHeader({
         <MonthArrowIcon className="rotate-180" />
       </button>
 
-      <h1 className="min-w-0 text-center text-[18px] font-extrabold text-black">
+      <h1 className="min-w-0 text-center text-[18px] font-extrabold text-(--ink-1)">
         {year}년 {month}월
       </h1>
 

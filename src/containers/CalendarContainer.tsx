@@ -67,7 +67,7 @@ export default function CalendarContainer() {
       ) : null}
 
       {isLoading ? (
-        <div className="mb-4 rounded-xl border border-white/60 bg-(--color-glass-white) px-4 py-3 text-sm font-semibold text-gray-500 backdrop-blur-sm">
+        <div className="mb-4 rounded-xl border border-white/60 bg-(--color-glass-white) px-4 py-3 text-sm font-semibold text-(--ink-3) backdrop-blur-sm">
           데이터를 불러오는 중이에요.
         </div>
       ) : null}

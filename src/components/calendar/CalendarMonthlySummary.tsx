@@ -53,7 +53,7 @@ export default function CalendarMonthlySummary({
           className="min-w-0 rounded-xl text-center transition interactive-chip"
           onClick={() => toggleSummary('income')}
         >
-          <p className="mb-1 text-xs font-semibold text-gray-500">수입</p>
+          <p className="mb-1 text-xs font-semibold text-(--ink-3)">수입</p>
           <strong className="block min-w-0 truncate whitespace-nowrap text-base font-bold text-(--color-income-blue)">
             {formatAmount(totalIncome)}원
           </strong>
@@ -64,7 +64,7 @@ export default function CalendarMonthlySummary({
           className="min-w-0 rounded-xl text-center transition interactive-chip"
           onClick={() => toggleSummary('expense')}
         >
-          <p className="mb-1 text-xs font-semibold text-gray-500">지출</p>
+          <p className="mb-1 text-xs font-semibold text-(--ink-3)">지출</p>
           <strong className="block min-w-0 truncate whitespace-nowrap text-base font-bold text-(--color-expense-red)">
             {formatAmount(totalExpense)}원
           </strong>
@@ -75,7 +75,7 @@ export default function CalendarMonthlySummary({
           className="min-w-0 rounded-xl text-center transition interactive-chip"
           onClick={() => toggleSummary('total')}
         >
-          <p className="mb-1 text-xs font-semibold text-gray-500">합계</p>
+          <p className="mb-1 text-xs font-semibold text-(--ink-3)">합계</p>
           <strong
             className={[
               'block min-w-0 truncate whitespace-nowrap text-base font-bold',
@@ -94,7 +94,7 @@ export default function CalendarMonthlySummary({
           <div className="grid gap-2">
             {detailRows.map((row) => (
               <div key={row.label} className="flex items-center justify-between">
-                <span className="text-xs font-medium text-gray-500">{row.label}</span>
+                <span className="text-xs font-medium text-(--ink-3)">{row.label}</span>
                 <strong className={['text-sm font-bold', row.className].join(' ')}>
                   {formatAmount(row.value)}원
                 </strong>
