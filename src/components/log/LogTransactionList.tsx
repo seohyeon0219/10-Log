@@ -28,8 +28,8 @@ export default function LogTransactionList({
     return (
       <div className="rounded-[22px] glass-card p-5 shadow-[0_6px_20px_rgba(0,0,0,0.06)]">
         <div className="py-10 text-center">
-          <p className="text-sm font-semibold text-gray-400">이번 달 기록이 없어요</p>
-          <p className="mt-1 text-[13px] text-gray-300">지출·수입을 기록하면 여기서 감정을 확인할 수 있어요.</p>
+          <p className="text-sm font-semibold text-(--ink-3)">이번 달 기록이 없어요</p>
+          <p className="mt-1 text-[13px] text-(--ink-3)">지출·수입을 기록하면 여기서 감정을 확인할 수 있어요.</p>
         </div>
       </div>
     )
@@ -38,7 +38,7 @@ export default function LogTransactionList({
   if (transactions.length === 0) {
     return (
       <div className="rounded-[22px] glass-card p-5 shadow-[0_6px_20px_rgba(0,0,0,0.06)]">
-        <p className="py-6 text-center text-sm font-semibold text-gray-400">해당 감정의 거래가 없어요</p>
+        <p className="py-6 text-center text-sm font-semibold text-(--ink-3)">해당 감정의 거래가 없어요</p>
       </div>
     )
   }
@@ -51,18 +51,18 @@ export default function LogTransactionList({
           onClick={onTagUntagged}
           type="button"
         >
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-dashed border-gray-300 text-[13px] font-bold text-gray-400">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-dashed border-gray-300 text-[13px] font-bold text-(--ink-3)">
             ?
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block text-sm font-bold text-gray-700">
+            <span className="block text-sm font-bold text-(--ink-2)">
               감정을 아직 안 남긴 내역 {untaggedCount}건
             </span>
-            <span className="block text-[12px] text-gray-400">
+            <span className="block text-[12px] text-(--ink-3)">
               지금 기록하면 이번 달 소비 패턴을 볼 수 있어요
             </span>
           </span>
-          <ChevronRightIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-gray-300" />
+          <ChevronRightIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-(--ink-3)" />
         </button>
       )}
 
@@ -87,19 +87,19 @@ export default function LogTransactionList({
 
                 <span className="min-w-0 flex-1">
                   {tx.memo ? (
-                    <span className="block truncate text-sm font-medium text-medium">{tx.memo}</span>
+                    <span className="block truncate text-sm font-medium text-(--ink-2)">{tx.memo}</span>
                   ) : (
-                    <span className="block text-sm font-medium text-gray-300">메모 없음</span>
+                    <span className="block text-sm font-medium text-(--ink-3)">메모 없음</span>
                   )}
-                  <span className="block text-xs text-gray-400">{formatMonthDay(tx.date)}</span>
+                  <span className="block text-xs text-(--ink-3)">{formatMonthDay(tx.date)}</span>
                 </span>
 
                 <span className="flex shrink-0 items-center gap-2">
-                  <span className="text-sm font-semibold tabular-nums text-gray-800">
+                  <span className="text-sm font-semibold tabular-nums text-(--ink-1)">
                     {tx.type === 'income' ? '+' : '-'}{formatWon(tx.amount)}
                   </span>
                   <SatisfactionIcon
-                    className={tx.satisfaction ? 'text-gray-500' : 'text-gray-300'}
+                    className={tx.satisfaction ? 'text-(--ink-2)' : 'text-(--ink-3)'}
                     size={14}
                     value={tx.satisfaction}
                   />
@@ -124,11 +124,11 @@ export default function LogTransactionList({
                         type="button"
                       >
                         <SatisfactionIcon
-                          className={isSelected ? 'text-black' : 'text-gray-300'}
+                          className={isSelected ? 'text-(--ink-1)' : 'text-(--ink-3)'}
                           size={20}
                           value={v}
                         />
-                        <span className={['text-[11px] font-bold', isSelected ? 'text-black' : 'text-gray-400'].join(' ')}>
+                        <span className={['text-[11px] font-bold', isSelected ? 'text-(--ink-1)' : 'text-(--ink-3)'].join(' ')}>
                           {MOOD_LABELS[v]}
                         </span>
                       </button>

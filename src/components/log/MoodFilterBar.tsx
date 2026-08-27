@@ -41,11 +41,11 @@ export default function MoodFilterBar({ counts, onChange, selected }: Props) {
           >
             <span className="flex items-center gap-1">
               <span className="h-1.5 w-1.5 rounded-full" style={{ background: option.color }} />
-              <span className={['text-[11px] font-bold', isActive ? 'text-black' : 'text-gray-400'].join(' ')}>
+              <span className={['text-[11px] font-bold', isActive ? 'text-(--ink-1)' : 'text-(--ink-3)'].join(' ')}>
                 {option.label}
               </span>
             </span>
-            <span className={['text-[14px] font-extrabold', isActive ? 'text-black' : 'text-gray-400'].join(' ')}>
+            <span className={['text-[14px] font-extrabold', isActive ? 'text-(--ink-1)' : 'text-(--ink-3)'].join(' ')}>
               {count}
             </span>
           </button>

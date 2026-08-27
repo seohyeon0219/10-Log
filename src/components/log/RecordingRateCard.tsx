@@ -27,8 +27,8 @@ export default function RecordingRateCard({ currentDate, satisfactionCount, tota
         <SatisfactionIcon className="shrink-0 text-gray-300" size={42} value={null} />
 
         <div className="min-w-0 flex-1">
-          <p className="text-[15px] font-bold text-black">감정을 안 남긴 내역 {untaggedCount}건</p>
-          <p className="mt-0.5 text-[13px] font-medium text-gray-400">
+          <p className="text-[15px] font-bold text-(--ink-1)">감정을 안 남긴 내역 {untaggedCount}건</p>
+          <p className="mt-0.5 text-[13px] font-medium text-(--ink-3)">
             기록률 {recordingRate}% · 지금 남기면 {month}월 리포트에 반영돼요
           </p>
           <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-black/8">
@@ -39,7 +39,7 @@ export default function RecordingRateCard({ currentDate, satisfactionCount, tota
           </div>
         </div>
 
-        <ChevronRightIcon className="h-4 w-4 shrink-0 text-gray-400" />
+        <ChevronRightIcon className="h-4 w-4 shrink-0 text-(--ink-3)" />
       </div>
     </section>
   )
