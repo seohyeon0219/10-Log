@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import StatisticsCard from './StatisticsCard'
 import { THEME_ACCENT, useThemeStore } from '../../stores/themeStore'
-import { formatWon } from '../../utils/formatters'
+import { formatAmount, formatWon } from '../../utils/formatters'
 
 type MonthlyMoneySummaryProps = {
   action?: ReactNode
@@ -79,14 +79,20 @@ export default function MonthlyMoneySummary({
           {/* M6: caption(12/500) */}
           <p className="text-xs font-medium text-(--ink-3)">남은 기간</p>
           {/* M4: value-lg(22/600) */}
-          <p className="mt-1 text-[22px] font-semibold leading-none text-(--ink-1)">{remainingDays}일</p>
+          <p className="mt-1 flex items-baseline gap-0.5">
+            <span className="text-[22px] font-semibold leading-none text-(--ink-1)">{remainingDays}</span>
+            <span className="text-xs font-medium text-(--ink-3)">일</span>
+          </p>
         </div>
         <div>
           {/* M7: caption(12/500) */}
           <p className="text-xs font-medium text-(--ink-3)">하루 권장 사용 금액</p>
           {/* M5: value-lg(22/600) */}
-          <p className="mt-1 text-[22px] font-semibold leading-none text-(--ink-1)">
-            {dailyRecommendedAmount > 0 ? formatWon(dailyRecommendedAmount) : '—'}
+          <p className="mt-1 flex items-baseline gap-0.5">
+            <span className="text-[22px] font-semibold leading-none text-(--ink-1)">
+              {dailyRecommendedAmount > 0 ? formatAmount(dailyRecommendedAmount) : '—'}
+            </span>
+            {dailyRecommendedAmount > 0 && <span className="text-xs font-medium text-(--ink-3)">원</span>}
           </p>
         </div>
       </div>
