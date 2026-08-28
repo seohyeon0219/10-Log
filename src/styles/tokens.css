@@ -54,14 +54,15 @@
   --radius-12: 12px;
 
   /* glass primitives — consumed by @utility below */
-  --glass-bg-card:    rgba(255, 255, 255, 0.55);
+  --glass-bg-card:    rgba(255, 255, 255, 0.62);
   --glass-bg-overlay: rgba(255, 255, 255, 0.55);
   --glass-bg-panel:  rgba(255, 255, 255, 0.50);
   --glass-bg-button: rgba(255, 255, 255, 0.50);
   --glass-bg-input:  rgba(255, 255, 255, 0.60);
-  --glass-border:    rgba(255, 255, 255, 0.50);
+  --glass-border:    rgba(255, 255, 255, 0.92);
   --glass-blur-base: blur(12px);
-  --glass-blur-card: blur(16px) saturate(160%);
+  --glass-blur-card: blur(28px) saturate(150%);
+  --glass-shadow-card: 0 14px 34px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.92);
 
   /* interactive hover tokens — 3 tiers
      row:  list rows with no own background (subtle)

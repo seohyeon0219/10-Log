@@ -16,7 +16,7 @@ export default function RecordingRateCard({ currentDate, satisfactionCount, tota
 
   return (
     <section
-      className="rounded-[22px] p-4 shadow-[0_6px_20px_rgba(0,0,0,0.06)]"
+      className="rounded-[26px] p-4"
       style={{
         background: 'linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(168,85,247,0.06) 100%), rgba(255,255,255,0.45)',
         backdropFilter: 'blur(20px) saturate(170%)',

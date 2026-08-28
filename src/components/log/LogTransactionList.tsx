@@ -26,7 +26,7 @@ export default function LogTransactionList({
 
   if (isEmpty) {
     return (
-      <div className="rounded-[22px] glass-card p-5 shadow-[0_6px_20px_rgba(0,0,0,0.06)]">
+      <div className="rounded-[26px] glass-card p-5">
         <div className="py-10 text-center">
           <p className="text-sm font-semibold text-(--ink-3)">이번 달 기록이 없어요</p>
           <p className="mt-1 text-[13px] text-(--ink-3)">지출·수입을 기록하면 여기서 감정을 확인할 수 있어요.</p>
@@ -37,7 +37,7 @@ export default function LogTransactionList({
 
   if (transactions.length === 0) {
     return (
-      <div className="rounded-[22px] glass-card p-5 shadow-[0_6px_20px_rgba(0,0,0,0.06)]">
+      <div className="rounded-[26px] glass-card p-5">
         <p className="py-6 text-center text-sm font-semibold text-(--ink-3)">해당 감정의 거래가 없어요</p>
       </div>
     )
@@ -72,7 +72,7 @@ export default function LogTransactionList({
         return (
           <div className="min-w-0" key={tx.id}>
             {/* glass-card에는 버튼만 — overflow-hidden 자손 없음 (iOS 합성 레이어 충돌 방지) */}
-            <div className="rounded-[22px] glass-card shadow-[0_4px_14px_rgba(0,0,0,0.05)]">
+            <div className="rounded-[26px] glass-card">
               <button
                 className="flex h-14 w-full items-center gap-3 px-4 text-left transition hover:bg-white/60"
                 onClick={() => setExpandedId(isExpanded ? null : tx.id)}

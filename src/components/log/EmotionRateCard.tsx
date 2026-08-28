@@ -29,7 +29,7 @@ export default function EmotionRateCard({ counts }: Props) {
   const rate = total > 0 ? Math.round((tagged / total) * 100) : 0
 
   return (
-    <div className="rounded-[22px] glass-card p-5 shadow-[0_6px_20px_rgba(0,0,0,0.06)]">
+    <div className="rounded-[26px] glass-card p-5">
       <div className="flex items-center justify-between">
         <p className="text-[13px] font-bold text-black">감정 기록률</p>
         <p className="text-[13px] font-extrabold text-black">{rate}%</p>

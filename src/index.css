@@ -74,6 +74,7 @@ button:active {
   backdrop-filter: var(--glass-blur-card);
   -webkit-backdrop-filter: var(--glass-blur-card);
   border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow-card);
 }
 
 @utility glass-overlay {

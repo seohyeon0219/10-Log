@@ -12,7 +12,7 @@ type Props = {
 
 export default function AccountSection({ accounts, className = '', onAdd, onEdit, title }: Props) {
   return (
-    <div className={['rounded-[22px] glass-card p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]', className].join(' ')}>
+    <div className={['rounded-[26px] glass-card p-5', className].join(' ')}>
       <div className="mb-3 flex items-center justify-between">
         <p className="text-[15px] font-bold text-black">{title}</p>
         <button

@@ -82,7 +82,7 @@ export default function SearchResultsContainer() {
       ) : (
         <>
           {(totalExpense > 0 || totalIncome > 0) && (
-            <div className="mb-3 rounded-[22px] border border-white/60 bg-white/45 px-5 py-4 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+            <div className="mb-3 rounded-[26px] glass-card px-5 py-4">
               <p className="mb-2 text-xs font-semibold text-gray-400">
                 {transactions.length}건
               </p>
@@ -108,14 +108,14 @@ export default function SearchResultsContainer() {
           )}
 
           {transactions.length === 0 ? (
-            <div className="rounded-[22px] border border-white/60 bg-white/45 px-6 py-12 text-center backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+            <div className="rounded-[26px] glass-card px-6 py-12 text-center">
               <p className="text-sm font-semibold text-gray-400">조건에 맞는 내역이 없어요.</p>
             </div>
           ) : (
             <div className="grid gap-3">
               {sortedDates.map((date) => (
                 <div
-                  className="rounded-[22px] border border-white/60 bg-white/45 p-4 backdrop-blur-[20px] backdrop-saturate-170 shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
+                  className="rounded-[26px] glass-card p-4"
                   key={date}
                 >
                   <p className="mb-2 text-[12px] font-bold text-gray-500">

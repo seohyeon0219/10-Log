@@ -67,7 +67,7 @@ export default function AssetsContainer() {
       {/* 순자산 요약 카드 */}
       {!isLoading && (
         <div
-          className="mb-4 overflow-hidden rounded-[22px] glass-card shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
+          className="mb-4 overflow-hidden rounded-[26px] glass-card"
           style={{ background: NET_WORTH_CARD_BG[theme] }}
         >
           {/* 상단 shimmer */}

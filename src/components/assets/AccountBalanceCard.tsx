@@ -13,7 +13,7 @@ export default function AccountBalanceCard({ account, currentBalance }: Props) {
   const typeLabel = account.isLiability ? '부채' : '자산'
 
   return (
-    <div className="mb-3 rounded-[22px] glass-card p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+    <div className="mb-3 rounded-[26px] glass-card p-5">
       <div className="mb-3 flex items-center gap-3">
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black/5">
           <Icon aria-hidden="true" className="h-5 w-5 text-gray-600" />

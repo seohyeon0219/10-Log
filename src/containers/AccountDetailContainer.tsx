@@ -127,7 +127,7 @@ export default function AccountDetailContainer() {
       </div>
 
       {/* 기록 */}
-      <div className="rounded-[22px] glass-card p-5 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+      <div className="rounded-[26px] glass-card p-5">
         <div className="mb-3 flex items-baseline justify-between">
           <p className="text-sm font-bold text-black">기록</p>
           {adjustments.length > 0 && (

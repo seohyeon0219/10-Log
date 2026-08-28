@@ -91,7 +91,7 @@ export default function CategoryDetailContainer() {
       <BackHeader title={categoryName} to="/app/stats" />
 
       {/* 합계 카드 */}
-      <div className="mb-4 rounded-2xl glass-card px-5 py-4 shadow-[0_6px_20px_rgba(0,0,0,0.06)]">
+      <div className="mb-4 rounded-[26px] glass-card px-5 py-4">
         <p className="text-[11px] font-semibold text-gray-400">
           {month} {categoryName} {type === 'income' ? '수입' : '지출'}
         </p>

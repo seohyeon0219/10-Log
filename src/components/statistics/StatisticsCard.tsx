@@ -16,7 +16,7 @@ export default function StatisticsCard({
   title,
 }: StatisticsCardProps) {
   return (
-    <section className={['rounded-[22px] glass-card p-5 shadow-[0_6px_20px_rgba(0,0,0,0.06)] max-[380px]:p-4', className].join(' ').trim()}>
+    <section className={['rounded-[26px] glass-card pt-5 px-4.5 pb-4.5', className].join(' ').trim()}>
       {eyebrow || title || action ? (
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
