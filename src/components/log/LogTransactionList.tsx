@@ -1,9 +1,18 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import SatisfactionIcon from '../common/SatisfactionIcon'
 import type { Satisfaction, Transaction } from '../../types/finance'
 import { formatMonthDay, formatWon } from '../../utils/formatters'
 import { MOOD_LABELS } from './EmotionRateCard'
+
 const SATISFACTION_OPTIONS: Satisfaction[] = ['satisfied', 'neutral', 'regret']
+
+const rowStyle = {
+  background: 'rgba(255,255,255,0.62)',
+  border: '1px solid rgba(255,255,255,0.92)',
+  boxShadow: '0 6px 16px rgba(90,75,40,0.05), inset 0 1px 0 rgba(255,255,255,0.9)',
+  backdropFilter: 'blur(22px) saturate(140%)',
+  WebkitBackdropFilter: 'blur(22px) saturate(140%)',
+}
 
 type Props = {
   emptyCount: number
@@ -11,12 +20,17 @@ type Props = {
   transactions: Transaction[]
 }
 
-export default function LogTransactionList({
-  emptyCount,
-  onQuickTag,
-  transactions,
-}: Props) {
+export default function LogTransactionList({ emptyCount, onQuickTag, transactions }: Props) {
   const [expandedId, setExpandedId] = useState<string | null>(null)
+
+  const grouped = useMemo(() => {
+    const map = new Map<string, Transaction[]>()
+    for (const tx of transactions) {
+      if (!map.has(tx.date)) map.set(tx.date, [])
+      map.get(tx.date)!.push(tx)
+    }
+    return [...map.entries()].sort((a, b) => b[0].localeCompare(a[0]))
+  }, [transactions])
 
   const isEmpty = transactions.length === 0 && emptyCount === 0
 
@@ -40,77 +54,87 @@ export default function LogTransactionList({
   }
 
   return (
-    <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-2">
-      {transactions.map((tx) => {
-        const isExpanded = expandedId === tx.id
-
+    <div className="grid gap-4">
+      {grouped.map(([date, txs]) => {
+        const dayNet = txs.reduce((s, t) => t.type === 'income' ? s + t.amount : s - t.amount, 0)
         return (
-          <div className="min-w-0" key={tx.id}>
-            {/* glass-card에는 버튼만 — overflow-hidden 자손 없음 (iOS 합성 레이어 충돌 방지) */}
-            <div className="rounded-[26px] glass-card">
-              <button
-                className="flex h-14 w-full items-center gap-3 px-4 text-left transition hover:bg-white/60"
-                onClick={() => setExpandedId(isExpanded ? null : tx.id)}
-                type="button"
-              >
-                <span
-                  className="max-w-[40%] shrink-0 truncate rounded-full px-2.5 py-1 text-xs font-bold"
-                  style={{ background: `${tx.categoryColor}22`, color: tx.categoryColor }}
-                >
-                  {tx.categoryName}
-                </span>
-
-                <span className="min-w-0 flex-1">
-                  {tx.memo ? (
-                    <span className="block truncate text-sm font-medium text-(--ink-2)">{tx.memo}</span>
-                  ) : (
-                    <span className="block text-sm font-medium text-(--ink-3)">메모 없음</span>
-                  )}
-                  <span className="block text-xs text-(--ink-3)">{formatMonthDay(tx.date)}</span>
-                </span>
-
-                <span className="flex shrink-0 items-center gap-2">
-                  <span className="text-sm font-semibold tabular-nums text-(--ink-1)">
-                    {tx.type === 'income' ? '+' : '-'}{formatWon(tx.amount)}
-                  </span>
-                  <SatisfactionIcon
-                    className={tx.satisfaction ? 'text-(--ink-2)' : 'text-(--ink-3)'}
-                    size={14}
-                    value={tx.satisfaction}
-                  />
-                </span>
-              </button>
+          <div key={date}>
+            <div className="mb-2 flex items-center justify-between px-1">
+              <span className="text-[12px] font-semibold text-(--ink-2)">{formatMonthDay(date)}</span>
+              <span className={['text-[12px] font-semibold tabular-nums', dayNet >= 0 ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)'].join(' ')}>
+                {dayNet >= 0 ? `+${formatWon(dayNet)}` : `-${formatWon(Math.abs(dayNet))}`}
+              </span>
             </div>
 
-            {/* 아코디언 패널 — glass-card 바깥에 위치해 overflow-hidden이 backdrop-filter 조상을 갖지 않음 */}
-            <div className={['grid transition-all duration-200', isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'].join(' ')}>
-              <div className="overflow-hidden">
-                <div className="flex gap-2 rounded-b-[22px] bg-white/20 px-4 pb-3.5 pt-2">
-                  {SATISFACTION_OPTIONS.map((v) => {
-                    const isSelected = tx.satisfaction === v
-                    return (
-                      <button
-                        className={[
-                          'flex flex-1 flex-col items-center gap-1.5 rounded-xl py-2.5 transition active:scale-95',
-                          isSelected ? 'bg-black/8' : 'bg-black/4',
-                        ].join(' ')}
-                        key={v}
-                        onClick={() => { onQuickTag(tx.id, v); setExpandedId(null) }}
-                        type="button"
+            <div className="grid gap-2">
+              {txs.map((tx) => {
+                const isExpanded = expandedId === tx.id
+                return (
+                  <div className="min-w-0" key={tx.id}>
+                    <button
+                      className="flex w-full items-center gap-[10px] rounded-[16px] px-[13px] py-[11px] text-left transition hover:brightness-95"
+                      onClick={() => setExpandedId(isExpanded ? null : tx.id)}
+                      style={rowStyle}
+                      type="button"
+                    >
+                      <span
+                        className="h-2 w-2 shrink-0 rounded-full"
+                        style={{ background: tx.categoryColor }}
+                      />
+                      <span
+                        className="max-w-[30%] shrink-0 truncate rounded-full px-2.5 py-1 text-[11px] font-semibold"
+                        style={{ background: `${tx.categoryColor}22`, color: tx.categoryColor }}
                       >
-                        <SatisfactionIcon
-                          className={isSelected ? 'text-(--ink-1)' : 'text-(--ink-3)'}
-                          size={20}
-                          value={v}
-                        />
-                        <span className={['text-[11px] font-bold', isSelected ? 'text-(--ink-1)' : 'text-(--ink-3)'].join(' ')}>
-                          {MOOD_LABELS[v]}
+                        {tx.categoryName}
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        {tx.memo ? (
+                          <span className="block truncate text-[14px] font-semibold text-(--ink-1)">{tx.memo}</span>
+                        ) : (
+                          <span className="block text-[14px] font-semibold text-(--ink-3)">메모 없음</span>
+                        )}
+                      </span>
+                      <span className="flex shrink-0 items-center gap-2">
+                        <span className={['text-[14px] font-semibold tabular-nums', tx.type === 'income' ? 'text-(--color-income-blue)' : 'text-(--ink-1)'].join(' ')}>
+                          {tx.type === 'income' ? '+' : ''}{formatWon(tx.amount)}
                         </span>
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
+                        <SatisfactionIcon
+                          className={tx.satisfaction ? 'text-(--ink-2)' : 'text-(--ink-3)'}
+                          size={14}
+                          value={tx.satisfaction}
+                        />
+                      </span>
+                    </button>
+
+                    <div className={['grid transition-all duration-200', isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'].join(' ')}>
+                      <div className="overflow-hidden">
+                        <div className="flex gap-2 rounded-b-[14px] bg-white/20 px-4 pb-3.5 pt-2">
+                          {SATISFACTION_OPTIONS.map((v) => {
+                            const isSelected = tx.satisfaction === v
+                            return (
+                              <button
+                                className={['flex flex-1 flex-col items-center gap-1.5 rounded-xl py-2.5 transition active:scale-95', isSelected ? 'bg-black/8' : 'bg-black/4'].join(' ')}
+                                key={v}
+                                onClick={() => { onQuickTag(tx.id, v); setExpandedId(null) }}
+                                type="button"
+                              >
+                                <SatisfactionIcon
+                                  className={isSelected ? 'text-(--ink-1)' : 'text-(--ink-3)'}
+                                  size={20}
+                                  value={v}
+                                />
+                                <span className={['text-[11px] font-bold', isSelected ? 'text-(--ink-1)' : 'text-(--ink-3)'].join(' ')}>
+                                  {MOOD_LABELS[v]}
+                                </span>
+                              </button>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
         )

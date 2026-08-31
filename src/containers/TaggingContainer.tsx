@@ -125,13 +125,13 @@ export default function TaggingContainer() {
         }}
       >
         <SatisfactionIcon className="text-black" size={64} value="satisfied" />
-        <p style={{ marginTop: 24, fontSize: 20, fontWeight: 700, color: '#111', letterSpacing: '-0.02em' }}>
+        <p style={{ marginTop: 24, fontSize: 20, fontWeight: 700, color: 'var(--ink-1)', letterSpacing: '-0.02em' }}>
           기록 완료
         </p>
-        <p style={{ marginTop: 10, fontSize: 14, fontWeight: 500, color: '#888' }}>
+        <p style={{ marginTop: 10, fontSize: 14, fontWeight: 500, color: 'var(--ink-2)' }}>
           {taggedCount}건 기록 완료 · 만족 {summaryCounts.satisfied} · 보통 {summaryCounts.neutral} · 후회 {summaryCounts.regret}
         </p>
-        <p style={{ marginTop: 40, fontSize: 12, fontWeight: 400, color: '#bbb' }}>
+        <p style={{ marginTop: 40, fontSize: 12, fontWeight: 400, color: 'var(--ink-3)' }}>
           화면을 탭하면 로그 탭으로 이동해요
         </p>
       </div>
@@ -171,7 +171,7 @@ export default function TaggingContainer() {
           }}
           type="button"
         >
-          <span style={{ fontSize: 13, color: '#555', lineHeight: 1 }}>✕</span>
+          <span style={{ fontSize: 13, color: 'var(--ink-2)', lineHeight: 1 }}>✕</span>
         </button>
 
         {/* ‹ 되돌리기 */}
@@ -188,7 +188,7 @@ export default function TaggingContainer() {
           }}
           type="button"
         >
-          <span style={{ fontSize: 16, color: '#555', lineHeight: 1 }}>‹</span>
+          <span style={{ fontSize: 16, color: 'var(--ink-2)', lineHeight: 1 }}>‹</span>
         </button>
 
         {/* 진행바 */}
@@ -209,7 +209,7 @@ export default function TaggingContainer() {
         </div>
 
         {/* 카운트 */}
-        <span style={{ flex: 'none', fontSize: 12, fontWeight: 600, color: '#888' }}>
+        <span style={{ flex: 'none', fontSize: 12, fontWeight: 600, color: 'var(--ink-2)' }}>
           {currentIndex}/{total}
         </span>
       </div>
@@ -250,7 +250,7 @@ export default function TaggingContainer() {
               }}>
                 {tx.categoryName}
               </span>
-              <span style={{ fontSize: 13, fontWeight: 400, color: '#888' }}>
+              <span style={{ fontSize: 13, fontWeight: 400, color: 'var(--ink-2)' }}>
                 {formatMonthDay(tx.date)}
               </span>
             </div>
@@ -258,18 +258,18 @@ export default function TaggingContainer() {
             {/* 내역명 */}
             <p style={{
               marginTop: 20, fontSize: 23, fontWeight: 600,
-              letterSpacing: '-0.02em', color: '#111',
+              letterSpacing: '-0.02em', color: 'var(--ink-1)',
               textWrap: 'pretty' as never,
             }}>
-              {tx.memo || <span style={{ color: '#ccc' }}>메모 없음</span>}
+              {tx.memo || <span style={{ color: 'var(--ink-3)' }}>메모 없음</span>}
             </p>
 
             {/* 금액 */}
             <div style={{ marginTop: 12, display: 'flex', alignItems: 'baseline', gap: 4 }}>
-              <span style={{ fontSize: 32, fontWeight: 600, color: '#111', letterSpacing: '-0.02em' }}>
+              <span style={{ fontSize: 32, fontWeight: 600, color: 'var(--ink-1)', letterSpacing: '-0.02em' }}>
                 {tx.amount.toLocaleString('ko-KR')}
               </span>
-              <span style={{ fontSize: 17, fontWeight: 600, color: '#111' }}>원</span>
+              <span style={{ fontSize: 17, fontWeight: 600, color: 'var(--ink-1)' }}>원</span>
             </div>
 
             {/* 구분선 + 문맥 */}
@@ -277,7 +277,7 @@ export default function TaggingContainer() {
               <p style={{
                 marginTop: 16, paddingTop: 15,
                 borderTop: '1px solid rgba(21,26,34,0.09)',
-                fontSize: 12, fontWeight: 400, color: '#888',
+                fontSize: 12, fontWeight: 400, color: 'var(--ink-2)',
               }}>
                 {hintText}
               </p>
@@ -286,7 +286,7 @@ export default function TaggingContainer() {
         </div>
 
         {/* 2-3. 질문 */}
-        <p style={{ marginTop: 30, fontSize: 12, fontWeight: 500, textAlign: 'center', color: '#888' }}>
+        <p style={{ marginTop: 30, fontSize: 12, fontWeight: 500, textAlign: 'center', color: 'var(--ink-2)' }}>
           이 지출, 지금 돌아보면 어때요?
         </p>
 
@@ -318,7 +318,7 @@ export default function TaggingContainer() {
               type="button"
             >
               <SatisfactionIcon className="text-black" size={30} value={v} />
-              <span style={{ fontSize: 14, fontWeight: 600, color: '#111' }}>{MOOD_LABELS[v]}</span>
+              <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--ink-1)' }}>{MOOD_LABELS[v]}</span>
             </button>
           ))}
         </div>
@@ -329,7 +329,7 @@ export default function TaggingContainer() {
           style={{
             marginTop: 14, background: 'none', border: 'none',
             cursor: 'pointer', fontSize: 12, fontWeight: 500,
-            color: '#aaa', textAlign: 'center', padding: '4px 0',
+            color: 'var(--ink-3)', textAlign: 'center', padding: '4px 0',
           }}
           type="button"
         >
@@ -338,7 +338,7 @@ export default function TaggingContainer() {
       </div>
 
       {/* 3. 푸터 */}
-      <div style={{ flex: 'none', textAlign: 'center', fontSize: 11, fontWeight: 400, color: '#bbb' }}>
+      <div style={{ flex: 'none', textAlign: 'center', fontSize: 11, fontWeight: 400, color: 'var(--ink-3)' }}>
         {getFooterText(total - currentIndex, total)}
       </div>
     </div>

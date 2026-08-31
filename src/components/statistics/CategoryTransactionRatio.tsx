@@ -90,8 +90,8 @@ export default function CategoryTransactionRatio({
         type="button"
       >
         <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: item.color }} />
-        <span className="min-w-0 flex-1 truncate text-xs font-medium text-black">{item.label}</span>
-        <span className="shrink-0 text-sm font-semibold text-gray-900">{percent}%</span>
+        <span className="min-w-0 flex-1 truncate text-xs font-medium text-(--ink-1)">{item.label}</span>
+        <span className="shrink-0 text-sm font-semibold text-(--ink-1)">{percent}%</span>
       </button>
     )
   }
@@ -106,10 +106,10 @@ export default function CategoryTransactionRatio({
         type="button"
       >
         <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: item.color }} />
-        <span className="min-w-0 flex-1 truncate text-sm font-semibold text-gray-900">{item.label}</span>
-        <span className="shrink-0 text-sm font-semibold text-gray-900">{formatWon(item.amount)}</span>
-        <span className="shrink-0 text-[11px] font-medium text-gray-500">{percent}%</span>
-        <ChevronRightIcon aria-hidden="true" className="h-3.5 w-3.5 shrink-0 text-gray-300" />
+        <span className="min-w-0 flex-1 truncate text-sm font-semibold text-(--ink-1)">{item.label}</span>
+        <span className="shrink-0 text-sm font-semibold text-(--ink-1)">{formatWon(item.amount)}</span>
+        <span className="shrink-0 text-[11px] font-medium text-(--ink-2)">{percent}%</span>
+        <ChevronRightIcon aria-hidden="true" className="h-3.5 w-3.5 shrink-0 text-(--ink-3)" />
       </button>
     )
   }

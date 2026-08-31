@@ -166,13 +166,14 @@ export default function TransactionSearchCard({ expenseCategories, incomeCategor
                 <div className="grid max-h-80 gap-4 overflow-y-auto">
                   {sortedDates.map((date) => (
                     <div key={date}>
-                      <p className="mb-1.5 text-[12px] font-bold text-gray-500">{formatMonthDay(date)}</p>
+                      <p className="mb-1.5 text-[12px] font-semibold text-(--ink-2)">{formatMonthDay(date)}</p>
                       <div className="grid gap-1.5">
                         {grouped[date].map((tx) => (
                           <button
                             key={tx.id}
-                            className="flex w-full items-center gap-2 rounded-[14px] bg-black/4 px-3 py-2.5 text-left transition hover:bg-black/8"
+                            className="flex w-full items-center gap-[9px] rounded-[12px] px-3 py-[9px] text-left transition hover:brightness-95"
                             onClick={() => onSelectTransaction(tx)}
+                            style={{ background: 'rgba(255,255,255,0.45)' }}
                             type="button"
                           >
                             <span
@@ -180,25 +181,24 @@ export default function TransactionSearchCard({ expenseCategories, incomeCategor
                               style={{ background: tx.categoryColor }}
                             />
                             <span className="min-w-0 flex-1">
-                              <span className="block text-[13px] font-bold text-black">
-                                {tx.categoryName}
-                              </span>
-                              {tx.memo && (
-                                <span className="block truncate text-xs text-(--color-text-sand)">
+                              {tx.memo ? (
+                                <span className="block truncate text-[13px] font-semibold text-(--ink-1)">
                                   {tx.memo}
                                 </span>
+                              ) : (
+                                <span className="block text-[13px] font-semibold text-(--ink-3)">메모 없음</span>
                               )}
+                              <span className="block text-[11px] font-medium text-(--ink-3)">{tx.categoryName}</span>
                             </span>
                             <span
                               className={[
-                                'shrink-0 text-sm font-extrabold',
+                                'shrink-0 text-[13px] font-semibold tabular-nums',
                                 tx.type === 'income'
                                   ? 'text-(--color-income-blue)'
-                                  : 'text-(--color-expense-red)',
+                                  : 'text-(--ink-1)',
                               ].join(' ')}
                             >
-                              {tx.type === 'income' ? '+' : '-'}
-                              {formatWon(tx.amount)}
+                              {tx.type === 'income' ? '+' : ''}{formatWon(tx.amount)}
                             </span>
                           </button>
                         ))}

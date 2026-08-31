@@ -53,7 +53,7 @@ export default function TransactionDateList({
           )}
           {totalExpense > 0 && (
             <span className="text-xs font-semibold text-(--color-expense-red)">
-              지출 -{formatWon(totalExpense)}
+              지출 {formatWon(totalExpense)}
             </span>
           )}
         </div>
@@ -66,27 +66,25 @@ export default function TransactionDateList({
           {transactions.map((tx) => (
             <button
               key={tx.id}
-              className="flex w-full items-center gap-2 rounded-[14px] bg-white/50 px-3 py-2.5 text-left transition hover:bg-white/70"
+              className="flex w-full items-center gap-[9px] rounded-[12px] px-[12px] py-[9px] text-left transition hover:brightness-95"
               onClick={onSelectTransaction ? () => onSelectTransaction(tx) : undefined}
+              style={{ background: 'rgba(255,255,255,0.45)' }}
               type="button"
             >
               <span
                 className="h-2 w-2 shrink-0 rounded-full"
                 style={{ background: tx.categoryColor }}
               />
-              <span className="min-w-0 flex-1 overflow-hidden">
-                <span className="block text-[13px] font-bold text-(--ink-1)">{tx.categoryName}</span>
+              <span className="min-w-0 flex-1">
                 {tx.memo ? (
-                  <span className="line-clamp-2 text-[11.5px] text-(--ink-3)">{tx.memo}</span>
-                ) : null}
+                  <span className="block truncate text-[13px] font-semibold text-(--ink-1)">{tx.memo}</span>
+                ) : (
+                  <span className="block text-[13px] font-semibold text-(--ink-3)">메모 없음</span>
+                )}
+                <span className="block text-[11px] font-medium text-(--ink-3)">{tx.categoryName}</span>
               </span>
-              <span
-                className={[
-                  'shrink-0 text-[13.5px] font-extrabold',
-                  tx.type === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
-                ].join(' ')}
-              >
-                {tx.type === 'income' ? '+' : '-'}{formatWon(tx.amount)}
+              <span className={['shrink-0 text-[13px] font-semibold tabular-nums', tx.type === 'income' ? 'text-(--color-income-blue)' : 'text-(--ink-1)'].join(' ')}>
+                {tx.type === 'income' ? '+' : ''}{formatWon(tx.amount)}
               </span>
             </button>
           ))}

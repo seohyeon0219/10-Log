@@ -9,6 +9,14 @@ import type { Transaction, TransactionType } from '../types/finance'
 import SatisfactionIcon from '../components/common/SatisfactionIcon'
 import { formatMonthDay, formatWon } from '../utils/formatters'
 
+const rowStyle = {
+  background: 'rgba(255,255,255,0.62)',
+  border: '1px solid rgba(255,255,255,0.92)',
+  boxShadow: '0 6px 16px rgba(90,75,40,0.05), inset 0 1px 0 rgba(255,255,255,0.9)',
+  backdropFilter: 'blur(22px) saturate(140%)',
+  WebkitBackdropFilter: 'blur(22px) saturate(140%)',
+}
+
 export default function CategoryDetailContainer() {
   const { categoryId } = useParams<{ categoryId: string }>()
   const [searchParams] = useSearchParams()
@@ -35,6 +43,7 @@ export default function CategoryDetailContainer() {
   )
 
   const categoryName = filtered[0]?.categoryName ?? ''
+  const categoryColor = filtered[0]?.categoryColor ?? '#9ca3af'
   const totalAmount = filtered.reduce((sum, tx) => sum + tx.amount, 0)
   const count = filtered.length
   const average = count > 0 ? Math.round(totalAmount / count) : 0
@@ -86,16 +95,48 @@ export default function CategoryDetailContainer() {
     setEditingTransaction(null)
   }
 
+  const renderRow = (tx: Transaction, showDate = false) => (
+    <button
+      className="flex w-full items-center gap-[10px] rounded-[16px] px-[13px] py-[11px] text-left transition hover:brightness-95"
+      key={tx.id}
+      onClick={() => setEditingTransaction(tx)}
+      style={rowStyle}
+      type="button"
+    >
+      <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: categoryColor }} />
+      <span className="min-w-0 flex-1">
+        {tx.memo ? (
+          <span className="block truncate text-[14px] font-semibold text-(--ink-1)">{tx.memo}</span>
+        ) : (
+          <span className="block text-[14px] font-semibold text-(--ink-3)">메모 없음</span>
+        )}
+        {showDate && (
+          <span className="block text-[11px] font-medium text-(--ink-3)">{formatMonthDay(tx.date)}</span>
+        )}
+      </span>
+      <div className="flex shrink-0 items-center gap-2">
+        <span className={['text-[14px] font-semibold tabular-nums', type === 'income' ? 'text-(--color-income-blue)' : 'text-(--ink-1)'].join(' ')}>
+          {type === 'income' ? '+' : ''}{formatWon(tx.amount)}
+        </span>
+        <SatisfactionIcon
+          className={tx.satisfaction ? 'text-(--ink-2)' : 'text-(--ink-3)'}
+          size={14}
+          value={tx.satisfaction}
+        />
+      </div>
+    </button>
+  )
+
   return (
     <section className="w-full self-start animate-fade-up md:mt-4">
       <BackHeader title={categoryName} to="/app/stats" />
 
       {/* 합계 카드 */}
       <div className="mb-4 rounded-[26px] glass-card px-5 py-4">
-        <p className="text-[11px] font-semibold text-gray-400">
+        <p className="text-[11px] font-semibold text-(--ink-3)">
           {month} {categoryName} {type === 'income' ? '수입' : '지출'}
         </p>
-        <p className="mt-1 text-[26px] font-extrabold tabular-nums text-black leading-tight">
+        <p className="mt-1 text-[26px] font-extrabold tabular-nums text-(--ink-1) leading-tight">
           {formatWon(totalAmount)}
         </p>
 
@@ -113,7 +154,7 @@ export default function CategoryDetailContainer() {
               {changePercent >= 0 ? '▲' : '▼'} {Math.abs(changePercent)}%
             </span>
           ) : null}
-          <span className="text-[11px] font-semibold text-gray-400">
+          <span className="text-[11px] font-semibold text-(--ink-3)">
             지난 달 {formatWon(prevMonthTotal)}
           </span>
         </div>
@@ -121,16 +162,16 @@ export default function CategoryDetailContainer() {
         {/* 통계 박스 */}
         <div className="mt-3 flex items-center divide-x divide-black/8 rounded-[14px] bg-black/4 px-1 py-2.5 backdrop-blur-sm">
           <div className="flex flex-1 flex-col items-center gap-0.5">
-            <span className="text-[10px] font-semibold text-gray-400">건수</span>
-            <span className="text-[13px] font-extrabold tabular-nums text-black">{count}건</span>
+            <span className="text-[10px] font-semibold text-(--ink-3)">건수</span>
+            <span className="text-[13px] font-extrabold tabular-nums text-(--ink-1)">{count}건</span>
           </div>
           <div className="flex flex-1 flex-col items-center gap-0.5">
-            <span className="text-[10px] font-semibold text-gray-400">평균</span>
-            <span className="text-[13px] font-extrabold tabular-nums text-black">{formatWon(average)}</span>
+            <span className="text-[10px] font-semibold text-(--ink-3)">평균</span>
+            <span className="text-[13px] font-extrabold tabular-nums text-(--ink-1)">{formatWon(average)}</span>
           </div>
           <div className="flex flex-1 flex-col items-center gap-0.5">
-            <span className="text-[10px] font-semibold text-gray-400">전체대비</span>
-            <span className="text-[13px] font-extrabold tabular-nums text-black">{ratioPercent}%</span>
+            <span className="text-[10px] font-semibold text-(--ink-3)">전체대비</span>
+            <span className="text-[13px] font-extrabold tabular-nums text-(--ink-1)">{ratioPercent}%</span>
           </div>
         </div>
       </div>
@@ -150,7 +191,7 @@ export default function CategoryDetailContainer() {
       )}
 
       {filtered.length === 0 ? (
-        <p className="mt-8 text-center text-sm font-semibold text-gray-400">이번 달 내역이 없어요.</p>
+        <p className="mt-8 text-center text-sm font-semibold text-(--ink-3)">이번 달 내역이 없어요.</p>
       ) : sortOrder === 'date' ? (
         <div className="grid gap-4">
           {grouped.map(([date, txs]) => {
@@ -158,78 +199,21 @@ export default function CategoryDetailContainer() {
             return (
               <div key={date}>
                 <div className="mb-1.5 flex items-center justify-between px-1">
-                  <p className="text-[11px] font-bold text-gray-400">{formatMonthDay(date)}</p>
-                  <p className="text-[11px] font-bold tabular-nums text-gray-400">
-                    {type === 'income' ? '+' : '-'}{formatWon(dayTotal)}
-                  </p>
+                  <span className="text-[12px] font-semibold text-(--ink-2)">{formatMonthDay(date)}</span>
+                  <span className={['text-[12px] font-semibold tabular-nums', type === 'income' ? 'text-(--color-income-blue)' : 'text-(--ink-2)'].join(' ')}>
+                    {type === 'income' ? '+' : ''}{formatWon(dayTotal)}
+                  </span>
                 </div>
-                <div className="grid gap-1">
-                  {txs.map((tx) => (
-                    <button
-                      className="flex w-full items-center gap-3 rounded-[18px] bg-white/60 py-3 pl-3 pr-4 text-left backdrop-blur-sm transition active:bg-white/80"
-                      key={tx.id}
-                      onClick={() => setEditingTransaction(tx)}
-                      type="button"
-                    >
-                      <div className="min-w-0 flex-1">
-                        {tx.memo ? (
-                          <p className="truncate text-sm font-semibold text-gray-700">{tx.memo}</p>
-                        ) : (
-                          <p className="text-sm font-semibold text-gray-300">메모 없음</p>
-                        )}
-                      </div>
-                      <div className="flex shrink-0 flex-col items-end gap-1.5">
-                        <p className={[
-                          'text-[13.5px] font-extrabold tabular-nums',
-                          type === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
-                        ].join(' ')}>
-                          {type === 'income' ? '+' : '-'}{formatWon(tx.amount)}
-                        </p>
-                        <SatisfactionIcon
-                          className={tx.satisfaction ? 'text-gray-500' : 'text-gray-300'}
-                          size={14}
-                          value={tx.satisfaction}
-                        />
-                      </div>
-                    </button>
-                  ))}
+                <div className="grid gap-1.5">
+                  {txs.map((tx) => renderRow(tx, false))}
                 </div>
               </div>
             )
           })}
         </div>
       ) : (
-        <div className="grid gap-1">
-          {sortedFlat.map((tx) => (
-            <button
-              className="flex w-full items-center gap-3 rounded-[18px] bg-white/60 py-3 pl-3 pr-4 text-left backdrop-blur-sm transition active:bg-white/80"
-              key={tx.id}
-              onClick={() => setEditingTransaction(tx)}
-              type="button"
-            >
-              <div className="min-w-0 flex-1">
-                {tx.memo ? (
-                  <p className="truncate text-sm font-semibold text-gray-700">{tx.memo}</p>
-                ) : (
-                  <p className="text-sm font-semibold text-gray-300">메모 없음</p>
-                )}
-                <p className="text-[11px] font-semibold text-gray-400">{formatMonthDay(tx.date)}</p>
-              </div>
-              <div className="flex shrink-0 flex-col items-end gap-1.5">
-                <p className={[
-                  'text-[13.5px] font-extrabold tabular-nums',
-                  type === 'income' ? 'text-(--color-income-blue)' : 'text-(--color-expense-red)',
-                ].join(' ')}>
-                  {type === 'income' ? '+' : '-'}{formatWon(tx.amount)}
-                </p>
-                <SatisfactionIcon
-                  className={tx.satisfaction ? 'text-gray-500' : 'text-gray-300'}
-                  size={14}
-                  value={tx.satisfaction}
-                />
-              </div>
-            </button>
-          ))}
+        <div className="grid gap-1.5">
+          {sortedFlat.map((tx) => renderRow(tx, true))}
         </div>
       )}
 
