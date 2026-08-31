@@ -74,10 +74,10 @@ export default function TransactionDateList({
                 className="h-2 w-2 shrink-0 rounded-full"
                 style={{ background: tx.categoryColor }}
               />
-              <span className="min-w-0 flex-1">
+              <span className="min-w-0 flex-1 overflow-hidden">
                 <span className="block text-[13px] font-bold text-(--ink-1)">{tx.categoryName}</span>
                 {tx.memo ? (
-                  <span className="block truncate text-[11.5px] text-(--ink-3)">{tx.memo}</span>
+                  <span className="line-clamp-2 text-[11.5px] text-(--ink-3)">{tx.memo}</span>
                 ) : null}
               </span>
               <span
