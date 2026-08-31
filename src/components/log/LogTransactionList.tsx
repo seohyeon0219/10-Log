@@ -78,10 +78,6 @@ export default function LogTransactionList({ emptyCount, onQuickTag, transaction
                       type="button"
                     >
                       <span
-                        className="h-2 w-2 shrink-0 rounded-full"
-                        style={{ background: tx.categoryColor }}
-                      />
-                      <span
                         className="max-w-[30%] shrink-0 truncate rounded-full px-2.5 py-1 text-[11px] font-semibold"
                         style={{ background: `${tx.categoryColor}22`, color: tx.categoryColor }}
                       >
