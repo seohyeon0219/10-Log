@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
 import CalendarMonthHeader from '../components/calendar/CalendarMonthHeader'
 import LogTransactionList from '../components/log/LogTransactionList'
 import MoodFilterBar from '../components/log/MoodFilterBar'
@@ -50,6 +49,13 @@ export default function LogContainer() {
     [transactions],
   )
 
+  const emptySum = useMemo(
+    () => expenseTransactions.filter((tx) => !tx.satisfaction).reduce((s, tx) => s + tx.amount, 0),
+    [expenseTransactions],
+  )
+  const pct = totalExpenseCount > 0 ? Math.round((satisfactionCount / totalExpenseCount) * 100) : 0
+  const month = currentDate.getMonth() + 1
+
   const filteredTransactions = useMemo(() => {
     if (!moodFilter) return expenseTransactions
     if (moodFilter === 'untagged') return expenseTransactions.filter((tx) => !tx.satisfaction)
@@ -95,17 +101,14 @@ export default function LogContainer() {
       </div>
 
       <div className="grid gap-4">
-        <Link className="min-w-0 block" to="/app/log/tag">
-          <RecordingRateCard currentDate={currentDate} satisfactionCount={satisfactionCount} totalExpenseCount={totalExpenseCount} untaggedCount={moodCounts.untagged} />
-        </Link>
+        <RecordingRateCard emptyCount={moodCounts.untagged} emptySum={emptySum} month={month} pct={pct} />
 
         <MoodFilterBar counts={moodCounts} onChange={setMoodFilter} selected={moodFilter} />
 
         <LogTransactionList
+          emptyCount={moodFilter === null ? moodCounts.untagged : 0}
           onQuickTag={handleQuickTag}
-          onTagUntagged={() => setMoodFilter('untagged')}
           transactions={filteredTransactions}
-          untaggedCount={moodFilter === null ? moodCounts.untagged : 0}
         />
       </div>
 

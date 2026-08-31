@@ -1,28 +1,24 @@
 import { useState } from 'react'
-import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import SatisfactionIcon from '../common/SatisfactionIcon'
 import type { Satisfaction, Transaction } from '../../types/finance'
 import { formatMonthDay, formatWon } from '../../utils/formatters'
 import { MOOD_LABELS } from './EmotionRateCard'
-
 const SATISFACTION_OPTIONS: Satisfaction[] = ['satisfied', 'neutral', 'regret']
 
 type Props = {
+  emptyCount: number
   onQuickTag: (txId: string, satisfaction: Satisfaction) => void
-  onTagUntagged: () => void
   transactions: Transaction[]
-  untaggedCount: number
 }
 
 export default function LogTransactionList({
+  emptyCount,
   onQuickTag,
-  onTagUntagged,
   transactions,
-  untaggedCount,
 }: Props) {
   const [expandedId, setExpandedId] = useState<string | null>(null)
 
-  const isEmpty = transactions.length === 0 && untaggedCount === 0
+  const isEmpty = transactions.length === 0 && emptyCount === 0
 
   if (isEmpty) {
     return (
@@ -45,27 +41,6 @@ export default function LogTransactionList({
 
   return (
     <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-2">
-      {untaggedCount > 0 && (
-        <button
-          className="flex w-full items-center gap-3 rounded-[22px] border-2 border-dashed border-gray-200 px-4 py-3.5 text-left transition hover:border-gray-300 hover:bg-black/3"
-          onClick={onTagUntagged}
-          type="button"
-        >
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-dashed border-gray-300 text-[13px] font-bold text-(--ink-3)">
-            ?
-          </span>
-          <span className="min-w-0 flex-1">
-            <span className="block wrap-break-word text-sm font-bold text-(--ink-2)">
-              감정을 아직 안 남긴 내역 {untaggedCount}건
-            </span>
-            <span className="block wrap-break-word text-[12px] text-(--ink-3)">
-              지금 기록하면 이번 달 소비 패턴을 볼 수 있어요
-            </span>
-          </span>
-          <ChevronRightIcon aria-hidden="true" className="h-4 w-4 shrink-0 text-(--ink-3)" />
-        </button>
-      )}
-
       {transactions.map((tx) => {
         const isExpanded = expandedId === tx.id
 
