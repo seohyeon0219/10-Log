@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import IncomeExpenseToggle from '../common/IncomeExpenseToggle'
@@ -153,11 +154,21 @@ export default function CategoryTransactionRatio({
       )}
 
       {/* 전체 목록 */}
-      {isExpanded && (
-        <div className="mt-2 grid gap-0.5">
-          {activeItems.map(renderExpandedRow)}
-        </div>
-      )}
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            animate={{ height: 'auto', opacity: 1 }}
+            className="overflow-hidden"
+            exit={{ height: 0, opacity: 0 }}
+            initial={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+          >
+            <div className="mt-2 grid gap-0.5">
+              {activeItems.map(renderExpandedRow)}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </StatisticsCard>
   )
 }
