@@ -1,5 +1,4 @@
 import type { Satisfaction } from '../../types/finance'
-import { MOOD_COLORS } from './EmotionRateCard'
 
 export type MoodFilter = Satisfaction | 'untagged' | null
 
@@ -16,10 +15,10 @@ type Props = {
   selected: MoodFilter
 }
 
-const OPTIONS: { color: string; key: keyof MoodCounts; label: string; value: MoodFilter }[] = [
-  { color: MOOD_COLORS.satisfied, key: 'satisfied', label: '만족', value: 'satisfied' },
-  { color: MOOD_COLORS.neutral, key: 'neutral', label: '보통', value: 'neutral' },
-  { color: MOOD_COLORS.regret, key: 'regret', label: '후회', value: 'regret' },
+const OPTIONS: { key: keyof MoodCounts; label: string; value: MoodFilter }[] = [
+  { key: 'satisfied', label: '만족', value: 'satisfied' },
+  { key: 'neutral', label: '보통', value: 'neutral' },
+  { key: 'regret', label: '후회', value: 'regret' },
 ]
 
 export default function MoodFilterBar({ counts, onChange, selected }: Props) {
@@ -39,11 +38,8 @@ export default function MoodFilterBar({ counts, onChange, selected }: Props) {
             onClick={() => onChange(selected === option.value ? null : option.value)}
             type="button"
           >
-            <span className="flex items-center gap-1">
-              <span className="h-1.5 w-1.5 rounded-full" style={{ background: option.color }} />
-              <span className={['text-[11px] font-bold', isActive ? 'text-(--ink-1)' : 'text-(--ink-3)'].join(' ')}>
-                {option.label}
-              </span>
+            <span className={['text-[11px] font-bold', isActive ? 'text-(--ink-1)' : 'text-(--ink-3)'].join(' ')}>
+              {option.label}
             </span>
             <span className={['text-[14px] font-extrabold', isActive ? 'text-(--ink-1)' : 'text-(--ink-3)'].join(' ')}>
               {count}
