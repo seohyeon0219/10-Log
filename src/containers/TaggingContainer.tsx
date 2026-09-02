@@ -4,8 +4,108 @@ import SatisfactionIcon from '../components/common/SatisfactionIcon'
 import { MOOD_LABELS } from '../components/log/EmotionRateCard'
 import { getMonthlyTransactions } from '../lib/financeApi'
 import { useCalendarStore } from '../stores/calendarStore'
+import { THEME_GRADIENTS, useThemeStore } from '../stores/themeStore'
 import type { Satisfaction, Transaction } from '../types/finance'
 import { formatMonthDay } from '../utils/formatters'
+
+function CompleteRing({ size = 76, animated }: { animated: boolean; size?: number }) {
+  const sw = 4.2
+  const r = (size - sw) / 2
+  const cx = size / 2
+  const c = 2 * Math.PI * r
+  return (
+    <svg display="block" height={size} viewBox={`0 0 ${size} ${size}`} width={size} style={{ display: 'block' }}>
+      <circle cx={cx} cy={cx} fill="none" r={r} stroke="rgba(21,26,34,0.1)" strokeWidth={sw} />
+      <circle
+        cx={cx} cy={cx} fill="none" r={r}
+        stroke="rgba(27,33,48,0.85)" strokeWidth={sw}
+        strokeDasharray={c} strokeDashoffset={animated ? 0 : c}
+        strokeLinecap="round"
+        transform={`rotate(-90 ${cx} ${cx})`}
+        style={{ transition: 'stroke-dashoffset .6s cubic-bezier(.2,.9,.25,1)' }}
+      />
+      <path
+        d={`M${size * 0.34} ${size * 0.51} L${size * 0.45} ${size * 0.62} L${size * 0.67} ${size * 0.39}`}
+        fill="none" stroke="rgba(27,33,48,0.85)" strokeWidth={sw * 0.9}
+        strokeLinecap="round" strokeLinejoin="round"
+        style={{
+          opacity: animated ? 1 : 0,
+          transform: animated ? 'scale(1)' : 'scale(0.85)',
+          transformOrigin: `${cx}px ${cx}px`,
+          transition: 'opacity .3s ease .35s, transform .3s cubic-bezier(.2,.9,.25,1) .35s',
+        }}
+      />
+    </svg>
+  )
+}
+
+function CompleteScreen({ count, month, onTap }: { count: number; month: number; onTap: () => void }) {
+  const theme = useThemeStore((s) => s.theme)
+  const [animated, setAnimated] = useState(false)
+  const reducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  useEffect(() => {
+    if (reducedMotion) { setAnimated(true); return }
+    let id1: number, id2: number
+    id1 = requestAnimationFrame(() => { id2 = requestAnimationFrame(() => setAnimated(true)) })
+    return () => { cancelAnimationFrame(id1); cancelAnimationFrame(id2) }
+  }, [reducedMotion])
+
+  const textStyle = reducedMotion ? {} : {
+    opacity: animated ? 1 : 0,
+    transform: animated ? 'translateY(0)' : 'translateY(6px)',
+    transition: 'opacity .35s ease .5s, transform .35s ease .5s',
+  }
+
+  return (
+    <button
+      onClick={onTap}
+      type="button"
+      style={{
+        appearance: 'none', border: 0, padding: 0, cursor: 'pointer',
+        display: 'block', position: 'fixed', inset: 0, textAlign: 'left',
+        background: THEME_GRADIENTS[theme],
+      }}
+    >
+      <div style={{
+        position: 'absolute', inset: 0,
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center',
+        padding: '0 44px 34px',
+      }}>
+        <CompleteRing animated={reducedMotion || animated} size={76} />
+
+        <div style={{
+          marginTop: 24, textAlign: 'center',
+          font: '600 21px/1.4 Pretendard',
+          color: 'var(--ink-1)', letterSpacing: '-0.02em',
+          ...textStyle,
+        }}>
+          {month}월 기록을 마쳤어요
+        </div>
+
+        <div style={{
+          marginTop: 10, textAlign: 'center',
+          font: '400 13px/1.6 Pretendard',
+          color: 'var(--ink-2)',
+          textWrap: 'pretty' as never,
+          whiteSpace: 'pre-line',
+          ...textStyle,
+        }}>
+          {`이번 달 ${count}건에 감정을 모두 남겼어요.\n통계에서 ${month}월 리포트를 볼 수 있어요.`}
+        </div>
+
+        <div style={{
+          position: 'absolute', left: 0, right: 0, bottom: 34,
+          textAlign: 'center',
+          font: '500 12px/1 Pretendard', color: 'var(--ink-3)',
+        }}>
+          화면을 탭하면 로그로 이동해요
+        </div>
+      </div>
+    </button>
+  )
+}
 
 const SATISFACTION_OPTIONS: Satisfaction[] = ['satisfied', 'neutral', 'regret']
 
@@ -62,11 +162,6 @@ export default function TaggingContainer() {
   const tx = snapshot?.[currentIndex] ?? null
   const isDone = snapshot !== null && currentIndex >= total
 
-  const summaryCounts = { satisfied: 0, neutral: 0, regret: 0 }
-  for (const e of history) {
-    if (e.satisfaction) summaryCounts[e.satisfaction]++
-  }
-
   const handleTag = async (satisfaction: Satisfaction) => {
     if (!tx) return
     await updateTransaction(tx.id, {
@@ -112,29 +207,14 @@ export default function TaggingContainer() {
 
   // 완료 화면
   if (isDone) {
-    const taggedCount = history.filter((e) => e.satisfaction !== null).length
+    const month = currentDate.getMonth() + 1
+    const count = transactions.filter((tx) => tx.type === 'expense' && tx.satisfaction !== null).length
     return (
-      <div
-        onClick={() => navigate('/app/log')}
-        style={{
-          position: 'fixed', inset: 0, overflow: 'hidden',
-          display: 'flex', flexDirection: 'column',
-          alignItems: 'center', justifyContent: 'center',
-          padding: '48px 20px 26px',
-          cursor: 'pointer',
-        }}
-      >
-        <SatisfactionIcon className="text-black" size={64} value="satisfied" />
-        <p style={{ marginTop: 24, fontSize: 20, fontWeight: 700, color: 'var(--ink-1)', letterSpacing: '-0.02em' }}>
-          기록 완료
-        </p>
-        <p style={{ marginTop: 10, fontSize: 14, fontWeight: 500, color: 'var(--ink-2)' }}>
-          {taggedCount}건 기록 완료 · 만족 {summaryCounts.satisfied} · 보통 {summaryCounts.neutral} · 후회 {summaryCounts.regret}
-        </p>
-        <p style={{ marginTop: 40, fontSize: 12, fontWeight: 400, color: 'var(--ink-3)' }}>
-          화면을 탭하면 로그 탭으로 이동해요
-        </p>
-      </div>
+      <CompleteScreen
+        count={count}
+        month={month}
+        onTap={() => navigate('/app/log', { replace: true })}
+      />
     )
   }
 

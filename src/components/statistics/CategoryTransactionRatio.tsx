@@ -116,14 +116,14 @@ export default function CategoryTransactionRatio({
 
   return (
     <StatisticsCard action={toggle} title="카테고리 거래 비율">
-      <div className="mt-5 grid grid-cols-[120px_minmax(0,1fr)] items-start gap-4 md:grid-cols-[160px_minmax(0,1fr)] md:gap-5">
+      <div className="mt-5 grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4">
         {/* 도넛 차트 */}
         <div
-          className="relative h-32 w-32 shrink-0 rounded-full md:h-40 md:w-40"
+          className="relative h-32 w-32 shrink-0 rounded-full"
           style={{ background: `conic-gradient(${donutGradient})` }}
         >
-          <div className="absolute inset-4 grid place-items-center rounded-full bg-white text-center md:inset-6">
-            <p className="text-[18px] font-semibold leading-none text-black">
+          <div className="absolute inset-4 grid place-items-center rounded-full bg-white text-center">
+            <p className="text-[18px] font-semibold leading-none text-(--ink-1)">
               {formatCompactKorean(totalAmount)}
             </p>
           </div>
@@ -132,25 +132,29 @@ export default function CategoryTransactionRatio({
         {/* 상위 3개 범례 */}
         <div className="grid gap-0.5">
           {topItems.map(renderTopRow)}
-          {hasMore && (
-            <button
-              className="flex items-center gap-1 px-3 py-2 text-left text-xs font-semibold text-gray-400 transition active:opacity-60"
-              onClick={() => setIsExpanded((v) => !v)}
-              type="button"
-            >
-              {isExpanded ? '접기' : `전체보기 (${activeItems.length}개)`}
-              <ChevronRightIcon
-                aria-hidden="true"
-                className={['h-3.5 w-3.5 transition-transform', isExpanded ? 'rotate-90' : ''].join(' ')}
-              />
-            </button>
-          )}
         </div>
       </div>
 
+      {/* 전체보기 버튼 */}
+      {hasMore && (
+        <button
+          className="mt-3 flex w-full items-center justify-between px-3 py-2 text-left transition active:opacity-60"
+          onClick={() => setIsExpanded((v) => !v)}
+          type="button"
+        >
+          <span className="text-[13px] font-semibold text-(--ink-2)">
+            {isExpanded ? '접기' : `전체보기 (${activeItems.length}개)`}
+          </span>
+          <ChevronRightIcon
+            aria-hidden="true"
+            className={['h-4 w-4 text-(--ink-3) transition-transform duration-200', isExpanded ? 'rotate-90' : ''].join(' ')}
+          />
+        </button>
+      )}
+
       {/* 전체 목록 */}
       {isExpanded && (
-        <div className="mt-4 border-t border-black/6 pt-4 grid gap-0.5">
+        <div className="mt-2 grid gap-0.5">
           {activeItems.map(renderExpandedRow)}
         </div>
       )}
