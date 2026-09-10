@@ -39,7 +39,7 @@ export default function CategorySelect({
   const hasMore = sorted.length > COLLAPSED_COUNT
   const selectedHidden = hasMore && sorted.slice(COLLAPSED_COUNT).some((c) => selectedCategoryIds.includes(c.id))
   const [showAll, setShowAll] = useState(selectedHidden)
-  const isExpanded = showAll || selectedHidden
+  const isExpanded = showAll
 
   const top = sorted.slice(0, COLLAPSED_COUNT)
   const rest = sorted.slice(COLLAPSED_COUNT)
@@ -105,7 +105,7 @@ export default function CategorySelect({
         <div
           style={{
             overflow: 'hidden',
-            maxHeight: isExpanded ? `${Math.ceil(rest.length / 3) * 48 + 8}px` : '0px',
+            maxHeight: isExpanded ? '600px' : '0px',
             opacity: isExpanded ? 1 : 0,
             transition: 'max-height 0.32s cubic-bezier(0.2,0.9,0.25,1), opacity 0.22s',
           }}

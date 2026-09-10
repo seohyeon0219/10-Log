@@ -43,8 +43,8 @@ export default function RecordingRateCard({ emptyCount, emptySum, month, pct }: 
   return (
     <div style={{ position: 'relative', marginTop: isDeck ? 14 : 0 }}>
       <button
-        onClick={() => navigate('/app/log/tag')}
-        style={{ position: 'relative', width: '100%', padding: 0, background: 'transparent', border: 0, cursor: 'pointer', textAlign: 'left' }}
+        onClick={() => { if (!done) navigate('/app/log/tag') }}
+        style={{ position: 'relative', width: '100%', padding: 0, background: 'transparent', border: 0, cursor: done ? 'default' : 'pointer', textAlign: 'left' }}
         type="button"
       >
         {isDeck && (

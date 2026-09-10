@@ -50,7 +50,8 @@ export default function TransactionFormContent({
   submitText = '저장',
   type,
 }: TransactionFormContentProps) {
-  const initialSelectedCategoryId = initialCategoryId || categories[0]?.id || ''
+  const recentMatch = recentCategoryIds.find((id) => categories.some((c) => c.id === id))
+  const initialSelectedCategoryId = initialCategoryId || recentMatch || categories[0]?.id || ''
   const [selectedCategoryId, setSelectedCategoryId] = useState(initialSelectedCategoryId)
   const [isCategoryManageOpen, setIsCategoryManageOpen] = useState(false)
   const [amount, setAmount] = useState(initialAmount ? String(initialAmount) : '')
