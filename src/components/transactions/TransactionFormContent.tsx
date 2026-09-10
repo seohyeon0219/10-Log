@@ -50,6 +50,8 @@ export default function TransactionFormContent({
   submitText = '저장',
   type,
 }: TransactionFormContentProps) {
+  const recentCategoryIds = useSettingsStore((s) => s.recentCategoryIds)
+  const addRecentCategoryId = useSettingsStore((s) => s.addRecentCategoryId)
   const recentMatch = recentCategoryIds.find((id) => categories.some((c) => c.id === id))
   const initialSelectedCategoryId = initialCategoryId || recentMatch || categories[0]?.id || ''
   const [selectedCategoryId, setSelectedCategoryId] = useState(initialSelectedCategoryId)
@@ -61,8 +63,6 @@ export default function TransactionFormContent({
   const [memo, setMemo] = useState(initialMemo ?? '')
   const [isFixed, setIsFixed] = useState(initialIsFixed)
   const [satisfaction, setSatisfaction] = useState<Satisfaction | null>(initialSatisfaction)
-  const recentCategoryIds = useSettingsStore((s) => s.recentCategoryIds)
-  const addRecentCategoryId = useSettingsStore((s) => s.addRecentCategoryId)
   const [errorMessage, setErrorMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
   const resolvedSelectedCategoryId = categories.some((category) => category.id === selectedCategoryId)
