@@ -131,7 +131,7 @@ export default function CategoryTransactionRatio({
         </div>
 
         {/* 상위 3개 범례 */}
-        <div className="grid gap-0.5">
+        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-0.5">
           {topItems.map(renderTopRow)}
         </div>
       </div>
@@ -163,7 +163,7 @@ export default function CategoryTransactionRatio({
             initial={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
           >
-            <div className="mt-2 grid gap-0.5">
+            <div className="mt-2 grid min-w-0 grid-cols-[minmax(0,1fr)] gap-0.5">
               {activeItems.map(renderExpandedRow)}
             </div>
           </motion.div>

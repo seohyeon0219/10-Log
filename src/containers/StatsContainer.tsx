@@ -59,8 +59,8 @@ export default function StatsContainer() {
         />
       </div>
 
-      <div className="grid gap-4">
-        <Link to="/app/stats/review">
+      <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-4">
+        <Link className="block min-w-0" to="/app/stats/review">
           <ReportProgressCard currentDate={stats.currentDate} insights={insights} satisfactionCount={satisfactionCount} />
         </Link>
 
@@ -74,7 +74,7 @@ export default function StatsContainer() {
           selectedCategoryId={stats.ratioSelectedCategoryId}
         />
 
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-4 md:grid-cols-2">
           <PreviousMonthComparison items={stats.previousMonthComparison} />
           <CategoryChangeRanking items={stats.categoryChangeRanking} />
         </div>
