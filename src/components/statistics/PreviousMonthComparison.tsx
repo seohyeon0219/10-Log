@@ -29,7 +29,7 @@ return (
                 onClick={() => setSelectedId(isSelected ? null : item.id)}
                 type="button"
               >
-                <span className={['text-sm font-semibold transition', isSelected ? 'text-black' : 'text-gray-500'].join(' ')}>
+                <span className={['min-w-0 flex-1 truncate text-sm font-semibold transition', isSelected ? 'text-black' : 'text-gray-500'].join(' ')}>
                   {item.label}
                 </span>
                 <div className="flex items-baseline gap-2">

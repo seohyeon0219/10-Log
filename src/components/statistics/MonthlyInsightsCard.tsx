@@ -70,7 +70,7 @@ export default function MonthlyInsightsCard({ data, density, showDetailLink = tr
 
           <div>
             <p className="mb-3 text-[13px] font-bold text-(--ink-1)">최대 단일 지출 top 3</p>
-            <div className="grid gap-1.5">
+            <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-1.5">
               {topExpenses.map((tx, i) => (
                 <div
                   className="flex items-center gap-[9px] rounded-[12px] px-3 py-[9px]"

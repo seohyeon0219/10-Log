@@ -134,7 +134,7 @@ export default function SpendingTransactionLineChart({ data, lastYearExpense }: 
         )}
       </div>
 
-      <div className="mt-4" ref={containerRef}>
+      <div className="mt-4 overflow-x-hidden" ref={containerRef}>
         <svg
           className="w-full overflow-visible"
           height={chartHeight}
